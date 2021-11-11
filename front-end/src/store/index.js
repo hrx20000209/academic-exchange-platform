@@ -14,4 +14,4 @@ const store = new Vuex.Store({
 
   }
 })
-export default stores
+export default store
