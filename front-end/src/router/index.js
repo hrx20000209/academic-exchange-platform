@@ -15,6 +15,11 @@ export default new Router({
       path: '/questions',
       name: 'Questions',
       component:() => import('@/views/Questions')
+    },
+    {
+      path: '/article',
+      name: 'Article',
+      component:() => import('@/views/article/comment')
     }
   ]
 })
