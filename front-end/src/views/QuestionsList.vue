@@ -17,7 +17,7 @@
 <script>
 import question from '@/components/Question'
 export default {
-  name: "Questions",
+  name: "QuestionsList",
   components: { question },
   data() {
     return {

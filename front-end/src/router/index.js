@@ -14,12 +14,12 @@ export default new Router({
     {
       path: '/questions',
       name: 'Questions',
-      component:() => import('@/views/Questions')
+      component:() => import('@/views/QuestionsList')
     },
     {
       path: '/article',
       name: 'Article',
-      component:() => import('@/views/article/comment')
+      component:() => import('@/views/article/CommentsList')
     }
   ]
 })
