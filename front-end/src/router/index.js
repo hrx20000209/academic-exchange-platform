@@ -6,10 +6,15 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'HelloWorld',
+    //   component: HelloWorld
+    // },
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Article',
+      component: () => import('../components/Article.vue')
     }
   ]
 })
