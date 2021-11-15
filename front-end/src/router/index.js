@@ -12,7 +12,7 @@ export default new Router({
     //   component: HelloWorld
     // },
     {
-      path: '/',
+      path: '/article',
       name: 'Article',
       component: () => import('../components/Article.vue')
     }
