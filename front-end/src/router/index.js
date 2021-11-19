@@ -8,12 +8,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../wyh_home')
   },
   {
     path: '/homepage',
     name: 'homepage',
-    component: ()=>import('../views/homepage')
+    component: () => import('../views/homepage')
   },
   {
     path: '/about',
@@ -26,12 +26,17 @@ const routes = [
   {
     path: '/questions',
     name: 'Questions',
-    component:() => import('@/views/QuestionsList')
+    component: () => import('@/views/QuestionsList')
   },
   {
     path: '/article',
     name: 'Article',
-    component:() => import('@/views/article/CommentsList')
+    component: () => import('@/views/article/CommentsList')
+  },
+  {
+    path:'/userHome',
+    name: 'userHome',
+    component: () => import('../userPage/userHome')
   }
 ]
 
