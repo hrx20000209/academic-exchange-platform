@@ -58,9 +58,9 @@ Join us in working towards a sustainable future with our editorially independent
                                     <!-- 标题列表 -->
                                     <div class="nav-list">
                                         <div v-for="(item, index) in navList" :key="item"
-                                        @click="changeTitle(index)"
-                                         v-scroll-to="'#'+test[index]"
-                                        :class="{ 'nav-list--active': index === active}"
+                                          @click="changeTitle(index)"
+                                          v-scroll-to="'#'+test[index]"
+                                          :class="{ 'nav-list--active': index === active}"
                                         >
                                             {{ item }}
                                         </div>
@@ -84,13 +84,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                         <el-col :span=8 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
@@ -107,13 +107,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                         <el-col :span=8 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
@@ -130,13 +130,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                         <el-col :span=8 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
@@ -153,13 +153,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                         <el-col :span=8 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
