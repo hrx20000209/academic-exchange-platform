@@ -31,7 +31,38 @@ const routes = [
   {
     path: '/article',
     name: 'Article',
-    component: () => import('@/views/article/CommentsList')
+    component: () => import('../views/article/Article.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import ('../views/article/Article')
+      },
+      {
+        path: 'comments',
+        name: 'Comments',
+        component: () => import('../views/article/CommentsList')
+      },
+      {
+        path: 'overviews',
+        name: 'Overviews',
+        component: () => import('../views/article/Overviews')
+      },
+      {
+        path: 'citations',
+        name: 'Citations',
+        component: () => import('../views/article/Citations')
+      },
+      {
+        path: 'references',
+        name: 'References',
+        component: () => import('../views/article/References')
+      },
+      {
+        path: 'stats',
+        name: 'Stats',
+        component: () => import('../views/article/Stats')
+      }
+    ]
   },
   {
     path:'/userHome',

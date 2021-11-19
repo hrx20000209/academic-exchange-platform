@@ -1,39 +1,50 @@
 <template>
-  <el-card class="card">
-    <div slot="header">
-      <h1>评论</h1>
-      <div v-for="item in items" :key="item.id">
-        <comment
-          :head="item.head"
-          :author="item.author"
-          :likeCnt="item.likeCnt"
-          :description="item.description"
-          :time="item.time"
-          :text="item.text"
-          :done="item.done"
-        />
+  <div class="grey">
+    <div style="height: 20px"></div>
+    <div class="bigFrame">
+      <div class="upFrame">
+        <div class="upFrameContent">评论</div>
       </div>
-    </div>
-    <div class="top">
-      <div>
-        <el-avatar shape="circle" :size="50" :src="user.head"></el-avatar>
-      </div>
-      <div style="width: 100%">
-        <div class="author-name">
-          {{ user.name }}
+      <div class="downFrame">
+        <div class="downFrameContent">
+          <div v-for="item in items" :key="item.id">
+            <comment
+              :head="item.head"
+              :author="item.author"
+              :likeCnt="item.likeCnt"
+              :description="item.description"
+              :time="item.time"
+              :text="item.text"
+              :done="item.done"
+            />
+          </div>
         </div>
-        <div class="description-box">
-          {{ user.description }}
+        <el-divider></el-divider>
+        <div class="input-box">
+          <div class="top">
+            <div>
+              <el-avatar shape="circle" :size="50" :src="user.head"></el-avatar>
+            </div>
+            <div style="width: 100%">
+              <div class="author-name">
+                {{ user.name }}
+              </div>
+              <div class="description-box">
+                {{ user.description }}
+              </div>
+            </div>
+          </div>
+          <div class="input-box">
+            <div id="div1"></div>
+            <div class="btn-box">
+              <el-button type="primary" @click="getEditorData">提交</el-button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="input-box">
-      <div id="div1"></div>
-      <div class="btn-box">
-        <el-button type="primary" @click="getEditorData">提交</el-button>
-      </div>
-    </div>
-  </el-card>
+    <div style="height: 20px"></div>
+  </div>
 </template>
 
 <script>
@@ -51,7 +62,7 @@ export default {
       'list'
     ]
     editor.config.showFullScreen = false
-    editor.config.height = 200
+    editor.config.height = 150
     editor.config.onchange = (newHtml) => {
       this.editorData = newHtml
     }
@@ -117,24 +128,43 @@ export default {
 </script>
 
 <style scoped>
+.grey{
+  background: rgba(221,221,221,0.3);
+}
+.bigFrame{
+  width: 50%;
+  background: white;
+  border-radius: 2px;
+  margin-left: 10%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+.upFrame{
+  height: 50px;
+  border-bottom: rgba(0, 0, 0, .12) solid 1px;
+}
+.upFrameContent{
+  padding: 15px;
+  margin-left: 15px;
+}
+.downFrame{
+  border-bottom: lightgrey solid 1px;
+}
+.downFrameContent{
+  padding: 30px;
+}
 .top {
   margin-bottom: 2%;
   margin-left: 2%;
   display: flex;
 }
-.card {
-  margin-bottom: 1%;
-  width: 50%;
-}
-
 .input-box {
   margin-left: 1%;
   height: 300px;
 }
 
 .btn-box {
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin-top: 1%;
+  margin-bottom: 1%;
   float: right;
 }
 
@@ -146,5 +176,8 @@ export default {
 
 .description-box {
   margin-left: 3%;
+}
+.input-box {
+  margin: 1%;
 }
 </style>

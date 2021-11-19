@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/front-end/src/views/article/Citations.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/src/views/article/Overviews.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/src/views/article/References.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/src/views/article/Stats.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/Article.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/article/Article.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/article/CommentsList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/article/CommentsList.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +50,11 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-end/src/views/article" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
