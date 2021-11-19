@@ -58,9 +58,9 @@ Join us in working towards a sustainable future with our editorially independent
                                     <!-- 标题列表 -->
                                     <div class="nav-list">
                                         <div v-for="(item, index) in navList" :key="item"
-                                          @click="changeTitle(index)"
-                                          v-scroll-to="'#'+test[index]"
-                                          :class="{ 'nav-list--active': index === active}"
+                                        @click="changeTitle(index)"
+                                         v-scroll-to="'#'+test[index]"
+                                        :class="{ 'nav-list--active': index === active}"
                                         >
                                             {{ item }}
                                         </div>
@@ -74,7 +74,7 @@ Join us in working towards a sustainable future with our editorially independent
                             <el-row>
                                 <el-col>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 370px">
+                                        <el-col :span=2 style="margin-left: 340px">
                                             <div class="engine" id="engine" @click="jump2engine">工学</div>
                                         </el-col>
                                     </el-row>
@@ -84,20 +84,22 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                     </el-row>
                                     <el-divider></el-divider>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 370px">
+                                        <el-col :span=2 style="margin-left: 340px">
                                             <div class="maths" id="maths" @click="jump2engine">理学</div>
                                         </el-col>
                                     </el-row>
@@ -107,20 +109,22 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                     </el-row>
                                     <el-divider></el-divider>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 390px">
+                                        <el-col :span=2 style="margin-left: 360px">
                                             <div class="science" id="science" @click="jump2engine">自然科学</div>
                                         </el-col>
                                     </el-row>
@@ -130,20 +134,22 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
                                     </el-row>
                                     <el-divider></el-divider>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 380px">
+                                        <el-col :span=2 style="margin-left: 350px">
                                             <div class="social" id="social" @click="jump2engine">社会学</div>
                                         </el-col>
                                     </el-row>
@@ -153,13 +159,15 @@ Join us in working towards a sustainable future with our editorially independent
                                         </el-col>
                                         <el-col :span=8 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_popular" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=0>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
+                                            <el-link v-for="(item, index) in this.engine_latest" :key="index"
+                                            style="font-size: 12px">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
@@ -287,7 +295,7 @@ Join us in working towards a sustainable future with our editorially independent
     width: 100%;
     min-height: 1000px;
 }
-/deep/.el-collapse-item__header {
+/deep/ .el-collapse-item__header{
     background-color: #F2F2F2;
     width: 103%;
     margin-top: -25px;
@@ -408,7 +416,7 @@ Join us in working towards a sustainable future with our editorially independent
 .science {
     text-align: center;
     width: 120px;
-    font-size: 26px;
+    font-size: 22px;
     color: #2e5cb8;
     border-bottom: 2px solid transparent;
     margin-left: -25px;
@@ -424,7 +432,7 @@ Join us in working towards a sustainable future with our editorially independent
 .social {
     text-align: center;
     width: 100px;
-    font-size: 26px;
+    font-size: 22px;
     color: #2e5cb8;
     border-bottom: 2px solid transparent;
     margin-left: -15px;
@@ -440,7 +448,7 @@ Join us in working towards a sustainable future with our editorially independent
 .engine {
     text-align: center;
     width: 60px;
-    font-size: 26px;
+    font-size: 22px;
     margin-top: 30px;
     color: #2e5cb8;
     border-bottom: 2px solid transparent;
@@ -456,7 +464,7 @@ Join us in working towards a sustainable future with our editorially independent
 .maths {
     text-align: center;
     width: 60px;
-    font-size: 26px;
+    font-size: 22px;
     color: #2e5cb8;
     border-bottom: 2px solid transparent;
 }
