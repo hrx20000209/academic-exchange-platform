@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-card class="card">
+    <div>
       <div class="top" slot="header">
-        <div>
+        <div style="margin-left: 2%">
           <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
         </div>
         <div style="width: 100%">
@@ -19,23 +19,26 @@
       </div>
       <div>
         <div class="body">
+          <div class="tags">
+            有{{ likeCnt }}人赞同了该评论
+          </div>
           <div>
             {{ text }}
           </div>
-          <el-divider></el-divider>
           <div class="bottom">
-            <div class="bottom-btn"
-                 @click="like"
-                 @mouseover="btnMouseOn($event)"
-                 @mouseleave="btnMouseOut($event)">
-              <img src="@/assets/已点赞.png" width="10%" v-if="done"/>
-              <img src="@/assets/点赞.png" width="10%" v-else alt=""/>
-              点赞
+            <div style="float: left">
+              <el-button type="text" @click="like">
+                <img src="@/assets/已点赞.png" width="30px" v-if="done"/>
+                <img src="@/assets/点赞.png" width="30px" v-else alt=""/>
+              </el-button>
+            </div>
+            <div class="like-cnt">
+              {{ likeCnt }}
             </div>
           </div>
         </div>
       </div>
-    </el-card>
+    </div>
   </div>
 </template>
 
@@ -49,12 +52,6 @@ export default {
     }
   },
   methods: {
-    btnMouseOn(e) {
-      e.currentTarget.className = 'bottom-btn-mouse-on'
-    },
-    btnMouseOut(e) {
-      e.currentTarget.className = 'bottom-btn'
-    },
     like() {
       // 这里还有问题，用子组件修改了父组件里的值，控制台报错了，但是实际上可以运行
       this.done = !this.done
@@ -65,10 +62,6 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  margin-bottom: 1%;
-}
-
 .top {
   display: flex;
 }
@@ -81,6 +74,7 @@ export default {
 
 .description-box {
   margin-left: 3%;
+  font-size: small;
 }
 
 .time-box {
@@ -92,19 +86,24 @@ export default {
 
 .body {
   padding: 20px;
+  font-size: large;
 }
 
 .bottom {
-  display: flex;
-  height: 20%;
+  width: 100%;
+  display: inline-block;
+  margin-top: 5%;
 }
 
-.bottom-btn {
-  font-weight: bold;
+.like-cnt {
+  float: left;
+  margin-left: 1%;
+  margin-top: 3%;
 }
 
-.bottom-btn-mouse-on {
-  font-weight: bold;
-  text-decoration: underline;
+.tags {
+  font-size: medium;
+  color: #8e8e8e;
+  margin-bottom: 3%;
 }
 </style>
