@@ -17,9 +17,9 @@
               :text="item.text"
               :done="item.done"
             />
+            <el-divider></el-divider>
           </div>
         </div>
-        <el-divider></el-divider>
         <div class="input-box">
           <div class="top">
             <div>
