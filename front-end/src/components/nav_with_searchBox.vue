@@ -55,7 +55,7 @@
       </div>
       <div v-else id="LoginPane">
         <button id="Login" @click="toLogin">登录</button>
-        <button id="register">注册</button>
+        <button id="register" @click="toRegister">注册</button>
       </div>
 
     </div>
@@ -76,8 +76,12 @@ export default {
     createNew() {
     },
     toLogin() {
-      localStorage.setItem('ifLogin', 1)
-      this.ifLogin = localStorage.getItem('ifLogin')
+      this.$router.push('/login')
+      // localStorage.setItem('ifLogin', 1)
+      // this.ifLogin = localStorage.getItem('ifLogin')
+    },
+    toRegister() {
+      this.$router.push('/register')
     },
     handleDropDown(command) {
       if (command == "exit") {
