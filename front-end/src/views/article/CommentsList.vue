@@ -17,9 +17,9 @@
               :text="item.text"
               :done="item.done"
             />
-            <el-divider></el-divider>
           </div>
         </div>
+        <el-divider></el-divider>
         <div class="input-box">
           <div class="top">
             <div>
@@ -49,7 +49,7 @@
 
 <script>
 import E from 'wangeditor'
-import comment from '../../components/Comment'
+import comment from '@/components/Comment'
 export default {
   name: "Comment",
   components: { comment },
