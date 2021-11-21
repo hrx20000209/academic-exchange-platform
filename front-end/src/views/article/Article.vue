@@ -12,36 +12,37 @@
           <div class="whiteContent">
             <div class="leftPart">
               <div class="articleType">Article</div>
-              <div class="articleTitle">Big Data, Data Ownership and Data Economy</div>
-              <div class="articleDate">September 2021</div>
+              <div class="articleTitle">{{this.article.title}}</div>
+              <div class="articleDate">{{this.article.year}}</div>
               <div class="articleDOI">DOI: 10.52554/kjcl.2021.96.3</div>
               <div style="height: 20px"></div>
-              <div class="articleActhor">SooJeong Kim</div>
+<!--              作者这里 应该是需要改点什么-->
+              <div class="articleActhor">{{this.article.authors}}</div>
             </div>
-            <div class="rightPart" style="overflow:hidden;">
-              <div class="rightPartContent">
-                Research Interest  <span>—————————————</span>  0.3
-              </div>
-              <div class="rightPartContent">
-                Citations  <span>—————————————————</span>  0.3
-              </div>
-              <div class="rightPartContent">
-                Recommendations <span>————————————</span>0.3
-              </div>
-              <div class="rightPartContent">
-                Reads  <span>——————————————————</span>  0.3
-              </div>
-              <div class="rightPartContent">
-                <div>Saved to your list
-                </div>
-              </div>
-              <div>
-                <div style="float: right;font-size: 14px;color:grey;">
-                  更多细节
-                </div>
-
-              </div>
-            </div>
+<!--        这里大概率不需要    -->
+<!--            <div class="rightPart" style="overflow:hidden;">-->
+<!--              <div class="rightPartContent">-->
+<!--                Research Interest  <span>—————————————</span>  0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                Citations  <span>—————————————————</span>  0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                Recommendations <span>————————————</span>0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                Reads  <span>——————————————————</span>  0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                <div>Saved to your list-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <div style="float: right;font-size: 14px;color:grey;">-->
+<!--                  更多细节-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
           <!--      分界线-->
           <div class="dividingLine"></div>
@@ -51,10 +52,10 @@
               <el-menu-item index="/article/overviews">Overviews</el-menu-item>
               <el-menu-item index="/article/stats">Stats</el-menu-item>
               <el-menu-item index="/article/comments">Comments</el-menu-item>
-              <el-menu-item index="/article/citations">Citations</el-menu-item>
+<!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <el-menu-item index="/article/references">References</el-menu-item>
               <el-menu-item index="6" @click="gotoReferences"><el-button type="primary">下载全文</el-button></el-menu-item>
-              <el-menu-item index="7" @click="gotoReferences">分享文献</el-menu-item>
+              <el-menu-item index="7" @click="get">分享文献</el-menu-item>
             </el-menu>
           </div>
         </div>
@@ -69,28 +70,58 @@
 </template>
 
 <script>
+import axios from "axios";
+var driver = null;
 export default {
   name: "Article",
   data(){
     return{
-      flag: 0
+      flag: 0,
+      article: {
+        id: "",
+        title: "",
+        authors: [],
+        abstract: "",
+        year: "",
+        reference:[],
+        venue: {},
+        url: "",
+        citation_by_year:{},
+      },
     }
   },
   methods:{
-    gotoOverviews(){
-      this.flag = 1
-    },
-    gotoStats(){
-      this.flag = 2
-    },
-    gotoComments(){
-      this.flag = 3
-    },
-    gotoCitations(){
-      this.flag = 4
+    // geta: async (id,title,authors,abstract,year,reference,venue,citation_by_year)=> {
+    //
+    //   let url = 'http://119.3.223.135:9200/cspaper/_search?q='+id
+    //   // 在这搜出来那个论文的id 然后进行渲染
+    //   const res = await axios({
+    //     url: url
+    //   })
+    //   console.log(res)
+    //   return res
+    // },
+    // getas(){
+    //   APIHelper.geta(this.id,this.title,this.authors,this.abstract,this.year,this.reference,this.venue,this.citation_by_year)
+    //   this.length = response.data.hits.total.value
+    // },
+    get(){
+      this.axios({
+        method:'get',
+        url:'http://119.3.223.135:9200/cspaper/_search?q=5AF40212',
+        data:{
+
+        }
+      })
+      .then(response=>{
+        console.log(response.data);
+      })
+      .catch(error=>{
+        console.log(error);
+      })
     },
     gotoReferences(){
-      this.flag = 5
+      console.log('1');
     }
   }
 }
