@@ -1,10 +1,12 @@
 <template>
-  <div>管理员</div>
+  <div>
+    <el-card>欢迎回来，管理员</el-card>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Admin"
+  name: "AdminHome"
 }
 </script>
 

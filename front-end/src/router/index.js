@@ -23,27 +23,39 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/identification/Login')
+    component: () => import('../views/UserEntry/Login')
   },
   {
     path: '/loginAdmin',
     name: 'LoginAdmin',
-    component: () => import('../views/identification/LoginAdmin')
+    component: () => import('../views/admin/LoginAdmin')
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/admin/Admin'),
+    children: [
+      {
+        path: 'adminHome',
+        name: 'AdminHome',
+        component: () => import('../views/admin/AdminHome')
+      },
+      {
+        path: 'applications',
+        name: 'Applications',
+        component: () => import('../views/admin/Applications')
+      }
+    ]
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/identification/Register')
-  },
-  {
-    path: '/Admin',
-    name: 'Admin',
-    component: () => import('../views/identification/Admin')
+    component: () => import('../views/UserEntry/Register')
   },
   {
     path: '/questions',
     name: 'Questions',
-    component: () => import('@/views/QuestionsList')
+    component: () => import('../views/QuestionsList')
   },
   {
     path: '/search',
