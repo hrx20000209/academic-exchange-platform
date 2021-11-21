@@ -48,7 +48,7 @@
           <div class="dividingLine"></div>
           <!--      导航栏-->
           <div>
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
+            <el-menu class="el-menu-demo" mode="horizontal" router>
               <el-menu-item index="/article/overviews">Overviews</el-menu-item>
               <el-menu-item index="/article/stats">Stats</el-menu-item>
               <el-menu-item index="/article/comments">Comments</el-menu-item>
@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import axios from "axios";
-var driver = null;
+import axios from "axios"
+import ESApi from '../../api/elastic search'
 export default {
   name: "Article",
   data(){
@@ -90,21 +90,19 @@ export default {
       },
     }
   },
-  methods:{
-    // geta: async (id,title,authors,abstract,year,reference,venue,citation_by_year)=> {
-    //
-    //   let url = 'http://119.3.223.135:9200/cspaper/_search?q='+id
-    //   // 在这搜出来那个论文的id 然后进行渲染
-    //   const res = await axios({
-    //     url: url
-    //   })
-    //   console.log(res)
-    //   return res
-    // },
-    // getas(){
-    //   APIHelper.geta(this.id,this.title,this.authors,this.abstract,this.year,this.reference,this.venue,this.citation_by_year)
-    //   this.length = response.data.hits.total.value
-    // },
+  mounted() {
+    this.search()
+  },
+  methods: {
+    search() {
+      ESApi.getMsg(1).then(response =>{
+        console.log(response.data)
+      })
+    },
+    getas(){
+      APIHelper.geta(this.id,this.title,this.authors,this.abstract,this.year,this.reference,this.venue,this.citation_by_year)
+      this.length = response.data
+    },
     get(){
       this.axios({
         method:'get',
