@@ -6,11 +6,13 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
+import * as echarts from 'echarts';
 Vue.prototype.$http = axios
-
 import VueAxios from "vue-axios";
+Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI);
+Vue.use(echarts)
 
 Vue.config.productionTip = false
 
