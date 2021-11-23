@@ -56,7 +56,10 @@
               <el-menu-item index="/article/comments">Comments</el-menu-item>
 <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <el-menu-item index="/article/references">References</el-menu-item>
-              <el-menu-item index="6" @click="gotoReferences"><el-button type="primary" @click="gotoTotalContent">下载全文</el-button></el-menu-item>
+              <el-menu-item>
+                <el-button type="primary" v-if="flag !== 0">下载全文</el-button>
+                <el-button type="primary"  disabled v-else>下载全文</el-button>
+              </el-menu-item>
               <el-menu-item index="7">分享文献</el-menu-item>
             </el-menu>
           </div>

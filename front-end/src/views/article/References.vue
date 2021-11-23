@@ -20,25 +20,26 @@
             </div>
           </div>
         </div>
-        <div class="downFrame">
+        <div class="downFrame" v-for="(index,item) in references" :key="item">
           <div class="downFrameContent">
             <div style="margin-bottom: 10px;font-size: 18px">
-              They Who Must Not Be Identified - Distinguishing Personal from Non-Personal Data Under the GDPR
+              {{index}}\{{item._source.title}}
             </div>
             <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
-              <a class="articleType">Article</a>February 2020·SSRN Electronic Journal
+              <a class="articleType">Article</a>
+              {{item.year}}
             </div>
             <div style="margin-bottom: 10px;font-size: 16.5px">
               Michèle FinckFrank Pallas
             </div>
-            <div style="margin-bottom: 10px;font-size: 16px">
+            <!-- <div style="margin-bottom: 10px;font-size: 16px">
               In this article, we examine the concept of non-personal data from a law
               and computer science perspective. The delineation between personal data
               and non-personal data is of paramount importance to determine the GDPR’s
               scope of application. This exercise is, however, fraught with difficulty,
               also when it comes to depersonalized data—that is to say data that once
               was… Read more
-            </div>
+            </div> -->
             <div style="color: darkgray;font-size: 15px;margin-bottom: 10px">49 Reads·26 Citations</div>
             <div style="height: 30px">
               <div style="float: left">
@@ -118,11 +119,14 @@
 
 <script>
 import ESApi from '../../api/elastic search'
+import AC from '../article/Article.vue'
 export default {
   name: "References",
   data(){
     return{
-      reference:[],
+      index:'',
+      key:'',
+      reference:['808411C2','051EDB3F'],
       references:[
         
       ],
@@ -130,7 +134,7 @@ export default {
     }
   },
   mounted(){
-    this.searchRe();
+    // this.searchRe();
     this.bianli();
   },
   methods:{
@@ -138,28 +142,31 @@ export default {
       for(var i = 0; i < this.reference.length;i++){
         ESApi.getMsg(this.reference[i]).then(response =>{
           this.length = response.data.hits.total.value
+          console.log('asadqw')
           for(var j = 0; j < this.length; j++){
             let article = response.data.hits.hits[j]
-            this.references = article._source
+            this.references[i] = article._source
+            console.log(this.references[i])
           }
         })
       }
+      console.log(this.references)
     },
-    searchRe() {
-      console.log('111')
-      ESApi.getMsg('808411C2').then(response =>{
-        console.log(response.data)
-        this.length = response.data.hits.total.value
-        console.log(this.length)
-        for(var i = 0; i < this.length; i++){
-          let article = response.data.hits.hits[i]
-          for(var j = 0; j < article._source.reference.length; j++){
-            this.reference[j] = article._source.reference[j]
-            console.log(this.reference[j])
-          }
-        }
-      })
-    },
+    // searchRe() {
+    //   console.log('111')
+    //   ESApi.getMsg('808411C2').then(response =>{
+    //     console.log(response.data)
+    //     this.length = response.data.hits.total.value
+    //     console.log(this.length)
+    //     for(var i = 0; i < this.length; i++){
+    //       let article = response.data.hits.hits[i]
+    //       for(var j = 0; j < article._source.reference.length; j++){
+    //         this.reference[j] = article._source.reference[j]
+    //         console.log(this.reference[j])
+    //       }
+    //     }
+    //   })
+    // },
   }
 }
 </script>
