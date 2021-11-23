@@ -14,11 +14,13 @@ Vue.use(echarts)
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 import axios from 'axios'
+import * as echarts from 'echarts';
 Vue.prototype.$http = axios
-
 import VueAxios from "vue-axios";
+Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI);
+Vue.use(echarts)
 
 Vue.config.productionTip = false
 
