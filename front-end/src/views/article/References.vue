@@ -20,10 +20,10 @@
             </div>
           </div>
         </div>
-        <div class="downFrame" v-for="(index,item) in references" :key="item">
+        <div class="downFrame" v-for="(item) in references" :key="item">
           <div class="downFrameContent">
             <div style="margin-bottom: 10px;font-size: 18px">
-              {{index}}\{{item._source.title}}
+              {{item.title}}
             </div>
             <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
               <a class="articleType">Article</a>
@@ -127,9 +127,17 @@ export default {
       index:'',
       key:'',
       reference:['808411C2','051EDB3F'],
-      references:[
-        
-      ],
+      // references:[
+      //   {
+      //     title:'23',
+      //     year:'3234'
+      //   },
+      //   {
+      //     title:'sh',
+      //     year: '1111'
+      //   }
+      // ],
+      references:[],
       length:''
     }
   },
@@ -145,7 +153,7 @@ export default {
           console.log('asadqw')
           for(var j = 0; j < this.length; j++){
             let article = response.data.hits.hits[j]
-            this.references[i] = article._source
+            this.references.push(article._source)
             console.log(this.references[i])
           }
         })
