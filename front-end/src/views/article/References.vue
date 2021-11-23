@@ -9,6 +9,19 @@
         </div>
         <div class="downFrame">
           <div class="downFrameContent">
+            <div class="notAbstract">
+              <div style="height:30px"></div>
+              <div style="text-align:center">
+                <img src="@/assets/无参考文献.png">
+              </div>
+              <div style="text-align:center">
+                无参考文献
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="downFrame">
+          <div class="downFrameContent">
             <div style="margin-bottom: 10px;font-size: 18px">
               They Who Must Not Be Identified - Distinguishing Personal from Non-Personal Data Under the GDPR
             </div>
@@ -104,8 +117,50 @@
 </template>
 
 <script>
+import ESApi from '../../api/elastic search'
 export default {
-  name: "References"
+  name: "References",
+  data(){
+    return{
+      reference:[],
+      references:[
+        
+      ],
+      length:''
+    }
+  },
+  mounted(){
+    this.searchRe();
+    this.bianli();
+  },
+  methods:{
+    bianli(){
+      for(var i = 0; i < this.reference.length;i++){
+        ESApi.getMsg(this.reference[i]).then(response =>{
+          this.length = response.data.hits.total.value
+          for(var j = 0; j < this.length; j++){
+            let article = response.data.hits.hits[j]
+            this.references = article._source
+          }
+        })
+      }
+    },
+    searchRe() {
+      console.log('111')
+      ESApi.getMsg('808411C2').then(response =>{
+        console.log(response.data)
+        this.length = response.data.hits.total.value
+        console.log(this.length)
+        for(var i = 0; i < this.length; i++){
+          let article = response.data.hits.hits[i]
+          for(var j = 0; j < article._source.reference.length; j++){
+            this.reference[j] = article._source.reference[j]
+            console.log(this.reference[j])
+          }
+        }
+      })
+    },
+  }
 }
 </script>
 
@@ -152,5 +207,10 @@ export default {
   margin-right: 10%;
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+.notAbstract{
+  width: 100%;
+  height: 200px;
+  border: lightgray solid 1px;
 }
 </style>
