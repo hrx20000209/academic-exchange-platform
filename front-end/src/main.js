@@ -9,19 +9,15 @@ import myHeader from './components/myHeader'
 import myCloud from './components/keywordsCloud'
 import './styles/font.css'
 import * as echarts from 'echarts';
+import axios from 'axios'
 
 Vue.use(echarts)
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
-import axios from 'axios'
-import * as echarts from 'echarts';
-Vue.prototype.$http = axios
-import VueAxios from "vue-axios";
-Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI);
-Vue.use(echarts)
-
+Vue.prototype.$echarts = echarts
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
