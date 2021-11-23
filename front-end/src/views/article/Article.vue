@@ -12,12 +12,14 @@
           <div class="whiteContent">
             <div class="leftPart">
               <div class="articleType">Article</div>
-              <div class="articleTitle">{{this.article.title}}</div>
-              <div class="articleDate">{{this.article.year}}</div>
+              <div class="articleTitle">{{this.title}}</div>
+              <div class="articleDate">{{this.year}}</div>
               <div class="articleDOI">DOI: 10.52554/kjcl.2021.96.3</div>
               <div style="height: 20px"></div>
 <!--              作者这里 应该是需要改点什么-->
-              <div class="articleActhor">{{this.article.authors}}</div>
+              <div class="articleActhor">
+                {{this.author}}
+              </div>
             </div>
 <!--        这里大概率不需要    -->
 <!--            <div class="rightPart" style="overflow:hidden;">-->
@@ -54,8 +56,11 @@
               <el-menu-item index="/article/comments">Comments</el-menu-item>
 <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <el-menu-item index="/article/references">References</el-menu-item>
-              <el-menu-item index="6" @click="gotoReferences"><el-button type="primary">下载全文</el-button></el-menu-item>
-              <el-menu-item index="7" @click="get">分享文献</el-menu-item>
+              <el-menu-item>
+                <el-button type="primary" v-if="flag !== 0">下载全文</el-button>
+                <el-button type="primary"  disabled v-else>下载全文</el-button>
+              </el-menu-item>
+              <el-menu-item index="7">分享文献</el-menu-item>
             </el-menu>
           </div>
         </div>
@@ -76,50 +81,64 @@ export default {
   name: "Article",
   data(){
     return{
-      flag: 0,
-      article: {
+      flag: 1,
+      
         id: "",
         title: "",
         authors: [],
+        author:'',
         abstract: "",
         year: "",
         reference:[],
         venue: {},
         url: "",
         citation_by_year:{},
-      },
+      
+      length:'',
     }
   },
   mounted() {
-    this.search()
+    this.search();
+    console.log('333')
   },
   methods: {
     search() {
-      ESApi.getMsg(1).then(response =>{
+      console.log('111')
+      ESApi.getMsg('808411C2').then(response =>{
         console.log(response.data)
-      })
-    },
-    getas(){
-      APIHelper.geta(this.id,this.title,this.authors,this.abstract,this.year,this.reference,this.venue,this.citation_by_year)
-      this.length = response.data
-    },
-    get(){
-      this.axios({
-        method:'get',
-        url:'http://119.3.223.135:9200/cspaper/_search?q=5AF40212',
-        data:{
-
+        this.length = response.data.hits.total.value
+        console.log(this.length)
+        for(var i = 0; i < this.length; i++){
+          let article = response.data.hits.hits[i]
+          this.title = article._source.title
+          console.log(this.title)
+          this.year = article._source.year
+          if(article._source.url === undefined){
+            this.flag = 0
+            console.log('aaaa')
+          }else{
+            this.url = article._source.url
+          }
+          for(var j = 0; j < article._source.authors.length-1;j++){
+            this.authors[j] = article._source.authors[j]
+            console.log(this.authors[j])
+            this.author += this.authors[j].name
+            this.author += ' 、'
+          }
+          this.authors[j] = article._source.authors[j]
+            console.log(this.authors[j])
+            this.author += this.authors[j].name
+          console.log(this.author)
         }
       })
-      .then(response=>{
-        console.log(response.data);
-      })
-      .catch(error=>{
-        console.log(error);
-      })
     },
-    gotoReferences(){
-      console.log('1');
+    gotoTotalContent(){
+      if(this.flag === 0){
+        console.log('错误')
+      }
+      else{
+        console.log('成功')
+      }
     }
   }
 }
