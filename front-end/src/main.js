@@ -8,7 +8,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import myHeader from './components/myHeader'
 import myCloud from './components/keywordsCloud'
 import './styles/font.css'
+import * as echarts from 'echarts';
 
+Vue.use(echarts)
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 import axios from 'axios'
