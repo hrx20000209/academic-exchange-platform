@@ -32,25 +32,25 @@
               font-weight: bold;
               font-size: 25px;
               text-align: center;
-              margin-bottom: 30px;
+              margin-bottom: 40px;
               margin-top: 20px;
               ">
                 数据统计
               </div>
             </el-row>
             <el-row>
-              <el-col :span="10">
+              <el-col :span="10" :offset="2">
                 <div id="chart1"></div>
               </el-col>
-              <el-col :span="10" :offset="2">
+              <el-col :span="10" :offset="1">
                 <div id="chart2"></div>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="10">
+            <el-row style="margin-top: 25px; margin-bottom: 40px">
+              <el-col :span="10" :offset="2">
                 <div id="chart3"></div>
               </el-col>
-              <el-col :span="10" :offset="2">
+              <el-col :span="10" :offset="1">
                 <div id="chart4"></div>
               </el-col>
             </el-row>
@@ -76,9 +76,14 @@
                     <div v-for="(item1, index1) in authors.slice((currentPage_author - 1) * pagesize_author, currentPage_author * pagesize_author)" :key="index1" style="margin-top: 10px">
                       <div style="display: flex; justify-content: space-around">
                         <el-tooltip  v-for="(item2, index2) in item1" :key="index2" :content="item2.name" placement="top" effect="light">
-                          <el-avatar>
-                            {{item2.pic}}
-                          </el-avatar>
+                          <div style="display: flex; flex-direction: column;">
+                            <el-avatar>
+                              {{item2.pic}}
+                            </el-avatar>
+                            <div style="font-family: Gabriola; font-size: 16px">
+                              {{item2.name}}
+                            </div>
+                          </div>
                         </el-tooltip>
                       </div>
                     </div>
@@ -106,7 +111,7 @@
               font-weight: bold;
               font-size: 25px;
               text-align: center;
-              margin-bottom: 30px;
+              margin-bottom: 10px;
               margin-top: 20px;
               ">
                 论文概览
@@ -117,15 +122,30 @@
                    :key="index"
                     style="font-family: Georgia;margin-top: 25px; margin-left: 20px;"
               >
-                <el-row style="margin-top: 5px" class="paper_title">
-                  <div class="el-icon-s-opportunity" style="color: #F2F5A9; font-size: 20px"></div>{{item.title}}
-                </el-row>
-                <el-row class="paper_author">
-                  <div class="el-icon-user" style="color: #A9F5D0; font-size: 20px"></div>{{item.author}}
-                </el-row>
-                <el-row class="paper_publication">
-                  <div class="el-icon-star-on" style="color: #A9D0F5; font-size: 25px"></div>{{item.publication}}
-                </el-row>
+                <div style="background-color: #FFF;
+                            box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
+                            padding: 15px;
+                  ">
+                  <el-row>
+                  <el-col :span="1">
+                    <div class="xuhao">{{index+1}}</div>
+                  </el-col>
+                  <el-col :span="18">
+                    <el-row style="margin-top: 5px" class="paper_title">
+                      {{item.title}}
+                    </el-row>
+                    <el-row class="paper_author">
+                      {{item.author}}
+                    </el-row>
+                    <el-row class="paper_publication">
+                      {{item.publication}}
+                    </el-row>
+                  </el-col>
+                  <el-col :span="4">
+                    <div class="cites">被引次数：{{item.cites}}</div>
+                  </el-col>
+                  </el-row>
+                </div>
               </div>
               <el-pagination
                 background
@@ -275,26 +295,37 @@
                 title:'3D Printing in the Context of Cloud Manufacturing',
                 author:'Jin Cui · Lei Ren · Jingeng Mai',
                 publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
+                cites:1000,
               },
               {
                 title:'3D Printing in the Context of Cloud Manufacturing',
                 author:'Jin Cui · Lei Ren · Jingeng Mai',
                 publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
+                cites:1000,
               },
               {
                 title:'3D Printing in the Context of Cloud Manufacturing',
                 author:'Jin Cui · Lei Ren · Jingeng Mai',
                 publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
+                cites:1000,
               },
               {
                 title:'3D Printing in the Context of Cloud Manufacturing',
                 author:'Jin Cui · Lei Ren · Jingeng Mai',
                 publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
+                cites:1000,
               },
               {
                 title:'3D Printing in the Context of Cloud Manufacturing',
                 author:'Jin Cui · Lei Ren · Jingeng Mai',
                 publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
+                cites:1000,
+              },
+              {
+                title:'3D Printing in the Context of Cloud Manufacturing',
+                author:'Jin Cui · Lei Ren · Jingeng Mai',
+                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
+                cites:1000,
               },
             ],
             authors:[
@@ -355,6 +386,60 @@
                   'name': 'XiaoMing',
                   'pic':'Ming',
                 },
+              ],
+              [
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
+                {
+                  'name': 'XiaoMing',
+                  'pic':'Ming',
+                },
                 {
                   'name': 'XiaoMing',
                   'pic':'Ming',
@@ -417,78 +502,8 @@
                   'name': 'XiaoMing',
                   'pic':'Ming',
                 },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
               ],
               [
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-              ],
-              [
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
                 {
                   'name': 'XiaoMing',
                   'pic':'Ming',
@@ -548,7 +563,7 @@
               ],
             ],
             currentPage: 1,
-            pagesize: 10,
+            pagesize: 7,
             currentPage_author: 1,
             pagesize_author: 3,
           }
@@ -565,7 +580,7 @@
             const color1 = this.randomColor()
             const color2 = this.randomColor()
             let option1={
-              // backgroundColor: '#FFF',
+              backgroundColor: '#FFF',
               tooltip: {
                 trigger: 'item',
                 formatter: "{a} <br/>{b}  {c} ({d}%)"
@@ -749,24 +764,44 @@
 
 }
 #chart1 {
-  width: 500px;
-  height: 500px;
+  background-color: white;
+  border:5px white;
+  border-radius: 30px;
+  padding: 15px;
+  width: 350px;
+  height: 350px;
+  box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 #chart2 {
-  width: 500px;
-  height: 500px;
+  background-color: white;
+  border:5px white;
+  border-radius: 30px;
+  padding: 15px;
+  width: 350px;
+  height: 350px;
+  box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 #chart3 {
-  width: 500px;
-  height: 500px;
+  background-color: white;
+  border:5px white;
+  border-radius: 30px;
+  padding: 15px;
+  width: 350px;
+  height: 350px;
+  box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 #chart4 {
-  width: 500px;
-  height: 500px;
+  background-color: white;
+  border:5px white;
+  border-radius: 30px;
+  padding: 15px;
+  width: 350px;
+  height: 350px;
+  box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 .papers {
   background-color: #FAFAFA;
-  min-height: 600px;
+  height: auto;
   max-width: 1050px;
   margin-left: 20px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
@@ -776,9 +811,7 @@
 .paperFather{
   width: 900px;
   margin-left: 80px;
-  background-color: #FFFFFF;
   margin-bottom: 40px;
-  box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 .paper_content {
   background-color: #FFFFFF;
@@ -790,9 +823,17 @@
   color: 	#d7df07;
   cursor: pointer;
 }
+.paper_author{
+  color: #A4A4A4;
+  font-size: 13px;
+}
 .paper_author:hover{
   color: #01DF74;
   cursor: pointer;
+}
+.paper_publication {
+  color: #A4A4A4;
+  font-size: 13px;
 }
 .paper_publication:hover{
   color: #01A9DB;
@@ -817,5 +858,25 @@
 }
 .greyPage /deep/ li.number {
   background-color: #FAFAFA;
+}
+.xuhao {
+  background-color: cornflowerblue;
+  text-align: center;
+  border-radius: 30px;
+  font-family: Gadugi;
+  font-size: 13px;
+  width: 25px;
+  margin-top: 5px;
+  color: #FFF;
+}
+.cites{
+  background-color: #01DF74;
+  text-align: center;
+  border-radius: 30px;
+  font-family: Gadugi;
+  font-size: 13px;
+  margin-top: 10px;
+  width: 120px;
+  color: #FFF;
 }
 </style>
