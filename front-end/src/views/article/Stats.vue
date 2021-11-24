@@ -1,70 +1,30 @@
 <template>
   <div class="grey">
     <div style="height: 20px"></div>
-    <div class="statsFrame">
-      <div class="upFrame">
-        <div class="upFrameContent">Stats overview</div>
-      </div>
-      <div class="downFrame">
-        <div class="statsFrameContent">
-          <div style="height: 100px;width: 100%;">
-            <div class="statsContent">
-              <div style="border: lightgrey solid 1px;padding: 10px">
-                <div style="font-size: 20px;margin-bottom: 5px">
-                  0.7
-                </div>
-                <div style="font-size: 12px;margin-bottom: 10px">
-                  Research Interest
-                </div>
-                <div style="color: darkgrey;font-size: 12px;">
-                  More details
-                </div>
-              </div>
-            </div>
-            <div class="statsContent">
-              <div style="border: lightgrey solid 1px;padding: 10px">
-                <div style="font-size: 20px;margin-bottom: 5px">
-                  0.7
-                </div>
-                <div style="font-size: 12px;margin-bottom: 10px">
-                  Research Interest
-                </div>
-                <div style="color: darkgrey;font-size: 12px;">
-                  More details
-                </div>
-              </div>
-            </div>
-            <div class="statsContent">
-              <div style="border: lightgrey solid 1px;padding: 10px">
-                <div style="font-size: 20px;margin-bottom: 5px">
-                  0.7
-                </div>
-                <div style="font-size: 12px;margin-bottom: 10px">
-                  Research Interest
-                </div>
-                <div style="color: darkgrey;font-size: 12px;">
-                  More details
-                </div>
-              </div>
-            </div>
-            <div class="statsContent">
-              <div style="border: lightgrey solid 1px;padding: 10px">
-                <div style="font-size: 20px;margin-bottom: 5px">
-                  0.7
-                </div>
-                <div style="font-size: 12px;margin-bottom: 10px">
-                  Research Interest
-                </div>
-                <div style="color: darkgrey;font-size: 12px;">
-                  More details
-                </div>
-              </div>
-            </div>
+    <div class="stats">
+      <div class="statsFrame">
+        <div class="upFrame">
+          <div class="upFrameContent">Stats overview</div>
+        </div>
+        <div class="downFrame">
+          <div class="statsFrameContent">
+<!-- 这里放表格 -->
           </div>
-
+        </div>
+      </div>
+      <div style="width:4%;float:left;height:10px"></div>
+      <div class="statsFrame">
+        <div class="upFrame">
+          <div class="upFrameContent">Stats overview</div>
+        </div>
+        <div class="downFrame">
+          <div class="statsFrameContent">
+<!-- 这里放表格 -->
+          </div>
         </div>
       </div>
     </div>
+    
     <div style="height: 20px"></div>
   </div>
 </template>
@@ -83,6 +43,11 @@ export default {
   /*height: 1000px;*/
   /*width: 100%;*/
 }
+.stats{
+  width: 80%;
+  margin-left: 10%;
+  overflow: hidden;
+}
 .upFrame{
   height: 50px;
   border-bottom: rgba(0, 0, 0, .12) solid 1px;
@@ -95,8 +60,9 @@ export default {
   border-bottom: lightgrey solid 1px;
 }
 .statsFrame{
-  width: 80%;
+  width: 48%;
   margin: auto;
+  float: left;
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
