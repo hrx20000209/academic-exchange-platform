@@ -13,13 +13,13 @@
               <el-row style="margin-top: 18px; margin-left: 20px;">
                 <el-row>
                   <el-col :span="6">
-                   <i class="el-icon-user" style="color: #6E6E6E"> {{this.members}} 人</i>
+                   <i class="el-icon-user" style="color: #6E6E6E">成员总数： <a style="color: #00BFFF"> {{this.members}}</a> 人</i>
                   </el-col>
                   <el-col :span="6">
-                   <i class="el-icon-collection-tag" style="color: #6E6E6E"> {{this.citeTime}} 次</i>
+                   <i class="el-icon-collection-tag" style="color: #6E6E6E">论文引用总次数： <a style="color: #00BFFF"> {{this.citeTime}}</a> 次</i>
                   </el-col>
-                  <el-col :span="10">
-                    <i class="el-icon-star-on" style="color: #6E6E6E"> Total RG Score: {{this.RG_score}}</i>
+                  <el-col :span="10" :offset="1">
+                    <i class="el-icon-star-on" style="color: #6E6E6E"> 总发布论文数: <a style="color: #00BFFF">{{this.RG_score}}</a> 篇</i>
                   </el-col>
                 </el-row>
               </el-row>
@@ -83,7 +83,7 @@
                                 {{item2.pic}}
                               </el-avatar>
                             </div>
-                            <div style="display: flex; justify-content: center">
+                            <div style="display: flex; justify-content: center; flex-wrap:wrap">
                               <div style="font-family: Gabriola; font-size: 16px">
                                 {{item2.name}}
                               </div>
@@ -130,21 +130,23 @@
                 <div style="background-color: #FFF;
                             box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
                             padding: 15px;
-                  ">
+                  "
+                @click="jump2papers(item.id)"
+                >
                   <el-row>
                   <el-col :span="1">
                     <div class="xuhao">{{index+1}}</div>
                   </el-col>
                   <el-col :span="18">
-                    <el-row style="margin-top: 5px" class="paper_title">
+                    <el-row style="margin-top: 5px" class="paper_title" >
                       {{item.title}}
                     </el-row>
-                    <el-row class="paper_author">
+                    <!--<el-row class="paper_author">
                       {{item.author}}
                     </el-row>
                     <el-row class="paper_publication">
                       {{item.publication}}
-                    </el-row>
+                    </el-row>-->
                   </el-col>
                   <el-col :span="4">
                     <div class="cites">被引次数：{{item.cites}}</div>
@@ -178,51 +180,14 @@
         name: "Institution",
         data(){
           return {
-            InstitutionName:'北京航空航天大学',
-            members:101293,
-            RG_score:52485.99,
-            citeTime:12048,
+            InstitutionName:'',
+            members:0,
+            RG_score:0,
+            citeTime:0,
             AuthorPapers:[],
             AuthorCitation:[],
             paperCitation:[],
-            papers:[
-              {
-                title:'3D Printing in the Context of Cloud Manufacturing',
-                author:'Jin Cui · Lei Ren · Jingeng Mai',
-                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
-                cites:1000,
-              },
-              {
-                title:'3D Printing in the Context of Cloud Manufacturing',
-                author:'Jin Cui · Lei Ren · Jingeng Mai',
-                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
-                cites:1000,
-              },
-              {
-                title:'3D Printing in the Context of Cloud Manufacturing',
-                author:'Jin Cui · Lei Ren · Jingeng Mai',
-                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
-                cites:1000,
-              },
-              {
-                title:'3D Printing in the Context of Cloud Manufacturing',
-                author:'Jin Cui · Lei Ren · Jingeng Mai',
-                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
-                cites:1000,
-              },
-              {
-                title:'3D Printing in the Context of Cloud Manufacturing',
-                author:'Jin Cui · Lei Ren · Jingeng Mai',
-                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
-                cites:1000,
-              },
-              {
-                title:'3D Printing in the Context of Cloud Manufacturing',
-                author:'Jin Cui · Lei Ren · Jingeng Mai',
-                publication:'Oct 2022 · Robotics and Computer-Integrated Manufacturing',
-                cites:1000,
-              },
-            ],
+            papers:[],
             authors:[],
             currentPage: 1,
             pagesize: 7,
@@ -234,6 +199,7 @@
           }
         },
         mounted() {
+          let id = this.$route.params.id
           this.test()
           // console.log('mounted:',this.years)
           // this.buildPie1()
@@ -323,38 +289,7 @@
               series: [
                 {
                   name:'成员发表论文量',
-                  radius: '65%',
-                  label: {
-                    alignTo: 'labelLine',
-                    textStyle:{
-                      color: ''
-                    }
-                  },
-                  labelLine:{
-                      length: 5,
-                      length2: 1,
-                  },
-                  minShowLabelAngle:5,
-                  type: 'pie',
-                  data: this.addColor(this.AuthorPapers),
-                  roseType: 'area'
-                }
-              ]
-            }
-            // let pieColors2 = this.getColorList(this.AuthorCitation)
-            let option3={
-              title: {
-                text: '成员被引用量',
-                x: 'center'
-              },
-              tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>姓名：{b}<br/>被引用量：{c} ({d}%)"
-              },
-              series:[
-                {
-                  name:'成员被引用量',
-                  type: 'pie',
+                  radius: ['55%', '70'],
                   label: {
                     alignTo: 'labelLine',
                     textStyle:{
@@ -363,16 +298,41 @@
                   },
                   labelLine:{
                       // length: 1,
-                      length2: 1,
+                      // length2: 1,
                   },
-                  minShowLabelAngle:5,
-                  radius: ['30%', '55%'],
-                  itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
+                  minShowLabelAngle:4,
+                  type: 'pie',
+                  data: this.addColor(this.AuthorPapers),
+                }
+              ]
+            }
+            // let pieColors2 = this.getColorList(this.AuthorCitation)
+            let option3={
+              title: {
+                text: '成员被引用次数',
+                x: 'center'
+              },
+              tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>姓名：{b}<br/>被引用量：{c} ({d}%)"
+              },
+              series:[
+                {
+                  name:'成员被引次数',
+                  radius: ['55%', '70'],
+                  label: {
+                    alignTo: 'labelLine',
+                    textStyle:{
+                      color: ''
+                    }
                   },
-                  data:this.addColor(this.AuthorCitation)
+                  labelLine:{
+                      // length: 1,
+                      // length2: 1,
+                  },
+                  minShowLabelAngle:4,
+                  type: 'pie',
+                  data: this.addColor(this.AuthorCitation),
                 }
               ]
             }
@@ -389,7 +349,7 @@
               series: [
                 {
                   name:'论文被引用量',
-                  radius: '55%',
+                  radius: ['55%', '70'],
                   label: {
                     alignTo: 'labelLine',
                     textStyle:{
@@ -400,7 +360,7 @@
                       // length: 1,
                       // length2: 1,
                   },
-                  minShowLabelAngle:5,
+                  minShowLabelAngle:4,
                   type: 'pie',
                   data: this.addColor(this.paperCitation),
                 }
@@ -445,8 +405,8 @@
           handleCurrentChange_author(val) {
             this.currentPage_author = val;
           },
-          test() {
-            ESApi.getInstitutionMsg('01038E08').then(
+          test(id) {
+            ESApi.getInstitutionMsg(id).then(
               res=>{
                 let info = res.data.hits.hits[0]._source
                 console.log('info is ', info)
@@ -455,17 +415,38 @@
                 this.fillAuthorCites(info)
                 this.fillAuthorPubs(info)
                 this.fillAuthors(info)
+                this.fillPapers(info)
+                this.fillAttribute(info)
                 this.buildPie1()
               }
             )
           },
           jump2authors(id){
-            console.log('id is', id)
+            console.log('author id is', id)
+          },
+          jump2papers(id) {
+            console.log('paper id is', id)
           },
           getPic(name, id) {
             //TODO: input id output pic or bool
             let lastname = name.split(' ')
             return lastname[lastname.length-1]
+          },
+          fillAttribute(info){
+            this.members = info.authors.length
+            this.citeTime = info.n_citation
+            this.RG_score = info.n_pubs
+            this.InstitutionName = info.name
+          },
+          fillPapers(info){
+            for (let i=0; i<info.pubs.length; i++) {
+              let item = info.pubs[i]
+              let tmp = {}
+              tmp['id'] =  item.id
+              tmp['title'] = item.title
+              tmp['cites'] = item.n_citation
+              this.papers.push(tmp)
+            }
           },
           fillAuthors(info){
             let row = []
@@ -480,7 +461,7 @@
               tmp['cite'] = item.n_citation
               row.push(tmp)
               j++
-              if (j === 6){
+              if (j === 8){
                 this.authors.push(row)
                 row = []
                 j = 0
@@ -580,9 +561,10 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 .Iname_font {
-  font-family: siyuan;
-  color: #424242;
-  font-size: 20px;
+  background-image:  linear-gradient(#e66465,#9198e5,#A9F5BC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 30px;
   margin-top: 25px;
   margin-left: 20px;
 }
@@ -708,6 +690,7 @@
   font-family: Gadugi;
   font-size: 13px;
   margin-top: 10px;
+  margin-left: 40px;
   width: 120px;
   color: #FFF;
 }
