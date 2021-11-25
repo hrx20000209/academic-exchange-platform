@@ -7,6 +7,13 @@ const ESApi = {
       url: url
     })
     return res
+  },
+  getInstitutionMsg: async (id) => {
+    let url = 'http://119.3.223.135:9200/csaffiliation/_search?q='+id
+    const res = await axios({
+      url: url
+    })
+    return res
   }
 }
 

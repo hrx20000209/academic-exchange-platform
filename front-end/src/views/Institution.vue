@@ -75,13 +75,18 @@
                   <div style="display: flex; flex-direction: column; width: 800px;">
                     <div v-for="(item1, index1) in authors.slice((currentPage_author - 1) * pagesize_author, currentPage_author * pagesize_author)" :key="index1" style="margin-top: 10px">
                       <div style="display: flex; justify-content: space-around">
-                        <el-tooltip  v-for="(item2, index2) in item1" :key="index2" :content="item2.name" placement="top" effect="light">
-                          <div style="display: flex; flex-direction: column;">
-                            <el-avatar>
-                              {{item2.pic}}
-                            </el-avatar>
-                            <div style="font-family: Gabriola; font-size: 16px">
-                              {{item2.name}}
+                        <el-tooltip  v-for="(item2, index2) in item1" :key="index2" placement="top" effect="light">
+                          <div slot="content">姓名：{{item2.name}}<br/>被引次数：{{item2.cite}}<br/>发表文章数：{{item2.pubs}}</div>
+                          <div style="display: flex; flex-direction: column;cursor: pointer" @click="jump2authors(item2.id)">
+                            <div style="display: flex; justify-content: center">
+                              <el-avatar>
+                                {{item2.pic}}
+                              </el-avatar>
+                            </div>
+                            <div style="display: flex; justify-content: center">
+                              <div style="font-family: Gabriola; font-size: 16px">
+                                {{item2.name}}
+                              </div>
                             </div>
                           </div>
                         </el-tooltip>
@@ -162,12 +167,13 @@
         </el-col>
       </el-main>
     </el-container>
+    <el-button @click="test">test</el-button>
   </div>
 </template>
 
 <script>
   const echarts = require('echarts/lib/echarts')
-
+  import ESApi from '../api/elastic search'
     export default {
         name: "Institution",
         data(){
@@ -176,120 +182,9 @@
             members:101293,
             RG_score:52485.99,
             citeTime:12048,
-            AuthorPapers:[
-              {
-              name:'a1',
-              value:'100',
-              },
-              {
-              name:'a2',
-              value:'160'
-              },
-              {
-              name:'a3',
-              value:'123'
-              },
-              {
-              name:'a4',
-              value:'100'
-              },
-              {
-              name:'a5',
-              value:'160'
-              },
-              {
-              name:'a6',
-              value:'123'
-              },
-              {
-              name:'a7',
-              value:'100'
-              },
-              {
-              name:'a8',
-              value:'160'
-              },
-              {
-              name:'a9',
-              value:'123'
-              },
-            ],
-            AuthorCitation:[
-              {
-              name:'a1',
-              value:'100'
-              },
-              {
-              name:'a2',
-              value:'160'
-              },
-              {
-              name:'a3',
-              value:'123'
-              },
-              {
-              name:'a4',
-              value:'100'
-              },
-              {
-              name:'a5',
-              value:'160'
-              },
-              {
-              name:'a6',
-              value:'123'
-              },
-              {
-              name:'a7',
-              value:'100'
-              },
-              {
-              name:'a8',
-              value:'160'
-              },
-              {
-              name:'a9',
-              value:'123'
-              },
-            ],
-            paperCitation:[
-              {
-              name:'a1',
-              value:'100'
-              },
-              {
-              name:'a2',
-              value:'160'
-              },
-              {
-              name:'a3',
-              value:'123'
-              },
-              {
-              name:'a4',
-              value:'100'
-              },
-              {
-              name:'a5',
-              value:'160'
-              },
-              {
-              name:'a6',
-              value:'123'
-              },
-              {
-              name:'a7',
-              value:'100'
-              },
-              {
-              name:'a8',
-              value:'160'
-              },
-              {
-              name:'a9',
-              value:'123'
-              },
-            ],
+            AuthorPapers:[],
+            AuthorCitation:[],
+            paperCitation:[],
             papers:[
               {
                 title:'3D Printing in the Context of Cloud Manufacturing',
@@ -328,248 +223,20 @@
                 cites:1000,
               },
             ],
-            authors:[
-              [
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-              ],
-              [
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-              ],
-              [
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-              ],
-              [
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-                {
-                  'name': 'XiaoMing',
-                  'pic':'Ming',
-                },
-              ],
-            ],
+            authors:[],
             currentPage: 1,
             pagesize: 7,
             currentPage_author: 1,
             pagesize_author: 3,
+            years:[],
+            y_cites:[],
+            y_pub:[],
           }
         },
         mounted() {
-          this.buildPie1()
+          this.test()
+          // console.log('mounted:',this.years)
+          // this.buildPie1()
         },
         methods:{
           buildPie1(){
@@ -579,11 +246,13 @@
             let pie4 = echarts.init(document.getElementById('chart4'))
             const color1 = this.randomColor()
             const color2 = this.randomColor()
+            // console.log(this.y_cites)
+            // console.log(this.y_pub)
             let option1={
               backgroundColor: '#FFF',
               tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}  {c} ({d}%)"
+                formatter: "{a} <br/>{b}年   {c}篇"
               },
               legend:{
                 data:[
@@ -596,7 +265,10 @@
                 ]
               },
               xAxis:{
-                data:[1972,1976,1980,1984,1984,1988,1992,1996,2000,2004,2008,2012,2016]
+                data:this.years,
+                //axisLabel: {
+						    //    interval:3
+					      //},
               },
               yAxis: [
                 {
@@ -622,7 +294,7 @@
                   {
                     name:'Citation',
                     type: 'bar',
-                    data: [23, 24, 18, 25, 27, 28, 25,23, 24, 18, 25, 27, 28, 25],
+                    data: this.y_cites,
                     itemStyle:{
                       color:color1,
                     }
@@ -630,7 +302,7 @@
                   {
                     name:'Publication',
                     type: 'bar',
-                    data: [26, 24, 18, 22, 23, 20, 27,23, 24, 18, 25, 27, 28, 25],
+                    data: this.y_pub,
                     itemStyle:{
                       color:color2,
                     }
@@ -646,16 +318,27 @@
               },
               tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}  {c} ({d}%)"
+                formatter: "{a} <br/>姓名：{b}<br/>文章数量：{c} ({d}%)"
               },
               series: [
                 {
                   name:'成员发表论文量',
+                  radius: '65%',
+                  label: {
+                    alignTo: 'labelLine',
+                    textStyle:{
+                      color: ''
+                    }
+                  },
+                  labelLine:{
+                      length: 5,
+                      length2: 1,
+                  },
+                  minShowLabelAngle:5,
                   type: 'pie',
                   data: this.addColor(this.AuthorPapers),
                   roseType: 'area'
                 }
-
               ]
             }
             // let pieColors2 = this.getColorList(this.AuthorCitation)
@@ -666,13 +349,24 @@
               },
               tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}  {c} ({d}%)"
+                formatter: "{a} <br/>姓名：{b}<br/>被引用量：{c} ({d}%)"
               },
               series:[
                 {
                   name:'成员被引用量',
                   type: 'pie',
-                  radius: ['40%', '70%'],
+                  label: {
+                    alignTo: 'labelLine',
+                    textStyle:{
+                      color: ''
+                    }
+                  },
+                  labelLine:{
+                      // length: 1,
+                      length2: 1,
+                  },
+                  minShowLabelAngle:5,
+                  radius: ['30%', '55%'],
                   itemStyle: {
                     borderRadius: 10,
                     borderColor: '#fff',
@@ -690,11 +384,23 @@
               },
               tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}  {c} ({d}%)"
+                formatter: "{a} <br/>题目：{b}<br/>引用量：{c} ({d}%)"
               },
               series: [
                 {
                   name:'论文被引用量',
+                  radius: '55%',
+                  label: {
+                    alignTo: 'labelLine',
+                    textStyle:{
+                      color: ''
+                    }
+                  },
+                  labelLine:{
+                      // length: 1,
+                      // length2: 1,
+                  },
+                  minShowLabelAngle:5,
                   type: 'pie',
                   data: this.addColor(this.paperCitation),
                 }
@@ -705,6 +411,15 @@
             pie2.setOption(option2)
             pie3.setOption(option3)
             pie4.setOption(option4)
+            pie2.on('click', function(params) {
+              console.log(params.data.id, params.data.name)
+            })
+            pie3.on('click', function(params) {
+              console.log(params.data.id, params.data.name)
+            })
+            pie4.on('click', function(params) {
+              console.log(params.data.id, params.data.name)
+            })
           },
           addColor(list) {
           // console.log(list)
@@ -730,8 +445,125 @@
           handleCurrentChange_author(val) {
             this.currentPage_author = val;
           },
-          test(item) {
-            console.log(item)
+          test() {
+            ESApi.getInstitutionMsg('01038E08').then(
+              res=>{
+                let info = res.data.hits.hits[0]._source
+                console.log('info is ', info)
+                this.fillCites(info)
+                this.fillPaperCites(info)
+                this.fillAuthorCites(info)
+                this.fillAuthorPubs(info)
+                this.fillAuthors(info)
+                this.buildPie1()
+              }
+            )
+          },
+          jump2authors(id){
+            console.log('id is', id)
+          },
+          getPic(name, id) {
+            //TODO: input id output pic or bool
+            let lastname = name.split(' ')
+            return lastname[lastname.length-1]
+          },
+          fillAuthors(info){
+            let row = []
+            let j = 0
+            for (let i=0; i<info.authors.length; i++){
+              let item = info.authors[i]
+              let tmp = {}
+              tmp['name'] = item.name
+              tmp['pic'] = this.getPic(item.name, item.id)
+              tmp['id'] = item.id
+              tmp['pubs'] = item.n_pubs
+              tmp['cite'] = item.n_citation
+              row.push(tmp)
+              j++
+              if (j === 6){
+                this.authors.push(row)
+                row = []
+                j = 0
+              }
+            }
+            if (j !== 0) {
+              this.authors.push(row)
+            }
+          },
+          fillAuthorCites(info){
+            for (let i=0; i<info.authors.length; i++) {
+              let items = info.authors[i]
+              let tmp = {}
+              tmp['name'] = items.name
+              tmp['value'] = items.n_citation
+              tmp['id'] = items.id
+              this.AuthorCitation.push(tmp)
+            }
+          },
+          fillAuthorPubs(info){
+            for (let i=0; i<info.authors.length; i++) {
+              let items = info.authors[i]
+              let tmp = {}
+              tmp['name'] = items.name
+              tmp['value'] = items.n_pubs
+              tmp['id'] = items.id
+              this.AuthorPapers.push(tmp)
+            }
+          },
+          fillPaperCites(info){
+            // console.log('pubs', info.pubs)
+            for (let i=0; i<info.pubs.length; i++) {
+              let items = info.pubs[i]
+              let tmp = {}
+              tmp['name'] = items.title
+              tmp['value'] = items.n_citation
+              tmp['id'] = items.id
+              this.paperCitation.push(tmp)
+            }
+          },
+          fillCites(info){
+            let max=0;
+            let min=9999;
+            let tmp;
+            let cites = {}
+            let pubs = {}
+            // console.log('cites info', info.year_citation)
+            for (let i = 0; i < info.year_citation.length; i++) {
+              let items = info.year_citation[i]
+              tmp = parseInt(items['year'])
+              cites[items['year']]=items['cnt']
+              if (tmp>max)
+                max=tmp
+              if (tmp<min)
+                min=tmp
+            }
+            for (let i = 0; i < info.year_pubs.length; i++) {
+              let items = info.year_pubs[i]
+              tmp = parseInt(items['year'])
+              pubs[items['year']]=items['cnt']
+              if (tmp>max)
+                max=tmp
+              if (tmp<min)
+                min=tmp
+            }
+            //console.log(max, min)
+            for(let i=min, j=0; i<=max; i++, j++) {
+              this.$data.years.push(i)
+              let year = ''+i
+              if (cites.hasOwnProperty(year))
+                this.y_cites[j] = cites[year]
+              else
+                this.y_cites[j] = 0
+
+              if (pubs.hasOwnProperty(year))
+                this.y_pub[j] = pubs[year]
+              else
+                this.y_pub[j] = 0
+            }
+            // console.log(JSON.parse(JSON.stringify(this.years)))
+            // console.log(this.y_cites)
+            // console.log(this.y_pub)
+
           },
           authorClick() {
             console.log('author click!')
