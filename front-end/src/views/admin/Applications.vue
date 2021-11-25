@@ -88,7 +88,7 @@
         </el-table-column>
         <el-table-column
           prop="pub"
-          label="发表文献">
+          label="代表文献">
         </el-table-column>
         <el-table-column
           prop="n_citation"
