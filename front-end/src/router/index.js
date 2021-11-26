@@ -117,6 +117,11 @@ const routes = [
   path: '/wyhTest',
     name: 'wyhRelationshipMapClickEventTest',
     component: ()=> import('../views/wyhRelationshipMapClickEventTest')
+  },
+  {
+    path:'/authorPage',
+    name:"authorPage",
+    component:()=>import('../userPage/authorPage')
   }
 ]
 

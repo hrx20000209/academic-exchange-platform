@@ -29,7 +29,6 @@
     id:AuthorID,
     name:AuthorName,
     n_pubs:文献个数，可计算
-    tags:[] scholarly
     pubs:[
         {
             id:PaperID,

@@ -14,7 +14,22 @@ const ESApi = {
       url: url
     })
     return res
-  }
+  },
+  getAuthorInfo: async (id) => {
+    let url = 'http://119.3.223.135:9200/csauthor/_search?source_content_type=application/json&source={"query":{"bool":{"must":[{"match": {"id":"' + id + '"}}]}}}'
+    const res = await axios({
+      url: url
+    })
+    return res
+  },
+    getInstituteInfo: async (id) => {
+    let url = 'http://119.3.223.135:9200/csaffiliation/_search?source_content_type=application/json&source={"query":{"bool":{"must":[{"match": {"id":"' + id + '"}}]}}}'
+    const res = await axios({
+      url: url
+    })
+    return res
+  },
+
 }
 
 export default ESApi
