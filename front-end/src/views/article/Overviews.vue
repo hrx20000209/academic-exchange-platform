@@ -118,7 +118,6 @@
 
 <script>
 import ESApi from '../../api/elastic search'
-import ESTitle from '../../api/es title'
 import AC from '../article/Article.vue'
 const echarts = require('echarts/lib/echarts')
 export default {
@@ -202,7 +201,7 @@ export default {
     // },
     searchRelated(){
       console.log('related');
-      ESTitle.getTitle(this.$store.state.title).then(response =>{
+      ESApi.getTitle(this.$store.state.title).then(response =>{
         console.log(response.data)
         this.length = response.data.hits.total.value
         // Vue.set(this.relatedArticle, 1, response.data.hits.hits[1].)//给列表对象新增属性

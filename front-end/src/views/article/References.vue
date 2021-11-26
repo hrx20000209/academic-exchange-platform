@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import ESRe from '../../api/es re'
+import ESApi from "../../api/elastic search";
 import AC from '../article/Article.vue'
 export default {
   name: "References",
@@ -124,7 +124,7 @@ export default {
       for(var j = 0; j < this.reference.length;j++){
         console.log('1.1')
         console.log(this.reference[j])
-        ESRe.getRe(this.reference[j]).then(response =>{
+        ESApi.getRe(this.reference[j]).then(response =>{
           console.log(response.data.hits.hits[0])
           console.log(response.data.hits.total.value)
           console.log('1.2')
