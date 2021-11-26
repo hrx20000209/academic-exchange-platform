@@ -1,5 +1,5 @@
 <template>
-  <div id="usrHomePane">
+  <div id="authorPage">
     <nav_with_search-box></nav_with_search-box>
     <div id="topPane">
       <div id="topPicAndAddButton">
@@ -12,7 +12,7 @@
           <div id="usrName">{{ this.user.userName }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.userDegree }}</div>
-            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>
+<!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
@@ -43,8 +43,8 @@
       <div v-if="activeMode ==1" class="mainPane">
         <div id="leftMainPane">
           <div id="editusrInfoPane">
-            <edit-usr-info :user="user"></edit-usr-info>
-            <about-me :user="user"></about-me>
+            <author-card :user="user"></author-card>
+            <about-me_author :user="user"></about-me_author>
             <stats-overview :user="user"></stats-overview>
             <div id="researchLine">
               <div id="researchInfo">研究项目</div>
@@ -55,8 +55,8 @@
         </div>
         <div id="rightMainPane">
           <div v-if="activeMode ==1">
-            <institute-belong-to></institute-belong-to>
-            <follow-same></follow-same>
+            <institute-belong-to_author></institute-belong-to_author>
+            <follow-same-author></follow-same-author>
           </div>
         </div>
       </div>
@@ -116,10 +116,18 @@ import StatsDigitTotal from "../components/statsDigitTotal";
 import CiteAndPublish from "../components/stats/citeAndPublish";
 import AuthorRelationship from "../components/stats/authorRelaitionship";
 import CooperatorPieChart from "../components/stats/cooperatorPieChart";
+import AboutMe_author from "../components/stats/aboutMe_author";
+import AuthorCard from "../components/AuthorCard";
+import InstituteBelongTo_author from "../components/instituteBelongTo_author";
+import FollowSameAuthor from "../components/followSame_author";
 
 export default {
-  name: "userHome",
+  name: "authorPage",
   components: {
+    FollowSameAuthor,
+    InstituteBelongTo_author,
+    AuthorCard,
+    AboutMe_author,
     CooperatorPieChart,
     AuthorRelationship,
     CiteAndPublish,
@@ -237,7 +245,7 @@ export default {
 #topPane {
 }
 
-#usrHomePane {
+#authorPage {
   background-color: whitesmoke;
 }
 

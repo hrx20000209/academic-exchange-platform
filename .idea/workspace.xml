@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/api/elastic search.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/elastic search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/admin/Applications.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/admin/Applications.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/文献数据格式.txt" beforeDir="false" afterPath="$PROJECT_DIR$/文献数据格式.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/stats/authorRelaitionship.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/stats/authorRelaitionship.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/userPage/userHome.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +53,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/front-end/src/views/admin" />
@@ -76,6 +79,7 @@
       <workItem from="1637389141725" duration="1401000" />
       <workItem from="1637539564571" duration="26393000" />
       <workItem from="1637665331747" duration="1909000" />
+      <workItem from="1637891633267" duration="2376000" />
     </task>
     <servers />
   </component>
