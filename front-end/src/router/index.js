@@ -18,15 +18,44 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/UserEntry/Login')
+  },
+  {
+    path: '/loginAdmin',
+    name: 'LoginAdmin',
+    component: () => import('../views/admin/LoginAdmin')
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/admin/Admin'),
+    children: [
+      {
+        path: 'adminHome',
+        name: 'AdminHome',
+        component: () => import('../views/admin/AdminHome')
+      },
+      {
+        path: 'applications',
+        name: 'Applications',
+        component: () => import('../views/admin/Applications')
+      }
+    ]
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/UserEntry/Register')
   },
   {
     path: '/questions',
     name: 'Questions',
-    component: () => import('@/views/QuestionsList')
+    component: () => import('../views/QuestionsList')
   },
   {
     path: '/search',
@@ -73,6 +102,21 @@ const routes = [
     path:'/userHome',
     name: 'userHome',
     component: () => import('../userPage/userHome')
+  },
+  {
+    path:'/Institution',
+    name: 'Institution',
+    component: () => import('../views/Institution')
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: ()=> import('../views/Home')
+  },
+  {
+  path: '/wyhTest',
+    name: 'wyhRelationshipMapClickEventTest',
+    component: ()=> import('../views/wyhRelationshipMapClickEventTest')
   }
 ]
 
