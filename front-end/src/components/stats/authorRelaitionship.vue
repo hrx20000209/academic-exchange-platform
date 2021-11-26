@@ -20,8 +20,8 @@ export default {
         draggable: true,
         category: 0,
         symbolSize: 50,
-        label: {
-          show: true
+        label:{
+          show:true
         }
       },
         {
@@ -115,8 +115,8 @@ export default {
 
         }, {
           source: '另一篇论文',
-          target: '黄润希',
-        }
+    target:'黄润希',
+  }
       ]
     }
   },
@@ -132,14 +132,13 @@ export default {
         animationEasingUpdate: 'quinticInOut',
         series: [
           {
-            symbolSize: 10,
+            symbolSize:10,
             type: 'graph',
             layout: 'force',
             force: {
               repulsion: 1000,
               edgeLength: 100
             },
-            animationDuration: 2800,
             focusNodeAdjacency: true,
             roam: true,
             label: {
@@ -149,8 +148,8 @@ export default {
             links: this.linkmes,
             lineStyle: {
               color: "source",
-              width: 1,
-              curveness: 0.3
+                width: 1,
+                curveness: 0.3
             },
             categories: [
               {name: '0'},
@@ -159,13 +158,13 @@ export default {
             ],
             itemStyle: {
               borderColor: 'black',
-              borderWidth: 1,
-              shadowBlur: 10,
-              shadowColor: 'rgba(1,1,1,0.5)',
+                borderWidth: 1,
+                shadowBlur: 10,
+                shadowColor: 'rgba(1,1,1,0.5)',
               color: 'rgb(37,86,165)'
             },
             emphasis: {
-              lineStyle: {
+              lineStyle:{
                 width: 10,
               }
             }
