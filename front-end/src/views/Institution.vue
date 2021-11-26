@@ -83,8 +83,8 @@
                                 {{item2.pic}}
                               </el-avatar>
                             </div>
-                            <div style="display: flex; justify-content: center; flex-wrap:wrap">
-                              <div style="font-family: Gabriola; font-size: 16px">
+                            <div style="display: flex; justify-content: center; flex-wrap:wrap;width: 100px">
+                              <div style="font-family: Gabriola; font-size: 16px;">
                                 {{item2.name}}
                               </div>
                             </div>
@@ -426,7 +426,12 @@
           },
           jump2authors(id){
             console.log('author id is', id)
-            this.$router.push({path: `/userHome/${id}`,})
+            this.$router.push({
+              path: '/authorPage',
+              query: {
+                id: id
+              }
+            })
           },
           jump2papers(id) {
             console.log('paper id is', id)
@@ -465,7 +470,7 @@
               tmp['cite'] = item.n_citation
               row.push(tmp)
               j++
-              if (j === 8){
+              if (j === 6){
                 this.authors.push(row)
                 row = []
                 j = 0
