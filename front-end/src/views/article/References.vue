@@ -7,118 +7,85 @@
           <!--          <div style="height: 15px"></div>-->
           <div class="upFrameContent">参考文献</div>
         </div>
-        <div class="downFrame">
-          <div class="downFrameContent">
-            <div class="notAbstract">
-              <div style="height:30px"></div>
-              <div style="text-align:center">
-                <img src="@/assets/无参考文献.png">
-              </div>
-              <div style="text-align:center">
-                无参考文献
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="downFrame" v-for="(item) in references" :key="item">
-          <div class="downFrameContent">
-            <div style="margin-bottom: 10px;font-size: 18px">
-              {{item.title}}
-            </div>
-            <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
-              <a class="articleType">Article</a>
-              {{item.year}}
-            </div>
-            <div style="margin-bottom: 10px;font-size: 16.5px">
-              Michèle FinckFrank Pallas
-            </div>
-            <!-- <div style="margin-bottom: 10px;font-size: 16px">
-              In this article, we examine the concept of non-personal data from a law
-              and computer science perspective. The delineation between personal data
-              and non-personal data is of paramount importance to determine the GDPR’s
-              scope of application. This exercise is, however, fraught with difficulty,
-              also when it comes to depersonalized data—that is to say data that once
-              was… Read more
-            </div> -->
-            <div style="color: darkgray;font-size: 15px;margin-bottom: 10px">49 Reads·26 Citations</div>
-            <div style="height: 30px">
-              <div style="float: left">
-                <el-button plain>访问全文</el-button>
-              </div>
-              <div style="float: right;margin-top: 12px;text-align: right">
-                Recommend&emsp;&emsp;
-                Follow&emsp;&emsp;
-                Share
+        <div v-if="this.references.length === 0">
+          <div class="downFrame">
+            <div class="downFrameContent">
+              <div class="notAbstract">
+                <div style="height:30px"></div>
+                <div style="text-align:center">
+                  <img src="@/assets/无参考文献.png">
+                </div>
+                <div style="text-align:center">
+                  无参考文献
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="downFrame">
-          <div class="downFrameContent">
-            <div style="margin-bottom: 10px;font-size: 18px">
-              They Who Must Not Be Identified - Distinguishing Personal from Non-Personal Data Under the GDPR
-            </div>
-            <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
-              <a class="articleType">Article</a>February 2020·SSRN Electronic Journal
-            </div>
-            <div style="margin-bottom: 10px;font-size: 16.5px">
-              Michèle FinckFrank Pallas
-            </div>
-            <div style="margin-bottom: 10px;font-size: 16px">
-              In this article, we examine the concept of non-personal data from a law
-              and computer science perspective. The delineation between personal data
-              and non-personal data is of paramount importance to determine the GDPR’s
-              scope of application. This exercise is, however, fraught with difficulty,
-              also when it comes to depersonalized data—that is to say data that once
-              was… Read more
-            </div>
-            <div style="color: darkgray;font-size: 15px;margin-bottom: 10px">49 Reads·26 Citations</div>
-            <div style="height: 30px">
-              <div style="float: left">
-                <el-button plain>访问全文</el-button>
+        <div v-else>
+          <div class="downFrame" v-for="(item,index) in references" :key="item">
+            <div class="downFrameContent">
+              <div style="margin-bottom: 10px;font-size: 18px">
+                {{item.title}}
               </div>
-              <div style="float: right;margin-top: 12px;text-align: right">
-                Recommend&emsp;&emsp;
-                Follow&emsp;&emsp;
-                Share
+              <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
+                <a class="articleType" style="color:black;">Article</a>
+                {{item.year}}
+              </div>
+              <div style="margin-bottom: 10px;font-size: 16.5px;overflow: hidden">
+                <div class="author" v-for="(item2) in references[index].authors" :key="item2">{{item2.name}}</div>
+              </div>
+              <div style="color: darkgray;font-size: 15px;margin-bottom: 10px">{{item.n_citation}} Citations</div>
+              <div style="height: 30px">
+                <div style="float: left">
+                  <el-button plain v-if="item.url === undefined" disabled>访问全文</el-button>
+                  <el-button plain v-else>访问全文</el-button>
+                </div>
+                <div style="float: right;margin-top: 12px;text-align: right">
+                  Recommend&emsp;&emsp;
+                  Follow&emsp;&emsp;
+                  Share
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+
       </div>
 
-      <div class="rightFrame">
-        <div class="upFrame">
-          <!--          <div style="height: 15px"></div>-->
-          <div class="upFrameContent">Top referenced researchers</div>
-        </div>
-        <div class="downFrame">
-          <div class="downFrameContent">
-            <div style="font-size: 18px;margin-bottom: 5px">作者名</div>
-            <div style="margin-bottom: 5px">
-              领域<br>
-              bbb<br>
-              bbb<br>
-              bbb<br>
-            </div>
-            <div style="margin-bottom: 10px">
-              介绍<br>
-              bbb<br>
-              bbb<br>
-            </div>
-            <div>
-              <el-button plain>去查看</el-button> &emsp;
-            </div>
-          </div>
-        </div>
-      </div>
+<!--      <div class="rightFrame">-->
+<!--        <div class="upFrame">-->
+<!--          &lt;!&ndash;          <div style="height: 15px"></div>&ndash;&gt;-->
+<!--          <div class="upFrameContent">Top referenced researchers</div>-->
+<!--        </div>-->
+<!--        <div class="downFrame">-->
+<!--          <div class="downFrameContent">-->
+<!--            <div style="font-size: 18px;margin-bottom: 5px">作者名</div>-->
+<!--            <div style="margin-bottom: 5px">-->
+<!--              领域<br>-->
+<!--              bbb<br>-->
+<!--              bbb<br>-->
+<!--              bbb<br>-->
+<!--            </div>-->
+<!--            <div style="margin-bottom: 10px">-->
+<!--              介绍<br>-->
+<!--              bbb<br>-->
+<!--              bbb<br>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <el-button plain>去查看</el-button> &emsp;-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <div style="height: 20px"></div>
   </div>
 </template>
 
 <script>
-import ESApi from '../../api/elastic search'
+import ESRe from '../../api/es re'
 import AC from '../article/Article.vue'
 export default {
   name: "References",
@@ -126,7 +93,7 @@ export default {
     return{
       index:'',
       key:'',
-      reference:['808411C2','051EDB3F'],
+      // reference:['808411C2','051EDB3F'],
       // references:[
       //   {
       //     title:'23',
@@ -138,6 +105,8 @@ export default {
       //   }
       // ],
       references:[],
+      references_year:[],
+      reference:[],
       length:''
     }
   },
@@ -147,18 +116,41 @@ export default {
   },
   methods:{
     bianli(){
-      for(var i = 0; i < this.reference.length;i++){
-        ESApi.getMsg(this.reference[i]).then(response =>{
-          this.length = response.data.hits.total.value
-          console.log('asadqw')
-          for(var j = 0; j < this.length; j++){
-            let article = response.data.hits.hits[j]
-            this.references.push(article._source)
-            console.log(this.references[i])
-          }
+      for(var i = 0; i < this.$store.state.references.length;i++) {
+        // console.log(this.$store.state.references[i])
+        this.reference.push(this.$store.state.references[i])
+      }
+      console.log(this.reference)
+      for(var j = 0; j < this.reference.length;j++){
+        console.log('1.1')
+        console.log(this.reference[j])
+        ESRe.getRe(this.reference[j]).then(response =>{
+          console.log(response.data.hits.hits[0])
+          console.log(response.data.hits.total.value)
+          console.log('1.2')
+          let article = response.data.hits.hits[0]
+          this.references.push(article._source)
+          console.log(this.references)
+          console.log(this.references.length)
+          // for(var k = 0; k < response.data.hits.total.value;k++){
+          //   console.log('1.3')
+          //   console.log(response.data.hits.hits[k])
+          //   if(response.data.hits.hits[k]._source.id.trim() === (this.reference[j]+'').trim()){
+          //     console.log('1.4')
+          //     this.length = response.data.hits.total.value
+          //     console.log('asadqw')
+          //     console.log(this.length)
+          //     let article = response.data.hits.hits[0]
+          //     console.log(article)
+          //     console.log(article._source.title)
+          //     this.references_title.push(article._source.title)
+          //     console.log(this.references_title[j])
+          //     // this.ryear = article._source.year
+          //   }
+          // }
+
         })
       }
-      console.log(this.references)
     },
     // searchRe() {
     //   console.log('111')
@@ -180,6 +172,13 @@ export default {
 </script>
 
 <style scoped>
+.author{
+  text-align: center;
+  padding: 2px;
+  border: #00a39e solid 1px;
+  float: left;
+  margin-right: 3px;
+}
 .articleType{
   width: 60px;
   background: lightblue;

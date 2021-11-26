@@ -3,20 +3,30 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import myHeader from './components/myHeader'
+import myCloud from './components/keywordsCloud'
+import './styles/font.css'
+import * as echarts from 'echarts'
 import axios from 'axios'
+import VueAxios from "vue-axios"
+import store from './store'
+
+
+Vue.component('mycloud', myCloud)
+Vue.component('myHeader', myHeader)
+
 Vue.prototype.$http = axios
-
-import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios)
-Vue.use(ElementUI);
-
+Vue.use(ElementUI)
+Vue.use(echarts)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

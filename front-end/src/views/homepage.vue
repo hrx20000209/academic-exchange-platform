@@ -7,7 +7,7 @@
             <el-main class="MainArea">
                 <el-col>
                 <el-collapse accordion style="margin-top: 15px">
-                    <el-collapse-item>
+                    <el-collapse-item class="myCollapse">
                         <template slot="title">
                             <div @click.stop="">
                                 <el-col :offset=2 style="margin-bottom: 5px"  @click.stop="">
@@ -74,7 +74,7 @@ Join us in working towards a sustainable future with our editorially independent
                             <el-row>
                                 <el-col>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 370px">
+                                        <el-col :span=2 style="margin-left: 350px">
                                             <div class="engine" id="engine" @click="jump2engine">工学</div>
                                         </el-col>
                                     </el-row>
@@ -82,13 +82,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
                                             <mycloud :data="k_engine"></mycloud>
                                         </el-col>
-                                        <el-col :span=8 :offset=1>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
                                             <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
                                             <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
@@ -97,7 +97,7 @@ Join us in working towards a sustainable future with our editorially independent
                                     </el-row>
                                     <el-divider></el-divider>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 370px">
+                                        <el-col :span=2 style="margin-left: 350px">
                                             <div class="maths" id="maths" @click="jump2engine">理学</div>
                                         </el-col>
                                     </el-row>
@@ -105,13 +105,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
                                             <mycloud :data="k_science"></mycloud>
                                         </el-col>
-                                        <el-col :span=8 :offset=1>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
                                             <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
                                             <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
@@ -120,7 +120,7 @@ Join us in working towards a sustainable future with our editorially independent
                                     </el-row>
                                     <el-divider></el-divider>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 390px">
+                                        <el-col :span=2 style="margin-left: 365px">
                                             <div class="science" id="science" @click="jump2engine">自然科学</div>
                                         </el-col>
                                     </el-row>
@@ -128,13 +128,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
                                             <mycloud :data="k_maths"></mycloud>
                                         </el-col>
-                                        <el-col :span=8 :offset=1>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
                                             <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
                                             <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
@@ -143,7 +143,7 @@ Join us in working towards a sustainable future with our editorially independent
                                     </el-row>
                                     <el-divider></el-divider>
                                     <el-row>
-                                        <el-col :span=2 style="margin-left: 380px">
+                                        <el-col :span=2 style="margin-left: 350px">
                                             <div class="social" id="social" @click="jump2engine">社会学</div>
                                         </el-col>
                                     </el-row>
@@ -151,13 +151,13 @@ Join us in working towards a sustainable future with our editorially independent
                                         <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
                                             <mycloud></mycloud>
                                         </el-col>
-                                        <el-col :span=8 :offset=1>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最热文章</div>
                                             <el-link v-for="(item, index) in this.engine_popular" :key="index">
                                                 {{item}}
                                             </el-link>
                                         </el-col>
-                                        <el-col :span=8 :offset=0>
+                                        <el-col :span=7 :offset=1>
                                             <div style="margin-bottom: 10px; text-align: left">最新文章</div>
                                             <el-link v-for="(item, index) in this.engine_latest" :key="index">
                                                 {{item}}
@@ -214,8 +214,8 @@ Join us in working towards a sustainable future with our editorially independent
                 k_maths:['数论','代数学','几何学','拓扑学','固体理学','流体理学'],
                 translateX: 0,
                 navSlidingWidth:0,
-                engine_latest:['新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨'],
-                engine_popular:['新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理工作模式探讨']
+                engine_latest:['新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨'],
+                engine_popular:['新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨']
             }
         },
         mounted() {
@@ -287,14 +287,14 @@ Join us in working towards a sustainable future with our editorially independent
     width: 100%;
     min-height: 1000px;
 }
-/deep/.el-collapse-item__header {
+.myCollapse /deep/ .el-collapse-item__header {
     background-color: #F2F2F2;
     width: 103%;
     margin-top: -25px;
     margin-left: -20px;
     height: 130px;
 }
-/deep/ .el-collapse-item__content{
+.myCollapse /deep/ .el-collapse-item__content{
     background-color: #F2F2F2;
     min-height: 600px;
     margin-left: -20px;
