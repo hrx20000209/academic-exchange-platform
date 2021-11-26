@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/api/elastic search.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/elastic search.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/userPage/authorPage.vue" afterDir="false" />
     </list>
