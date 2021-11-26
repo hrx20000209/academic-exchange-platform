@@ -62,7 +62,6 @@
 import axios from "axios"
 import ESApi from '../../api/elastic search'
 import Nav_with_searchBox from "../../components/nav_with_searchBox";
-import ESTitle from "../../api/es title";
 export default {
   name: "Article",
   data(){
