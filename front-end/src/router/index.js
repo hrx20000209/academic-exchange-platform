@@ -104,7 +104,7 @@ const routes = [
     component: () => import('../userPage/userHome')
   },
   {
-    path:'/Institution',
+    path:'/Institution/:id',
     name: 'Institution',
     component: () => import('../views/Institution')
   },
