@@ -51,7 +51,7 @@
 import E from 'wangeditor'
 import comment from '@/components/Comment'
 export default {
-  name: "Comment",
+  name: "CommentList",
   components: { comment },
   mounted() {
     const editor = new E('#div1')

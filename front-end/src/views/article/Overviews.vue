@@ -4,12 +4,26 @@
     <div style="height: 100%;width: 100%;overflow: hidden">
       <div style="float: left" class="bigFrame">
         <div class="upFrame">
-          <!--          <div style="height: 15px"></div>-->
           <div class="upFrameContent">摘要</div>
         </div>
         <div class="downFrame">
           <div class="downFrameContent">
-            The primary scope of application of the General Data Protection Regulation—Regulation (UE) 2016/679 (GDPR)—is ‘personal data’; ‘data’ that is not personal data can be freely processed within the legal framework of the Regulation (UE) 2018/1807. Although the European data protection framework recognises these two categories of data—‘personal data’ and ‘non-personal data’—reality reveals ‘a lot in between’ the opposite endpoints. There are accordingly considerable complications in drawing the boundaries between personal and non-personal data. In this article, we will review some of the main issues related to the usual classification of data as personal, anonymous, pseudonymous, de-identified data, and suggest that the most realistic way to approach the different problems is to recognise the dynamic nature of the data.
+            <div v-if="this.flag === 0">
+              <div class="notAbstract">
+                <div style="height:30px"></div>
+                <div style="text-align:center">
+                  <img src="@/assets/无摘要.png">
+                </div>
+                <div style="text-align:center">
+                  无摘要
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              333
+              {{this.abstract}}
+            </div>
+            
           </div>
         </div>
       </div>
@@ -77,8 +91,47 @@
 </template>
 
 <script>
+import ESApi from '../../api/elastic search'
 export default {
-  name: "Overviews"
+  name: "Overviews",
+  data(){
+    return{
+        id: "",
+        title: "",
+        authors: [],
+        abstract: "",
+        year: "",
+        reference:[],
+        venue: {},
+        url: "",
+        citation_by_year:{},
+        flag: 1
+    }
+  },
+  mounted() {
+    this.searchAb();
+    console.log('333')
+  },
+  methods: {
+    searchAb() {
+      console.log('111')
+      ESApi.getMsg('808411C2').then(response =>{
+        console.log(response.data)
+        this.length = response.data.hits.total.value
+        console.log(this.length)
+        for(var i = 0; i < this.length; i++){
+          let article = response.data.hits.hits[i]
+          console.log(this.abstract)
+          if(article._source.abstract === undefined){
+            this.flag = 0
+            console.log('flag')
+          }else{
+            this.abstract = article._source.abstract
+          }
+        }
+      })
+    },
+  }
 }
 </script>
 
@@ -178,5 +231,10 @@ export default {
 .rightPartContent{
   font-size: 13px;
   margin-bottom: 2px;
+}
+.notAbstract{
+  width: 100%;
+  height: 200px;
+  border: lightgray solid 1px;
 }
 </style>

@@ -54,7 +54,7 @@
 
 <script>
 export default {
-  name: "statsOverview",
+  name: "statsDigitTotal",
   props: ['user']
 }
 </script>
@@ -65,13 +65,14 @@ export default {
   border: 1px solid #dedede;
   border-radius: 2px;
   margin-top: 10px;
-  width: auto;
+  height: fit-content;
 }
 
 #leftCharacter {
-  width: 250px;
+  width: 400px;
   padding: 10px;
   font-family: "Microsoft YaHe";
+  margin-left: 20px;
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 1px;
@@ -80,9 +81,10 @@ export default {
 
 #rightButton {
   display: flex;
-  width: 250px;
+  width: 375px;
   justify-content: flex-end;
   margin-top: 10px;
+  padding-right: 20px;
   color: #8e8e8e;
   font-family: "Microsoft YaHe";
   font-size: 14px;
@@ -117,6 +119,7 @@ export default {
 #mainPane {
   border-top: 1px solid #dedede;
   padding: 10px 20px 15px 20px;
+  display: flex;
 }
 .twoNumber{
   display: flex;
@@ -136,7 +139,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   color: #52bbb5;
-  width: 100px;
+  width: 50px;
   font-size: 20px;
 }
 .Number{

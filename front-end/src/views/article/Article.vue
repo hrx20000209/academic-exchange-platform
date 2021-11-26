@@ -12,49 +12,55 @@
           <div class="whiteContent">
             <div class="leftPart">
               <div class="articleType">Article</div>
-              <div class="articleTitle">Big Data, Data Ownership and Data Economy</div>
-              <div class="articleDate">September 2021</div>
+              <div class="articleTitle">{{this.title}}</div>
+              <div class="articleDate">{{this.year}}</div>
               <div class="articleDOI">DOI: 10.52554/kjcl.2021.96.3</div>
               <div style="height: 20px"></div>
-              <div class="articleActhor">SooJeong Kim</div>
-            </div>
-            <div class="rightPart" style="overflow:hidden;">
-              <div class="rightPartContent">
-                Research Interest  <span>—————————————</span>  0.3
-              </div>
-              <div class="rightPartContent">
-                Citations  <span>—————————————————</span>  0.3
-              </div>
-              <div class="rightPartContent">
-                Recommendations <span>————————————</span>0.3
-              </div>
-              <div class="rightPartContent">
-                Reads  <span>——————————————————</span>  0.3
-              </div>
-              <div class="rightPartContent">
-                <div>Saved to your list
-                </div>
-              </div>
-              <div>
-                <div style="float: right;font-size: 14px;color:grey;">
-                  更多细节
-                </div>
-
+<!--              作者这里 应该是需要改点什么-->
+              <div class="articleActhor">
+                {{this.author}}
               </div>
             </div>
+<!--        这里大概率不需要    -->
+<!--            <div class="rightPart" style="overflow:hidden;">-->
+<!--              <div class="rightPartContent">-->
+<!--                Research Interest  <span>—————————————</span>  0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                Citations  <span>—————————————————</span>  0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                Recommendations <span>————————————</span>0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                Reads  <span>——————————————————</span>  0.3-->
+<!--              </div>-->
+<!--              <div class="rightPartContent">-->
+<!--                <div>Saved to your list-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <div style="float: right;font-size: 14px;color:grey;">-->
+<!--                  更多细节-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
           <!--      分界线-->
           <div class="dividingLine"></div>
           <!--      导航栏-->
           <div>
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
+            <el-menu class="el-menu-demo" mode="horizontal" router>
               <el-menu-item index="/article/overviews">Overviews</el-menu-item>
               <el-menu-item index="/article/stats">Stats</el-menu-item>
               <el-menu-item index="/article/comments">Comments</el-menu-item>
-              <el-menu-item index="/article/citations">Citations</el-menu-item>
+<!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <el-menu-item index="/article/references">References</el-menu-item>
-              <el-menu-item index="6" @click="gotoReferences"><el-button type="primary">下载全文</el-button></el-menu-item>
-              <el-menu-item index="7" @click="gotoReferences">分享文献</el-menu-item>
+              <el-menu-item>
+                <el-button type="primary" v-if="flag !== 0">下载全文</el-button>
+                <el-button type="primary"  disabled v-else>下载全文</el-button>
+              </el-menu-item>
+              <el-menu-item index="7">分享文献</el-menu-item>
             </el-menu>
           </div>
         </div>
@@ -69,28 +75,70 @@
 </template>
 
 <script>
+import axios from "axios"
+import ESApi from '../../api/elastic search'
 export default {
   name: "Article",
   data(){
     return{
-      flag: 0
+      flag: 1,
+      
+        id: "",
+        title: "",
+        authors: [],
+        author:'',
+        abstract: "",
+        year: "",
+        reference:[],
+        venue: {},
+        url: "",
+        citation_by_year:{},
+      
+      length:'',
     }
   },
-  methods:{
-    gotoOverviews(){
-      this.flag = 1
+  mounted() {
+    this.search();
+    console.log('333')
+  },
+  methods: {
+    search() {
+      console.log('111')
+      ESApi.getMsg('808411C2').then(response =>{
+        console.log(response.data)
+        this.length = response.data.hits.total.value
+        console.log(this.length)
+        for(var i = 0; i < this.length; i++){
+          let article = response.data.hits.hits[i]
+          this.title = article._source.title
+          console.log(this.title)
+          this.year = article._source.year
+          if(article._source.url === undefined){
+            this.flag = 0
+            console.log('aaaa')
+          }else{
+            this.url = article._source.url
+          }
+          for(var j = 0; j < article._source.authors.length-1;j++){
+            this.authors[j] = article._source.authors[j]
+            console.log(this.authors[j])
+            this.author += this.authors[j].name
+            this.author += ' 、'
+          }
+          this.authors[j] = article._source.authors[j]
+            console.log(this.authors[j])
+            this.author += this.authors[j].name
+          console.log(this.author)
+        }
+      })
     },
-    gotoStats(){
-      this.flag = 2
-    },
-    gotoComments(){
-      this.flag = 3
-    },
-    gotoCitations(){
-      this.flag = 4
-    },
-    gotoReferences(){
-      this.flag = 5
+    gotoTotalContent(){
+      if(this.flag === 0){
+        console.log('错误')
+      }
+      else{
+        console.log('成功')
+      }
     }
   }
 }
