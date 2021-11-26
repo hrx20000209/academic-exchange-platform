@@ -107,6 +107,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.user)
     this.prepareDate(this.user.orgs[0].id)
   }
 }

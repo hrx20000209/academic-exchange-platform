@@ -150,14 +150,14 @@ export default {
       ELres: [],
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {
-        name: '谭火彬',
-        userDegree: '计算机科学与技术 博士学位',
-        ability: 'css,UML,html,Java,python',
-        inti: '北京航空航天大学(BUAA)',
-        language: 'Python,Java',
-        Intro: '计算机视觉 神经网络',
-        area: '软件工程',
-        tech: 'java编程 SQL C++'
+        // name: '谭火彬',
+        // userDegree: '计算机科学与技术 博士学位',
+        // ability: 'css,UML,html,Java,python',
+        // inti: '北京航空航天大学(BUAA)',
+        // language: 'Python,Java',
+        // Intro: '计算机视觉 神经网络',
+        // area: '软件工程',
+        // tech: 'java编程 SQL C++'
       },
       dialogFormVisible: false,
       form: {
@@ -220,12 +220,13 @@ export default {
     }
   },
   mounted() {
+    this.id=this.$route.query.id
     this.getAuthorInfo(this.id)
   },
   methods: {
     getAuthorInfo(id){
       ESApi.getAuthorInfo(id).then(response=>{
-        console.log(response);
+        // console.log(response);
       this.ELres = response.data.hits.hits[0]._source;
       this.user = this.ELres;
       this.research = this.ELres.pubs;
