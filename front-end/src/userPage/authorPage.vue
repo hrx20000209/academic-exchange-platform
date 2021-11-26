@@ -9,10 +9,10 @@
           </div>
         </div>
         <div id="middleDetail">
-          <div id="usrName">{{ this.user.userName }}</div>
+          <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.userDegree }}</div>
-<!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
+            <!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
@@ -26,16 +26,16 @@
           <div class="usrTabsUnchosen" v-else @click="selectActiveMode(1)">概述</div>
           <div class="usrTabsChosen" v-if="activeMode ==2">研究</div>
           <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
-<!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
+          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
           <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>
           <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>
-<!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
-<!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
-<!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
+          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
+          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
+          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@
         </div>
         <div id="rightMainPane">
           <div v-if="activeMode ==1">
-            <institute-belong-to_author></institute-belong-to_author>
+            <institute-belong-to_author :user="user"></institute-belong-to_author>
             <follow-same-author></follow-same-author>
           </div>
         </div>
@@ -63,14 +63,15 @@
       <div v-else-if="activeMode == 2" class="mainPane">
         <div id="researchPane">
           <div id="researchItem">
-            <research-detail-item v-for="(item, index) in research" :key = 'index' :research = 'item'></research-detail-item>
+            <research-detail-item v-for="(item, index) in research" :key='index'
+                                  :research='item'></research-detail-item>
           </div>
         </div>
       </div>
       <div v-else-if="activeMode == 4" class="mainPane">
         <div id="statsMainPane">
           <stats-digit-total :user="user"></stats-digit-total>
-          <cite-and-publish></cite-and-publish>
+          <cite-and-publish :user="user"></cite-and-publish>
           <author-relationship></author-relationship>
           <cooperator-pie-chart></cooperator-pie-chart>
         </div>
@@ -120,6 +121,8 @@ import AboutMe_author from "../components/stats/aboutMe_author";
 import AuthorCard from "../components/AuthorCard";
 import InstituteBelongTo_author from "../components/instituteBelongTo_author";
 import FollowSameAuthor from "../components/followSame_author";
+import axios from "axios";
+import ESApi from "../api/elastic search"
 
 export default {
   name: "authorPage",
@@ -143,9 +146,11 @@ export default {
   },
   data() {
     return {
+      id: "7F5944CA",
+      ELres: [],
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {
-        userName: '谭火彬',
+        name: '谭火彬',
         userDegree: '计算机科学与技术 博士学位',
         ability: 'css,UML,html,Java,python',
         inti: '北京航空航天大学(BUAA)',
@@ -167,56 +172,65 @@ export default {
       },
       formLabelWidth: '100px',
       activeMode: 1,
-      research:[
-        {
-          title: '数据挖掘中的聚类算法综述',
-          type:'会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name:'whdwywd'},
-            {name:'whdjwdjw'}
-          ],
-          hasFull:false,
-          abstract:'聚类分析是数据挖掘中重要的研究内容之一,对聚类准则进行了总结,对五类传统的聚类算法的研究现状和进展进行了较为全面的总结,就一些新的聚类算法进行了梳理,根据样本归属关系、样本数据预处理、样本的相似性度量、样本的更新策略、样本的高维性和与其他学科的融合等六个方面对聚类中近20多个新算法,如粒度聚类、不确定聚类、量子聚类、核聚类、谱聚类、聚类集成、概念聚类、球壳聚类、仿射聚类、数据流聚类等,分别进行了详细的概括。这对聚类是一个很好的总结,对聚类的发展具有积极意义。 '
-        },{
-          title: '数据挖掘中的分类算法综述',
-          type:'会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name:'whdwywd'},
-            {name:'whdjwdjw'}
-          ],
-          hasFull:true,
-          abstract:'分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        },
-        {
-          title: '数据挖掘中的分类算法综述',
-          type:'会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name:'whdwywd'},
-            {name:'whdjwdjw'}
-          ],
-          hasFull:true,
-          abstract:'分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        },
-        {
-          title: '数据挖掘中的分类算法综述',
-          type:'会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name:'whdwywd'},
-            {name:'whdjwdjw'}
-          ],
-          hasFull:true,
-          abstract:'分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        }
+      research: [
+        // {
+        //   title: '数据挖掘中的聚类算法综述',
+        //   type: '会议文献',
+        //   publishDate: 'Oct 2021',
+        //   Author: [
+        //     {name: 'whdwywd'},
+        //     {name: 'whdjwdjw'}
+        //   ],
+        //   hasFull: false,
+        //   abstract: '聚类分析是数据挖掘中重要的研究内容之一,对聚类准则进行了总结,对五类传统的聚类算法的研究现状和进展进行了较为全面的总结,就一些新的聚类算法进行了梳理,根据样本归属关系、样本数据预处理、样本的相似性度量、样本的更新策略、样本的高维性和与其他学科的融合等六个方面对聚类中近20多个新算法,如粒度聚类、不确定聚类、量子聚类、核聚类、谱聚类、聚类集成、概念聚类、球壳聚类、仿射聚类、数据流聚类等,分别进行了详细的概括。这对聚类是一个很好的总结,对聚类的发展具有积极意义。 '
+        // }, {
+        //   title: '数据挖掘中的分类算法综述',
+        //   type: '会议文献',
+        //   publishDate: 'Oct 2021',
+        //   Author: [
+        //     {name: 'whdwywd'},
+        //     {name: 'whdjwdjw'}
+        //   ],
+        //   hasFull: true,
+        //   abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
+        // },
+        // {
+        //   title: '数据挖掘中的分类算法综述',
+        //   type: '会议文献',
+        //   publishDate: 'Oct 2021',
+        //   Author: [
+        //     {name: 'whdwywd'},
+        //     {name: 'whdjwdjw'}
+        //   ],
+        //   hasFull: true,
+        //   abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
+        // },
+        // {
+        //   title: '数据挖掘中的分类算法综述',
+        //   type: '会议文献',
+        //   publishDate: 'Oct 2021',
+        //   Author: [
+        //     {name: 'whdwywd'},
+        //     {name: 'whdjwdjw'}
+        //   ],
+        //   hasFull: true,
+        //   abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
+        // }
       ]
     }
   },
   mounted() {
+    this.getAuthorInfo(this.id)
   },
   methods: {
+    getAuthorInfo(id){
+      ESApi.getAuthorInfo(id).then(response=>{
+        console.log(response);
+      this.ELres = response.data.hits.hits[0]._source;
+      this.user = this.ELres;
+      this.research = this.ELres.pubs;
+    })
+    },
     editSympleInfo() {
       this.dialogFormVisible = true
     },
@@ -325,7 +339,7 @@ export default {
   font-size: 20px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  letter-spacing: 5px;
+  letter-spacing: 2px;
   color: #343434;
 }
 
@@ -522,7 +536,8 @@ export default {
   margin-top: 15px;
   border-radius: 1px;
 }
-#statsMainPane{
+
+#statsMainPane {
   display: block;
 }
 </style>

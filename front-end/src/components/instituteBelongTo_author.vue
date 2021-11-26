@@ -9,7 +9,7 @@
     </div>
     <div id="mainPane">
       <div id="leftDescription">
-        <div id="insName">北京航空航天大学(BUAA)</div>
+        <div id="insName">{{ this.institute.name }}</div>
         <div class="desInfo">地点</div>
         <div class="desDetail">中国北京</div>
         <div class="desInfo">部门</div>
@@ -78,11 +78,14 @@
 </template>
 
 <script>
+import ESApi from "../api/elastic search"
 export default {
   name: "instituteBelongTo_author",
+  props:["user"],
   data() {
     return {
-      instituteDialog: false
+      instituteDialog: false,
+      institute:[],
     }
   },
   methods: {
@@ -94,7 +97,17 @@ export default {
     },
     DialogConfirm() {
       this.instituteDialog = false;
+    },
+    prepareDate(id){
+      ESApi.getInstituteInfo(id).then(response=>
+      {
+        console.log(response)
+        this.institute = response.data.hits.hits[0]._source
+      })
     }
+  },
+  mounted() {
+    this.prepareDate(this.user.orgs[0].id)
   }
 }
 </script>
