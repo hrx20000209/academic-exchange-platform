@@ -205,7 +205,7 @@
           // this.buildPie1()
         },
         methods:{
-          buildPie1(){
+          buildPie1(that){
             let pie1 = echarts.init(document.getElementById('chart1'))
             let pie2 = echarts.init(document.getElementById('chart2'))
             let pie3 = echarts.init(document.getElementById('chart3'))
@@ -373,9 +373,11 @@
             pie4.setOption(option4)
             pie2.on('click', function(params) {
               console.log(params.data.id, params.data.name)
+              that.jump2authors(params.data.id)
             })
             pie3.on('click', function(params) {
               console.log(params.data.id, params.data.name)
+              that.jump2authors(params.data.id)
             })
             pie4.on('click', function(params) {
               console.log(params.data.id, params.data.name)
@@ -406,6 +408,7 @@
             this.currentPage_author = val;
           },
           test(id) {
+            let that=this
             ESApi.getInstitutionMsg(id).then(
               res=>{
                 let info = res.data.hits.hits[0]._source
@@ -417,12 +420,13 @@
                 this.fillAuthors(info)
                 this.fillPapers(info)
                 this.fillAttribute(info)
-                this.buildPie1()
+                this.buildPie1(that)
               }
             )
           },
           jump2authors(id){
             console.log('author id is', id)
+            this.$router.push({path: `/userHome/${id}`,})
           },
           jump2papers(id) {
             console.log('paper id is', id)
