@@ -12,37 +12,42 @@
           <div id="usrName">{{ this.user.userName }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.userDegree }}</div>
-            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>
+            <div id="editYourInfo" @click="editSimpleInfo">编辑信息</div>
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
-        <div id="rightButton">
-          <el-button type="primary" icon="el-icon-circle-plus">关注</el-button>
+        <div id="rightButton" style="display: block;">
+          <div style="margin-top: 5%">
+            <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
+          </div>
+          <div style="margin-top: 5%">
+            <el-button type="primary" icon="el-icon-circle-plus">关注</el-button>
+          </div>
         </div>
       </div>
       <div id="bottomTab">
         <div id="centerSomeTabs">
-          <div class="usrTabsChosen" v-if="activeMode ==1">概述</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(1)">概述</div>
-          <div class="usrTabsChosen" v-if="activeMode ==2">研究</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
+          <div class="usrTabsChosen" v-if="activeMode === 1">概述</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(1)">概述</div>
+          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>
 <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
+          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>
 <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
 <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
 <!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
         </div>
       </div>
     </div>
     <div class="mainPane">
-      <div v-if="activeMode ==1" class="mainPane">
+      <div v-if="activeMode === 1" class="mainPane">
         <div id="leftMainPane">
-          <div id="editusrInfoPane">
+          <div id="editUsrInfoPane">
             <edit-usr-info :user="user"></edit-usr-info>
             <about-me :user="user"></about-me>
             <stats-overview :user="user"></stats-overview>
@@ -54,20 +59,20 @@
           </div>
         </div>
         <div id="rightMainPane">
-          <div v-if="activeMode ==1">
+          <div v-if="activeMode === 1">
             <institute-belong-to></institute-belong-to>
             <follow-same></follow-same>
           </div>
         </div>
       </div>
-      <div v-else-if="activeMode == 2" class="mainPane">
+      <div v-else-if="activeMode ===  2" class="mainPane">
         <div id="researchPane">
           <div id="researchItem">
             <research-detail-item v-for="(item, index) in research" :key = 'index' :research = 'item'></research-detail-item>
           </div>
         </div>
       </div>
-      <div v-else-if="activeMode == 4" class="mainPane">
+      <div v-else-if="activeMode ===  4" class="mainPane">
         <div id="statsMainPane">
           <stats-digit-total :user="user"></stats-digit-total>
           <cite-and-publish></cite-and-publish>
@@ -100,22 +105,49 @@
         </div>
       </div>
     </el-dialog>
+    <!-- 发送私信弹窗 -->
+    <el-dialog
+      title="私信"
+      :visible.sync="dialogLetterVisible"
+      width="35%"
+      :before-close="handleClose">
+      <div class="letter-body">
+        <div>
+          <div class="letter-send-box">发送给：</div>
+          <el-input v-model="user.userName" disabled></el-input>
+          <div class="letter-send-box">私信内容：</div>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            v-model="text"
+            maxlength="250"
+            rows="10"
+            resize="none"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="letter-btn-box">
+          <el-button type="primary" @click="sendLetter">发 送</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import Nav_with_searchBox from "../components/nav_with_searchBox";
-import EditUsrInfo from "../components/editUsrInfo";
-import AboutMe from "../components/aboutMe";
-import StatsOverview from "../components/statsOverview";
-import ResearchOverview from "../components/researchOverview";
-import InstituteBelongTo from "../components/instituteBelongTo";
-import FollowSame from "../components/followSame";
-import ResearchDetailItem from "../components/researchDetailItem";
-import StatsDigitTotal from "../components/statsDigitTotal";
-import CiteAndPublish from "../components/stats/citeAndPublish";
-import AuthorRelationship from "../components/stats/authorRelaitionship";
-import CooperatorPieChart from "../components/stats/cooperatorPieChart";
+import Nav_with_searchBox from "../../components/nav_with_searchBox";
+import editUsrInfo from "../../components/editUsrInfo";
+import AboutMe from "../../components/aboutMe";
+import StatsOverview from "../../components/statsOverview";
+import ResearchOverview from "../../components/researchOverview";
+import InstituteBelongTo from "../../components/instituteBelongTo";
+import FollowSame from "../../components/followSame";
+import ResearchDetailItem from "../../components/researchDetailItem";
+import StatsDigitTotal from "../../components/statsDigitTotal";
+import CiteAndPublish from "../../components/stats/citeAndPublish";
+import AuthorRelationship from "../../components/stats/authorRelaitionship";
+import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
 
 export default {
   name: "userHome",
@@ -130,7 +162,7 @@ export default {
     ResearchOverview,
     StatsOverview,
     AboutMe,
-    EditUsrInfo,
+    editUsrInfo,
     Nav_with_searchBox
   },
   data() {
@@ -147,6 +179,7 @@ export default {
         tech: 'java编程 SQL C++'
       },
       dialogFormVisible: false,
+      dialogLetterVisible: false,
       form: {
         name: '',
         region: '',
@@ -159,6 +192,7 @@ export default {
       },
       formLabelWidth: '100px',
       activeMode: 1,
+      text: '',
       research:[
         {
           title: '数据挖掘中的聚类算法综述',
@@ -209,23 +243,47 @@ export default {
   mounted() {
   },
   methods: {
-    editSympleInfo() {
+    editSimpleInfo() {
       this.dialogFormVisible = true
     },
+    openLetter() {
+      this.dialogLetterVisible = true
+    },
+    sendLetter() {
+      if (this.text === '') {
+        this.$message({
+          type: 'warning',
+          message: '私信内容不能为空'
+        })
+      } else {
+        this.dialogLetterVisible = false
+        this.$message({
+          type: 'success',
+          message: '发送成功'
+        })
+      }
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
     selectActiveMode(flag) {
-      if (flag == 1) {
+      if (flag === 1) {
         this.activeMode = 1;
-      } else if (flag == 2) {
+      } else if (flag === 2) {
         this.activeMode = 2;
-      } else if (flag == 3) {
+      } else if (flag === 3) {
         this.activeMode = 3;
-      } else if (flag == 4) {
+      } else if (flag === 4) {
         this.activeMode = 4;
-      } else if (flag == 5) {
+      } else if (flag === 5) {
         this.activeMode = 5;
-      } else if (flag == 6) {
+      } else if (flag === 6) {
         this.activeMode = 6;
-      } else if (flag == 7) {
+      } else if (flag === 7) {
         this.activeMode = 7;
       }
     }
@@ -438,7 +496,7 @@ export default {
   margin-right: auto;
 }
 
-.usrTabsUnchosen {
+.usrTabsUnChosen {
   border-bottom: transparent 2px solid;
   color: darkgray;
   font-family: "Microsoft YaHei UI Light";
@@ -447,7 +505,7 @@ export default {
   margin-left: 15px;
 }
 
-.usrTabsUnchosen:hover {
+.usrTabsUnChosen:hover {
   color: #005abb;
 }
 
@@ -462,7 +520,7 @@ export default {
   margin-left: 15px;
 }
 
-#editusrInfoPane {
+#editUsrInfoPane {
   width: 550px;
   margin-top: 20px;
 }
@@ -516,5 +574,23 @@ export default {
 }
 #statsMainPane{
   display: block;
+}
+
+.letter-body {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+}
+
+.letter-send-box {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+.letter-btn-box {
+  text-align: right;
+  margin-top: 5%;
 }
 </style>

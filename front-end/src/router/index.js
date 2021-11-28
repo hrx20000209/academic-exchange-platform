@@ -101,7 +101,7 @@ const routes = [
   {
     path:'/userHome',
     name: 'userHome',
-    component: () => import('../userPage/userHome')
+    component: () => import('../views/userPage/userHome')
   },
   {
     path:'/Institution/:id',

@@ -105,24 +105,24 @@
 </template>
 
 <script>
-import Nav_with_searchBox from "../components/nav_with_searchBox";
-import EditUsrInfo from "../components/editUsrInfo";
-import AboutMe from "../components/aboutMe";
-import StatsOverview from "../components/statsOverview";
-import ResearchOverview from "../components/researchOverview";
-import InstituteBelongTo from "../components/instituteBelongTo";
-import FollowSame from "../components/followSame";
-import ResearchDetailItem from "../components/researchDetailItem";
-import StatsDigitTotal from "../components/statsDigitTotal";
-import CiteAndPublish from "../components/stats/citeAndPublish";
-import AuthorRelationship from "../components/stats/authorRelaitionship";
-import CooperatorPieChart from "../components/stats/cooperatorPieChart";
-import AboutMe_author from "../components/stats/aboutMe_author";
-import AuthorCard from "../components/AuthorCard";
-import InstituteBelongTo_author from "../components/instituteBelongTo_author";
-import FollowSameAuthor from "../components/followSame_author";
+import Nav_with_searchBox from "../../components/nav_with_searchBox";
+import EditUsrInfo from "../../components/editUsrInfo";
+import AboutMe from "../../components/aboutMe";
+import StatsOverview from "../../components/statsOverview";
+import ResearchOverview from "../../components/researchOverview";
+import InstituteBelongTo from "../../components/instituteBelongTo";
+import FollowSame from "../../components/followSame";
+import ResearchDetailItem from "../../components/researchDetailItem";
+import StatsDigitTotal from "../../components/statsDigitTotal";
+import CiteAndPublish from "../../components/stats/citeAndPublish";
+import AuthorRelationship from "../../components/stats/authorRelaitionship";
+import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
+import AboutMe_author from "../../components/stats/aboutMe_author";
+import AuthorCard from "../../components/AuthorCard";
+import InstituteBelongTo_author from "../../components/instituteBelongTo_author";
+import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
-import ESApi from "../api/elastic search"
+import ESApi from "../../api/elastic search"
 
 export default {
   name: "authorPage",
