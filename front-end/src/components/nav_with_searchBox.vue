@@ -25,7 +25,7 @@
       </div>
     </div>
     <div id="otherWrapper">
-      <div v-if="this.ifLogin === 1" id="alreadyLogin">
+      <div v-if="this.ifLogin == 1" id="alreadyLogin">
         <div class="infoBox">
           <i class="el-icon-message-solid"></i>
         </div>
@@ -33,7 +33,7 @@
           <i class="el-icon-s-promotion"></i>
         </div>
         <div class="infoBox">
-          <i class="el-icon-chat-round"></i>
+          <i class="el-icon-chat-round" @click="toLetter"></i>
         </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
@@ -93,6 +93,9 @@ export default {
     },
     toUsrHome() {
       this.$router.push('/userHome')
+    },
+    toLetter() {
+      this.$router.push('/letter')
     }
   },
   mounted() {

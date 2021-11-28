@@ -4,6 +4,7 @@
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +82,7 @@
       <workItem from="1637665331747" duration="1909000" />
       <workItem from="1637891633267" duration="6949000" />
       <workItem from="1637913053400" duration="5374000" />
-      <workItem from="1638068763684" duration="6055000" />
+      <workItem from="1638068763684" duration="6289000" />
     </task>
     <servers />
   </component>
