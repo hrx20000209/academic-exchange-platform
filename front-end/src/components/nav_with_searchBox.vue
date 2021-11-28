@@ -25,7 +25,7 @@
       </div>
     </div>
     <div id="otherWrapper">
-      <div v-if="this.ifLogin == 1" id="alreadyLogin">
+      <div v-if="this.ifLogin === 1" id="alreadyLogin">
         <div class="infoBox">
           <i class="el-icon-message-solid"></i>
         </div>
@@ -84,7 +84,7 @@ export default {
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {
-      if (command == "exit") {
+      if (command === "exit") {
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
@@ -200,7 +200,6 @@ export default {
 
 .infoBox {
   margin-left: 20px;
-  color: #343434;
   height: auto;
   width: auto;
   color: #616161;
@@ -271,7 +270,7 @@ export default {
   font-weight: bold;
   font-size: 15px;
   letter-spacing: 3px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0 5px 0;
 }
 
 #Login:hover {
@@ -289,7 +288,7 @@ export default {
   font-size: 15px;
   letter-spacing: 3px;
   margin-left: 20px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0 5px 0;
 }
 
 #register:hover {
