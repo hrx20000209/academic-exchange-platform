@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
+    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/front-end/src/components/message.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/userPage/authorPage.vue" afterDir="false" />
     </list>
@@ -52,11 +53,15 @@
       <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-end/src/views" />
       <recent name="$PROJECT_DIR$/front-end/src/views/admin" />
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="" />
@@ -76,7 +81,8 @@
       <workItem from="1637539564571" duration="26393000" />
       <workItem from="1637665331747" duration="1909000" />
       <workItem from="1637891633267" duration="6949000" />
-      <workItem from="1637913053400" duration="8328000" />
+      <workItem from="1637913053400" duration="5374000" />
+      <workItem from="1638068763684" duration="15220000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,238 @@
+<template>
+  <div class="background">
+    <nav_with_search-box></nav_with_search-box>
+    <div class="body">
+      <div class="middle-box">
+        <h2>私信</h2>
+        <el-divider></el-divider>
+        <div class="main">
+          <div class="message-list">
+            <div style="height: 95%">
+              <div v-for="item in items" :key="item.id">
+                <message
+                  :name="item.name"
+                  :head="item.head"
+                  :text="item.text"
+                />
+              </div>
+            </div>
+            <div class="page">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="5">
+              </el-pagination>
+            </div>
+          </div>
+          <div class="message-details">
+            <el-scrollbar style="height: 100%">
+              <div v-for="item in messages" :key="item.id">
+                <div class="message-details-item">
+                  <div class="name-box"> {{ item.name }} : </div>
+                  <div class="text-box"> {{ item.text }} </div>
+                </div>
+              </div>
+            </el-scrollbar>
+            <div class="btn-box">
+              <el-button type="primary" @click="openLetter">回 复</el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <el-dialog
+      title="私信"
+      :visible.sync="dialogLetterVisible"
+      width="35%"
+      :before-close="handleClose">
+      <div class="letter-body">
+        <div>
+          <div class="letter-send-box">发送给：</div>
+          <el-input v-model="receiver.name" disabled></el-input>
+          <div class="letter-send-box">私信内容：</div>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            v-model="text"
+            maxlength="250"
+            rows="10"
+            resize="none"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="letter-btn-box">
+          <el-button type="primary" @click="sendLetter">发 送</el-button>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import nav_with_searchBox from "../components/nav_with_searchBox"
+import message from "../components/message"
+export default {
+  name: "Letter",
+  components: { nav_with_searchBox, message },
+  data() {
+    return {
+      dialogLetterVisible: false,
+      text: '',
+      receiver: {
+        name: '谭火彬'
+      },
+      items: [
+        {
+          name: '谭火彬',
+          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+          text: [],
+        },
+        {
+          name: '猜猜我是谁',
+          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+          text: [],
+        },
+        {
+          name: '我是你哥哥',
+          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+          text: [],
+        }
+      ],
+      messages: [
+        {
+          name: '谭火彬',
+          text: 'hello'
+        },
+        {
+          name: '你',
+          text: 'hello'
+        },
+        {
+          name: '谭火彬',
+          text: '你们的组长是谁？'
+        },
+        {
+          name: '你',
+          text: '是梁灏然'
+        },
+        {
+          name: '谭火彬',
+          text: '好的。你们组的大作业写完了吗？'
+        },
+        {
+          name: '你',
+          text: '还没有'
+        }
+      ]
+    }
+  },
+  methods: {
+    openLetter() {
+      this.dialogLetterVisible = true
+    },
+    sendLetter() {
+      if (this.text === '') {
+        this.$message({
+          type: 'warning',
+          message: '私信内容不能为空'
+        })
+      } else {
+        this.dialogLetterVisible = false
+        this.$message({
+          type: 'success',
+          message: '发送成功'
+        })
+      }
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    }
+  }
+}
+</script>
+
+<style scoped>
+.background {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: #ededed;
+}
+
+.body {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.middle-box {
+  background-color: white;
+  width: 60%;
+  height: 600px;
+  padding: 2%;
+}
+
+.message-list {
+  width: 30%;
+  height: 500px;
+}
+
+.message-details {
+  width: 65%;
+  height: 450px;
+  margin-left: 5%;
+}
+
+.main {
+  display: flex;
+}
+
+.page {
+  text-align: center;
+  float: bottom;
+}
+
+.message-details-item {
+  border: solid 1px #ededed;
+}
+
+.name-box {
+  font-weight: bolder;
+  padding: 2%;
+  background-color: #ededed;
+}
+
+.text-box {
+  padding: 5%;
+}
+
+.btn-box {
+  margin-top: 3%;
+  float: right;
+}
+
+.letter-body {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+}
+
+.letter-send-box {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+.letter-btn-box {
+  text-align: right;
+  margin-top: 5%;
+}
+</style>

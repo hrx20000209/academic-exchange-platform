@@ -33,7 +33,7 @@
           <i class="el-icon-s-promotion"></i>
         </div>
         <div class="infoBox">
-          <i class="el-icon-chat-round"></i>
+          <i class="el-icon-chat-round" @click="toLetter"></i>
         </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
@@ -84,7 +84,7 @@ export default {
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {
-      if (command == "exit") {
+      if (command === "exit") {
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
@@ -93,6 +93,9 @@ export default {
     },
     toUsrHome() {
       this.$router.push('/userHome')
+    },
+    toLetter() {
+      this.$router.push('/letter')
     }
   },
   mounted() {
@@ -200,7 +203,6 @@ export default {
 
 .infoBox {
   margin-left: 20px;
-  color: #343434;
   height: auto;
   width: auto;
   color: #616161;
@@ -271,7 +273,7 @@ export default {
   font-weight: bold;
   font-size: 15px;
   letter-spacing: 3px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0 5px 0;
 }
 
 #Login:hover {
@@ -289,7 +291,7 @@ export default {
   font-size: 15px;
   letter-spacing: 3px;
   margin-left: 20px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0 5px 0;
 }
 
 #register:hover {
