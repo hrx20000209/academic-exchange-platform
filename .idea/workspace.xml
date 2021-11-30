@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/userPage/authorPage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +76,7 @@
       <workItem from="1637539564571" duration="26393000" />
       <workItem from="1637665331747" duration="1909000" />
       <workItem from="1637891633267" duration="6949000" />
-      <workItem from="1637913053400" duration="5374000" />
+      <workItem from="1637913053400" duration="8328000" />
     </task>
     <servers />
   </component>

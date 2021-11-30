@@ -220,7 +220,7 @@ export default {
     }
   },
   mounted() {
-    this.id=this.$route.query.id
+    // this.id=this.$route.query.id
     this.getAuthorInfo(this.id)
   },
   methods: {
