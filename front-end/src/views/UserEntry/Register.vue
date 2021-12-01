@@ -24,7 +24,7 @@
           </el-form-item>
         </el-form>
         <div class="btn-box">
-          <el-button type="primary" style="font-size: large">确定</el-button>
+          <el-button type="primary" style="font-size: large" @click="register">确定</el-button>
         </div>
       </div>
     </div>
@@ -33,6 +33,7 @@
 
 <script>
 import nav_with_searchBox from "../../components/nav_with_searchBox";
+import api from '../../api/mysql'
 export default {
   name: "Register",
   components: { nav_with_searchBox },
@@ -71,6 +72,11 @@ export default {
           { validator: validatePass2, trigger: 'blur' }
         ],
       }
+    }
+  },
+  methods: {
+    register() {
+      api.register(this.user.name, this.user.password, this.user.email)
     }
   }
 }
