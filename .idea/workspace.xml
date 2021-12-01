@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/api/mysql.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/mysql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/Letter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Letter.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +60,6 @@
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -87,9 +88,6 @@
     </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -101,16 +99,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/front-end/src/components/researchDetailItem.vue</url>
-          <line>144</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

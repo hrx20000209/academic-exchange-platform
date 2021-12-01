@@ -72,11 +72,14 @@
 <script>
 import nav_with_searchBox from "../components/nav_with_searchBox"
 import message from "../components/message"
+import { getMessageList } from "../request/api"
+
 export default {
   name: "Letter",
   components: { nav_with_searchBox, message },
   data() {
     return {
+      userId: 4,
       dialogLetterVisible: false,
       text: '',
       receiver: {
@@ -127,7 +130,17 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.LoadMessageList()
+  },
   methods: {
+    LoadMessageList() {
+      getMessageList({
+        userId: this.userId
+      }).then(response => {
+        console.log(response)
+      })
+    },
     openLetter() {
       this.dialogLetterVisible = true
     },
