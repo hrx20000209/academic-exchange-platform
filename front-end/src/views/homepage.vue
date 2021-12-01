@@ -1,18 +1,22 @@
 <template>
     <div>
-        <el-container>
-            <el-header>
-                <my-header></my-header>
-            </el-header>
+        <el-container style="display: flex; justify-content: center; flex-direction: column">
+            <div>
+        <Nav_with_searchBox></Nav_with_searchBox>
+            </div>
             <el-main class="MainArea">
                 <el-col>
-                <el-collapse accordion style="margin-top: 15px">
+                <el-collapse accordion style="margin-top: 5px">
                     <el-collapse-item class="myCollapse">
                         <template slot="title">
                             <div @click.stop="">
                                 <el-col :offset=2 style="margin-bottom: 5px"  @click.stop="">
                                     <el-row style="
                                         letter-spacing: 4px;
+                                        font-weight: bold;
+                                        background-image:-webkit-linear-gradient(#0b4B8B,#F2EDE6);
+                                        -webkit-background-clip:text;
+                                        -webkit-text-fill-color:transparent;
                                         font-size: 15px;
                                         font-family: siyuan;
                                     ">
@@ -41,130 +45,90 @@
                             <el-col :span=9 :offset=2 style="margin-top: 70px">
                                 <div class="introduction">
                                     <div class="intro_text">
-                                        Elsevier journals offer the latest peer-reviewed research papers on climate change, biodiversity, renewable energy and other topics addressing our planet’s climate emergency.
-Join us in working towards a sustainable future with our editorially independent report on creating a Net Zero future.
+                                        学术星球——一款好用的学术文献检索与交流网站
+                                    </div>
+                                    <div class="intro_text">
+                                        您可以在这里检索您需要的文献，和与您有相同研究方向的同行交流
                                     </div>
                                 </div>
                             </el-col>
                         </div>
                     </el-row>
                     <el-row>
-                        <el-col :offset=0 :span=23 style="margin-left: 50px">
+                        <el-col :offset=0 :span=24 style="margin-left: 0px">
                             <el-row class="welcome">
-                                探索科学、技术和医学研究的科学指导
-                            </el-row>
-                            <el-row style="height: 70px">
-                                <div id='menu' class='nav' :class="fixed ? 'nav_fixed' :''">
-                                    <!-- 标题列表 -->
-                                    <div class="nav-list">
-                                        <div v-for="(item, index) in navList" :key="item"
-                                          @click="changeTitle(index)"
-                                          v-scroll-to="'#'+test[index]"
-                                          :class="{ 'nav-list--active': index === active}"
-                                        >
-                                            {{ item }}
-                                        </div>
-                                    </div>
-                                    <!-- 下划线 -->
-                                    <div class="nav-line">
-                                        <div :style="{transform: 'translateX(' + translateX + 'px) translateX(-50%)',}"></div>
-                                    </div>
-                                </div>
+                                浏览最新，最热的文章和最受欢迎的作者
                             </el-row>
                             <el-row>
-                                <el-col>
-                                    <el-row>
-                                        <el-col :span=2 style="margin-left: 350px">
-                                            <div class="engine" id="engine" @click="jump2engine">工学</div>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row style="margin-top: 30px; min-height: 150px">
-                                        <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
-                                            <mycloud :data="k_engine"></mycloud>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                    </el-row>
-                                    <el-divider></el-divider>
-                                    <el-row>
-                                        <el-col :span=2 style="margin-left: 350px">
-                                            <div class="maths" id="maths" @click="jump2engine">理学</div>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row style="margin-top: 30px; min-height: 150px">
-                                        <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
-                                            <mycloud :data="k_science"></mycloud>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                    </el-row>
-                                    <el-divider></el-divider>
-                                    <el-row>
-                                        <el-col :span=2 style="margin-left: 365px">
-                                            <div class="science" id="science" @click="jump2engine">自然科学</div>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row style="margin-top: 30px; min-height: 150px">
-                                        <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
-                                            <mycloud :data="k_maths"></mycloud>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                    </el-row>
-                                    <el-divider></el-divider>
-                                    <el-row>
-                                        <el-col :span=2 style="margin-left: 350px">
-                                            <div class="social" id="social" @click="jump2engine">社会学</div>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row style="margin-top: 30px; min-height: 150px">
-                                        <el-col :span=6 style="margin-left: -30px;margin-top: -120px;margin-right: 70px;margin-bottom: -50px">
-                                            <mycloud></mycloud>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最热文章</div>
-                                            <el-link v-for="(item, index) in this.engine_popular" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                        <el-col :span=7 :offset=1>
-                                            <div style="margin-bottom: 10px; text-align: left">最新文章</div>
-                                            <el-link v-for="(item, index) in this.engine_latest" :key="index">
-                                                {{item}}
-                                            </el-link>
-                                        </el-col>
-                                    </el-row>
-                                </el-col>
+                                    <div style="margin-top: 30px; display: flex;justify-content: space-around">
+                                        <div style="width: 150px; display: flex; flex-direction: column">
+                                            <div class="titleFont">最受欢迎作者</div>
+                                            <div v-for="(item, index) in this.authors" :key="index"
+                                                 @click="jump2authors(item.id)"
+                                                 style="
+                                                 display: flex;
+                                                 margin-bottom: 20px;
+                                                 align-items: center;
+                                                 flex-direction: column;
+                                                 cursor:pointer;
+                                                 box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                              <el-avatar style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
+                                                {{item.pic}}
+                                              </el-avatar>
+                                              <div style="text-align: center; margin-top: 5px; margin-bottom: 5px; color: #A4A4A4">
+                                                {{item.name}}
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <div style="width: 420px; display: flex; flex-direction: column;">
+                                            <div class="titleFont">最热文章</div>
+                                            <div v-for="(item, index) in this.engine_popular" :key="index"
+                                                 style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                              <div style="width: 350px; display: flex; ">
+                                                <div style="
+                                                width: 20px;
+                                                display: flex;
+                                                justify-content: center;margin-right: 10px">
+                                                  <div style="font-size: 10px;border-radius: 10px;margin-top: 5px;width:20px;height: 20px;color: #FFF; background-color: #81BEF7;text-align: center">{{index+1}}</div>
+                                                </div>
+                                                <div style="width: 300px">
+                                                  <el-link :underline="false">
+                                                    {{item['title']}}
+                                                  </el-link>
+                                                </div>
+                                              </div>
+                                              <div style="display: flex; flex-direction: column; justify-content: center">
+                                                <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
+                                                  {{item['cites']}}次
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <div style="width: 420px; display: flex; flex-direction: column;">
+                                            <div class="titleFont">最新文章</div>
+                                            <div v-for="(item, index) in this.engine_latest" :key="index"
+                                                 style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                              <div style="width: 350px; display: flex; ">
+                                                <div style="
+                                                width: 20px;
+                                                display: flex;
+                                                justify-content: center;margin-right: 10px">
+                                                  <div style="font-size: 10px;border-radius: 10px;margin-top: 5px;width:20px;height: 20px;color: #FFF; background-color: #81BEF7;text-align: center">{{index+1}}</div>
+                                                </div>
+                                                <div style="width: 300px">
+                                                  <el-link :underline="false">
+                                                    {{item['title']}}
+                                                  </el-link>
+                                                </div>
+                                              </div>
+                                              <div style="display: flex; flex-direction: column; justify-content: center">
+                                                <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
+                                                  {{item['year']}}年
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             </el-row>
                         </el-col>
                     </el-row>
@@ -179,6 +143,8 @@ Join us in working towards a sustainable future with our editorially independent
 <script>
     import Vue from "vue";
     import VueScrollTo from "vue-scrollto";
+    import ESApi from '../api/elastic search'
+    import Nav_with_searchBox from "../components/nav_with_searchBox";
 
     Vue.use(VueScrollTo, options);
 
@@ -199,6 +165,7 @@ Join us in working towards a sustainable future with our editorially independent
 
     export default {
         name: "homepage",
+        components: {Nav_with_searchBox},
         data(){
             return {
                 active: 0,
@@ -207,20 +174,15 @@ Join us in working towards a sustainable future with our editorially independent
                 book: '',
                 fixed: false,
                 beforeFixed:false,
-                navList: ['工学', '理学', '自然科学', '社会学'],
-                test: ['engine', 'maths', 'science', 'social'],
-                k_engine:['力学','机械','仪器','材料','电子信息','计算机','土木','化学与制药','兵器','核工程','生物医学工程'],
-                k_science:['数学与应用数学','数据计算及应用','应用物理学','量子信息科学','化学','天文学','气象学','海洋科学','军事海洋学','地质学','生物科学','心理学','统计学'],
-                k_maths:['数论','代数学','几何学','拓扑学','固体理学','流体理学'],
                 translateX: 0,
                 navSlidingWidth:0,
-                engine_latest:['新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨'],
-                engine_popular:['新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨','新型冠状病毒肺炎疫情期间方舱医院护理模式探讨']
+                engine_latest:[],
+                engine_popular:[],
+                authors:[],
             }
         },
         mounted() {
-            window.addEventListener('scroll', this.fixedActiveBtn);
-            this.setUnderLine();
+            this.t()
         },
         destroyed(){
             window.removeEventListener('scroll', this.handleScroll);
@@ -265,7 +227,67 @@ Join us in working towards a sustainable future with our editorially independent
                 console.log('ok')
             },
             t(){
-                console.log(this.test)
+                let that = this
+                ESApi.getRecentPaper().then(
+                  res =>{
+                    // console.log(res.data.hits.hits)
+                    let papers = res.data.hits.hits
+                    for (let i=0; i<papers.length; i++) {
+                      let item = papers[i]._source
+                      //console.log(item)
+                      let temp = {}
+                      temp['title'] = item.title
+                      temp['year'] = item.year
+                      temp['id'] = item.id
+                      that.engine_latest.push(temp)
+                    }
+                  }
+                )
+                ESApi.getPopularPaper().then(
+                  res =>{
+                    // console.log(res.data.hits.hits)
+                    let papers = res.data.hits.hits
+                    for (let i=0; i<papers.length; i++) {
+                      let item = papers[i]._source
+                      //console.log(item)
+                      let temp = {}
+                      temp['title'] = item.title
+                      temp['cites'] = item.n_citation
+                      temp['id'] = item.id
+                      that.engine_popular.push(temp)
+                    }
+                  }
+                )
+                ESApi.getPopularAuthor().then(
+                  res =>{
+                    // console.log(res.data.hits.hits)
+                    let papers = res.data.hits.hits
+                    for (let i=0; i<papers.length; i++) {
+                      let item = papers[i]._source
+                      //console.log(item)
+                      let temp = {}
+                      temp['name'] = item.name
+                      temp['cites'] = item.n_citation
+                      temp['id'] = item.id
+                      temp['pic'] = that.getPic(item.name, item.id)
+                      that.authors.push(temp)
+                    }
+                  }
+                )
+            },
+            getPic(name, id) {
+              //TODO: input id output pic or bool
+              let lastname = name.split(' ')
+              return lastname[lastname.length-1]
+            },
+            jump2authors(id){
+              console.log('author id is', id)
+              this.$router.push({
+                path: '/authorPage',
+                query: {
+                  id: id
+                }
+              })
             },
             fixedActiveBtn() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -467,5 +489,12 @@ Join us in working towards a sustainable future with our editorially independent
     cursor: pointer;
     text-decoration: none;
     border-bottom: 2px solid;
+}
+.titleFont{
+    background-image:-webkit-linear-gradient(#2E9AFE,#01DFA5);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom: 10px;
+    text-align: left
 }
 </style>
