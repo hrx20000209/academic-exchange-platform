@@ -18,6 +18,7 @@ Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 
 Vue.prototype.$http = axios
+Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.use(echarts)

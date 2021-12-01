@@ -122,6 +122,11 @@ const routes = [
     path: '/letter',
     name: 'Letter',
     component: () => import('../views/Letter')
+  },
+  {
+    path: '/authorPage',
+    name: 'authorPage',
+    component: () => import('../views/userPage/authorPage')
   }
 ]
 

@@ -16,8 +16,13 @@
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
-        <div id="rightButton">
-          <el-button type="primary" icon="el-icon-circle-plus">关注</el-button>
+        <div id="rightButton" style="display: block;">
+          <div style="margin-top: 5%">
+            <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
+          </div>
+          <div style="margin-top: 5%">
+            <el-button type="primary" icon="el-icon-circle-plus">关注</el-button>
+          </div>
         </div>
       </div>
       <div id="bottomTab">
@@ -101,6 +106,33 @@
         </div>
       </div>
     </el-dialog>
+    <!-- 发送私信弹窗 -->
+    <el-dialog
+      title="私信"
+      :visible.sync="dialogLetterVisible"
+      width="35%"
+      :before-close="handleClose">
+      <div class="letter-body">
+        <div>
+          <div class="letter-send-box">发送给：</div>
+          <el-input v-model="user.userName" disabled></el-input>
+          <div class="letter-send-box">私信内容：</div>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            v-model="text"
+            maxlength="250"
+            rows="10"
+            resize="none"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="letter-btn-box">
+          <el-button type="primary" @click="sendLetter">发 送</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -160,6 +192,7 @@ export default {
         // tech: 'java编程 SQL C++'
       },
       dialogFormVisible: false,
+      dialogLetterVisible: false,
       form: {
         name: '',
         region: '',
@@ -220,13 +253,14 @@ export default {
     }
   },
   mounted() {
-    this.id=this.$route.query.id
+    // this.id=this.$route.query.id
     this.getAuthorInfo(this.id)
   },
   methods: {
     getAuthorInfo(id){
+      console.log(this.id)
       ESApi.getAuthorInfo(id).then(response=>{
-        // console.log(response);
+        console.log(response);
       this.ELres = response.data.hits.hits[0]._source;
       this.user = this.ELres;
       this.research = this.ELres.pubs;
@@ -251,7 +285,24 @@ export default {
       } else if (flag == 7) {
         this.activeMode = 7;
       }
-    }
+    },
+    openLetter() {
+      this.dialogLetterVisible = true
+    },
+    sendLetter() {
+      if (this.text === '') {
+        this.$message({
+          type: 'warning',
+          message: '私信内容不能为空'
+        })
+      } else {
+        this.dialogLetterVisible = false
+        this.$message({
+          type: 'success',
+          message: '发送成功'
+        })
+      }
+    },
   }
 }
 </script>
@@ -540,5 +591,22 @@ export default {
 
 #statsMainPane {
   display: block;
+}
+.letter-body {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+}
+
+.letter-send-box {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+.letter-btn-box {
+  text-align: right;
+  margin-top: 5%;
 }
 </style>
