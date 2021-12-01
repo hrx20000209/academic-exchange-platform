@@ -42,8 +42,8 @@
 <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
           <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">你的关注</div>
-<!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
-<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
+          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">你的收藏</div>
         </div>
       </div>
     </div>
@@ -251,7 +251,7 @@ export default {
     }
   },
   mounted() {
-    // this.getUserInformation(this.id)
+    this.getUserInformation(1)
   },
   methods: {
     editSimpleInfo() {
@@ -300,8 +300,9 @@ export default {
     },
     getUserInformation(id){
       getUsrInfo({
-        user_id:this.user_id
+        user_id:1
       }).then(res=>{
+        console.log(res)
         this.user = res.message.user
       })
     },

@@ -3,14 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/api/elastic search.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/elastic search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/api/mysql.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/mysql.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/aboutMe.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/aboutMe.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/http.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,6 +86,7 @@
       <workItem from="1637891633267" duration="6949000" />
       <workItem from="1637913053400" duration="5374000" />
       <workItem from="1638068763684" duration="15220000" />
+      <workItem from="1638359920351" duration="2029000" />
     </task>
     <servers />
   </component>
