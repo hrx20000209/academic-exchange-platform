@@ -17,11 +17,14 @@
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
         <div id="rightButton" style="display: block;">
+<!--          <div style="margin-top: 5%">-->
+<!--            <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>-->
+<!--          </div>-->
+<!--          <div style="margin-top: 5%" v-if="this.user.user_type">-->
+<!--            <el-button type="primary" icon="el-icon-circle-plus">进入认证门户</el-button>-->
+<!--          </div>-->
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
-          </div>
-          <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus">关注</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage">进入认证门户</el-button>
           </div>
         </div>
       </div>
@@ -37,8 +40,8 @@
           <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>
 <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
 <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
-<!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
-<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
+          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">你的关注</div>
 <!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
 <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
         </div>
@@ -80,7 +83,9 @@
           <cooperator-pie-chart></cooperator-pie-chart>
         </div>
       </div>
-
+      <div v-else-if="activeMode ===  6" class="mainPane">
+        <my-like-author :user="user"></my-like-author>
+      </div>
     </div>
     <div id="footer"></div>
     <el-dialog title="修改简介" :visible.sync="dialogFormVisible" id="infoDialog">
@@ -148,10 +153,13 @@ import StatsDigitTotal from "../../components/statsDigitTotal";
 import CiteAndPublish from "../../components/stats/citeAndPublish";
 import AuthorRelationship from "../../components/stats/authorRelaitionship";
 import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
+import {getUsrInfo} from "../../request/api";
+import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 
 export default {
   name: "userHome",
   components: {
+    MyLikeAuthor,
     CooperatorPieChart,
     AuthorRelationship,
     CiteAndPublish,
@@ -237,10 +245,13 @@ export default {
           hasFull:true,
           abstract:'分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
         }
-      ]
+      ],
+      // id:this.localStorage.getItem('token'),
+      id:''
     }
   },
   mounted() {
+    // this.getUserInformation(this.id)
   },
   methods: {
     editSimpleInfo() {
@@ -286,7 +297,22 @@ export default {
       } else if (flag === 7) {
         this.activeMode = 7;
       }
-    }
+    },
+    getUserInformation(id){
+      getUsrInfo({
+        user_id:this.user_id
+      }).then(res=>{
+        this.user = res.message.user
+      })
+    },
+    toAuthorPage(){
+      this.$router.push({
+        path:'/authorPage',
+        query:{
+          // id:this.user.scholarID
+        }
+      })
+    },
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = [
-  get
+  get,
 ]
 
 export default api
