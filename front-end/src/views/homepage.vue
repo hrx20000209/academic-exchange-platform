@@ -72,7 +72,8 @@
                                                  flex-direction: column;
                                                  cursor:pointer;
                                                  box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <el-avatar style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
+                                              <el-avatar v-if="item.haspic" :src="getpicfrombase64(item.url)" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+                                              <el-avatar v-if="item.haspic===false" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
                                                 {{item.pic}}
                                               </el-avatar>
                                               <div style="text-align: center; margin-top: 5px; margin-bottom: 5px; color: #A4A4A4">
@@ -136,17 +137,19 @@
                 </el-col>
             </el-main>
         </el-container>
-        <!--<el-button @click="t">test</el-button>-->
+        <!--<el-button @click="testImage">test</el-button>-->
+        <el-avatar :src="imgUrl" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
     </div>
 </template>
 
 <script>
-    import Vue from "vue";
-    import VueScrollTo from "vue-scrollto";
-    import ESApi from '../api/elastic search'
-    import Nav_with_searchBox from "../components/nav_with_searchBox";
+  import Vue from "vue";
+  import VueScrollTo from "vue-scrollto";
+  import ESApi from '../api/elastic search'
+  import Nav_with_searchBox from "../components/nav_with_searchBox";
+  import Api from '../api/mysql'
 
-    Vue.use(VueScrollTo, options);
+  Vue.use(VueScrollTo, options);
 
 
     let options = {
@@ -172,6 +175,7 @@
                 keywords: '',
                 author: '',
                 book: '',
+                imgUrl:'',
                 fixed: false,
                 beforeFixed:false,
                 translateX: 0,
@@ -183,11 +187,30 @@
         },
         mounted() {
             this.t()
+            this.testImage('1')
         },
         destroyed(){
             window.removeEventListener('scroll', this.handleScroll);
         },
         methods:{
+            testImage(id){
+              Api.getPic(id).then(
+                res => {
+                  const {data, headers} = res
+                  const blob = new Blob([data], {type: headers['content-type']})
+                  // this.testimage = window.URL.createObjectURL(blob)
+                  this.blobToBase64(blob).then(res => {
+                    // this.picture = res
+                    console.log('array', res)
+                    this.file = this.base64ImgtoFile(res)
+                    this.imgUrl = window.webkitURL.createObjectURL(this.file) || window.URL.createObjectURL(this.file)
+                    console.log(this.imgUrl)
+                  })
+                  console.log(res)
+                  // console.log(this.testimage)
+                }
+              )
+            },
             changeTitle(index) {
                 this.active = index;
                 this.setUnderLine();
@@ -270,13 +293,42 @@
                       temp['cites'] = item.n_citation
                       temp['id'] = item.id
                       temp['pic'] = that.getPic(item.name, item.id)
+
+                      Api.getPic('1').then(
+                      res => {
+                        const {data, headers} = res
+                        if (data.size < 200) {
+                          temp['haspic'] =  false
+                        }
+                        else{
+                          temp['haspic'] = true
+                          const blob = new Blob([data], {type: headers['content-type']})
+                          // this.testimage = window.URL.createObjectURL(blob)
+                          this.blobToBase64(blob).then(res => {
+                            // this.picture = res
+                            // console.log('array', res)
+                            temp['url'] = res
+                            // console.log(this.imgUrl)
+                          })
+                          // console.log(res)
+                          // console.log(this.testimage)
+                        }
+                      }
+                    )
                       that.authors.push(temp)
                     }
+                    console.log('authorlist', this.authors)
+
                   }
                 )
             },
+            getpicfrombase64(base) {
+              let file = this.base64ImgtoFile(base)
+              return window.webkitURL.createObjectURL(this.file) || window.URL.createObjectURL(this.file)
+            },
             getPic(name, id) {
               //TODO: input id output pic or bool
+
               let lastname = name.split(' ')
               return lastname[lastname.length-1]
             },
@@ -289,6 +341,32 @@
                 }
               })
             },
+            blobToBase64(blob) {
+              return new Promise((resolve, reject) => {
+                const fileReader = new FileReader();
+                fileReader.onload = (e) => {
+                  resolve(e.target.result)
+                }
+                fileReader.readAsDataURL(blob);
+                fileReader.onerror = () => {
+                  reject(new Error('文件流异常'))
+                }
+              })
+            },
+            base64ImgtoFile (dataurl, filename = 'file') {
+                const arr = dataurl.split(',')
+                const mime = arr[0].match(/:(.*?);/)[1]
+                const suffix = mime.split('/')[1]
+                const bstr = atob(arr[1])
+                let n = bstr.length
+                const u8arr = new Uint8Array(n)
+                while (n--) {
+                  u8arr[n] = bstr.charCodeAt(n)
+                }
+                return new File([u8arr], `${filename}.${suffix}`, {
+                  type: mime
+                })
+              },
             fixedActiveBtn() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
                 let offsetTop = 700
