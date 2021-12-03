@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/Letter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Letter.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" afterDir="false" />
-    </list>
+    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,6 +54,7 @@
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -85,8 +80,12 @@
       <workItem from="1637913053400" duration="5374000" />
       <workItem from="1638068763684" duration="15351000" />
       <workItem from="1638360025621" duration="2199000" />
+      <workItem from="1638524976810" duration="630000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
