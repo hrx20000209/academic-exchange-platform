@@ -12,6 +12,8 @@ import * as echarts from 'echarts'
 import axios from 'axios'
 import VueAxios from "vue-axios"
 import store from './store'
+import BubbleChat from "vue-bubble-chat"
+
 
 
 Vue.component('mycloud', myCloud)
@@ -22,6 +24,7 @@ Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.use(echarts)
+Vue.use(BubbleChat)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
