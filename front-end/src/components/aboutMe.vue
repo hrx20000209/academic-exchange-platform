@@ -19,7 +19,7 @@
     </div>
     <div id="mainAboutMePane">
       <div class="AboutMeInfo">介绍</div>
-      <div class="AboutMeDetail">{{ this.user.Intro }}</div>
+      <div class="AboutMeDetail">{{ this.user.summary }}</div>
       <div class="AboutMeInfo">语言</div>
       <div class="AboutMeDetail">{{ this.user.language }}</div>
       <div class="AboutMeInfo">学科</div>
@@ -117,7 +117,7 @@ export default {
       LanDialog: false,
       SubDialog: false,
       TechDialog: false,
-      intro: ''
+      intro: '',
     }
   },
   methods: {
@@ -137,8 +137,10 @@ export default {
     },
     introDialogConfirm() {
       this.IntroDialog = false;
+      console.log(this.$props.user)
+
       this.user.summary = this.intro;
-      // updateInfo()
+      this.updateInfor()
     },
     lanDialogCancel() {
       this.LanDialog = false;
@@ -159,12 +161,14 @@ export default {
       this.TechDialog = false;
     },
     updateInfor() {
+      // console.log(1)
+      // console.log(this.user)
       updateInfo({
         user_id:this.user.user_id,
         field: this.user.field,
         skill: this.user.skill,
         degree: this.user.degree,
-        summary: this.user.summary,
+        summary: this.user.summary
       }).then(res=>{
         console.log(res)
       })

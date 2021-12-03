@@ -77,7 +77,7 @@
         <div id="statsMainPane">
           <stats-digit-total :user="user"></stats-digit-total>
           <cite-and-publish :user="user"></cite-and-publish>
-          <author-relationship></author-relationship>
+          <author-relationship :user="user"></author-relationship>
           <cooperator-pie-chart></cooperator-pie-chart>
         </div>
       </div>
