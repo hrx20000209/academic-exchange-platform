@@ -80,6 +80,7 @@ export default {
     },
     toLogin() {
       this.$router.push('/login')
+      localStorage.setItem('ifLogin', 1)
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {

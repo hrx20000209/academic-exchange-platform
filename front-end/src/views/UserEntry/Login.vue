@@ -29,7 +29,7 @@
 
 <script>
 import Nav_with_searchBox from '../../components/nav_with_searchBox'
-import { userLogin } from "../../request/api"
+import { register, userLogin } from "../../request/api"
 
 export default {
   name: "Login",
@@ -37,8 +37,7 @@ export default {
   data() {
     return {
       account: '',
-      password: '',
-      userId: ''
+      password: ''
     }
   },
   methods: {
@@ -47,7 +46,6 @@ export default {
         name: this.account,
         password: this.password,
       }).then(response => {
-        console.log(response)
         if (response.message === '用户名或密码错误') {
           this.$message({
             type: 'warning',
@@ -59,9 +57,6 @@ export default {
             type: 'success',
             message: '登陆成功！'
           })
-          this.userId = response.user_id
-          localStorage.setItem('ifLogin', 1)
-          localStorage.setItem('userId', this.userId)
           this.$router.push('/')
         }
       })
@@ -90,7 +85,6 @@ export default {
 }
 
 .middle-box {
-  box-shadow: 0 0 50px 20px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;
@@ -130,5 +124,10 @@ export default {
   color: deepskyblue;
   font-size: large;
   margin-bottom: 3px;
+}
+
+.manager-box {
+  margin-top: 5%;
+  float: right;
 }
 </style>
