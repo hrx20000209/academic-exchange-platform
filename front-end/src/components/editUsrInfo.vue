@@ -12,10 +12,10 @@
           <div id="card">
             <div id="cardLeftPart">
               <div id="usrName">{{ this.user.name }}</div>
+              <div id="userAbility">{{ this.user.skill }}</div>
               <div class="userInInfo">学位</div>
               <div class="userInDetail" v-if="this.user.degree != null">{{ this.user.degree }}</div>
               <div v-else class="userInDetail">未知</div>
-              <div id="userAbility">{{ this.user.ability }}</div>
               <div class="userInInfo">邮箱</div>
               <div class="userInDetail">{{ this.user.mailbox }}</div>
               <div class="userInInfo">专业领域</div>
@@ -79,25 +79,32 @@ import {updateInfo} from "../request/api";
 
 export default {
   name: "editUsrInfo",
-  props: ['user', 'imgsrc'],
+  props: ['user', 'imgsrc','subindex','rankindex'],
   data() {
     return {
       ifEdit: false,
       form: {
         sub:'',
         rank:'',
-        curField:this.user.field
+        curField:this.$props.user.field
       },
       subject: ['哲学', '经济学', '法学', '教育学', '文学', '历史学', '理学', '工学', '农学', '医学', '军事学', '管理学', '艺术学'],
       rank: ['本科生', '研究生', '学士', '硕士', '博士', '博士后'],
-      subNum:'',
-      rankNum:'',
       value:'',
+      subNum:this.$props.subindex,
+      rankNum:this.$props.rankindex
     }
+  },
+  mounted() {
+        console.log(this.subNum)
   },
   methods: {
     toEditMode() {
       this.ifEdit = true;
+      let str = this.user.degree.split(' ')
+      this.subNum = this.subject.indexOf(str[0])
+        this.rankNum = this.rank.indexOf(str[1])
+        this.form.curField= this.user.field
     },
     cancelEdit() {
       this.ifEdit = false;
@@ -289,10 +296,11 @@ export default {
 .dialog-footer {
   border-top: gainsboro 1px solid;
   background: none;
+  margin-top: 50px;
 }
 
 #twoButton {
-  margin-top: 30px;
+  margin-top: 13px;
   margin-right: 10px;
   display: flex;
   flex-direction: row-reverse;
@@ -329,7 +337,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -349,7 +357,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
