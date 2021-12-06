@@ -8,31 +8,54 @@
         <div class="main">
           <div class="message-list">
             <div style="height: 95%">
+              <div class="new-message-btn-box">
+                <el-button
+                  type="primary"
+                  icon="el-icon-circle-plus-outline"
+                  @click="newMessage">
+                  发送私信
+                </el-button>
+              </div>
               <div v-for="item in items" :key="item.id">
-                <message
-                  :name="item.name"
-                  :head="item.head"
-                  :text="item.text"
-                />
+                <div class="message-item-box"
+                     @mouseover="changeActive($event)"
+                     @mouseleave="removeActive($event)"
+                     @click="read(item.user_id)">
+                  <div>
+                    <el-avatar shape="circle" :size="size" :src="item.head"></el-avatar>
+                  </div>
+                  <div class="item-name-box">
+                    {{ item.user_name }}
+                  </div>
+                  <div v-if="item.unread" class="new-box">
+                    <img :src="require('../assets/new.png')" width="50%" />
+                  </div>
+                </div>
               </div>
             </div>
             <div class="page">
               <el-pagination
                 background
                 layout="prev, pager, next"
-                :total="5">
+                :current-page="currentPage"
+                :page-size="6"
+                :page-count="totalPage"
+                @current-change="handleCurrentChange">
               </el-pagination>
             </div>
           </div>
-          <div class="message-details">
-            <el-scrollbar style="height: 100%">
+          <div class="message-details" v-if="load">
+            <div class="details-top-box">
+              <h3>{{ receiver.name }}</h3>
+            </div>
+            <el-scrollbar style="height: 85%;">
               <div v-for="item in messages" :key="item.id">
-                <div class="message-details-item-you" v-if="item.name==='你'">
-                  <div class="name-box-you"> {{ item.name }} </div>
+                <div class="message-details-item-you" v-if="item.sender_name==='你'">
+                  <div class="name-box-you"> {{ item.sender_name }} </div>
                   <div class="text-box"> {{ item.text }} </div>
                 </div>
                 <div class="message-details-item" v-else>
-                  <div class="name-box"> {{ item.name }} </div>
+                  <div class="name-box"> {{ item.sender_name }} </div>
                   <div class="text-box"> {{ item.text }} </div>
                 </div>
               </div>
@@ -46,7 +69,7 @@
     </div>
     <el-dialog
       title="私信"
-      :visible.sync="dialogLetterVisible"
+      :visible.sync="replyLetterVisible"
       width="35%"
       :before-close="handleClose">
       <div class="letter-body">
@@ -70,83 +93,112 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog
+      title="私信"
+      :visible.sync="newLetterVisible"
+      width="35%"
+      :before-close="handleClose">
+      <div class="letter-body">
+        <div>
+          <div class="letter-send-box">发送给：</div>
+          <el-input v-model="receiver.name"></el-input>
+          <div class="letter-send-box">私信内容：</div>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            v-model="text"
+            maxlength="250"
+            rows="10"
+            resize="none"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="letter-btn-box">
+          <el-button type="primary" @click="sendLetter">发 送</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import nav_with_searchBox from "../components/nav_with_searchBox"
 import message from "../components/message"
-import { getMessageList } from "../request/api"
+import { getMessageList, sendMessage, readMessage } from "../request/api"
 
 export default {
   name: "Letter",
   components: { nav_with_searchBox, message },
   data() {
     return {
-      userId: 4,
-      dialogLetterVisible: false,
+      userId: '',
+      load: false,
+      size: 40,
+      replyLetterVisible: false,
+      newLetterVisible: false,
+      editable: false,
       text: '',
+      currentPage: 1,
+      totalPage: 0,
       receiver: {
-        name: '谭火彬'
+        name: '',
+        user_id: ''
       },
-      items: [
-        {
-          name: '谭火彬',
-          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-          text: [],
-        },
-        {
-          name: '猜猜我是谁',
-          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-          text: [],
-        },
-        {
-          name: '我是你哥哥',
-          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-          text: [],
-        }
-      ],
-      messages: [
-        {
-          name: '谭火彬',
-          text: 'hello'
-        },
-        {
-          name: '你',
-          text: 'hello'
-        },
-        {
-          name: '谭火彬',
-          text: '你们的组长是谁？'
-        },
-        {
-          name: '你',
-          text: '是梁灏然'
-        },
-        {
-          name: '谭火彬',
-          text: '好的。你们组的大作业写完了吗？'
-        },
-        {
-          name: '你',
-          text: '还没有'
-        }
-      ]
+      items: [{
+        unread: '',
+        user_id: '',
+        user_name: ''
+      }],
+      messages: [{
+        receiver_id: '',
+        receiver_name: '',
+        sender_id: '',
+        sender_name: '',
+        text: ''
+      }]
     }
   },
   mounted() {
-    this.LoadMessageList()
+    this.userId = localStorage.getItem('userId')
+    this.load = false
+    this.LoadMessageList(this.currentPage)
   },
   methods: {
-    LoadMessageList() {
+    LoadMessageList(page) {
       getMessageList({
-        userId: this.userId
+        user_id: this.userId,
+        current_page: page
       }).then(response => {
-        console.log(response)
+        this.items = response.list
+        this.totalPage = response.total_page
       })
     },
+    read(id) {
+      this.load = true
+      readMessage({
+        user_id: this.userId,
+        the_other_id: id
+      }).then(response => {
+        this.messages = response.list
+        for(let i = 0; i < response.list.length; i++) {
+          if (this.messages[i].sender_id == this.userId) {
+            this.messages[i].sender_name = '你'
+          }
+          if (this.messages[i].sender_id !== this.userId) {
+            this.receiver.user_id = this.messages[i].sender_id
+            this.receiver.name = this.messages[i].sender_name
+          }
+          if (this.messages[i].receiver_id !== this.userId) {
+            this.receiver.user_id = this.messages[i].receiver_id
+            this.receiver.name = this.messages[i].receiver_name
+          }
+        }
+      })
+      this.LoadMessageList(this.currentPage)
+    },
     openLetter() {
-      this.dialogLetterVisible = true
+      this.replyLetterVisible = true
     },
     sendLetter() {
       if (this.text === '') {
@@ -155,19 +207,63 @@ export default {
           message: '私信内容不能为空'
         })
       } else {
-        this.dialogLetterVisible = false
-        this.$message({
-          type: 'success',
-          message: '发送成功'
+        sendMessage({
+          sender_id: this.userId,
+          receiver_name: this.receiver.name,
+          text: this.text
+        }).then(response => {
+          console.log(response)
+          if (response.Message === '不能向自己发送信息') {
+            this.$message({
+              type: 'warning',
+              message: '不能向自己发送信息'
+            })
+          } else if (response.Message === 'no this user') {
+            this.$message({
+              type: 'warning',
+              message: '该用户不存在'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '发送成功'
+            })
+            if (this.replyLetterVisible) {
+              this.read(this.receiver.user_id)
+            }
+            this.newLetterVisible = false
+            this.replyLetterVisible = false
+            this.LoadMessageList(this.currentPage)
+            this.text = ''
+          }
         })
       }
     },
+    newMessage() {
+      this.receiver.name = ''
+      this.newLetterVisible = true
+    },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
+      if (this.text !== '') {
+        this.$confirm('确认关闭？正在编辑的私信不会保存哦！')
+          .then(_ => {
+            done();
+            this.text = ''
+          })
+          .catch(_ => {});
+      } else {
+        done()
+      }
+    },
+    changeActive($event) {
+      $event.currentTarget.className="message-item-box-move";
+    },
+    removeActive($event) {
+      $event.currentTarget.className="message-item-box";
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val
+      this.LoadMessageList(this.currentPage)
     }
   }
 }
@@ -182,7 +278,7 @@ export default {
 }
 
 .body {
-  margin-top: 3%;
+  margin-top: 1%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -190,23 +286,23 @@ export default {
 }
 
 .middle-box {
-  box-shadow: 0px 0px 50px 20px lightgrey;
+  box-shadow: 0 0 30px 10px lightgrey;
   background-color: white;
   width: 60%;
-  height: 600px;
+  height: 650px;
   padding: 2%;
 }
 
 .message-list {
   width: 30%;
-  height: 500px;
+  height: 550px;
 }
 
 .message-details {
-  padding: 2%;
-  box-shadow: 0px 0px 10px 10px #f6f3f3;
+  padding: 1% 2% 2% 2%;
+  box-shadow: 0 0 10px 10px #f6f3f3;
   width: 65%;
-  height: 425px;
+  height: 550px;
   margin-left: 5%;
 }
 
@@ -215,33 +311,34 @@ export default {
 }
 
 .page {
+  margin-top: 5%;
   text-align: center;
   float: bottom;
 }
 
 .message-details-item {
-  border-radius: 0px 30px 30px 30px;
+  border-radius: 0 30px 30px 30px;
   margin: 5%;
   border: solid 1px #ededed;
   box-shadow: 10px 10px 10px 5px rgba(232, 232, 231, 0.98);
 }
 
 .message-details-item-you {
-  border-radius: 30px 0px 30px 30px;
+  border-radius: 30px 0 30px 30px;
   margin: 5%;
   border: solid 1px #ededed;
   box-shadow: -10px 10px 10px 5px rgba(232, 232, 231, 0.98);
 }
 
 .name-box {
-  border-radius: 0px 30px 0px 0px;
+  border-radius: 0 30px 0 0;
   font-weight: bolder;
   padding: 2%;
   background-color: lightgrey;
 }
 
 .name-box-you {
-  border-radius: 30px 0px 0px 0px;
+  border-radius: 30px 0 0 0;
   text-align: right;
   font-weight: bolder;
   padding: 2%;
@@ -251,10 +348,12 @@ export default {
 
 .text-box {
   padding: 5%;
+  background-color: whitesmoke;
+  border-radius: 0 0 30px 30px;
 }
 
 .btn-box {
-  margin-top: 8%;
+  margin-top: 3%;
   float: right;
 }
 
@@ -274,5 +373,44 @@ export default {
 .letter-btn-box {
   text-align: right;
   margin-top: 5%;
+}
+
+.new-message-btn-box {
+  margin-bottom: 5%;
+  text-align: center;
+}
+
+.message-item-box {
+  margin-bottom: 10px;
+  display: flex;
+  padding: 5%;
+  margin-right: 1%;
+  box-shadow: 0 0 15px 8px rgba(232, 232, 231, 0.98);
+}
+
+.message-item-box-move {
+  background-color: #00ccbb;
+  margin-bottom: 10px;
+  display: flex;
+  padding: 5%;
+  margin-right: 1%;
+  color: whitesmoke;
+  box-shadow: 0 0 8px 8px rgba(232, 232, 231, 0.98);
+}
+
+.item-name-box {
+  width: 120%;
+  margin-left: 5%;
+  font-size: medium;
+}
+
+.new-box {
+  margin-right: 0;
+  padding-right: 0;
+  width: 50%;
+}
+
+.details-top-box {
+  display: flex;
 }
 </style>
