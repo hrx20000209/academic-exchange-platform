@@ -8,6 +8,14 @@
         <div class="main">
           <div class="message-list">
             <div style="height: 95%">
+              <div class="new-message-btn-box">
+                <el-button
+                  type="primary"
+                  icon="el-icon-circle-plus-outline"
+                  @click="newMessage">
+                  发送私信
+                </el-button>
+              </div>
               <div v-for="item in items" :key="item.id">
                 <message
                   :name="item.name"
@@ -46,13 +54,39 @@
     </div>
     <el-dialog
       title="私信"
-      :visible.sync="dialogLetterVisible"
+      :visible.sync="replyLetterVisible"
       width="35%"
       :before-close="handleClose">
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
           <el-input v-model="receiver.name" disabled></el-input>
+          <div class="letter-send-box">私信内容：</div>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            v-model="text"
+            maxlength="250"
+            rows="10"
+            resize="none"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="letter-btn-box">
+          <el-button type="primary" @click="sendLetter">发 送</el-button>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="私信"
+      :visible.sync="newLetterVisible"
+      width="35%"
+      :before-close="handleClose">
+      <div class="letter-body">
+        <div>
+          <div class="letter-send-box">发送给：</div>
+          <el-input v-model="receiver.name"></el-input>
           <div class="letter-send-box">私信内容：</div>
           <el-input
             type="textarea"
@@ -84,7 +118,9 @@ export default {
   data() {
     return {
       userId: 4,
-      dialogLetterVisible: false,
+      replyLetterVisible: false,
+      newLetterVisible: false,
+      editable: false,
       text: '',
       receiver: {
         name: '谭火彬'
@@ -146,7 +182,7 @@ export default {
       })
     },
     openLetter() {
-      this.dialogLetterVisible = true
+      this.replyLetterVisible = true
     },
     sendLetter() {
       if (this.text === '') {
@@ -155,19 +191,27 @@ export default {
           message: '私信内容不能为空'
         })
       } else {
-        this.dialogLetterVisible = false
+        this.replyLetterVisible = false
         this.$message({
           type: 'success',
           message: '发送成功'
         })
       }
     },
+    newMessage() {
+      this.newLetterVisible = true
+    },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
+      if (this.text !== '') {
+        this.$confirm('确认关闭？正在编辑的私信不会保存哦！')
+          .then(_ => {
+            done();
+            this.text = ''
+          })
+          .catch(_ => {});
+      } else {
+        done()
+      }
     }
   }
 }
@@ -274,5 +318,10 @@ export default {
 .letter-btn-box {
   text-align: right;
   margin-top: 5%;
+}
+
+.new-message-btn-box {
+  margin-bottom: 5%;
+  text-align: center;
 }
 </style>
