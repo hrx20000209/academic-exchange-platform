@@ -42,7 +42,10 @@
             </div>
           </div>
           <div class="message-details">
-            <el-scrollbar style="height: 100%">
+            <div class="details-top-box">
+              <h3>{{ receiver.name }}</h3>
+            </div>
+            <el-scrollbar style="height: 85%;">
               <div v-for="item in messages" :key="item.id">
                 <div class="message-details-item-you" v-if="item.sender_name==='你'">
                   <div class="name-box-you"> {{ item.sender_name }} </div>
@@ -186,7 +189,7 @@ export default {
         for(let i = 0; i < response.list.length; i++) {
           let obj = this.message()
           obj.sender_id = response.list[i].sender_id
-          if (this.receiver.name === '' && obj.receiver_id !== this.userId) {
+          if (obj.receiver_id !== this.userId) {
             this.receiver.name = response.list[i].receiver_name
           }
           if (obj.sender_id == this.userId) {
@@ -277,7 +280,7 @@ export default {
 }
 
 .body {
-  margin-top: 3%;
+  margin-top: 1%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -285,23 +288,23 @@ export default {
 }
 
 .middle-box {
-  box-shadow: 0 0 50px 20px lightgrey;
+  box-shadow: 0 0 30px 10px lightgrey;
   background-color: white;
   width: 60%;
-  height: 600px;
+  height: 650px;
   padding: 2%;
 }
 
 .message-list {
   width: 30%;
-  height: 500px;
+  height: 550px;
 }
 
 .message-details {
-  padding: 2%;
+  padding: 1% 2% 2% 2%;
   box-shadow: 0 0 10px 10px #f6f3f3;
   width: 65%;
-  height: 425px;
+  height: 525px;
   margin-left: 5%;
 }
 
@@ -351,7 +354,7 @@ export default {
 }
 
 .btn-box {
-  margin-top: 8%;
+  margin-top: 3%;
   float: right;
 }
 
@@ -406,5 +409,9 @@ export default {
   margin-right: 0;
   padding-right: 0;
   width: 50%;
+}
+
+.details-top-box {
+  display: flex;
 }
 </style>
