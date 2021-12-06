@@ -25,7 +25,7 @@
                     <el-avatar shape="circle" :size="size" :src="item.head"></el-avatar>
                   </div>
                   <div class="item-name-box">
-                    {{ item.name }}
+                    {{ item.user_name }}
                   </div>
                   <div v-if="item.unread" class="new-box">
                     <img :src="require('../assets/new.png')" width="50%" />
@@ -41,7 +41,7 @@
               </el-pagination>
             </div>
           </div>
-          <div class="message-details">
+          <div class="message-details" v-if="load">
             <div class="details-top-box">
               <h3>{{ receiver.name }}</h3>
             </div>
@@ -57,7 +57,7 @@
                 </div>
               </div>
             </el-scrollbar>
-            <div class="btn-box" v-if="this.receiver.name!==''">
+            <div class="btn-box">
               <el-button type="primary" @click="openLetter">回 复</el-button>
             </div>
           </div>
@@ -130,6 +130,7 @@ export default {
   data() {
     return {
       userId: '',
+      load: false,
       size: 40,
       replyLetterVisible: false,
       newLetterVisible: false,
@@ -139,72 +140,55 @@ export default {
         name: '',
         user_id: ''
       },
-      items: [],
-      messages: []
-    }
-  },
-  mounted() {
-    this.userId = localStorage.getItem('userId')
-    this.LoadMessageList()
-  },
-  methods: {
-    messageItem() {
-      return {
-        name: '',
+      items: [{
+        unread: '',
         user_id: '',
-        unread: true,
-        head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-      }
-    },
-    message() {
-      return {
+        user_name: ''
+      }],
+      messages: [{
         receiver_id: '',
         receiver_name: '',
         sender_id: '',
         sender_name: '',
         text: ''
-      }
-    },
+      }]
+    }
+  },
+  mounted() {
+    this.userId = localStorage.getItem('userId')
+    this.load = false
+    this.LoadMessageList()
+  },
+  methods: {
     LoadMessageList() {
       getMessageList({
         user_id: this.userId
       }).then(response => {
-        for(let i = 0; i < response.list.length; i++) {
-          let obj = this.messageItem()
-          obj.name = response.list[i].user_name
-          obj.unread = response.list[i].unread
-          obj.user_id = response.list[i].user_id
-          this.items.push(obj)
-        }
+        this.items = response.list
       })
     },
     read(id) {
+      this.load = true
       readMessage({
         user_id: this.userId,
         the_other_id: id
       }).then(response => {
-        if (this.messages.length !== 0) {
-          this.messages = []
-        }
+        this.messages = response.list
         for(let i = 0; i < response.list.length; i++) {
-          let obj = this.message()
-          obj.sender_id = response.list[i].sender_id
-          if (obj.receiver_id !== this.userId) {
-            this.receiver.name = response.list[i].receiver_name
+          if (this.messages[i].sender_id == this.userId) {
+            this.messages[i].sender_name = '你'
           }
-          if (obj.sender_id == this.userId) {
-            obj.sender_name = '你'
-          } else {
-            obj.sender_name = response.list[i].sender_name
-            if (this.receiver.name === '' || this.receiver.user_id === '') {
-              this.receiver.user_id = response.list[i].sender_id
-              this.receiver.name = response.list[i].sender_name
-            }
+          if (this.messages[i].sender_id !== this.userId) {
+            this.receiver.user_id = this.messages[i].sender_id
+            this.receiver.name = this.messages[i].sender_name
           }
-          obj.text = response.list[i].text
-          this.messages.push(obj)
+          if (this.messages[i].receiver_id !== this.userId) {
+            this.receiver.user_id = this.messages[i].receiver_id
+            this.receiver.name = this.messages[i].receiver_name
+          }
         }
       })
+      this.LoadMessageList()
     },
     openLetter() {
       this.replyLetterVisible = true
@@ -221,12 +205,13 @@ export default {
           receiver_name: this.receiver.name,
           text: this.text
         }).then(response => {
-          if (response.message === '不能向自己发送信息') {
+          console.log(response)
+          if (response.message == '不能向自己发送信息') {
             this.$message({
               type: 'warning',
               message: '不能向自己发送信息'
             })
-          } else if (response.message === 'no this user') {
+          } else if (response.message == 'no this user') {
             this.$message({
               type: 'warning',
               message: '该用户不存在'
@@ -237,8 +222,8 @@ export default {
               message: '发送成功'
             })
             this.newLetterVisible = false
+            this.replyLetterVisible = false
             this.read(this.receiver.user_id)
-            this.items = []
             this.LoadMessageList()
           }
         })
