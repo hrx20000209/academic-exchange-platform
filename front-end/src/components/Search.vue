@@ -1,17 +1,17 @@
 <template>
-  <div class="search" @keyup="keyboardEvent" tabindex="-1">
+  <div id="search" @keyup="keyboardEvent" tabindex="-1">
     <!--    <div class="searchbar">-->
     <!--      <el-autocomplete class="searchInput" v-model="searchInput" placeholder="请输入搜索关键词"-->
     <!--                       :fetch-suggestions="querySearch" @select="search" @keyup.enter="search"></el-autocomplete>-->
     <!--      <el-button class="searchBtn" type="primary" @click="search">搜索</el-button>-->
     <!--    </div>-->
-    <div class="searchBar">
-      <el-input placeholder="请输入关键词，按回车搜索" v-model="searchInput" id="mySearchInput" ref="searchInput"
-                @keyup.enter.native="search"
-                @focus="searchInputHasFocus = true"
-                @blur="searchInputHasFocus = false">
-        <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-      </el-input>
+    <div id="searchWrapper">
+      <div id="searchBar">
+        <el-input placeholder="请输入关键词" v-model="searchInput" id="mySearchInput" ref="searchInput"
+                  @keyup.enter.native="search">
+          <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+        </el-input>
+      </div>
     </div>
     <div class="below-searchbar">
       <div class="filterAndSort">
@@ -43,7 +43,7 @@
                 <span class="articleYear">{{ result.year }}</span>
                 <span class="articleVenue">{{ result.venue.raw }}</span>
               </div>
-              <div style="margin-bottom: 10px">
+              <div style="margin-bottom: 10px;font-size: 16.5px">
                 <span v-for="author in result.authors" :key="author.id">
                   {{ author.name }}
                   <span v-if="result.authors.indexOf(author) !== result.authors.length-1"> · </span>
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "search",
   data() {
@@ -100,7 +102,6 @@ export default {
         }
       ],
       search_response_data: null,
-      searchInputHasFocus: false,
       hits: [],
       // years and venues are watching hits
       // their value may be changed by checkboxes so they are not declared as computed
@@ -211,28 +212,12 @@ export default {
     },
   },
   methods: {
-    notifySlashWithThrottle: _.throttle(function () {
-      console.log("NOTIFYING SLASH SHORTCUT")
-      this.notifyInfo("按”/“即可跳到搜索框")
-    }, 30000, {
-      trailing: false
-    }),
     keyboardEvent(e) {
-      console.log(e.code)
-      if (e.location !== 0 || e.ctrlKey || e.altKey) return // 屏蔽非 DOM_KEY_LOCATION_STANDARD 键盘事件
-      if (e.code === "Slash") {
+      // console.log(e)
+      if (e.which === 191) {
         this.$refs.searchInput.focus()
-        console.log('FOCUS')
-      } else if (!this.searchInputHasFocus) {
-        this.notifySlashWithThrottle()
+        // alert('FOCUS')
       }
-    },
-    notifyInfo(str) {
-      this.$notify.info({
-        title: "提示",
-        message: str,
-        duration: 3000,
-      })
     },
     querySearch(queryString, cb) {
       let articles = this.articles;
@@ -245,14 +230,11 @@ export default {
       };
     },
     search() {
-      if (this.searchInput.length === 0) {
-        this.notifyInfo("关键词不能为空")
-        return
-      }
+      if (this.sea)
       console.log("searching: \n\t" + this.searchInput);
       // TODO 高级搜索
       // TODO 分页
-      this.$http.post(
+      const res = axios.post(
         'http://119.3.223.135:9200/cspaper/_search',
         {
           "query": {
@@ -288,20 +270,31 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.handler);
-  },
+  }
 };
 </script>
 
 <style scoped>
-.search {
+
+#search {
   display: flex;
   flex-direction: column;
 }
 
-.searchBar {
-  margin: 30px auto;
+#searchBar {
+  margin-top: auto;
+  margin-bottom: auto;
   width: 600px;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10)
+}
+
+#searchWrapper {
+  margin: 30px auto;
+  color: black;
+}
+
+#mySearchInput {
+  width: 300px;
+  height: 20px;
 }
 
 .below-searchbar {
@@ -316,8 +309,7 @@ export default {
   width: 300px;
   margin: 20px;
   padding: 30px;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10)
-
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 
 .filter {
@@ -366,7 +358,9 @@ export default {
   background: white;
   border-radius: 2px;
   margin: 20px;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10)
+  /*margin-left: 10%;*/
+  /*margin-bottom: 30px;*/
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 
 .articleType {
@@ -376,10 +370,5 @@ export default {
   color: #007478;
   border-radius: 2px;
   text-align: center;
-}
-
-/deep/ .el-input__inner {
-  height: 60px;
-  font-size: 16px;
 }
 </style>
