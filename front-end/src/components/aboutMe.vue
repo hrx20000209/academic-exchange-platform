@@ -10,22 +10,26 @@
   </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item class="myDropdown" command="editIntro">编辑介绍</el-dropdown-item>
-            <el-dropdown-item class="myDropdown" command="editLanguage">编辑语言</el-dropdown-item>
-            <el-dropdown-item class="myDropdown" command="editSub">编辑学科</el-dropdown-item>
-            <el-dropdown-item class="myDropdown" command="editTech">编辑技能</el-dropdown-item>
+            <el-dropdown-item class="myDropdown" command="editLanguage">编辑技能</el-dropdown-item>
+            <!--            <el-dropdown-item class="myDropdown" command="editSub">编辑学科</el-dropdown-item>-->
+            <el-dropdown-item class="myDropdown" command="editTech">编辑领域</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </div>
     <div id="mainAboutMePane">
       <div class="AboutMeInfo">介绍</div>
-      <div class="AboutMeDetail">{{ this.user.summary }}</div>
-      <div class="AboutMeInfo">语言</div>
-      <div class="AboutMeDetail">{{ this.user.language }}</div>
+      <div class="AboutMeDetail" v-if="this.user.summary!=null">{{ this.user.summary }}</div>
+      <div class="AboutMeDetail" v-else>待完善</div>
+      <div class="AboutMeInfo">技能</div>
+      <div class="AboutMeDetail" v-if="this.user.skill!=null">{{ this.user.skill }}</div>
+      <div class="AboutMeDetail" v-else>待完善</div>
       <div class="AboutMeInfo">学科</div>
-      <div class="AboutMeDetail">{{ this.user.area }}</div>
-      <div class="AboutMeInfo">技能与专业</div>
-      <div class="AboutMeDetail">{{ this.user.tech }}</div>
+      <div class="AboutMeDetail" v-if="this.user.degree!=null">{{ this.user.degree }}</div>
+      <div class="AboutMeDetail" v-else>待完善</div>
+      <div class="AboutMeInfo">领域</div>
+      <div class="AboutMeDetail" v-if="this.user.field!=null">{{ this.user.field }}</div>
+      <div class="AboutMeDetail" v-else>待完善</div>
     </div>
     <el-dialog title="更新你的介绍" :visible.sync="IntroDialog" class="infoDialog">
       <div class="dialogMainPane">
@@ -57,12 +61,12 @@
         </div>
       </div>
     </el-dialog>
-    <el-dialog title="编辑语言" :visible.sync="LanDialog" class="infoDialog">
+    <el-dialog title="编辑技能" :visible.sync="LanDialog" class="infoDialog">
       <div class="dialogMainPane">
-        <div class="DetailInfo">选择您的语言以将它们添加到您的个人资料中。</div>
-        <div class="introInfo">语言</div>
+        <div class="DetailInfo">编辑您的技能以将它们添加到您的个人资料中。</div>
+        <div class="introInfo">技能</div>
         <div class="myInput">
-          <el-input autocomplete="off" type="textarea" rows="2"></el-input>
+          <el-input autocomplete="off" type="textarea" rows="2" v-model="skillContent"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -72,26 +76,26 @@
         </div>
       </div>
     </el-dialog>
-    <el-dialog title="编辑学科" :visible.sync="SubDialog" class="infoDialog">
+    <!--    <el-dialog title="编辑学科" :visible.sync="SubDialog" class="infoDialog">-->
+    <!--      <div class="dialogMainPane">-->
+    <!--        <div class="DetailInfo">添加最能描述您的研究的学科。最符合你研究领域的学科有助于其他用户迅速了解你。</div>-->
+    <!--        <div class="introInfo">学科</div>-->
+    <!--        <div class="myInput">-->
+    <!--          <el-input autocomplete="off" type="textarea" rows="2" v-model="fieldContent"></el-input>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div slot="footer" class="dialog-footer">-->
+    <!--        <div class="twoButton">-->
+    <!--          <el-button @click="SubDialogCancel" class="cancel">取 消</el-button>-->
+    <!--          <el-button type="primary" @click="SubDialogConfirm" class="confirm">确 定</el-button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
+    <el-dialog title="更新您的领域和专业知识" :visible.sync="TechDialog" class="infoDialog">
       <div class="dialogMainPane">
-        <div class="DetailInfo">添加最能描述您的研究的学科。您最多可以添加 3 个学科，每个学科最多有 3 个子学科。</div>
-        <div class="introInfo">学科</div>
+        <div class="DetailInfo">我们利用您的领域和专业知识向您展示您所在领域的最新研究。</div>
         <div class="myInput">
-          <el-input autocomplete="off" type="textarea" rows="2"></el-input>
-        </div>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <div class="twoButton">
-          <el-button @click="SubDialogCancel" class="cancel">取 消</el-button>
-          <el-button type="primary" @click="SubDialogConfirm" class="confirm">确 定</el-button>
-        </div>
-      </div>
-    </el-dialog>
-    <el-dialog title="更新您的技能和专业知识" :visible.sync="TechDialog" class="infoDialog">
-      <div class="dialogMainPane">
-        <div class="DetailInfo">我们利用您的技能和专业知识向您展示您所在领域的最新研究。</div>
-        <div class="myInput">
-          <el-input autocomplete="off" type="textarea" rows="3"></el-input>
+          <el-input autocomplete="off" type="textarea" rows="3" v-model="fieldContent"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -117,7 +121,9 @@ export default {
       LanDialog: false,
       SubDialog: false,
       TechDialog: false,
-      intro: '',
+      intro: this.user.summary,
+      skillContent: this.user.skill,
+      fieldContent: this.user.field,
     }
   },
   methods: {
@@ -147,6 +153,8 @@ export default {
     },
     lanDialogConfirm() {
       this.LanDialog = false;
+      this.user.skill = this.skillContent
+      this.updateInfor()
     },
     SubDialogCancel() {
       this.SubDialog = false;
@@ -159,18 +167,26 @@ export default {
     },
     TechDialogConfirm() {
       this.TechDialog = false;
+      this.user.field = this.fieldContent
+      this.updateInfor()
     },
     updateInfor() {
       // console.log(1)
       // console.log(this.user)
       updateInfo({
-        user_id:this.user.user_id,
+        user_id: this.user.user_id,
         field: this.user.field,
         skill: this.user.skill,
         degree: this.user.degree,
         summary: this.user.summary
-      }).then(res=>{
+      }).then(res => {
+        console.log(this.user.field)
         console.log(res)
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        })
+        // this.$router.go(0)
       })
     }
   }
@@ -182,7 +198,8 @@ export default {
   background-color: white;
   border: 1px solid #dedede;
   border-radius: 2px;
-  margin-top: 10px;
+  margin-top: 30px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #editButton {
@@ -190,7 +207,7 @@ export default {
   justify-content: flex-end;
   padding: 10px;
   font-family: "Microsoft YaHe";
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -204,7 +221,8 @@ export default {
   padding: 10px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
+  margin-left: 10px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -218,8 +236,8 @@ export default {
 
 #rightButton {
   display: flex;
-  width: 250px;
-  justify-content: flex-end;
+  margin-left: auto;
+  margin-right: 20px;
   margin-top: 10px;
   color: #8e8e8e;
 }
@@ -246,7 +264,6 @@ export default {
 
 #topHead {
   display: flex;
-  justify-content: center;
 }
 
 #mainAboutMePane {
@@ -258,13 +275,13 @@ export default {
   font-family: "Microsoft YaHei";
   font-weight: bold;
   color: black;
-  font-size: 15px;
+  font-size: 17px;
   margin-top: 15px;
 }
 
 .AboutMeDetail {
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: #343434;
   margin-top: 5px;
 }
@@ -306,7 +323,7 @@ export default {
 .dialogInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 17px;
   color: black;
 }
 
@@ -328,13 +345,13 @@ export default {
   margin-left: 10px;
   font-family: "Microsoft YaHei";
   color: #575757 !important;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .introInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 17px;
   margin-top: 20px;
   color: black;
 }
@@ -356,7 +373,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -376,7 +393,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -391,12 +408,12 @@ export default {
 .DetailInfo {
   font-family: "Microsoft YaHei";
   color: #575757 !important;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 /deep/ .el-dropdown {
   display: inline-block;
   position: relative;
-  font-size: 14px;
+  font-size: 16px;
 }
 </style>

@@ -11,17 +11,21 @@
           <div class="mainPaneTitleDescribe">您的名片是您个人资料的简短摘要，可以向整个平台的其他人显示。确保它是最新的，以便其他人在发现您的卡片时可以轻松了解您。</div>
           <div id="card">
             <div id="cardLeftPart">
-              <div id="usrName">{{ this.user.userName }}</div>
-              <div id="userDegree">{{ this.user.userDegree }}</div>
-              <div id="userAbility">{{ this.user.ability }}</div>
-              <div class="userInInfo">机构</div>
-              <div class="userInDetail">{{ this.user.inti }}</div>
-              <div class="userInInfo">技能</div>
-              <div class="userInDetail">{{ this.user.ability }}</div>
+              <div id="usrName">{{ this.user.name }}</div>
+              <div id="userAbility">{{ this.user.skill }}</div>
+              <div class="userInInfo">学位</div>
+              <div class="userInDetail" v-if="this.user.degree != null">{{ this.user.degree }}</div>
+              <div v-else class="userInDetail">未知</div>
+              <div class="userInInfo">邮箱</div>
+              <div class="userInDetail">{{ this.user.mailbox }}</div>
+              <div class="userInInfo">专业领域</div>
+              <div class="userInDetail" v-if="this.user.field!=null">{{ this.user.field }}</div>
+              <div v-else class="userInDetail">待完善</div>
             </div>
             <div id="cardrightPic">
-              <el-avatar :size="75"
-                         src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+              <el-avatar :size="75" :src=imgsrc @error="errorHandler">
+                <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
+              </el-avatar>
             </div>
           </div>
         </div>
@@ -38,20 +42,26 @@
         <el-form :model="form">
           <div class="editInfo">学位</div>
           <div id="degreeDetail">
-            <el-select v-model="form.region" placeholder="请选择学位">
-              <el-option label="计算机科学与技术 博士" value="master"></el-option>
-              <el-option label="计算机科学与技术 硕士" value="doctor"></el-option>
-              <el-option label="计算机科学与技术 学士" value="bachelor"></el-option>
-            </el-select>
+            <div id="selectfirst">
+              <el-select  placeholder="请选择学科" v-model="subNum">
+                <el-option v-for="(item,index) in subject" :label=item :value="index" :key="index"></el-option>
+              </el-select>
+            </div>
+            <div id="selectsecond">
+              <el-select  placeholder="请选择学历" v-model="rankNum">
+                <el-option v-for="(item,index) in rank" :label=item :value="index" :key="index"></el-option>
+              </el-select>
+            </div>
+
           </div>
           <div class="editInfo">当前的方向</div>
           <div class="myInput">
-            <el-input v-model="form.name" autocomplete="off" type="textarea">{{ this.user.ability }}</el-input>
+            <el-input v-model="form.curField" autocomplete="off" type="textarea"></el-input>
           </div>
-          <div class="editInfo">所属机构</div>
-          <div class="myInput">
-            <el-input placeholder="请输入内容"></el-input>
-          </div>
+<!--          <div class="editInfo">所属机构</div>-->
+<!--          <div class="myInput">-->
+<!--            <el-input placeholder="请输入内容"></el-input>-->
+<!--          </div>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <div id="twoButton">
@@ -65,34 +75,67 @@
 </template>
 
 <script>
+import {updateInfo} from "../request/api";
+
 export default {
   name: "editUsrInfo",
-  props: ['user'],
+  props: ['user', 'imgsrc','subindex','rankindex'],
   data() {
     return {
       ifEdit: false,
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        sub:'',
+        rank:'',
+        curField:this.$props.user.field
       },
+      subject: ['哲学', '经济学', '法学', '教育学', '文学', '历史学', '理学', '工学', '农学', '医学', '军事学', '管理学', '艺术学'],
+      rank: ['本科生', '研究生', '学士', '硕士', '博士', '博士后'],
+      value:'',
+      subNum:this.$props.subindex,
+      rankNum:this.$props.rankindex
     }
+  },
+  mounted() {
+        console.log(this.subNum)
   },
   methods: {
     toEditMode() {
       this.ifEdit = true;
+      let str = this.user.degree.split(' ')
+      this.subNum = this.subject.indexOf(str[0])
+        this.rankNum = this.rank.indexOf(str[1])
+        this.form.curField= this.user.field
     },
-    cancelEdit(){
+    cancelEdit() {
       this.ifEdit = false;
     },
-    confirmEdit(){
-      this.ifEdit=false;
-    }
+    confirmEdit() {
+      this.updateInfor()
+      this.ifEdit = false;
+    },
+    errorHandler() {
+      return true
+    },
+    updateInfor() {
+      // console.log(1)
+      // console.log(this.user)
+      updateInfo({
+        user_id: this.user.user_id,
+        field: this.form.curField,
+        skill: this.user.skill,
+        degree: this.subject[this.subNum]+' '+this.rank[this.rankNum],
+        summary: this.user.summary
+      }).then(res => {
+        console.log(res.Message)
+        if(res.Message == 'change user information success'){
+          this.$message({
+          message: '修改成功！',
+          type: 'success'
+        });
+          this.$router.go(0)
+        }
+      })
+    },
   }
 }
 </script>
@@ -103,6 +146,7 @@ export default {
   justify-content: flex-end;
   padding: 10px;
   font-family: "Microsoft YaHe";
+  font-weight: bold;
   font-size: 14px;
   letter-spacing: 1px;
   color: #8e8e8e;
@@ -132,6 +176,8 @@ export default {
   background-color: white;
   border: 1px solid #dedede;
   border-radius: 2px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
 }
 
 #editMainPane {
@@ -144,14 +190,14 @@ export default {
   margin-top: 10px;
   margin-left: 10px;
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 18px;
   color: #606266;
 }
 
 .mainPaneTitleDescribe {
   padding: 10px;
-  font-family: "Microsoft YaHei UI Light";
-  font-size: 11px;
+  font-family: "Microsoft YaHei UI";
+  font-size: 15px;
   color: #8e8e8e;
 }
 
@@ -167,16 +213,17 @@ export default {
 }
 
 #usrName {
-  font-family: "Microsoft YaHei";
+  font-family: "siyuan";
+  letter-spacing: 1px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 
-#userDegree {
+.userDegree {
   font-family: "Microsoft YaHei";
   margin-top: 3px;
-  font-size: 13px;
+  font-size: 16px;
   color: #606266;
 }
 
@@ -185,7 +232,7 @@ export default {
   font-family: "Microsoft YaHei";
   font-style: italic;
   color: black;
-  font-size: 13px;
+  font-size: 16px;
 
 }
 
@@ -193,17 +240,21 @@ export default {
   margin-top: 15px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
-  color: #a1a1a1;
+  font-size: 16px;
+  color: #4b4b4b;
 }
 
 .userInDetail {
   font-family: "Microsoft YaHei";
   color: black;
-  font-size: 13px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 5px;
 }
 
 #cardrightPic {
+  margin-left: auto;
+  margin-right: 30px;
   margin-top: 20px;
 }
 
@@ -232,6 +283,7 @@ export default {
 
 #degreeDetail {
   margin-top: 10px;
+  display: flex;
 }
 
 /deep/ .el-dialog__footer {
@@ -244,10 +296,11 @@ export default {
 .dialog-footer {
   border-top: gainsboro 1px solid;
   background: none;
+  margin-top: 50px;
 }
 
 #twoButton {
-  margin-top: 30px;
+  margin-top: 13px;
   margin-right: 10px;
   display: flex;
   flex-direction: row-reverse;
@@ -259,21 +312,21 @@ export default {
 
 #editDesDetail {
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   margin-top: 10px;
 }
 
 #usrNameEdit {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   margin-top: 15px;
 }
 
 .editInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 17px;
   margin-top: 10px;
 }
 
@@ -284,7 +337,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -292,24 +345,35 @@ export default {
   padding: 10px 20px 10px 20px;
   border: none;
 }
-#confirm:hover{
+
+#confirm:hover {
   color: white;
   background: #005abb;
 }
-#cancel{
-    font-family: "Microsoft YaHei UI";
+
+#cancel {
+  font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
   padding: 10px 20px 10px 20px;
   border: none;
 }
-#cancel:hover{
+
+#cancel:hover {
   background-color: whitesmoke;
+}
+
+/deep/ .el-select > .el-input {
+  width: 250px;
+  display: block;
+}
+#selectsecond{
+  margin-left: 80px;
 }
 </style>

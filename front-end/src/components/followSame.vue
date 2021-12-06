@@ -53,6 +53,7 @@ export default {
   border: 1px solid #dedede;
   border-radius: 2px;
   margin-top: 20px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #topHead {
@@ -64,7 +65,7 @@ export default {
   padding: 10px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -83,12 +84,12 @@ export default {
 .idName{
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: #343434;
 }
 .NumberInfor{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 18px;
   color: #8e8e8e;
 }
 .followButton{
@@ -98,7 +99,7 @@ export default {
   border: #0080ff 1px solid;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -116,7 +117,7 @@ export default {
 }
 #footerCharacter{
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 18px;
 }
 #footerCharacter:hover{
   cursor: pointer;

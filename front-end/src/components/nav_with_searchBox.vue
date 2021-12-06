@@ -84,6 +84,7 @@ export default {
     },
     handleDropDown(command) {
       if (command === "exit") {
+        localStorage.setItem('user_id','-1')
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
