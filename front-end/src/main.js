@@ -11,12 +11,14 @@ import './styles/font.css'
 import * as echarts from 'echarts'
 import axios from 'axios'
 import VueAxios from "vue-axios"
+import _ from 'lodash'
 
 
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 
 Vue.prototype.$http = axios
+Vue.prototype._ = _
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.use(echarts)
