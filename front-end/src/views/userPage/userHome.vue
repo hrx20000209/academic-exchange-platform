@@ -11,7 +11,7 @@
           </div>
         </div>
         <div id="middleDetail">
-          <div id="usrName">{{ this.user.username }}</div>
+          <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.degree }}</div>
             <div id="editYourInfo" @click="editSimpleInfo">编辑信息</div>
@@ -107,7 +107,7 @@
             <div id="changeImageName" @click="toUploadImage">修改头像</div>
           </div>
           <div v-else>
-            <div v-if="this.ifImageUploadVisible==true">
+            <div id="uploadButton" v-if="this.ifImageUploadVisible==true">
               <el-upload
                 class="upload-demo"
                 ref="upload"
@@ -364,9 +364,9 @@ export default {
     }
   },
   mounted() {
-    // this.getUserInformation(1)
-    // this.add_pic_url += this.user.user_id
-    // //this.getFollowList()
+    this.getUserInformation(1)
+    this.add_pic_url += this.user.user_id
+    this.getFollowList()
   },
   methods: {
     getFollowList() {
@@ -459,7 +459,8 @@ export default {
       }
     },
     submitUpload() {
-      this.add_pic_url += this, user.user_id
+      console.log(this.user.user_id)
+      this.add_pic_url=this.add_pic_url+ this.user.user_id
       console.log(this.add_pic_url);
       this.$refs.upload.submit();
     },
@@ -492,8 +493,11 @@ export default {
 
 #usrHomePane {
   background-color: whitesmoke;
-}
 
+}
+#uploadButton{
+  justify-content: center;
+}
 #topPicAndAddButton {
   background: #ffffff;
   display: flex;
@@ -519,7 +523,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -539,7 +543,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 17px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -567,16 +571,16 @@ export default {
 }
 
 #usrName {
-  font-size: 20px;
-  font-family: "Microsoft YaHei";
+  font-size: 24px;
+  font-family: "siyuan";
   font-weight: bold;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
   color: #343434;
 }
 
 #usrDegree {
   margin-top: 10px;
-  font-size: 13px;
+  font-size: 17px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   color: #606266;
@@ -588,7 +592,7 @@ export default {
 
 #usrAbility {
   margin-top: 2px;
-  font-size: 13px;
+  font-size: 17px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   color: #343434;
@@ -596,12 +600,12 @@ export default {
 
 #editYourInfo {
   margin-top: 10px;
-  font-size: 10px;
+  font-size: 14px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   border-bottom: #606266 1px solid;
   color: #606266;
-  margin-left: 10px;
+  margin-left: 6px;
 }
 
 #editYourInfo {
@@ -618,7 +622,7 @@ export default {
 
 #directionInfo {
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 17px;
   margin-top: 10px;
 }
 
@@ -628,6 +632,7 @@ export default {
 
 #degreeInfo {
   margin-top: 10px;
+  font-size: 16px;
 }
 
 /deep/ .el-select > .el-input {
@@ -682,7 +687,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: row;
-  border-bottom: gainsboro 1px solid;
+   box-shadow:0 5px 10px -5px #a7a7a7;
 }
 
 #centerSomeTabs {
@@ -696,7 +701,7 @@ export default {
   border-bottom: transparent 2px solid;
   color: darkgray;
   font-family: "Microsoft YaHei UI Light";
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
 }
@@ -709,15 +714,15 @@ export default {
   color: #005abb;
   border-bottom: #005abb 2px solid;
   margin-left: 15px;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Microsoft YaHei";
   padding-bottom: 2px;
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
 }
 
 #editUsrInfoPane {
-  width: 550px;
+  width: 625px;
   margin-top: 20px;
 }
 
@@ -731,20 +736,21 @@ export default {
 }
 
 #rightMainPane {
-  margin-left: 20px;
-  width: 350px;
+  margin-left: 40px;
+  width: 425px;
 }
 
 #researchLine {
   display: flex;
+  margin-top: 10px;
 }
 
 #researchInfo {
   width: 100px;
-  padding: 10px;
+  padding: 15px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #606266;
 }
@@ -763,9 +769,9 @@ export default {
 
 #researchItem {
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   width: 875px;
-  margin-top: 15px;
+  margin-top: 20px;
   border-radius: 1px;
 }
 
@@ -803,9 +809,9 @@ export default {
 
 #changeImageName {
   justify-content: center;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Microsoft YaHei UI";
   color: #0080ff;
-  font-size: 13px;
+  font-size: 15px;
   margin-top: 10px;
   width: fit-content;
   margin-left: auto;
@@ -830,7 +836,7 @@ export default {
 }
 
 /deep/ .el-upload__tip {
-  font-size: 12px;
+  font-size: 13px;
   color: #606266;
   margin-top: 7px;
   width: fit-content;

@@ -194,9 +194,9 @@ export default {
 <style scoped>
 #citeAndPublish {
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 #leftCharacter {
@@ -205,7 +205,7 @@ export default {
   font-family: "Microsoft YaHe";
   margin-left: 20px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }

@@ -134,9 +134,9 @@ export default {
 
 <style scoped>
 #myCollection {
-  margin-top: 10px;
+  margin-top: 20px;
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding-bottom: 10px;
   border-radius: 2px;
   width: 900px;
@@ -147,9 +147,9 @@ export default {
   padding: 10px;
   margin-left: 10px;
   justify-content: flex-start;
-  font-family: "Microsoft YaHe";
+  font-family: "siyuan";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -165,8 +165,9 @@ export default {
 }
 
 #collectionTitle {
-  font-family: "Microsoft YaHei";
+  font-family: "siyuan";
   color: black;
+  font-weight: bold;
 }
 
 .eachFav {
@@ -176,8 +177,9 @@ export default {
 
 .paperName {
   margin-left: 20px;
-  font-family: "Microsoft YaHei";
-  font-size: 14px;
+  font-family: "siyuan";
+  font-weight: bold;
+  font-size: 18px;
   width: 500px;
 }
 
@@ -199,7 +201,7 @@ export default {
   color: #303133;
   cursor: pointer;
   border-bottom: 1px solid #EBEEF5;
-  font-size: 14px;
+  font-size: 18px;
   /* font-weight: 500; */
   padding-left: 20px;
   -webkit-transition: border-bottom-color .3s;
@@ -209,7 +211,7 @@ export default {
 
 /deep/ .el-collapse-item__content {
   /* padding-bottom: 25px; */
-  font-size: 13px;
+  font-size: 17px;
   color: #303133;
   line-height: 1.769230769230769;
 }
@@ -221,13 +223,14 @@ export default {
 }
 
 .threeButton button {
-  font-family: "Microsoft YaHei UI";
+  font-family: "siyuan";
   display: inline;
   /*background-color: transparent;*/
   /*background-color: #1f86fd;*/
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "siyuan";
+  font-weight: bold;
   /*color: #ffffff;*/
-  font-size: 12px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -271,13 +274,13 @@ export default {
 }
 
 #twoButton button {
-  font-family: "Microsoft YaHei UI";
+  font-family: "siyuan";
+  font-weight: bold;
   display: inline;
   /*background-color: transparent;*/
   /*background-color: #1f86fd;*/
-  font-family: "Roboto", Arial, sans-serif;
   /*color: #ffffff;*/
-  font-size: 13px;
+  font-size: 17px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -313,9 +316,9 @@ export default {
 }
 
 .dialogInfo {
-  font-family: "Microsoft YaHei";
+  font-family: "siyuan";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 
@@ -330,13 +333,13 @@ export default {
 }
 
 .confirm {
-  font-family: "Microsoft YaHei UI";
+  font-family: "siyuan";
+  font-weight: bold;
   display: inline;
   background-color: transparent;
   background-color: #0080ff;
-  font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -351,20 +354,21 @@ export default {
 }
 
 .introInfo {
-  font-family: "Microsoft YaHei";
+  font-family: "siyuan";
   font-weight: bold;
-  font-size: 13px;
+  font-weight: bold;
+  font-size: 17px;
   margin-top: 20px;
   color: black;
 }
 
 .cancel {
-  font-family: "Microsoft YaHei UI";
+  font-family: "siyuan";
+  font-weight: bold;
   display: inline;
   background-color: transparent;
   color: #0080ff;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;

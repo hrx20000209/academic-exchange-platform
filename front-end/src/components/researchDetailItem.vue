@@ -70,14 +70,14 @@ export default {
   padding: 5px;
   font-family: "Microsoft YaHei";
   border-radius: 2px;
-  font-size: 13px;
+  font-size: 17px;
 }
 #hasFullText{
   color: #007478;
   padding: 5px;
   border: #007478 1px solid;
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   margin-left: 10px;
   border-radius: 2px;
 }
@@ -86,7 +86,7 @@ export default {
   background-color: transparent;
   padding: 5px;
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   margin-left: 10px;
 }
 #authorInfo{
@@ -99,7 +99,7 @@ export default {
 }
 .authorNameInfo{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: black;
   margin-left: 10px;
   margin-top: 6px;
@@ -122,7 +122,7 @@ export default {
   background-color: transparent;
   font-family: "Microsoft YaHei";
   color: #0080ff;
-  font-size: 13px;
+  font-size: 17px;
   text-align: center;
   width: fit-content;
   border-radius: 2px;
@@ -138,7 +138,7 @@ export default {
   padding: 5px 8px 5px 8px;
   margin-left: 6px;
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: #343434;
 }
 .threeButton:hover{
@@ -149,11 +149,11 @@ export default {
 #rightPane{
   display: flex;
   justify-content: flex-end;
-  font-size:80px;
+  font-size:18px;
 }
 #abstract{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: #343434;
   margin-top: 10px;
 }

@@ -182,7 +182,8 @@ export default {
   background-color: white;
   border: 1px solid #dedede;
   border-radius: 2px;
-  margin-top: 10px;
+  margin-top: 30px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #editButton {
@@ -190,7 +191,7 @@ export default {
   justify-content: flex-end;
   padding: 10px;
   font-family: "Microsoft YaHe";
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -204,7 +205,7 @@ export default {
   padding: 10px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -258,13 +259,13 @@ export default {
   font-family: "Microsoft YaHei";
   font-weight: bold;
   color: black;
-  font-size: 15px;
+  font-size: 17px;
   margin-top: 15px;
 }
 
 .AboutMeDetail {
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: #343434;
   margin-top: 5px;
 }
@@ -306,7 +307,7 @@ export default {
 .dialogInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 17px;
   color: black;
 }
 
@@ -328,13 +329,13 @@ export default {
   margin-left: 10px;
   font-family: "Microsoft YaHei";
   color: #575757 !important;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .introInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 17px;
   margin-top: 20px;
   color: black;
 }
@@ -356,7 +357,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -376,7 +377,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -391,12 +392,12 @@ export default {
 .DetailInfo {
   font-family: "Microsoft YaHei";
   color: #575757 !important;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 /deep/ .el-dropdown {
   display: inline-block;
   position: relative;
-  font-size: 14px;
+  font-size: 18px;
 }
 </style>

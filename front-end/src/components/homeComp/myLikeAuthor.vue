@@ -61,9 +61,9 @@ export default {
 
 <style scoped>
 #myLikeAuthor {
-  margin-top: 10px;
+  margin-top: 20px;
   background-color: white;
-  border: 1px solid #dedede;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding-bottom: 10px;
   border-radius: 2px;
   width: 900px;
@@ -76,7 +76,7 @@ export default {
   justify-content: flex-start;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -112,14 +112,14 @@ export default {
 .authorData {
   display: flex;
   font-family: "Microsoft YaHei";
-  font-size: 11px;
+  font-size: 15px;
   color: #606266;
   margin-top: 5px;
 }
 
 .intro {
   font-family: "Microsoft YaHei";
-  font-size: 14px;
+  font-size: 18px;
   color: #343434;
   margin-top: 6px;
 }
@@ -143,7 +143,7 @@ export default {
   background-color: #1f86fd;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 17px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -164,7 +164,7 @@ export default {
   background-color: #d0d0d0;
   font-family: "Roboto", Arial, sans-serif;
   color: #5a5a5a;
-  font-size: 13px;
+  font-size: 17px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
