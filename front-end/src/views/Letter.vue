@@ -133,6 +133,7 @@ export default {
   data() {
     return {
       userId: '',
+      userName: '',
       load: false,
       size: 40,
       replyLetterVisible: false,
@@ -184,6 +185,7 @@ export default {
         for(let i = 0; i < response.list.length; i++) {
           if (this.messages[i].sender_id == this.userId) {
             this.messages[i].sender_name = '你'
+            this.userName = this.messages[i].sender_name
           }
           if (this.messages[i].sender_id !== this.userId) {
             this.receiver.user_id = this.messages[i].sender_id
@@ -192,6 +194,10 @@ export default {
           if (this.messages[i].receiver_id !== this.userId) {
             this.receiver.user_id = this.messages[i].receiver_id
             this.receiver.name = this.messages[i].receiver_name
+          }
+          if (this.userName === ''
+            && this.messages[i].receiver_id === this.userId) {
+            this.userName = this.messages[i].receiver_name
           }
         }
       })
@@ -213,11 +219,15 @@ export default {
           text: this.text
         }).then(response => {
           console.log(response)
-          if (response.Message === '不能向自己发送信息') {
+
+          console.log(this.userName)
+          console.log(this.receiver.name)
+          if (this.userName == this.receiver.name) {
             this.$message({
               type: 'warning',
               message: '不能向自己发送信息'
             })
+            return
           } else if (response.Message === 'no this user') {
             this.$message({
               type: 'warning',
