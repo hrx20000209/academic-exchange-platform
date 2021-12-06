@@ -56,6 +56,7 @@ export default {
             type: 'success',
             message: '登陆成功！'
           })
+          localStorage.setItem('ifLogin', 1)
           this.$router.push('/')
         }
       })
@@ -84,6 +85,7 @@ export default {
 }
 
 .middle-box {
+  box-shadow: 0px 0px 50px 20px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;

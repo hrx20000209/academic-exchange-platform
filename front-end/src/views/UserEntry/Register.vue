@@ -76,7 +76,17 @@ export default {
   },
   methods: {
     register() {
-      if (this.user.password === this.user.checkPass) {
+      if (this.user.name === '') {
+        this.$message({
+          type:'warning',
+          message: '用户名不能为空'
+        })
+      } else if (this.user.email === '') {
+        this.$message({
+          type:'warning',
+          message: '邮箱不能为空'
+        })
+      } else if (this.user.password === this.user.checkPass) {
         register({
           name: this.user.name,
           password: this.user.password,
@@ -87,6 +97,7 @@ export default {
               type: 'success',
               message: '注册成功'
             })
+            this.$router.push('/login')
           } else if (res.message === '用户名已存在') {
             this.$message({
               type: 'warning',
@@ -128,6 +139,7 @@ export default {
 }
 
 .middle-box {
+  box-shadow: 0px 0px 50px 20px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;
