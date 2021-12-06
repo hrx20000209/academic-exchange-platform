@@ -52,6 +52,7 @@ export default {
             message: '用户名或密码错误'
           })
         } else {
+          localStorage.setItem('user_id',response.user_id)
           this.$message({
             type: 'success',
             message: '登陆成功！'

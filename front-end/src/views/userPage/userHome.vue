@@ -5,7 +5,7 @@
       <div id="topPicAndAddButton">
         <div id="leftPic">
           <div id="leftPicDetail">
-            <el-avatar :size="85" :src=this.add_pic_url @error="errorHandler">
+            <el-avatar :size="85" :src=this.get_pic_url v-if="needUpdate" @error="errorHandler">
               <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
             </el-avatar>
           </div>
@@ -53,7 +53,7 @@
       <div v-if="activeMode === 1" class="mainPane">
         <div id="leftMainPane">
           <div id="editUsrInfoPane">
-            <edit-usr-info :user="user"></edit-usr-info>
+            <edit-usr-info :user="user" :imgsrc="this.get_pic_url"></edit-usr-info>
             <about-me :user="this.user"></about-me>
             <stats-overview :user="user"></stats-overview>
             <div id="researchLine">
@@ -101,7 +101,7 @@
       <el-form :model="form">
         <div id="topImagePane">
           <div id="topImageWrapper" v-if="ifImageUploadVisible==false">
-            <el-avatar :size="80" src="https://empty" @error="errorHandler" id="tmpImage">
+            <el-avatar :size="80" v-if="needUpdate" :src=this.get_pic_url @error="errorHandler" id="tmpImage">
               <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
             </el-avatar>
             <div id="changeImageName" @click="toUploadImage">修改头像</div>
@@ -109,23 +109,28 @@
           <div v-else>
             <div id="uploadButton" v-if="this.ifImageUploadVisible==true">
               <el-upload
+                v-loading="loading"
                 class="upload-demo"
                 ref="upload"
-                :action="this.add_pic_url"
+                action=""
+                drag
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :file-list="form.fileList"
                 :on-success="handleSuccess"
-                :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器
-                </el-button>
+                :on-change="test"
+                :before-upload="beforeAvatarUpload"
+                :http-request="submitUpload"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
               </el-upload>
-              <!--              <el-dialog :visible.sync="dialogVisible" append-to-body>-->
-              <!--                <img width="100%" :src="dialogImageUrl" alt="">-->
-              <!--              </el-dialog>-->
             </div>
+
+            <!--              <el-dialog :visible.sync="dialogVisible" append-to-body>-->
+            <!--                <img width="100%" :src="dialogImageUrl" alt="">-->
+            <!--              </el-dialog>-->
           </div>
         </div>
         <div>
@@ -193,9 +198,10 @@ import StatsDigitTotal from "../../components/statsDigitTotal";
 import CiteAndPublish from "../../components/stats/citeAndPublish";
 import AuthorRelationship from "../../components/stats/authorRelaitionship";
 import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
-import {getUsrInfo, updateInfo} from "../../request/api";
+import {getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
 import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 import MyCollection from "../../components/homeComp/myCollection";
+import axios from "axios";
 
 export default {
   name: "userHome",
@@ -217,57 +223,74 @@ export default {
   },
   data() {
     return {
+      ifNUll: false,
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {},
+      needUpdate: 1,
+      previewsrc: '',
+      imgRaw: '',
       dialogFormVisible: false,
       dialogLetterVisible: false,
       haveUpload: false,
-      collectionList:[{
-        name:'默认收藏夹',
-        detail:[
-          {paper_id:12345,
-          paper_name:'数据挖掘中的聚类算法综述'
+      loading:false,
+      collectionList: [{
+        name: '默认收藏夹',
+        detail: [
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中的聚类算法综述'
           },
-          {paper_id:12345,
-          paper_name:'数据挖掘中聚类算法研究进展'
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中聚类算法研究进展'
           },
-          {paper_id:12345,
-          paper_name:'大数据时代下数据挖掘技术的应用'
+          {
+            paper_id: 12345,
+            paper_name: '大数据时代下数据挖掘技术的应用'
           },
-          {paper_id:12345,
-          paper_name:'研究'
+          {
+            paper_id: 12345,
+            paper_name: '研究'
           }
         ]
-      },{
-        name:'数据挖掘',
-        detail:[
-          {paper_id:12345,
-          paper_name:'可靠性研究'
+      }, {
+        name: '数据挖掘',
+        detail: [
+          {
+            paper_id: 12345,
+            paper_name: '可靠性研究'
           },
-          {paper_id:12345,
-          paper_name:'可靠研究'
+          {
+            paper_id: 12345,
+            paper_name: '可靠研究'
           },
-          {paper_id:12345,
-          paper_name:'可靠性'
+          {
+            paper_id: 12345,
+            paper_name: '可靠性'
           },
-          {paper_id:12345,
-          paper_name:'研究'
+          {
+            paper_id: 12345,
+            paper_name: '研究'
           }
         ]
-      },{
-        name:'毕业课题',
-        detail:[
-          {paper_id:12345,
-          paper_name:'数据挖掘中的聚类算法综述'
+      }, {
+        name: '毕业课题',
+        detail: [
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中的聚类算法综述'
           },
-          {paper_id:12345,
-          paper_name:'数据挖掘中聚类算法研究进展'
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中聚类算法研究进展'
           },
-          {paper_id:12345,
-          paper_name:'大数据时代下数据挖掘技术的应用'
+          {
+            paper_id: 12345,
+            paper_name: '大数据时代下数据挖掘技术的应用'
           },
-          {paper_id:12345,
-          paper_name:'研究'
+          {
+            paper_id: 12345,
+            paper_name: '研究'
           }
         ]
       }],
@@ -276,6 +299,7 @@ export default {
         degree: ''
       },
       add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=',
+      get_pic_url: 'http://139.9.132.83:8000/user/getImage?user_id=',
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
@@ -332,40 +356,39 @@ export default {
       disabled: false,
       followList: [{
         scholar_id: '95EDFSW',
-        name:"谭火彬",
+        name: "谭火彬",
         summary: "(没有就返回null)",
         n_pubs: 3,
         n_citation: 5
-      },{
+      }, {
         scholar_id: '95qsDFSW',
         summary: "(没有就返回null)",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 3,
         n_citation: 80
-      },{
+      }, {
         scholar_id: 'wdwSW',
         summary: "猜猜我是谁",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 80,
         n_citation: 980
-      },{
+      }, {
         scholar_id: '95qsDFSW',
         summary: "(没有就返回null)",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 3,
         n_citation: 80
-      },{
+      }, {
         scholar_id: 'wdwSW',
         summary: "猜猜我是谁",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 80,
         n_citation: 980
       }],
     }
   },
   mounted() {
-    this.getUserInformation(1)
-    this.add_pic_url += this.user.user_id
+    this.getUserInformation(localStorage.getItem('user_id'))
     this.getFollowList()
   },
   methods: {
@@ -391,12 +414,10 @@ export default {
         this.getUserInformation()
       })
     },
-    submitForm() {
+    submitForm(file) {
       this.dialogFormVisible = false;
       this.ifImageUploadVisible = false;
-      this.user.field = this.form.field
-      this.user.degree = this.form.degree
-      this.updateInfor()
+      // this.updateInfor()
     },
     handleSuccess(response, file, fileList) {
       console.log(response);
@@ -410,6 +431,13 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
+    test(file) {
+      console.log(file)
+      this.ifNUll = true
+      console.log(this.ifNUll);
+      console.log(this.previewsrc)
+      this.imgRaw = file.raw
+    },
     errorHandler() {
       return true
     },
@@ -419,6 +447,19 @@ export default {
     openLetter() {
       this.dialogLetterVisible = true
     },
+          beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size  / 1024 < 500;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 500kB!');
+        }
+        return isJPG && isLt2M;
+      },
     sendLetter() {
       if (this.text === '') {
         this.$message({
@@ -459,10 +500,25 @@ export default {
       }
     },
     submitUpload() {
+      this.loading = true
       console.log(this.user.user_id)
-      this.add_pic_url=this.add_pic_url+ this.user.user_id
       console.log(this.add_pic_url);
-      this.$refs.upload.submit();
+      let formDatas = new FormData()
+      formDatas.append('user_id', this.user.user_id)
+      formDatas.append('pic', this.imgRaw)
+      console.log(this.imgRaw)
+      // axios.post('http://139.9.132.83:8000/user/postImage',formDatas).then(res=>(console.log(res)))
+      uploadImage(formDatas).then(res => {
+        console.log(res)
+        this.needUpdate++
+        this.loading =false
+        this.ifImageUploadVisible = false
+         this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+        this.$router.go(0)
+      })
     },
     getUserInformation(id) {
       getUsrInfo({
@@ -470,6 +526,8 @@ export default {
       }).then(res => {
         console.log(res)
         this.user = res.user
+        this.add_pic_url = this.add_pic_url + this.user.user_id
+        this.get_pic_url = this.get_pic_url + this.user.user_id
       })
     },
     toAuthorPage() {
@@ -495,9 +553,11 @@ export default {
   background-color: whitesmoke;
 
 }
-#uploadButton{
+
+#uploadButton {
   justify-content: center;
 }
+
 #topPicAndAddButton {
   background: #ffffff;
   display: flex;
@@ -579,13 +639,13 @@ export default {
 }
 
 #usrDegree {
-  margin-top: 10px;
-  font-size: 17px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
-  color: #606266;
+    margin-top: 10px;
+    font-size: 15px;
+    border-bottom: 1px transparent;
+    font-family: "Microsoft YaHei";
+    letter-spacing: 1px;
+    color: #606266;
 }
-
 #editInfoRow {
   display: inline-flex;
 }
@@ -598,14 +658,14 @@ export default {
   color: #343434;
 }
 
-#editYourInfo {
-  margin-top: 10px;
-  font-size: 14px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
-  border-bottom: #606266 1px solid;
-  color: #606266;
-  margin-left: 6px;
+#editYourInfo{
+    margin-top: 11px;
+    font-size: 13px;
+    font-family: "Microsoft YaHei";
+    letter-spacing: 2px;
+    border-bottom: #606266 1px solid;
+    color: #606266;
+    margin-left: 6px;
 }
 
 #editYourInfo {
@@ -687,7 +747,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: row;
-   box-shadow:0 5px 10px -5px #a7a7a7;
+  box-shadow: 0 5px 10px -5px #a7a7a7;
 }
 
 #centerSomeTabs {
@@ -769,7 +829,7 @@ export default {
 
 #researchItem {
   background-color: white;
-box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   width: 875px;
   margin-top: 20px;
   border-radius: 1px;
@@ -842,5 +902,17 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
+}
+/deep/ .el-upload-dragger {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 333px;
+    height: 162px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 </style>
