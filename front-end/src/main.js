@@ -13,14 +13,13 @@ import axios from 'axios'
 import VueAxios from "vue-axios"
 import store from './store'
 import BubbleChat from "vue-bubble-chat"
-import _ from 'lodash'
+
 
 
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 
 Vue.prototype.$http = axios
-Vue.prototype._ = _
 Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)

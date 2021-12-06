@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-end/src/components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -87,8 +87,7 @@
       <workItem from="1638751010993" duration="432000" />
       <workItem from="1638756068912" duration="1776000" />
       <workItem from="1638758873601" duration="2054000" />
-      <workItem from="1638762123180" duration="21758000" />
-      <workItem from="1638795417517" duration="66000" />
+      <workItem from="1638762123180" duration="21845000" />
     </task>
     <servers />
   </component>
