@@ -206,12 +206,12 @@ export default {
           text: this.text
         }).then(response => {
           console.log(response)
-          if (response.message == '不能向自己发送信息') {
+          if (response.Message === '不能向自己发送信息') {
             this.$message({
               type: 'warning',
               message: '不能向自己发送信息'
             })
-          } else if (response.message == 'no this user') {
+          } else if (response.Message === 'no this user') {
             this.$message({
               type: 'warning',
               message: '该用户不存在'
