@@ -29,6 +29,8 @@
 
 <script>
 import Nav_with_searchBox from '../../components/nav_with_searchBox'
+import { register, userLogin } from "../../request/api"
+
 export default {
   name: "Login",
   components: { Nav_with_searchBox },
@@ -40,17 +42,27 @@ export default {
   },
   methods: {
     login() {
-      this.$message({
-        type: 'success',
-        message: '登陆成功！'
+      userLogin({
+        name: this.account,
+        password: this.password,
+      }).then(response => {
+        if (response.message === '用户名或密码错误') {
+          this.$message({
+            type: 'warning',
+            message: '用户名或密码错误'
+          })
+        } else {
+          this.$message({
+            type: 'success',
+            message: '登陆成功！'
+          })
+          this.$router.push('/')
+        }
       })
     },
     register() {
       this.$router.push('/register')
     },
-    gotoManagerLogin() {
-      this.$router.push('/loginAdmin')
-    }
   }
 }
 </script>

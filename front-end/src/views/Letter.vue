@@ -27,8 +27,12 @@
           <div class="message-details">
             <el-scrollbar style="height: 100%">
               <div v-for="item in messages" :key="item.id">
-                <div class="message-details-item">
-                  <div class="name-box"> {{ item.name }} : </div>
+                <div class="message-details-item-you" v-if="item.name==='你'">
+                  <div class="name-box-you"> {{ item.name }} </div>
+                  <div class="text-box"> {{ item.text }} </div>
+                </div>
+                <div class="message-details-item" v-else>
+                  <div class="name-box"> {{ item.name }} </div>
                   <div class="text-box"> {{ item.text }} </div>
                 </div>
               </div>
@@ -72,11 +76,14 @@
 <script>
 import nav_with_searchBox from "../components/nav_with_searchBox"
 import message from "../components/message"
+import { getMessageList } from "../request/api"
+
 export default {
   name: "Letter",
   components: { nav_with_searchBox, message },
   data() {
     return {
+      userId: 4,
       dialogLetterVisible: false,
       text: '',
       receiver: {
@@ -127,7 +134,17 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.LoadMessageList()
+  },
   methods: {
+    LoadMessageList() {
+      getMessageList({
+        userId: this.userId
+      }).then(response => {
+        console.log(response)
+      })
+    },
     openLetter() {
       this.dialogLetterVisible = true
     },
@@ -173,6 +190,7 @@ export default {
 }
 
 .middle-box {
+  box-shadow: 0px 0px 50px 20px lightgrey;
   background-color: white;
   width: 60%;
   height: 600px;
@@ -185,8 +203,10 @@ export default {
 }
 
 .message-details {
+  padding: 2%;
+  box-shadow: 0px 0px 10px 10px #f6f3f3;
   width: 65%;
-  height: 450px;
+  height: 425px;
   margin-left: 5%;
 }
 
@@ -200,13 +220,33 @@ export default {
 }
 
 .message-details-item {
+  border-radius: 0px 30px 30px 30px;
+  margin: 5%;
   border: solid 1px #ededed;
+  box-shadow: 10px 10px 10px 5px rgba(232, 232, 231, 0.98);
+}
+
+.message-details-item-you {
+  border-radius: 30px 0px 30px 30px;
+  margin: 5%;
+  border: solid 1px #ededed;
+  box-shadow: -10px 10px 10px 5px rgba(232, 232, 231, 0.98);
 }
 
 .name-box {
+  border-radius: 0px 30px 0px 0px;
   font-weight: bolder;
   padding: 2%;
-  background-color: #ededed;
+  background-color: lightgrey;
+}
+
+.name-box-you {
+  border-radius: 30px 0px 0px 0px;
+  text-align: right;
+  font-weight: bolder;
+  padding: 2%;
+  background-color: #00ccbb;
+  color: whitesmoke;
 }
 
 .text-box {
@@ -214,7 +254,7 @@ export default {
 }
 
 .btn-box {
-  margin-top: 3%;
+  margin-top: 8%;
   float: right;
 }
 
