@@ -139,7 +139,7 @@ export default {
 }
 
 .middle-box {
-  box-shadow: 0px 0px 50px 20px lightgrey;
+  box-shadow: 0 0 50px 20px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;
