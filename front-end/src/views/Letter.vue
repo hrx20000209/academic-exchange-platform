@@ -304,7 +304,7 @@ export default {
   padding: 1% 2% 2% 2%;
   box-shadow: 0 0 10px 10px #f6f3f3;
   width: 65%;
-  height: 525px;
+  height: 550px;
   margin-left: 5%;
 }
 
