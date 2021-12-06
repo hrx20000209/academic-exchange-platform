@@ -1,8 +1,9 @@
 <template>
   <div>
-    <el-container style="display: flex; justify-content: center">
-      <!--<el-header>
-      </el-header>-->
+    <el-container style="display: flex; justify-content: center; flex-direction: column">
+      <div>
+        <Nav_with_searchBox></Nav_with_searchBox>
+      </div>
       <el-main>
         <el-col>
           <el-row class="IName">
@@ -10,7 +11,7 @@
               <el-row class="Iname_font">
                 {{this.InstitutionName}}
               </el-row>
-              <el-row style="margin-top: 18px; margin-left: 20px;">
+              <el-row style="margin-top: 23px; margin-left: 25px;">
                 <el-row>
                   <el-col :span="6">
                    <i class="el-icon-user" style="color: #6E6E6E">成员总数： <a style="color: #00BFFF"> {{this.members}}</a> 人</i>
@@ -175,10 +176,12 @@
 
 <script>
   const echarts = require('echarts/lib/echarts')
+  import Nav_with_searchBox from "../components/nav_with_searchBox";
   import ESApi from '../api/elastic search'
     export default {
         name: "Institution",
-        data(){
+      components: {Nav_with_searchBox},
+      data(){
           return {
             InstitutionName:'',
             members:0,
@@ -200,7 +203,7 @@
         },
         mounted() {
           let id = this.$route.params.id
-          this.test()
+          this.test(id)
           // console.log('mounted:',this.years)
           // this.buildPie1()
         },
@@ -565,9 +568,12 @@
 <style scoped>
 .IName {
   background-color: #FAFAFA;
-  min-height: 100px;
-  margin-top: -20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  min-height: 120px;
+  max-width: 1050px;
+  margin-top: 15px;
+  margin-left: 20px;
+  border-radius: 25px;
+  box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04)
 }
 .Iname_font {
   background-image:  linear-gradient(#e66465,#9198e5,#A9F5BC);
@@ -575,7 +581,7 @@
   -webkit-text-fill-color: transparent;
   font-size: 30px;
   margin-top: 25px;
-  margin-left: 20px;
+  margin-left: 25px;
 }
 .statistics {
   background-color: #FAFAFA;

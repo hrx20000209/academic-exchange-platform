@@ -1,12 +1,12 @@
 <template>
-  <div class="main" @mouseover="changeActive($event)" @mouseleave="removeActive($event)">
-    <div>
-      <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
+    <div class="main" @mouseover="changeActive($event)" @mouseleave="removeActive($event)">
+      <div>
+        <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
+      </div>
+      <div class="name-box">
+        {{ name }}
+      </div>
     </div>
-    <div class="name-box">
-      {{ name }}
-    </div>
-  </div>
 </template>
 
 <script>
@@ -31,20 +31,21 @@ export default {
 
 <style scoped>
 .main {
+  margin-bottom: 10px;
   display: flex;
   padding: 5%;
   margin-right: 1%;
-  border-top: solid grey 1px;
-  border-bottom: solid grey 1px;
+  box-shadow: 0px 0px 15px 8px rgba(232, 232, 231, 0.98);
 }
 
 .move-main {
+  background-color: #00ccbb;
+  margin-bottom: 10px;
   display: flex;
   padding: 5%;
   margin-right: 1%;
-  border-top: solid grey 1px;
-  border-bottom: solid grey 1px;
-  background-color: #e4e2da;
+  color: whitesmoke;
+  box-shadow: 0px 0px 8px 8px rgba(232, 232, 231, 0.98);
 }
 
 .name-box {
