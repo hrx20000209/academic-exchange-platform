@@ -340,7 +340,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -360,7 +360,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -397,7 +397,7 @@ export default {
 
 #usrDegree {
   margin-top: 10px;
-  font-size: 13px;
+  font-size: 17px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   color: #606266;
@@ -409,7 +409,7 @@ export default {
 
 #usrAbility {
   margin-top: 2px;
-  font-size: 13px;
+  font-size: 17px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   color: #343434;
@@ -417,7 +417,7 @@ export default {
 
 #editYourInfo {
   margin-top: 10px;
-  font-size: 10px;
+  font-size: 14px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   border-bottom: #606266 1px solid;
@@ -439,7 +439,7 @@ export default {
 
 #directionInfo {
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 18px;
 }
 
 #myInput {
@@ -516,7 +516,7 @@ export default {
   border-bottom: transparent 2px solid;
   color: darkgray;
   font-family: "Microsoft YaHei UI Light";
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
 }
@@ -531,7 +531,7 @@ export default {
   margin-left: 15px;
   font-family: "Microsoft YaHei UI Light";
   padding-bottom: 2px;
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 20 hpx;
   margin-left: 15px;
 }

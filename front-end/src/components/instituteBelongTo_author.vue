@@ -134,6 +134,7 @@ export default {
   border: 1px solid #dedede;
   border-radius: 2px;
   margin-top: 20px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 #intoButton{
   justify-content: flex-end;
@@ -150,7 +151,7 @@ export default {
   padding: 10px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
   margin-left: 10px;
@@ -176,7 +177,7 @@ export default {
   font-family: "Microsoft YaHei";
   width: 250px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
   margin-top: 5px;
 }
@@ -185,14 +186,14 @@ export default {
   margin-top: 15px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 17px;
   color: #7f7f7f;
 }
 
 .desDetail {
   margin-top: 3px;
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: black;
 }
 
@@ -234,7 +235,7 @@ export default {
 .dialogInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 
@@ -250,7 +251,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -270,7 +271,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -285,14 +286,14 @@ export default {
 /deep/ .el-dialog__body {
   padding: 16px 8px;
   color: #606266;
-  font-size: 14px;
+  font-size: 18px;
   word-break: break-all;
 }
 
 .introInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 18px;
   margin-top: 10px;
   color: black;
 }
@@ -308,14 +309,14 @@ export default {
 #LabName{
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 .labInfo{
   font-family: "Microsoft YaHei";
   font-weight: bold;
   color: #8e8e8e;
-  font-size: 13px;
+  font-size: 18px;
   margin-top: 10px;
 }
 .labDetail{
@@ -324,11 +325,11 @@ export default {
 }
 .labPersonName{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 18px;
 }
 #managerName{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 18px;
   margin-left: 10px;
   margin-top: 5px;
 }

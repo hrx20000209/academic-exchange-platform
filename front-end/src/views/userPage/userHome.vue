@@ -5,13 +5,13 @@
       <div id="topPicAndAddButton">
         <div id="leftPic">
           <div id="leftPicDetail">
-            <el-avatar :size="85" :src=this.add_pic_url @error="errorHandler">
-              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
+            <el-avatar :size="85" :src=this.get_pic_url v-if="needUpdate" >
+<!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
             </el-avatar>
           </div>
         </div>
         <div id="middleDetail">
-          <div id="usrName">{{ this.user.username }}</div>
+          <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.degree }}</div>
             <div id="editYourInfo" @click="editSimpleInfo">编辑信息</div>
@@ -53,7 +53,7 @@
       <div v-if="activeMode === 1" class="mainPane">
         <div id="leftMainPane">
           <div id="editUsrInfoPane">
-            <edit-usr-info :user="user"></edit-usr-info>
+            <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum" :rankindex="rankNum"></edit-usr-info>
             <about-me :user="this.user"></about-me>
             <stats-overview :user="user"></stats-overview>
             <div id="researchLine">
@@ -101,45 +101,57 @@
       <el-form :model="form">
         <div id="topImagePane">
           <div id="topImageWrapper" v-if="ifImageUploadVisible==false">
-            <el-avatar :size="80" src="https://empty" @error="errorHandler" id="tmpImage">
+            <el-avatar :size="80" v-if="needUpdate" :src=this.get_pic_url @error="errorHandler" id="tmpImage">
               <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
             </el-avatar>
             <div id="changeImageName" @click="toUploadImage">修改头像</div>
           </div>
           <div v-else>
-            <div v-if="this.ifImageUploadVisible==true">
+            <div id="uploadButton" v-if="this.ifImageUploadVisible==true">
               <el-upload
+                v-loading="loading"
                 class="upload-demo"
                 ref="upload"
-                :action="this.add_pic_url"
+                action=""
+                drag
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :file-list="form.fileList"
                 :on-success="handleSuccess"
-                :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器
-                </el-button>
+                :on-change="test"
+                :before-upload="beforeAvatarUpload"
+                :http-request="submitUpload"
+                 :show-file-list="false"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
               </el-upload>
-              <!--              <el-dialog :visible.sync="dialogVisible" append-to-body>-->
-              <!--                <img width="100%" :src="dialogImageUrl" alt="">-->
-              <!--              </el-dialog>-->
             </div>
+
+            <!--              <el-dialog :visible.sync="dialogVisible" append-to-body>-->
+            <!--                <img width="100%" :src="dialogImageUrl" alt="">-->
+            <!--              </el-dialog>-->
           </div>
         </div>
         <div>
-          <div id="directionInfo">当前的方向</div>
+          <div id="directionInfo">领域</div>
           <div id="myInput">
             <el-input v-model="form.field" autocomplete="off" type="textarea"></el-input>
           </div>
           <div id="degreeInfo">学位</div>
           <div id="degreeDetail">
-            <el-input v-model="form.degree" type="textarea">
-              <!--              <el-option label="计算机科学与技术 博士" value="master"></el-option>-->
-              <!--              <el-option label="计算机科学与技术 硕士" value="doctor"></el-option>-->
-              <!--              <el-option label="计算机科学与技术 学士" value="bachelor"></el-option>-->
-            </el-input>
+            <div id="selectfirst">
+              <el-select  placeholder="请选择学科" v-model="subNum">
+                <el-option v-for="(item,index) in subject" :label=item :value="index" :key="index"></el-option>
+              </el-select>
+            </div>
+            <div id="selectsecond">
+              <el-select  placeholder="请选择学历" v-model="rankNum">
+                <el-option v-for="(item,index) in rank" :label=item :value="index" :key="index"></el-option>
+              </el-select>
+            </div>
+
           </div>
         </div>
       </el-form>
@@ -193,9 +205,10 @@ import StatsDigitTotal from "../../components/statsDigitTotal";
 import CiteAndPublish from "../../components/stats/citeAndPublish";
 import AuthorRelationship from "../../components/stats/authorRelaitionship";
 import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
-import {getUsrInfo, updateInfo} from "../../request/api";
+import {getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
 import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 import MyCollection from "../../components/homeComp/myCollection";
+import axios from "axios";
 
 export default {
   name: "userHome",
@@ -217,57 +230,78 @@ export default {
   },
   data() {
     return {
+      ifNUll: false,
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {},
+      needUpdate: 1,
+      subject: ['哲学', '经济学', '法学', '教育学', '文学', '历史学', '理学', '工学', '农学', '医学', '军事学', '管理学', '艺术学'],
+      rank: ['本科生', '研究生', '学士', '硕士', '博士', '博士后'],
+      subNum:'',
+      rankNum:'',
+      previewsrc: '',
+      imgRaw: '',
       dialogFormVisible: false,
       dialogLetterVisible: false,
       haveUpload: false,
-      collectionList:[{
-        name:'默认收藏夹',
-        detail:[
-          {paper_id:12345,
-          paper_name:'数据挖掘中的聚类算法综述'
+      loading:false,
+      collectionList: [{
+        name: '默认收藏夹',
+        detail: [
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中的聚类算法综述'
           },
-          {paper_id:12345,
-          paper_name:'数据挖掘中聚类算法研究进展'
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中聚类算法研究进展'
           },
-          {paper_id:12345,
-          paper_name:'大数据时代下数据挖掘技术的应用'
+          {
+            paper_id: 12345,
+            paper_name: '大数据时代下数据挖掘技术的应用'
           },
-          {paper_id:12345,
-          paper_name:'研究'
+          {
+            paper_id: 12345,
+            paper_name: '研究'
           }
         ]
-      },{
-        name:'数据挖掘',
-        detail:[
-          {paper_id:12345,
-          paper_name:'可靠性研究'
+      }, {
+        name: '数据挖掘',
+        detail: [
+          {
+            paper_id: 12345,
+            paper_name: '可靠性研究'
           },
-          {paper_id:12345,
-          paper_name:'可靠研究'
+          {
+            paper_id: 12345,
+            paper_name: '可靠研究'
           },
-          {paper_id:12345,
-          paper_name:'可靠性'
+          {
+            paper_id: 12345,
+            paper_name: '可靠性'
           },
-          {paper_id:12345,
-          paper_name:'研究'
+          {
+            paper_id: 12345,
+            paper_name: '研究'
           }
         ]
-      },{
-        name:'毕业课题',
-        detail:[
-          {paper_id:12345,
-          paper_name:'数据挖掘中的聚类算法综述'
+      }, {
+        name: '毕业课题',
+        detail: [
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中的聚类算法综述'
           },
-          {paper_id:12345,
-          paper_name:'数据挖掘中聚类算法研究进展'
+          {
+            paper_id: 12345,
+            paper_name: '数据挖掘中聚类算法研究进展'
           },
-          {paper_id:12345,
-          paper_name:'大数据时代下数据挖掘技术的应用'
+          {
+            paper_id: 12345,
+            paper_name: '大数据时代下数据挖掘技术的应用'
           },
-          {paper_id:12345,
-          paper_name:'研究'
+          {
+            paper_id: 12345,
+            paper_name: '研究'
           }
         ]
       }],
@@ -275,7 +309,8 @@ export default {
         field: '',
         degree: ''
       },
-      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=',
+      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id='+localStorage.getItem('user_id'),
+      get_pic_url: 'http://139.9.132.83:8000/user/getImage?user_id='+localStorage.getItem('user_id'),
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
@@ -332,41 +367,41 @@ export default {
       disabled: false,
       followList: [{
         scholar_id: '95EDFSW',
-        name:"谭火彬",
+        name: "谭火彬",
         summary: "(没有就返回null)",
         n_pubs: 3,
         n_citation: 5
-      },{
+      }, {
         scholar_id: '95qsDFSW',
         summary: "(没有就返回null)",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 3,
         n_citation: 80
-      },{
+      }, {
         scholar_id: 'wdwSW',
         summary: "猜猜我是谁",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 80,
         n_citation: 980
-      },{
+      }, {
         scholar_id: '95qsDFSW',
         summary: "(没有就返回null)",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 3,
         n_citation: 80
-      },{
+      }, {
         scholar_id: 'wdwSW',
         summary: "猜猜我是谁",
-        name:"谭火彬",
+        name: "谭火彬",
         n_pubs: 80,
         n_citation: 980
       }],
+      str:[]
     }
   },
   mounted() {
-    // this.getUserInformation(1)
-    // this.add_pic_url += this.user.user_id
-    // //this.getFollowList()
+    this.getUserInformation(localStorage.getItem('user_id'))
+    // this.getFollowList()
   },
   methods: {
     getFollowList() {
@@ -391,11 +426,11 @@ export default {
         this.getUserInformation()
       })
     },
-    submitForm() {
+    submitForm(file) {
       this.dialogFormVisible = false;
       this.ifImageUploadVisible = false;
       this.user.field = this.form.field
-      this.user.degree = this.form.degree
+      this.user.degree = this.subject[this.subNum]+' '+this.rank[this.rankNum]
       this.updateInfor()
     },
     handleSuccess(response, file, fileList) {
@@ -410,6 +445,13 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
+    test(file) {
+      console.log(file)
+      this.ifNUll = true
+      console.log(this.ifNUll);
+      console.log(this.previewsrc)
+      this.imgRaw = file.raw
+    },
     errorHandler() {
       return true
     },
@@ -419,6 +461,19 @@ export default {
     openLetter() {
       this.dialogLetterVisible = true
     },
+          beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size  / 1024 < 500;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 500kB!');
+        }
+        return isJPG && isLt2M;
+      },
     sendLetter() {
       if (this.text === '') {
         this.$message({
@@ -459,16 +514,39 @@ export default {
       }
     },
     submitUpload() {
-      this.add_pic_url += this, user.user_id
+      this.loading = true
+      console.log(this.user.user_id)
       console.log(this.add_pic_url);
-      this.$refs.upload.submit();
+      let formDatas = new FormData()
+      formDatas.append('user_id', this.user.user_id)
+      formDatas.append('pic', this.imgRaw)
+      console.log(this.imgRaw)
+      // axios.post('http://139.9.132.83:8000/user/postImage',formDatas).then(res=>(console.log(res)))
+      uploadImage(formDatas).then(res => {
+        console.log(res)
+        this.needUpdate++
+        this.loading =false
+        this.ifImageUploadVisible = false
+         this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+        this.$router.go(0)
+      })
     },
     getUserInformation(id) {
       getUsrInfo({
-        user_id: 1
+        user_id: localStorage.getItem('user_id')
       }).then(res => {
         console.log(res)
         this.user = res.user
+        // this.add_pic_url = this.add_pic_url + this.user.user_id
+        // this.get_pic_url = this.get_pic_url + this.user.user_id
+        this.str = this.user.degree.split(' ')
+        console.log(this.str)
+        this.subNum = this.subject.indexOf(this.str[0])
+        this.rankNum = this.rank.indexOf(this.str[1])
+        this.form.field = this.user.field
       })
     },
     toAuthorPage() {
@@ -492,6 +570,14 @@ export default {
 
 #usrHomePane {
   background-color: whitesmoke;
+
+}
+/deep/ .el-select > .el-input {
+  width: 250px;
+  display: block;
+}
+#uploadButton {
+  justify-content: center;
 }
 
 #topPicAndAddButton {
@@ -519,7 +605,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -539,7 +625,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 17px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -567,41 +653,41 @@ export default {
 }
 
 #usrName {
-  font-size: 20px;
-  font-family: "Microsoft YaHei";
+  font-size: 24px;
+  font-family: "siyuan";
   font-weight: bold;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
   color: #343434;
 }
 
 #usrDegree {
-  margin-top: 10px;
-  font-size: 13px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
-  color: #606266;
+    margin-top: 10px;
+    font-size: 15px;
+    border-bottom: 1px transparent;
+    font-family: "Microsoft YaHei";
+    letter-spacing: 1px;
+    color: #606266;
 }
-
 #editInfoRow {
   display: inline-flex;
 }
 
 #usrAbility {
   margin-top: 2px;
-  font-size: 13px;
+  font-size: 17px;
   font-family: "Microsoft YaHei";
   letter-spacing: 2px;
   color: #343434;
 }
 
-#editYourInfo {
-  margin-top: 10px;
-  font-size: 10px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
-  border-bottom: #606266 1px solid;
-  color: #606266;
-  margin-left: 10px;
+#editYourInfo{
+    margin-top: 11px;
+    font-size: 13px;
+    font-family: "Microsoft YaHei";
+    letter-spacing: 2px;
+    border-bottom: #606266 1px solid;
+    color: #606266;
+    margin-left: 6px;
 }
 
 #editYourInfo {
@@ -618,7 +704,7 @@ export default {
 
 #directionInfo {
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 17px;
   margin-top: 10px;
 }
 
@@ -628,6 +714,7 @@ export default {
 
 #degreeInfo {
   margin-top: 10px;
+  font-size: 16px;
 }
 
 /deep/ .el-select > .el-input {
@@ -660,7 +747,18 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
+/deep/ .el-upload-dragger {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 360px;
+    height: 130px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
 .dialog-footer {
   border-top: gainsboro 1px solid;
   background-color: #f5f5f5;
@@ -682,7 +780,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: row;
-  border-bottom: gainsboro 1px solid;
+  box-shadow: 0 5px 10px -5px #a7a7a7;
 }
 
 #centerSomeTabs {
@@ -696,7 +794,7 @@ export default {
   border-bottom: transparent 2px solid;
   color: darkgray;
   font-family: "Microsoft YaHei UI Light";
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
 }
@@ -709,15 +807,15 @@ export default {
   color: #005abb;
   border-bottom: #005abb 2px solid;
   margin-left: 15px;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Microsoft YaHei";
   padding-bottom: 2px;
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
 }
 
 #editUsrInfoPane {
-  width: 550px;
+  width: 625px;
   margin-top: 20px;
 }
 
@@ -731,20 +829,21 @@ export default {
 }
 
 #rightMainPane {
-  margin-left: 20px;
-  width: 350px;
+  margin-left: 40px;
+  width: 425px;
 }
 
 #researchLine {
   display: flex;
+  margin-top: 10px;
 }
 
 #researchInfo {
   width: 100px;
-  padding: 10px;
+  padding: 15px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #606266;
 }
@@ -763,9 +862,9 @@ export default {
 
 #researchItem {
   background-color: white;
-  border: 1px solid #dedede;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   width: 875px;
-  margin-top: 15px;
+  margin-top: 20px;
   border-radius: 1px;
 }
 
@@ -803,9 +902,9 @@ export default {
 
 #changeImageName {
   justify-content: center;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Microsoft YaHei UI";
   color: #0080ff;
-  font-size: 13px;
+  font-size: 15px;
   margin-top: 10px;
   width: fit-content;
   margin-left: auto;
@@ -830,11 +929,14 @@ export default {
 }
 
 /deep/ .el-upload__tip {
-  font-size: 12px;
+  font-size: 13px;
   color: #606266;
   margin-top: 7px;
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
+}
+#selectsecond{
+  margin-top: 20px;
 }
 </style>
