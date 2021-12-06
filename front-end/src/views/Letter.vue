@@ -37,7 +37,10 @@
               <el-pagination
                 background
                 layout="prev, pager, next"
-                :total="5">
+                :current-page="currentPage"
+                :page-size="6"
+                :page-count="totalPage"
+                @current-change="handleCurrentChange">
               </el-pagination>
             </div>
           </div>
@@ -136,6 +139,8 @@ export default {
       newLetterVisible: false,
       editable: false,
       text: '',
+      currentPage: 1,
+      totalPage: 0,
       receiver: {
         name: '',
         user_id: ''
@@ -157,14 +162,16 @@ export default {
   mounted() {
     this.userId = localStorage.getItem('userId')
     this.load = false
-    this.LoadMessageList()
+    this.LoadMessageList(this.currentPage)
   },
   methods: {
-    LoadMessageList() {
+    LoadMessageList(page) {
       getMessageList({
-        user_id: this.userId
+        user_id: this.userId,
+        current_page: page
       }).then(response => {
         this.items = response.list
+        this.totalPage = response.total_page
       })
     },
     read(id) {
@@ -188,7 +195,7 @@ export default {
           }
         }
       })
-      this.LoadMessageList()
+      this.LoadMessageList(this.currentPage)
     },
     openLetter() {
       this.replyLetterVisible = true
@@ -221,13 +228,15 @@ export default {
               type: 'success',
               message: '发送成功'
             })
+            if (this.replyLetterVisible) {
+              this.read(this.receiver.user_id)
+            }
             this.newLetterVisible = false
             this.replyLetterVisible = false
-            this.read(this.receiver.user_id)
-            this.LoadMessageList()
+            this.LoadMessageList(this.currentPage)
+            this.text = ''
           }
         })
-        this.text = ''
       }
     },
     newMessage() {
@@ -246,12 +255,16 @@ export default {
         done()
       }
     },
-    changeActive($event){
+    changeActive($event) {
       $event.currentTarget.className="message-item-box-move";
     },
-    removeActive($event){
+    removeActive($event) {
       $event.currentTarget.className="message-item-box";
     },
+    handleCurrentChange(val) {
+      this.currentPage = val
+      this.LoadMessageList(this.currentPage)
+    }
   }
 }
 </script>
@@ -298,6 +311,7 @@ export default {
 }
 
 .page {
+  margin-top: 5%;
   text-align: center;
   float: bottom;
 }
