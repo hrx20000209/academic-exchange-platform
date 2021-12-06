@@ -24,7 +24,7 @@
           </el-form-item>
         </el-form>
         <div class="btn-box">
-          <el-button type="primary" style="font-size: large">确定</el-button>
+          <el-button type="primary" style="font-size: large" @click="register">确定</el-button>
         </div>
       </div>
     </div>
@@ -33,6 +33,7 @@
 
 <script>
 import nav_with_searchBox from "../../components/nav_with_searchBox";
+import { register } from "../../request/api"
 export default {
   name: "Register",
   components: { nav_with_searchBox },
@@ -72,6 +73,51 @@ export default {
         ],
       }
     }
+  },
+  methods: {
+    register() {
+      if (this.user.name === '') {
+        this.$message({
+          type:'warning',
+          message: '用户名不能为空'
+        })
+      } else if (this.user.email === '') {
+        this.$message({
+          type:'warning',
+          message: '邮箱不能为空'
+        })
+      } else if (this.user.password === this.user.checkPass) {
+        register({
+          name: this.user.name,
+          password: this.user.password,
+          mailbox: this.user.email
+        }).then(res=>{
+          if (res.message === '注册成功') {
+            this.$message({
+              type: 'success',
+              message: '注册成功'
+            })
+            this.$router.push('/login')
+          } else if (res.message === '用户名已存在') {
+            this.$message({
+              type: 'warning',
+              message: '用户名已存在'
+            })
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '邮箱已被注册'
+            })
+          }
+        })
+      }
+      else {
+        this.$message({
+          type: 'warning',
+          message: '两次输入的密码不一致'
+        })
+      }
+    }
   }
 }
 </script>
@@ -93,6 +139,7 @@ export default {
 }
 
 .middle-box {
+  box-shadow: 0px 0px 50px 20px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;

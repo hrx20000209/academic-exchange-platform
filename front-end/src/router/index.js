@@ -101,10 +101,10 @@ const routes = [
   {
     path:'/userHome',
     name: 'userHome',
-    component: () => import('../userPage/userHome')
+    component: () => import('../views/userPage/userHome')
   },
   {
-    path:'/Institution',
+    path:'/Institution/:id',
     name: 'Institution',
     component: () => import('../views/Institution')
   },
@@ -117,6 +117,16 @@ const routes = [
   path: '/wyhTest',
     name: 'wyhRelationshipMapClickEventTest',
     component: ()=> import('../views/wyhRelationshipMapClickEventTest')
+  },
+  {
+    path: '/letter',
+    name: 'Letter',
+    component: () => import('../views/Letter')
+  },
+  {
+    path: '/authorPage',
+    name: 'authorPage',
+    component: () => import('../views/userPage/authorPage')
   }
 ]
 

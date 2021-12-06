@@ -11,6 +11,8 @@ import './styles/font.css'
 import * as echarts from 'echarts'
 import axios from 'axios'
 import VueAxios from "vue-axios"
+import store from './store'
+import BubbleChat from "vue-bubble-chat"
 import _ from 'lodash'
 
 
@@ -19,14 +21,17 @@ Vue.component('myHeader', myHeader)
 
 Vue.prototype.$http = axios
 Vue.prototype._ = _
+Vue.prototype.$echarts = echarts
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.use(echarts)
+Vue.use(BubbleChat)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
