@@ -17,11 +17,20 @@
                 </el-button>
               </div>
               <div v-for="item in items" :key="item.id">
-                <message
-                  :name="item.name"
-                  :head="item.head"
-                  :text="item.text"
-                />
+                <div class="message-item-box"
+                     @mouseover="changeActive($event)"
+                     @mouseleave="removeActive($event)"
+                     @click="read(item.user_id)">
+                  <div>
+                    <el-avatar shape="circle" :size="size" :src="item.head"></el-avatar>
+                  </div>
+                  <div class="item-name-box">
+                    {{ item.name }}
+                  </div>
+                  <div v-if="item.unread" class="new-box">
+                    <img :src="require('../assets/new.png')" width="50%" />
+                  </div>
+                </div>
               </div>
             </div>
             <div class="page">
@@ -35,17 +44,17 @@
           <div class="message-details">
             <el-scrollbar style="height: 100%">
               <div v-for="item in messages" :key="item.id">
-                <div class="message-details-item-you" v-if="item.name==='你'">
-                  <div class="name-box-you"> {{ item.name }} </div>
+                <div class="message-details-item-you" v-if="item.sender_name==='你'">
+                  <div class="name-box-you"> {{ item.sender_name }} </div>
                   <div class="text-box"> {{ item.text }} </div>
                 </div>
                 <div class="message-details-item" v-else>
-                  <div class="name-box"> {{ item.name }} </div>
+                  <div class="name-box"> {{ item.sender_name }} </div>
                   <div class="text-box"> {{ item.text }} </div>
                 </div>
               </div>
             </el-scrollbar>
-            <div class="btn-box">
+            <div class="btn-box" v-if="this.receiver.name!==''">
               <el-button type="primary" @click="openLetter">回 复</el-button>
             </div>
           </div>
@@ -110,75 +119,88 @@
 <script>
 import nav_with_searchBox from "../components/nav_with_searchBox"
 import message from "../components/message"
-import { getMessageList } from "../request/api"
+import { getMessageList, sendMessage, readMessage } from "../request/api"
 
 export default {
   name: "Letter",
   components: { nav_with_searchBox, message },
   data() {
     return {
-      userId: 4,
+      userId: '',
+      size: 40,
       replyLetterVisible: false,
       newLetterVisible: false,
       editable: false,
       text: '',
       receiver: {
-        name: '谭火彬'
+        name: '',
+        user_id: ''
       },
-      items: [
-        {
-          name: '谭火彬',
-          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-          text: [],
-        },
-        {
-          name: '猜猜我是谁',
-          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-          text: [],
-        },
-        {
-          name: '我是你哥哥',
-          head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-          text: [],
-        }
-      ],
-      messages: [
-        {
-          name: '谭火彬',
-          text: 'hello'
-        },
-        {
-          name: '你',
-          text: 'hello'
-        },
-        {
-          name: '谭火彬',
-          text: '你们的组长是谁？'
-        },
-        {
-          name: '你',
-          text: '是梁灏然'
-        },
-        {
-          name: '谭火彬',
-          text: '好的。你们组的大作业写完了吗？'
-        },
-        {
-          name: '你',
-          text: '还没有'
-        }
-      ]
+      items: [],
+      messages: []
     }
   },
   mounted() {
+    this.userId = localStorage.getItem('userId')
     this.LoadMessageList()
   },
   methods: {
+    messageItem() {
+      return {
+        name: '',
+        user_id: '',
+        unread: true,
+        head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      }
+    },
+    message() {
+      return {
+        receiver_id: '',
+        receiver_name: '',
+        sender_id: '',
+        sender_name: '',
+        text: ''
+      }
+    },
     LoadMessageList() {
       getMessageList({
-        userId: this.userId
+        user_id: this.userId
       }).then(response => {
-        console.log(response)
+        for(let i = 0; i < response.list.length; i++) {
+          let obj = this.messageItem()
+          obj.name = response.list[i].user_name
+          obj.unread = response.list[i].unread
+          obj.user_id = response.list[i].user_id
+          this.items.push(obj)
+        }
+      })
+    },
+    read(id) {
+      readMessage({
+        user_id: this.userId,
+        the_other_id: id
+      }).then(response => {
+        if (this.messages.length !== 0) {
+          this.messages = []
+        }
+        for(let i = 0; i < response.list.length; i++) {
+          let obj = this.message()
+          obj.sender_id = response.list[i].sender_id
+          if (this.receiver.name === '' && obj.receiver_id !== this.userId) {
+            this.receiver.name = response.list[i].receiver_name
+          }
+          if (obj.sender_id == this.userId) {
+            obj.sender_name = '你'
+          } else {
+            obj.sender_name = response.list[i].sender_name
+            if (this.receiver.name === '' || this.receiver.user_id === '') {
+              this.receiver.user_id = response.list[i].sender_id
+              this.receiver.name = response.list[i].sender_name
+            }
+          }
+          obj.text = response.list[i].text
+          this.messages.push(obj)
+        }
       })
     },
     openLetter() {
@@ -191,14 +213,37 @@ export default {
           message: '私信内容不能为空'
         })
       } else {
-        this.replyLetterVisible = false
-        this.$message({
-          type: 'success',
-          message: '发送成功'
+        sendMessage({
+          sender_id: this.userId,
+          receiver_name: this.receiver.name,
+          text: this.text
+        }).then(response => {
+          if (response.message === '不能向自己发送信息') {
+            this.$message({
+              type: 'warning',
+              message: '不能向自己发送信息'
+            })
+          } else if (response.message === 'no this user') {
+            this.$message({
+              type: 'warning',
+              message: '该用户不存在'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '发送成功'
+            })
+            this.newLetterVisible = false
+            this.read(this.receiver.user_id)
+            this.items = []
+            this.LoadMessageList()
+          }
         })
+        this.text = ''
       }
     },
     newMessage() {
+      this.receiver.name = ''
       this.newLetterVisible = true
     },
     handleClose(done) {
@@ -212,7 +257,13 @@ export default {
       } else {
         done()
       }
-    }
+    },
+    changeActive($event){
+      $event.currentTarget.className="message-item-box-move";
+    },
+    removeActive($event){
+      $event.currentTarget.className="message-item-box";
+    },
   }
 }
 </script>
@@ -234,7 +285,7 @@ export default {
 }
 
 .middle-box {
-  box-shadow: 0px 0px 50px 20px lightgrey;
+  box-shadow: 0 0 50px 20px lightgrey;
   background-color: white;
   width: 60%;
   height: 600px;
@@ -248,7 +299,7 @@ export default {
 
 .message-details {
   padding: 2%;
-  box-shadow: 0px 0px 10px 10px #f6f3f3;
+  box-shadow: 0 0 10px 10px #f6f3f3;
   width: 65%;
   height: 425px;
   margin-left: 5%;
@@ -264,28 +315,28 @@ export default {
 }
 
 .message-details-item {
-  border-radius: 0px 30px 30px 30px;
+  border-radius: 0 30px 30px 30px;
   margin: 5%;
   border: solid 1px #ededed;
   box-shadow: 10px 10px 10px 5px rgba(232, 232, 231, 0.98);
 }
 
 .message-details-item-you {
-  border-radius: 30px 0px 30px 30px;
+  border-radius: 30px 0 30px 30px;
   margin: 5%;
   border: solid 1px #ededed;
   box-shadow: -10px 10px 10px 5px rgba(232, 232, 231, 0.98);
 }
 
 .name-box {
-  border-radius: 0px 30px 0px 0px;
+  border-radius: 0 30px 0 0;
   font-weight: bolder;
   padding: 2%;
   background-color: lightgrey;
 }
 
 .name-box-you {
-  border-radius: 30px 0px 0px 0px;
+  border-radius: 30px 0 0 0;
   text-align: right;
   font-weight: bolder;
   padding: 2%;
@@ -295,6 +346,8 @@ export default {
 
 .text-box {
   padding: 5%;
+  background-color: whitesmoke;
+  border-radius: 0 0 30px 30px;
 }
 
 .btn-box {
@@ -323,5 +376,35 @@ export default {
 .new-message-btn-box {
   margin-bottom: 5%;
   text-align: center;
+}
+
+.message-item-box {
+  margin-bottom: 10px;
+  display: flex;
+  padding: 5%;
+  margin-right: 1%;
+  box-shadow: 0 0 15px 8px rgba(232, 232, 231, 0.98);
+}
+
+.message-item-box-move {
+  background-color: #00ccbb;
+  margin-bottom: 10px;
+  display: flex;
+  padding: 5%;
+  margin-right: 1%;
+  color: whitesmoke;
+  box-shadow: 0 0 8px 8px rgba(232, 232, 231, 0.98);
+}
+
+.item-name-box {
+  width: 120%;
+  margin-left: 5%;
+  font-size: medium;
+}
+
+.new-box {
+  margin-right: 0;
+  padding-right: 0;
+  width: 50%;
 }
 </style>
