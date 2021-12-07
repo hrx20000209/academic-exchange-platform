@@ -137,9 +137,8 @@ export default {
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 #intoButton{
-  justify-content: flex-end;
-  width: 50px;
-  margin-left: 10px;
+  margin-left: auto;
+  margin-right: 10px;
   /*margin-right: 10px;*/
 }
 #someIns{
@@ -175,9 +174,9 @@ export default {
 
 #insName {
   font-family: "Microsoft YaHei";
-  width: 250px;
+  width: 300px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   color: black;
   margin-top: 5px;
 }

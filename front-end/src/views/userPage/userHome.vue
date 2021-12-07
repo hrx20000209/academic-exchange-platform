@@ -34,12 +34,12 @@
         <div id="centerSomeTabs">
           <div class="usrTabsChosen" v-if="activeMode === 1">概述</div>
           <div class="usrTabsUnChosen" v-else @click="selectActiveMode(1)">概述</div>
-          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
-          <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>
+<!--          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>-->
+<!--          &lt;!&ndash;          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>&ndash;&gt;-->
+<!--          &lt;!&ndash;          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>&ndash;&gt;-->
+<!--          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
@@ -55,17 +55,17 @@
           <div id="editUsrInfoPane">
             <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum" :rankindex="rankNum"></edit-usr-info>
             <about-me :user="this.user"></about-me>
-            <stats-overview :user="user"></stats-overview>
-            <div id="researchLine">
-              <div id="researchInfo">研究项目</div>
-              <el-divider></el-divider>
-            </div>
-            <research-overview></research-overview>
+<!--            <stats-overview :user="user"></stats-overview>-->
+<!--            <div id="researchLine">-->
+<!--              <div id="researchInfo">研究项目</div>-->
+<!--              <el-divider></el-divider>-->
+<!--            </div>-->
+<!--            <research-overview></research-overview>-->
           </div>
         </div>
         <div id="rightMainPane">
           <div v-if="activeMode === 1">
-            <institute-belong-to></institute-belong-to>
+<!--            <institute-belong-to></institute-belong-to>-->
             <follow-same></follow-same>
           </div>
         </div>
@@ -310,7 +310,7 @@ export default {
         degree: ''
       },
       add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id='+localStorage.getItem('user_id'),
-      get_pic_url: 'http://139.9.132.83:8000/user/getImage?user_id='+localStorage.getItem('user_id'),
+      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id='+localStorage.getItem('user_id'),
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
@@ -526,7 +526,6 @@ export default {
         console.log(res)
         this.needUpdate++
         this.loading =false
-        this.ifImageUploadVisible = false
          this.$message({
           message: '上传成功',
           type: 'success'
@@ -539,7 +538,7 @@ export default {
         user_id: localStorage.getItem('user_id')
       }).then(res => {
         console.log(res)
-        this.user = res.user
+        this.user = res.data
         // this.add_pic_url = this.add_pic_url + this.user.user_id
         // this.get_pic_url = this.get_pic_url + this.user.user_id
         this.str = this.user.degree.split(' ')
@@ -569,8 +568,11 @@ export default {
 }
 
 #usrHomePane {
-  background-color: whitesmoke;
-
+  /*background-color: whitesmoke;*/
+  background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
 }
 /deep/ .el-select > .el-input {
   width: 250px;
@@ -673,10 +675,10 @@ export default {
 }
 
 #usrAbility {
-  margin-top: 2px;
-  font-size: 17px;
+  margin-top: 5px;
+  font-size: 16px;
   font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: #343434;
 }
 
@@ -849,7 +851,7 @@ export default {
 }
 
 #footer {
-  background-color: whitesmoke;
+  /*background-color: whitesmoke;*/
   height: 50px;
   width: 100%;
 }

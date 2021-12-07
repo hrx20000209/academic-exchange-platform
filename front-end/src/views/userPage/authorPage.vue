@@ -48,8 +48,8 @@
       <div v-if="activeMode ==1" class="mainPane">
         <div id="leftMainPane">
           <div id="editusrInfoPane">
-            <author-card :user="user"></author-card>
-            <about-me_author :user="user"></about-me_author>
+<!--            <author-card :user="user"></author-card>-->
+<!--            <about-me_author :user="user"></about-me_author>-->
             <stats-overview :user="user"></stats-overview>
             <div id="researchLine">
               <div id="researchInfo">研究项目</div>
@@ -77,7 +77,7 @@
         <div id="statsMainPane">
           <stats-digit-total :user="user"></stats-digit-total>
           <cite-and-publish :user="user"></cite-and-publish>
-          <author-relationship :user="user"></author-relationship>
+          <author-relationship :user="user" :data="this.datas" :linkm="this.linkmes"></author-relationship>
           <cooperator-pie-chart></cooperator-pie-chart>
         </div>
       </div>
@@ -155,6 +155,7 @@ import InstituteBelongTo_author from "../../components/instituteBelongTo_author"
 import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
 import ESApi from "../../api/elastic search"
+import {getdata} from "../../request/api";
 
 export default {
   name: "authorPage",
@@ -179,6 +180,8 @@ export default {
   data() {
     return {
       id: "7F5944CA",
+      datas:[],
+      linkmes:[],
       ELres: [],
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {
@@ -255,6 +258,7 @@ export default {
   mounted() {
     // this.id=this.$route.query.id
     this.getAuthorInfo(this.id)
+    this.getdataSource(this.id)
   },
   methods: {
     getAuthorInfo(id){
@@ -286,6 +290,15 @@ export default {
         this.activeMode = 7;
       }
     },
+    getdataSource(id){
+      getdata({
+        author_id:id
+      }).then(res=>{
+        console.log(res)
+        this.datas = res.datas
+        this.linkmes = res.linkmes
+      })
+    },
     openLetter() {
       this.dialogLetterVisible = true
     },
@@ -313,6 +326,10 @@ export default {
 
 #authorPage {
   background-color: whitesmoke;
+  /*background: url("../../assets/tmpbk.jpg");*/
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 #topPicAndAddButton {
@@ -502,7 +519,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: row;
-  border-bottom: gainsboro 1px solid;
+  box-shadow: 0 5px 10px -5px #a7a7a7;
 }
 
 #centerSomeTabs {
@@ -537,8 +554,8 @@ export default {
 }
 
 #editusrInfoPane {
-  width: 550px;
-  margin-top: 20px;
+  width: 600px;
+  margin-top: 30px;
 }
 
 .mainPane {
@@ -551,12 +568,14 @@ export default {
 }
 
 #rightMainPane {
-  margin-left: 20px;
-  width: 350px;
+  margin-left: 40px;
+  width: 400px;
+  margin-top: 10px;
 }
 
 #researchLine {
   display: flex;
+  margin-top: 10px;
 }
 
 #researchInfo {
@@ -570,7 +589,7 @@ export default {
 }
 
 #footer {
-  background-color: whitesmoke;
+  /*background-color: whitesmoke;*/
   height: 50px;
   width: 100%;
 }
@@ -585,8 +604,9 @@ export default {
   background-color: white;
   border: 1px solid #dedede;
   width: 875px;
-  margin-top: 15px;
+  margin-top: 30px;
   border-radius: 1px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #statsMainPane {
