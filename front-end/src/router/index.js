@@ -63,7 +63,6 @@ const routes = [
     component: () => import('../components/search')
   },
   {
-    // path: '/article',
     path: '/article/:paper_id',
     name: 'Article',
     redirect:'/article/:paper_id/overviews',
