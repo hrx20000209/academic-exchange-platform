@@ -21,6 +21,7 @@
     "store": "^2.0.12",
     "vue": "^2.5.2",
     "vue-axios": "^3.4.0",
+    "vue-bubble-chat": "^1.1.2",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.20.0",
     "vuex": "^3.6.2",

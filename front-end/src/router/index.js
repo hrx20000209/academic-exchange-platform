@@ -63,14 +63,14 @@ const routes = [
     component: () => import('../components/search')
   },
   {
-    path: '/article',
+    path: '/article/:paper_id',
     name: 'Article',
     component: () => import('../views/article/Article.vue'),
     children: [
-      {
-        path: '',
-        component: () => import ('../views/article/Overviews')
-      },
+      // {
+      //   path: '',
+      //   component: () => import ('../views/article/Overviews')
+      // },
       {
         path: 'comments',
         name: 'Comments',
@@ -101,10 +101,10 @@ const routes = [
   {
     path:'/userHome',
     name: 'userHome',
-    component: () => import('../userPage/userHome')
+    component: () => import('../views/userPage/userHome')
   },
   {
-    path:'/Institution',
+    path:'/Institution/:id',
     name: 'Institution',
     component: () => import('../views/Institution')
   },
@@ -117,6 +117,16 @@ const routes = [
   path: '/wyhTest',
     name: 'wyhRelationshipMapClickEventTest',
     component: ()=> import('../views/wyhRelationshipMapClickEventTest')
+  },
+  {
+    path: '/letter',
+    name: 'Letter',
+    component: () => import('../views/Letter')
+  },
+  {
+    path: '/authorPage',
+    name: 'authorPage',
+    component: () => import('../views/userPage/authorPage')
   }
 ]
 

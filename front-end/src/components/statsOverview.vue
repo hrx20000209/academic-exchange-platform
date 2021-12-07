@@ -11,8 +11,8 @@
       <div class="twoNumber">
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">13</div>
-            <div class="NumberInfo">浏览量</div>
+            <div class="Number">{{user.n_pubs}}</div>
+            <div class="NumberInfo">发表量</div>
           </div>
           <div class="rightPart">
             <i class="el-icon-view"></i>
@@ -20,7 +20,7 @@
         </div>
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">19</div>
+            <div class="Number">{{user.n_citation}}</div>
             <div class="NumberInfo">被引</div>
           </div>
           <div class="rightPart">
@@ -40,7 +40,7 @@
         </div>
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">12.7</div>
+            <div class="Number">{{ user.h_index }}</div>
             <div class="NumberInfo">学术影响力</div>
           </div>
           <div class="rightPart">

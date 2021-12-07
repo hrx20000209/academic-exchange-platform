@@ -1,12 +1,12 @@
 <template>
   <div class="grey">
     <div style="height: 20px"></div>
-    <div style="height: 100%;width: 100%;overflow: hidden">
-      <div style="float: left" class="bigFrame">
+    <div style="height: 100%;width: 100%;overflow: hidden;margin-bottom: 5px">
+      <div style="float: left;margin-bottom: 10px" class="bigFrame">
         <div class="upFrame">
           <div class="upFrameContent">摘要</div>
         </div>
-        <div class="downFrame" @click="buildPie">
+        <div class="downFrame" >
           <div class="downFrameContent">
             <div v-if="this.$store.state.abstract === ''">
               <div class="notAbstract">
@@ -25,115 +25,114 @@
           </div>
         </div>
       </div>
-<!--      <div class="rightFrame">-->
-<!--        <div class="upFrame">-->
-<!--          <div class="upFrameContent">Related research</div>-->
-<!--        </div>-->
-<!--        <div class="downFrame">-->
-<!--          <div class="downFrameContent">-->
-<!--            <div style="font-size: 18px;margin-bottom: 5px">Big Data Big Data and the Attention Economy</div>-->
-<!--            <div style="margin-bottom: 5px">-->
-<!--              <a class="articleType">Article</a>-->
-<!--              Full-text available-->
-<!--              <div style="color: darkgrey">-->
-<!--                December 2017-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div style="font-size: 16px;color: blue">-->
-<!--              Download-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="upFrame" style="background: rgba(221,221,221,0.2);">-->
-<!--          <div style="text-align: center;line-height:50px">-->
-<!--            view more-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--      <div class="rightFrame">-->
+      <!--        <div class="upFrame">-->
+      <!--          <div class="upFrameContent">Related research</div>-->
+      <!--        </div>-->
+      <!--        <div class="downFrame">-->
+      <!--          <div class="downFrameContent">-->
+      <!--            <div style="font-size: 18px;margin-bottom: 5px">Big Data Big Data and the Attention Economy</div>-->
+      <!--            <div style="margin-bottom: 5px">-->
+      <!--              <a class="articleType">Article</a>-->
+      <!--              Full-text available-->
+      <!--              <div style="color: darkgrey">-->
+      <!--                December 2017-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--            <div style="font-size: 16px;color: blue">-->
+      <!--              Download-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--        <div class="upFrame" style="background: rgba(221,221,221,0.2);">-->
+      <!--          <div style="text-align: center;line-height:50px">-->
+      <!--            view more-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
-    <div style="height: 30px">
+    <div style="height: 20px">
     </div>
     <div class="textFrame">
-        <div style="height: 20px"></div>
-        <div class="stats">
-          <div class="statsFrame">
-            <div class="upFrame">
-              <div class="upFrameContent">Stats overview</div>
-            </div>
-            <div class="downFrame">
-              <div class="statsFrameContent">
-                <!-- 这里放表格 -->
-                <div id="chart1"></div>
-              </div>
-            </div>
+      <div style="height: 20px"></div>
+      <div class="stats">
+        <div class="statsFrame">
+          <div class="upFrame">
+            <div class="upFrameContent">Stats overview</div>
           </div>
-          <div style="width:4%;float:left;height:10px"></div>
-          <div class="statsFrame">
-            <div class="upFrame">
-              <div class="upFrameContent">Stats overview</div>
-            </div>
-            <div class="downFrame">
-              <div class="statsFrameContent">
-                <!-- 这里放表格 -->
-                <div id="chart2"></div>
-              </div>
+          <div class="downFrame">
+            <div class="statsFrameContent">
+              <!-- 这里放表格 -->
+              <div id="chart1"></div>
             </div>
           </div>
         </div>
+        <div style="width:4%;float:left;height:10px"></div>
+        <div class="statsFrame">
+          <div class="upFrame">
+            <div class="upFrameContent">Stats overview</div>
+          </div>
+          <div class="downFrame">
+            <div class="statsFrameContent">
+              <!-- 这里放表格 -->
+              <div id="chart2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div style="height: 20px"></div>
-<!--      <el-tabs type="border-card">-->
-<!--        <el-tab-pane label="全文">-->
-<!--          <div class="textFrameContent">-->
-<!--            &lt;!&ndash;一部分信息&ndash;&gt;-->
-<!--            <div class="textFrameContentMain">-->
-<!--              Content uploaded by Frederike Zufall<br>-->
-<!--              Author content<br>-->
-<!--              Content may be subject to copyright.<br>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;全文&ndash;&gt;-->
-<!--            <div class="textFrameContentMessage">-->
-<!--              <div class="textBigFrame">-->
-<!--                <div class="textUpFrameContent">-->
-<!--                  &lt;!&ndash;          <div style="height: 15px"></div>&ndash;&gt;-->
-<!--                  <div class="upFrameContent">PAGE1</div>-->
-<!--                </div>-->
-<!--                <div class="downFrame">-->
-<!--                  <div class="downFrameContent">-->
-<!--                    The primary scope of application of the General Data Protection Regulation—Regulation (UE) 2016/679 (GDPR)—is ‘personal data’; ‘data’ that is not personal data can be freely processed within the legal framework of the Regulation (UE) 2018/1807. Although the European data protection framework recognises these two categories of data—‘personal data’ and ‘non-personal data’—reality reveals ‘a lot in between’ the opposite endpoints. There are accordingly considerable complications in drawing the boundaries between personal and non-personal data. In this article, we will review some of the main issues related to the usual classification of data as personal, anonymous, pseudonymous, de-identified data, and suggest that the most realistic way to approach the different problems is to recognise the dynamic nature of the data.-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;按钮&ndash;&gt;-->
-<!--            <div class="textFrameContentButton">-->
-<!--              <el-button type="primary">访问全文</el-button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </el-tab-pane>-->
-<!--      </el-tabs>-->
+      <div style="height: 20px"></div>
+      <!--      <el-tabs type="border-card">-->
+      <!--        <el-tab-pane label="全文">-->
+      <!--          <div class="textFrameContent">-->
+      <!--            &lt;!&ndash;一部分信息&ndash;&gt;-->
+      <!--            <div class="textFrameContentMain">-->
+      <!--              Content uploaded by Frederike Zufall<br>-->
+      <!--              Author content<br>-->
+      <!--              Content may be subject to copyright.<br>-->
+      <!--            </div>-->
+      <!--            &lt;!&ndash;全文&ndash;&gt;-->
+      <!--            <div class="textFrameContentMessage">-->
+      <!--              <div class="textBigFrame">-->
+      <!--                <div class="textUpFrameContent">-->
+      <!--                  &lt;!&ndash;          <div style="height: 15px"></div>&ndash;&gt;-->
+      <!--                  <div class="upFrameContent">PAGE1</div>-->
+      <!--                </div>-->
+      <!--                <div class="downFrame">-->
+      <!--                  <div class="downFrameContent">-->
+      <!--                    The primary scope of application of the General Data Protection Regulation—Regulation (UE) 2016/679 (GDPR)—is ‘personal data’; ‘data’ that is not personal data can be freely processed within the legal framework of the Regulation (UE) 2018/1807. Although the European data protection framework recognises these two categories of data—‘personal data’ and ‘non-personal data’—reality reveals ‘a lot in between’ the opposite endpoints. There are accordingly considerable complications in drawing the boundaries between personal and non-personal data. In this article, we will review some of the main issues related to the usual classification of data as personal, anonymous, pseudonymous, de-identified data, and suggest that the most realistic way to approach the different problems is to recognise the dynamic nature of the data.-->
+      <!--                  </div>-->
+      <!--                </div>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--            &lt;!&ndash;按钮&ndash;&gt;-->
+      <!--            <div class="textFrameContentButton">-->
+      <!--              <el-button type="primary">访问全文</el-button>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </el-tab-pane>-->
+      <!--      </el-tabs>-->
     </div>
   </div>
 </template>
 
 <script>
 import ESApi from '../../api/elastic search'
-import ESTitle from '../../api/es title'
 import AC from '../article/Article.vue'
 const echarts = require('echarts/lib/echarts')
 export default {
   name: "Overviews",
   data(){
     return{
-        id: "",
-        title: "",
-        authors: [],
-        abstract: "",
-        reference:[],
-        venue: {},
-        url: "",
-        citation_by_year:{},
-        flag: 1,
+      id: "",
+      title: "",
+      authors: [],
+      abstract: "",
+      reference:[],
+      venue: {},
+      url: "",
+      citation_by_year:{},
+      flag: 1,
       relatedArticle:[],
       AuthorCitation:[
         {
@@ -179,7 +178,7 @@ export default {
     // this.searchAb();
     console.log('333')
     this.searchRelated();
-    // this.buildPie();
+    this.buildPie();
   },
   methods: {
     // searchAb() {
@@ -202,7 +201,7 @@ export default {
     // },
     searchRelated(){
       console.log('related');
-      ESTitle.getTitle(this.$store.state.title).then(response =>{
+      ESApi.getTitle(this.$store.state.title).then(response =>{
         console.log(response.data)
         this.length = response.data.hits.total.value
         // Vue.set(this.relatedArticle, 1, response.data.hits.hits[1].)//给列表对象新增属性
@@ -218,6 +217,12 @@ export default {
           console.log(this.relatedArticle[i]._score)
         }
       })
+      setTimeout(() => {
+
+        this.buildPie()//娃娃消失
+
+      }, 100);
+
     },
     buildPie(){
       console.log('build')
@@ -344,10 +349,12 @@ export default {
 #chart1{
   /*width: 80%;*/
   height: 500px;
+
 }
 #chart2{
   /*width: 80%;*/
   height: 500px;
+
 }
 .articleType{
   width: 60px;
@@ -369,15 +376,16 @@ export default {
   /*margin: auto;*/
   margin-left: 10%;
   /*margin-bottom: 30px;*/
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2)
 }
 .upFrame{
   height: 50px;
   border-bottom: rgba(0, 0, 0, .12) solid 1px;
 }
 .upFrameContent{
-  padding: 15px;
+  padding: 12px;
   margin-left: 15px;
+  font-size: 18px;
 }
 .downFrame{
   border-bottom: lightgrey solid 1px;
@@ -409,7 +417,7 @@ export default {
   background: white;
   border-radius: 2px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 .textUpFrameContent{
   /*padding: 15px;*/
@@ -418,12 +426,13 @@ export default {
   border-bottom: rgba(0, 0, 0, .12) solid 1px;
   height: 50px;
 }
-.statsFrame{
-  width: 80%;
-  margin: auto;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
-}
+/*.statsFrame{*/
+/*  width: 80%;*/
+/*  margin: auto;*/
+/*  background: white;*/
+/*  !*box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);*!*/
+/*  margin-bottom: 10px;*/
+/*}*/
 .statsContent{
   float: left;
   width: 21.5%;
@@ -439,7 +448,7 @@ export default {
   float: right;
   margin-right: 10%;
   background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 .rightPartContent{
   font-size: 13px;
@@ -466,10 +475,12 @@ export default {
   padding: 25px;
 }
 .statsFrame{
-  width: 48%;
-  margin: auto;
+  width: 46%;
+  margin: 10px auto;
+  margin-left: 10px;
   float: left;
   background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+  /*margin-bottom: 10px;*/
 }
 </style>

@@ -19,7 +19,7 @@
     </div>
     <div id="mainAboutMePane">
       <div class="AboutMeInfo">介绍</div>
-      <div class="AboutMeDetail">{{ this.user.Intro }}</div>
+      <div class="AboutMeDetail">{{ this.user.summary }}</div>
       <div class="AboutMeInfo">语言</div>
       <div class="AboutMeDetail">{{ this.user.language }}</div>
       <div class="AboutMeInfo">学科</div>
@@ -47,7 +47,7 @@
         </div>
         <div class="introInfo">介绍</div>
         <div class="myInput">
-          <el-input autocomplete="off" type="textarea" rows="4"></el-input>
+          <el-input autocomplete="off" type="textarea" rows="4" v-model="intro"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -105,53 +105,73 @@
 </template>
 
 <script>
+import {updateInfo} from "../request/api";
+
 export default {
   name: "aboutMe",
   props: ['user'],
   data() {
     return {
       ifEdit: false,
-      IntroDialog:false,
-      LanDialog:false,
-      SubDialog:false,
-      TechDialog:false
+      IntroDialog: false,
+      LanDialog: false,
+      SubDialog: false,
+      TechDialog: false,
+      intro: '',
     }
   },
   methods: {
     handleDropDown(command) {
       if (command == "editIntro") {
         this.IntroDialog = true;
-      }else if (command == "editLanguage"){
+      } else if (command == "editLanguage") {
         this.LanDialog = true;
-      }else if(command == "editSub"){
+      } else if (command == "editSub") {
         this.SubDialog = true;
-      }else if(command == "editTech"){
+      } else if (command == "editTech") {
         this.TechDialog = true;
       }
     },
-    introDialogCancel(){
-      this.IntroDialog=false;
+    introDialogCancel() {
+      this.IntroDialog = false;
     },
-    introDialogConfirm(){
-      this.IntroDialog=false;
+    introDialogConfirm() {
+      this.IntroDialog = false;
+      console.log(this.$props.user)
+
+      this.user.summary = this.intro;
+      this.updateInfor()
     },
-    lanDialogCancel(){
-      this.LanDialog=false;
+    lanDialogCancel() {
+      this.LanDialog = false;
     },
-    lanDialogConfirm(){
-      this.LanDialog=false;
+    lanDialogConfirm() {
+      this.LanDialog = false;
     },
-    SubDialogCancel(){
-      this.SubDialog=false;
+    SubDialogCancel() {
+      this.SubDialog = false;
     },
-    SubDialogConfirm(){
-      this.SubDialog=false;
+    SubDialogConfirm() {
+      this.SubDialog = false;
     },
-    TechDialogCancel(){
-      this.TechDialog=false;
+    TechDialogCancel() {
+      this.TechDialog = false;
     },
-    TechDialogConfirm(){
-      this.TechDialog=false;
+    TechDialogConfirm() {
+      this.TechDialog = false;
+    },
+    updateInfor() {
+      // console.log(1)
+      // console.log(this.user)
+      updateInfo({
+        user_id:this.user.user_id,
+        field: this.user.field,
+        skill: this.user.skill,
+        degree: this.user.degree,
+        summary: this.user.summary
+      }).then(res=>{
+        console.log(res)
+      })
     }
   }
 }
@@ -174,9 +194,11 @@ export default {
   letter-spacing: 1px;
   color: #8e8e8e;
 }
-/deep/ .el-dropdown-link:hover{
+
+/deep/ .el-dropdown-link:hover {
   color: #343434;
 }
+
 #leftCharacter {
   width: 250px;
   padding: 10px;
@@ -186,12 +208,14 @@ export default {
   letter-spacing: 1px;
   color: #8e8e8e;
 }
+
 .infoDialog {
   color: #343434;
   width: 1000px;
   margin-left: auto;
   margin-right: auto;
 }
+
 #rightButton {
   display: flex;
   width: 250px;
@@ -199,6 +223,7 @@ export default {
   margin-top: 10px;
   color: #8e8e8e;
 }
+
 #rightButton:hover {
   cursor: pointer;
   color: #343434;
@@ -243,6 +268,7 @@ export default {
   color: #343434;
   margin-top: 5px;
 }
+
 .myDropdown {
   border-left: transparent solid 2px;
 }
@@ -252,64 +278,77 @@ export default {
   color: black;
   border-left: grey solid 2px;
 }
+
 /deep/ .el-dialog__header {
-    padding: 20px 20px 10px;
-    background-color: #00a39e;
-    height: 30px;
+  padding: 20px 20px 10px;
+  background-color: #00a39e;
+  height: 30px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
   color: white !important;
 }
+
 /deep/ .el-dialog__title {
-    line-height: 24px;
-    font-size: 18px;
-    color: white !important;
+  line-height: 24px;
+  font-size: 18px;
+  color: white !important;
 }
+
 /deep/ .el-icon-close:before {
-    content: "\E6DB";
-    color: white;
+  content: "\E6DB";
+  color: white;
 }
-.dialogMainPane{
+
+.dialogMainPane {
   padding: 10px 20px 15px 20px;
 }
-.dialogInfo{
+
+.dialogInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
   font-size: 15px;
   color: black;
 }
-#otherChoose{
+
+#otherChoose {
   display: grid;
 }
-.oneOther{
+
+.oneOther {
   margin-top: 15px;
   display: inline-flex;
   color: #00ccbb;
 }
-.oneOther .i{
+
+.oneOther .i {
   color: #00ccbb;
 }
-.otherDetail{
+
+.otherDetail {
   margin-left: 10px;
   font-family: "Microsoft YaHei";
   color: #575757 !important;
   font-size: 14px;
 }
-.introInfo{
+
+.introInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
   font-size: 13px;
   margin-top: 20px;
   color: black;
 }
+
 .myInput {
   margin-top: 10px;
   height: 50px;
 }
-.twoButton{
+
+.twoButton {
   border-top: 1px solid #dedede;
   padding: 10px;
 }
+
 .confirm {
   font-family: "Microsoft YaHei UI";
   display: inline;
@@ -325,12 +364,14 @@ export default {
   padding: 10px 20px 10px 20px;
   border: none;
 }
-.confirm:hover{
+
+.confirm:hover {
   color: white;
   background: #005abb;
 }
-.cancel{
-    font-family: "Microsoft YaHei UI";
+
+.cancel {
+  font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
   color: #0080ff;
@@ -342,17 +383,20 @@ export default {
   padding: 10px 20px 10px 20px;
   border: none;
 }
-.cancel:hover{
+
+.cancel:hover {
   background-color: whitesmoke;
 }
-.DetailInfo{
+
+.DetailInfo {
   font-family: "Microsoft YaHei";
   color: #575757 !important;
   font-size: 14px;
 }
+
 /deep/ .el-dropdown {
-    display: inline-block;
-    position: relative;
-    font-size: 14px;
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
 }
 </style>
