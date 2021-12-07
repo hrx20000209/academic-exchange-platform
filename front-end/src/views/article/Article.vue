@@ -17,7 +17,7 @@
               <div style="height: 10px"></div>
               <!--              作者这里 应该是需要改点什么-->
               <div class="articleActhor">
-                <div class="author" v-for="(item2) in authors" :key="item2">{{item2.name}}</div>
+                <div class="author" v-for="(item2) in authors" :key="item2" @click="toActhor(item2.id)">{{item2.id}}</div>
               </div>
             </div>
           </div>
@@ -26,10 +26,13 @@
           <!--      导航栏-->
           <div>
             <el-menu class="el-menu-demo" mode="horizontal" router>
+<!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
               <el-menu-item index="/article/1/overviews">Overviews</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
+<!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
               <el-menu-item index="/article/1/comments">Comments</el-menu-item>
               <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
+<!--              <el-menu-item index="/article/references">References</el-menu-item>-->
               <el-menu-item index="/article/1/references">References</el-menu-item>
               <el-menu-item>
                 <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">下载全文</a></el-button>
@@ -37,8 +40,12 @@
               </el-menu-item>
 
               <el-menu-item>
-                <el-button type="warning" v-if="!this.flagShoucang" @click="getFavoriteBag">收藏文献</el-button>
+                <el-button type="warning" v-if="!this.isFavorite" @click="getFavoriteBag">收藏文献</el-button>
                 <el-button type="warning" plain v-else @click="deleteFavorite">取消收藏</el-button>
+              </el-menu-item>
+              <el-menu-item>
+                <el-button type="warning">推荐</el-button>
+                <el-button type="warning" plain @click="deleteFavorite">取消收藏</el-button>
               </el-menu-item>
             </el-menu>
           </div>
@@ -100,7 +107,7 @@ export default {
       flagShoucang: false,
       flagQingDan: true,
       flagLoad: true,
-      id: "7C4C2B3B",
+      paper_id: "7C4C2B3B",
       title: "",
       authors: [],
       author:'',
@@ -118,12 +125,15 @@ export default {
 
       ],
       favorite_name_add:'',
+      isFavorite:'',
     }
   },
   mounted() {
     let paper_id = this.$route.params.paper_id
     this.search(paper_id);
-    console.log('333')
+    // this.search('7C4C2B3B');
+    console.log('333');
+    this.getIsFavorite();
     // this.searchRelated();
   },
   methods: {
@@ -131,9 +141,6 @@ export default {
     get(){
       console.log('11111')
     },
-    // concelNei(){
-    //
-    // },
     getFavoriteBag(){
       this.dialogVisible = true
       console.log('进入获取收藏夹信息');
@@ -179,19 +186,19 @@ export default {
         })
     },
     addFavorite(){
-      this.flagShoucang = true;
+      this.isFavorite = true;
       this.dialogVisible = false;
       this.favorite_name = this.favorite_names[this.ra-1];
       console.log(this.ra);
       console.log(this.favorite_name)
-      console.log(this.id)
+      console.log(this.paper_id)
       this.axios({
         method: "post",
         url:"http://139.9.132.83:8000/user/AddPaper",
         // url:"http://192.168.206.1:8000/user/AddPaper",
         data:{
           user_id:this.user_id, //这里是user的id 但我这里没有
-          paper_id: this.id,    //文章id
+          paper_id: this.paper_id,    //文章id
           favorite_name: this.favorite_name,
         },
         // timeout:1000,
@@ -202,21 +209,37 @@ export default {
         })
     },
     deleteFavorite(){
-      this.flagShoucang = false;
+      console.log('进入删除')
+      this.isFavorite = false;
       this.axios({
         method: "post",
         // url:"http://192.168.206.1:8000/user/DeletePaper",
-        url:"http://139.9.132.83:8000/user/DeletePaper",
+        url:"http://139.9.132.83:8000/user/CancelFavorite",
         data:{
-          user_id:this.user_id,//这里是user的id 但我这里没有
-          paper_id: this.id,  //文章id
-          favorite_name: this.favorite_name,
+          user_id:this.user_id, //这里是user的id 但我这里没有
+          paper_id: this.paper_id,    //文章id
         },
         // timeout:1000,
       })
         .then(response=>{
-
+          console.log(response.data)
         })
+    },
+    getIsFavorite(){
+      console.log('获取是否收藏')
+      this.axios({
+        method:"get",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/user/IsFavoritePaper?paper_id="+ this.paper_id + "&user_id="+this.user_id,
+        data:{
+          user_id: this.user_id,
+          paper_id: this.paper_id
+        }
+      })
+      .then(response=>{
+        console.log(response.data)
+        this.isFavorite = response.data.isFavorite
+      })
     },
     toWebsite(){
       return this.urlArticle

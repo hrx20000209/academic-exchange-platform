@@ -370,7 +370,7 @@ export default {
 }
 .bigFrame{
   /*height: 300px;*/
-  width: 50%;
+  width: 66%;
   background: white;
   border-radius: 2px;
   /*margin: auto;*/
