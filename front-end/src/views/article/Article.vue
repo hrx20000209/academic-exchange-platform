@@ -25,9 +25,9 @@
           <div class="dividingLine"></div>
           <!--      导航栏-->
           <div>
-            <el-menu class="el-menu-demo" mode="horizontal" router>
+            <el-menu class="el-menu-demo" mode="horizontal" router :default-active="overviewIndex">
 <!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
-              <el-menu-item index="/article/1/overviews">Overviews</el-menu-item>
+              <el-menu-item :index="overviewIndex">Overviews</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
 <!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
               <el-menu-item index="/article/1/comments">Comments</el-menu-item>
@@ -101,13 +101,16 @@ export default {
   name: "Article",
   data(){
     return{
+      indexActive:1,
+      paper_id: "7C4C2B3B",
+      overviewIndex:'',
       ra:'3',
       dialogVisible: false,
       innerVisible: false,
       flagShoucang: false,
       flagQingDan: true,
       flagLoad: true,
-      paper_id: "7C4C2B3B",
+
       title: "",
       authors: [],
       author:'',
@@ -130,6 +133,9 @@ export default {
   },
   mounted() {
     let paper_id = this.$route.params.paper_id
+    this.overviewIndex = '/article/'+this.paper_id+'/overviews'
+    console.log(this.paper_id)
+    console.log(this.overviewIndex)
     this.search(paper_id);
     // this.search('7C4C2B3B');
     console.log('333');

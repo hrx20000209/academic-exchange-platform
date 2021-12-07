@@ -66,6 +66,7 @@ const routes = [
     // path: '/article',
     path: '/article/:paper_id',
     name: 'Article',
+    redirect:'/article/:paper_id/overviews',
     component: () => import('../views/article/Article.vue'),
     children: [
       // {
