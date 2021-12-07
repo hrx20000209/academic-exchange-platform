@@ -63,7 +63,6 @@ const routes = [
     component: () => import('../components/search')
   },
   {
-    // path: '/article',
     path: '/article/:paper_id',
     name: 'Article',
     component: () => import('../views/article/Article.vue'),

@@ -17,7 +17,7 @@
               <div style="height: 10px"></div>
               <!--              作者这里 应该是需要改点什么-->
               <div class="articleActhor">
-                <div class="author" v-for="(item2) in authors" :key="item2" @click="toActhor(item2.id)">{{item2.id}}</div>
+                <div class="author" v-for="(item2) in authors" :key="item2" @click="toActhor(item2.id)">{{item2.name}}</div>
               </div>
             </div>
           </div>
@@ -26,13 +26,13 @@
           <!--      导航栏-->
           <div>
             <el-menu class="el-menu-demo" mode="horizontal" router>
-<!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
+              <!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
               <el-menu-item index="/article/1/overviews">Overviews</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
-<!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
+              <!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
               <el-menu-item index="/article/1/comments">Comments</el-menu-item>
               <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
-<!--              <el-menu-item index="/article/references">References</el-menu-item>-->
+              <!--              <el-menu-item index="/article/references">References</el-menu-item>-->
               <el-menu-item index="/article/1/references">References</el-menu-item>
               <el-menu-item>
                 <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">下载全文</a></el-button>
@@ -45,7 +45,6 @@
               </el-menu-item>
               <el-menu-item>
                 <el-button type="warning">推荐</el-button>
-                <el-button type="warning" plain @click="deleteFavorite">取消收藏</el-button>
               </el-menu-item>
             </el-menu>
           </div>
@@ -236,10 +235,10 @@ export default {
           paper_id: this.paper_id
         }
       })
-      .then(response=>{
-        console.log(response.data)
-        this.isFavorite = response.data.isFavorite
-      })
+        .then(response=>{
+          console.log(response.data)
+          this.isFavorite = response.data.isFavorite
+        })
     },
     toWebsite(){
       return this.urlArticle
