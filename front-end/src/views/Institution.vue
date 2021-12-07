@@ -80,9 +80,7 @@
                           <div slot="content">姓名：{{item2.name}}<br/>被引次数：{{item2.cite}}<br/>发表文章数：{{item2.pubs}}</div>
                           <div style="display: flex; flex-direction: column;cursor: pointer" @click="jump2authors(item2.id)">
                             <div style="display: flex; justify-content: center">
-                              <el-avatar>
-                                {{item2.pic}}
-                              </el-avatar>
+                              <el-avatar :src="pic[index1*row_size+index2]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
                             </div>
                             <div style="display: flex; justify-content: center; flex-wrap:wrap;width: 100px">
                               <div style="font-family: Gabriola; font-size: 16px;">
@@ -175,6 +173,8 @@
 </template>
 
 <script>
+  import Api from "../api/mysql";
+
   const echarts = require('echarts/lib/echarts')
   import Nav_with_searchBox from "../components/nav_with_searchBox";
   import ESApi from '../api/elastic search'
@@ -183,6 +183,8 @@
       components: {Nav_with_searchBox},
       data(){
           return {
+            pic:[],
+            row_size: 6,
             InstitutionName:'',
             members:0,
             RG_score:0,
@@ -467,13 +469,19 @@
               let item = info.authors[i]
               let tmp = {}
               tmp['name'] = item.name
-              tmp['pic'] = this.getPic(item.name, item.id)
+              // tmp['pic'] = this.getPic(item.name, item.id)
               tmp['id'] = item.id
               tmp['pubs'] = item.n_pubs
               tmp['cite'] = item.n_citation
+              Api.getRealPic('1').then(
+                res => {
+                  const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+                  this.pic.push(imgUrl)
+                }
+              )
               row.push(tmp)
               j++
-              if (j === 6){
+              if (j === this.row_size){
                 this.authors.push(row)
                 row = []
                 j = 0

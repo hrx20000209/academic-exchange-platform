@@ -1,57 +1,47 @@
 <template>
     <div>
         <el-container style="display: flex; justify-content: center; flex-direction: column">
-            <div>
-        <Nav_with_searchBox></Nav_with_searchBox>
-            </div>
             <el-main class="MainArea">
-                <el-col>
-                <el-collapse accordion style="margin-top: 5px">
-                    <el-collapse-item class="myCollapse">
-                        <template slot="title">
-                            <div @click.stop="">
-                                <el-col :offset=2 style="margin-bottom: 5px"  @click.stop="">
-                                    <el-row style="
-                                        letter-spacing: 4px;
-                                        font-weight: bold;
-                                        background-image:-webkit-linear-gradient(#0b4B8B,#F2EDE6);
-                                        -webkit-background-clip:text;
-                                        -webkit-text-fill-color:transparent;
-                                        font-size: 15px;
-                                        font-family: siyuan;
-                                    ">
-                                        在这里检索您想要的文献：
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span=5>
-                                            <el-input class="input1" v-model="keywords"  placeholder="关键词"></el-input>
-                                        </el-col>
-                                        <el-col :span=5 style="margin-left: 45px">
-                                            <el-input class="input1" v-model="author" placeholder="作者"></el-input>
-                                        </el-col>
-                                        <el-col :span=5 style="margin-left: 45px">
-                                            <el-input class="input1" v-model="book" placeholder="发表处"></el-input>
-                                        </el-col>
-                                        <el-col :span=2 style="margin-left: 45px;margin-top: 1px">
-                                            <el-button class="simpleSearch" icon="el-icon-search"></el-button>
-                                        </el-col>
-                                    </el-row>
-                                </el-col>
-                            </div>
-                        </template>
-                    </el-collapse-item>
+                <el-col style="margin-top: -20px">
+                <div>
                     <el-row style="margin-top: -20px">
                         <div class="sky">
-                            <el-col :span=9 :offset=2 style="margin-top: 70px">
-                                <div class="introduction">
-                                    <div class="intro_text">
-                                        学术星球——一款好用的学术文献检索与交流网站
-                                    </div>
-                                    <div class="intro_text">
-                                        您可以在这里检索您需要的文献，和与您有相同研究方向的同行交流
-                                    </div>
-                                </div>
-                            </el-col>
+                            <div>
+                              <Nav_with_searchBox_transparent></Nav_with_searchBox_transparent>
+                            </div>
+                            <div class="myStart">
+                                <!--<template slot="title">-->
+                                    <!--<div @click.stop="">-->
+                                <el-row style="margin-left: 50px;margin-top: 50px">
+                                  <el-row style="
+                                      letter-spacing: 4px;
+                                      font-weight: bold;
+                                      background-image:-webkit-linear-gradient(#FFF,#00ffff);
+                                      -webkit-background-clip:text;
+                                      -webkit-text-fill-color:transparent;
+                                      font-size: 20px;
+                                      margin-top: 45px;
+                                      margin-bottom: 20px;
+                                      font-family: siyuan;
+                                      margin-left: 450px;
+                                  ">
+                                      检索您想要的文献：
+                                  </el-row>
+                                  <div>
+                                     <div class="search-box">
+
+                                       <div style="display: flex; width: 700px">
+                                        <!--<input type="text" class="search-left" placeholder="请输入要搜索的内容"><input type="button" class="search-right" value="搜 索" icon="el-icon-search">-->
+                                         <el-input placeholder="请输入内容" v-model="keywords" class="SearchInput"></el-input>
+                                         <el-button icon="el-icon-search" class="searchIcon"></el-button>
+                                       </div>
+
+                                     </div>
+                                  </div>
+                                </el-row>
+                                    <!--</div>-->
+                                <!--</template>-->
+                            </div>
                         </div>
                     </el-row>
                     <el-row>
@@ -72,8 +62,8 @@
                                                  flex-direction: column;
                                                  cursor:pointer;
                                                  box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <el-avatar v-if="item.haspic" :src="getpicfrombase64(item.url)" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
-                                              <el-avatar v-if="item.haspic===false" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
+                                              <el-avatar v-if="true" :src="pic[index]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+                                              <el-avatar v-if="false" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
                                                 {{item.pic}}
                                               </el-avatar>
                                               <div style="text-align: center; margin-top: 5px; margin-bottom: 5px; color: #A4A4A4">
@@ -81,42 +71,47 @@
                                               </div>
                                             </div>
                                         </div>
-                                        <div style="width: 420px; display: flex; flex-direction: column;">
+                                        <div style="width: 350px; display: flex; flex-direction: column;">
                                             <div class="titleFont">最热文章</div>
                                             <div v-for="(item, index) in this.engine_popular" :key="index"
-                                                 style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <div style="width: 350px; display: flex; ">
-                                                <div style="
+                                                 style="display: flex; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                              <div style="
                                                 width: 20px;
                                                 display: flex;
                                                 justify-content: center;margin-right: 10px">
-                                                  <div style="font-size: 10px;border-radius: 10px;margin-top: 5px;width:20px;height: 20px;color: #FFF; background-color: #81BEF7;text-align: center">{{index+1}}</div>
-                                                </div>
-                                                <div style="width: 300px">
-                                                  <el-link :underline="false">
-                                                    {{item['title']}}
-                                                  </el-link>
-                                                </div>
+                                                  <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                               </div>
-                                              <div style="display: flex; flex-direction: column; justify-content: center">
-                                                <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
-                                                  {{item['cites']}}次
+                                              <div style="flex-direction: column; width:300px">
+                                                <div style="width: 300px; display: flex; justify-content: space-between">
+                                                  <div style="width: 200px">
+                                                    <el-link :underline="false">
+                                                      {{item['title']}}
+                                                    </el-link>
+                                                  </div>
+                                                  <div style="display: flex; justify-content: end">
+                                                  <div style="font-size: 10px">
+                                                    <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
+                                                  </div>
+                                                </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: column; justify-content: center">
+                                                  <el-progress :show-text="false" :percentage="getPercentage(item['cites'])"></el-progress>
                                                 </div>
                                               </div>
                                             </div>
                                         </div>
-                                        <div style="width: 420px; display: flex; flex-direction: column;">
+                                        <div style="width: 350px; display: flex; flex-direction: column;">
                                             <div class="titleFont">最新文章</div>
                                             <div v-for="(item, index) in this.engine_latest" :key="index"
                                                  style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <div style="width: 350px; display: flex; ">
+                                              <div style="width:300px; display: flex; ">
                                                 <div style="
                                                 width: 20px;
                                                 display: flex;
                                                 justify-content: center;margin-right: 10px">
-                                                  <div style="font-size: 10px;border-radius: 10px;margin-top: 5px;width:20px;height: 20px;color: #FFF; background-color: #81BEF7;text-align: center">{{index+1}}</div>
+                                                  <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                                 </div>
-                                                <div style="width: 300px">
+                                                <div style="width: 200px">
                                                   <el-link :underline="false">
                                                     {{item['title']}}
                                                   </el-link>
@@ -133,12 +128,12 @@
                             </el-row>
                         </el-col>
                     </el-row>
-                </el-collapse>
+                </div>
                 </el-col>
             </el-main>
         </el-container>
-        <!--<el-button @click="testImage">test</el-button>-->
-        <el-avatar :src="imgUrl" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+        <!--<el-button @click="test">test</el-button>-->
+        <!--<el-image :src="pic[0]"></el-image>-->
     </div>
 </template>
 
@@ -146,7 +141,7 @@
   import Vue from "vue";
   import VueScrollTo from "vue-scrollto";
   import ESApi from '../api/elastic search'
-  import Nav_with_searchBox from "../components/nav_with_searchBox";
+  import Nav_with_searchBox_transparent from "../components/nav_with_searchBox_transparent";
   import Api from '../api/mysql'
 
   Vue.use(VueScrollTo, options);
@@ -164,18 +159,21 @@
       onCancel: false,
       x: false,
       y: true
-    };
+    }
 
     export default {
         name: "homepage",
-        components: {Nav_with_searchBox},
+        components: {Nav_with_searchBox_transparent},
         data(){
             return {
-                active: 0,
+                pic:[],
+                maxCites:0,
+                maxLen:20,
+                active:0,
                 keywords: '',
                 author: '',
                 book: '',
-                imgUrl:'',
+                // imgUrl:'',
                 fixed: false,
                 beforeFixed:false,
                 translateX: 0,
@@ -187,64 +185,28 @@
         },
         mounted() {
             this.t()
-            this.testImage('1')
+            // this.testImage('1')
         },
         destroyed(){
             window.removeEventListener('scroll', this.handleScroll);
         },
         methods:{
-            testImage(id){
-              Api.getPic(id).then(
+            format(cites){
+
+                return cites + '次引用'
+
+            },
+            test(){
+              Api.getUsrId('05B090CE').then(
                 res => {
-                  const {data, headers} = res
-                  const blob = new Blob([data], {type: headers['content-type']})
-                  // this.testimage = window.URL.createObjectURL(blob)
-                  this.blobToBase64(blob).then(res => {
-                    // this.picture = res
-                    console.log('array', res)
-                    this.file = this.base64ImgtoFile(res)
-                    this.imgUrl = window.webkitURL.createObjectURL(this.file) || window.URL.createObjectURL(this.file)
-                    console.log(this.imgUrl)
-                  })
-                  console.log(res)
-                  // console.log(this.testimage)
+                  // this.imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+                  // console.log('imgurl is is',this.imgUrl)
+                  console.log('usr id is', res)
                 }
               )
             },
-            changeTitle(index) {
-                this.active = index;
-                this.setUnderLine();
-            },
-            // 设置下划线
-            setUnderLine() {
-                // 屏幕宽
-                let width = document.documentElement.clientWidth;
-                // let width = 600
-                // 每个菜单所占宽度 = 屏宽 / 菜单个数
-                let slidingWidth = (width / this.navList.length).toFixed(2);
-                // this.navSlidingWidth = slidingWidth
-                // 半个菜单宽度 （为了将下划线与菜单对齐）
-                let halfSlidingWidth = (slidingWidth / 2).toFixed(2);
-                // 水平位移目的坐标 = 半个菜单宽度 + (菜单宽 x 当前所在的index)
-                if(!this.fixed){
-                if (this.active === 0)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-20;
-                else if (this.active === 1)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-60;
-                else if (this.active === 2)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-80;
-                else if (this.active === 3)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-90;
-                } else {
-                if (this.active === 0)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-5;
-                else if (this.active === 1)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-20;
-                else if (this.active === 2)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-15;
-                else if (this.active === 3)
-                    this.translateX = Number(halfSlidingWidth) + Number(slidingWidth * this.active)-2;
-                }
+            getPercentage(nub){
+              return  Math.floor(nub/this.maxCites * 10000) / 100
             },
             jump2engine() {
                 console.log('ok')
@@ -259,7 +221,10 @@
                       let item = papers[i]._source
                       //console.log(item)
                       let temp = {}
-                      temp['title'] = item.title
+                      if (item.title.length>this.maxLen)
+                        temp['title'] = item.title.slice(0, this.maxLen) + '...'
+                      else
+                        temp['title'] = item.title
                       temp['year'] = item.year
                       temp['id'] = item.id
                       that.engine_latest.push(temp)
@@ -272,9 +237,14 @@
                     let papers = res.data.hits.hits
                     for (let i=0; i<papers.length; i++) {
                       let item = papers[i]._source
+                      if (i === 0)
+                        this.maxCites = item.n_citation
                       //console.log(item)
                       let temp = {}
-                      temp['title'] = item.title
+                      if (item.title.length>this.maxLen)
+                        temp['title'] = item.title.slice(0, this.maxLen) + '...'
+                      else
+                        temp['title'] = item.title
                       temp['cites'] = item.n_citation
                       temp['id'] = item.id
                       that.engine_popular.push(temp)
@@ -292,27 +262,12 @@
                       temp['name'] = item.name
                       temp['cites'] = item.n_citation
                       temp['id'] = item.id
-                      temp['pic'] = that.getPic(item.name, item.id)
+                      temp['pic'] = that.getName(item.name, item.id)
 
-                      Api.getPic('1').then(
+                      Api.getRealPic('1').then(
                       res => {
-                        const {data, headers} = res
-                        if (data.size < 200) {
-                          temp['haspic'] =  false
-                        }
-                        else{
-                          temp['haspic'] = true
-                          const blob = new Blob([data], {type: headers['content-type']})
-                          // this.testimage = window.URL.createObjectURL(blob)
-                          this.blobToBase64(blob).then(res => {
-                            // this.picture = res
-                            // console.log('array', res)
-                            temp['url'] = res
-                            // console.log(this.imgUrl)
-                          })
-                          // console.log(res)
-                          // console.log(this.testimage)
-                        }
+                        const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+                        this.pic.push(imgUrl)
                       }
                     )
                       that.authors.push(temp)
@@ -324,9 +279,9 @@
             },
             getpicfrombase64(base) {
               let file = this.base64ImgtoFile(base)
-              return window.webkitURL.createObjectURL(this.file) || window.URL.createObjectURL(this.file)
+              return window.webkitURL.createObjectURL(file) || window.URL.createObjectURL(file)
             },
-            getPic(name, id) {
+            getName(name, id) {
               //TODO: input id output pic or bool
 
               let lastname = name.split(' ')
@@ -354,6 +309,7 @@
               })
             },
             base64ImgtoFile (dataurl, filename = 'file') {
+                console.log('dataurl is',dataurl)
                 const arr = dataurl.split(',')
                 const mime = arr[0].match(/:(.*?);/)[1]
                 const suffix = mime.split('/')[1]
@@ -367,16 +323,6 @@
                   type: mime
                 })
               },
-            fixedActiveBtn() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-                let offsetTop = 700
-                scrollTop >=offsetTop ? this.fixed = true : this.fixed = false
-
-                if(this.beforeFixed !== this.fixed) {
-                    this.setUnderLine()
-                    this.beforeFixed = this.fixed
-                }
-            },
         }
     }
 </script>
@@ -387,53 +333,25 @@
     width: 100%;
     min-height: 1000px;
 }
-.myCollapse /deep/ .el-collapse-item__header {
-    background-color: #F2F2F2;
-    width: 103%;
-    margin-top: -25px;
-    margin-left: -20px;
-    height: 130px;
+.myStart {
+
+  height: 130px;
+  margin-top: -5px;
 }
-.myCollapse /deep/ .el-collapse-item__content{
-    background-color: #F2F2F2;
-    min-height: 600px;
-    margin-left: -20px;
-    width: 103%;
-    z-index: 999;
-}
-/deep/ .el-collapse-item__wrap{
-    z-index: 999;
-    margin-left: -20px;
-    width: 103%;
-}
+
 .input1 /deep/ .el-input__inner{
     height: 32px;
     width: 200px;
     border: 1px solid #b9b9b9;
     border-radius: 0;
 }
-.simpleSearch {
-    color: #fff;
-    height: 32px;
-    width: 35px;
-    max-height: 32px;
-    max-width: 35px;
-    border-radius: 0;
-    background-color: #007398;
-    padding-left: 9px;
-    padding-top: 10px;
-}
-.simpleSearch:hover {
-    color: #fff;
-    background-color:#ff751a;
-}
 .sky {
-    background-image: url(https://sdfestaticassets-us-east-1.sciencedirectassets.com/prod/fd5e957d4806b73bf1da2932ca5aace362f078e6/images/climate-banner.jpg);
-    height: 380px;
+    background-image: url(http://bpic.588ku.com/back_pic/05/48/20/855abafb634406c.jpg);
+    height: 450px;
     width: 103%;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 50% 55%;
+    background-position: 60% 100%;
     margin-left: -20px;
     margin-top: 20px;
     z-index: 0;
@@ -443,6 +361,50 @@
     min-height: 230px;
     background-color: rgba(0,0,0,.7);
 }
+.search-box{
+     display: flex;
+      justify-content: center;
+     width: auto;
+ }
+.SearchInput /deep/ .el-input__inner {
+  border-radius: 25px 0px 0px 25px;
+  border:royalblue 2px solid;
+  border-right: none;
+  height: 40px;
+}
+.searchIcon{
+  border-radius: 0px 25px 25px 0px;
+  border:royalblue 2px solid;
+  height: 40px;
+  border-left: none;
+
+}
+.search-left{
+  box-shadow: rgb(11, 234, 235) -2px 0px 10px;
+    text-indent: 20px;
+     width:80%;
+    height:50px;
+    border:#00ffff 1px solid;
+    // float:left;
+    margin-top:20px;
+    border-bottom-left-radius:25px;
+    border-top-left-radius:25px;
+    outline:none;
+    // text-align:20px ;
+}
+.search-right{
+    box-shadow: rgb(11, 234, 235) 5px 0px 5px;
+    width:13%;
+    height:53px;
+    background:#00cfff;
+    color: #fff;
+    border:none;
+    margin-top:20px;
+    border-bottom-right-radius:25px;
+    border-top-right-radius:25px;
+    outline:none;
+}
+
 .intro_text {
     color: #fff;
     font-size: 16px;
@@ -454,125 +416,52 @@
     color:#505050;
     margin-top: 30px;
 }
-.nav {
-    width: 100%;
-    z-index: 999;
-    background: #fff;
-    margin-top: 20px;
-    margin-left: -43px;
-}
-.nav_fixed {
-    width: 100%;
-    z-index: 999;
-    background: #fff;
-    margin-left: -43px;
-    position: fixed;
-    top: -20px;
-    left: 0;
-}
-.nav .nav-list {
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 44px;
-}
-.nav .nav-list /deep/ div {
-    font-size: 17px;
-    font-family: PingFangSC-Regular, PingFang SC, sans-serif;
-    font-weight: 400;
-    color: #666;
-    line-height: 16px;
-    cursor: pointer;
-    text-align: center;
-}
-.nav-line {
-    margin: 0 auto;
-}
-.nav-line /deep/ div {
-    width: 90px;
-    height: 4px;
-    background-color: #4158D0;
-    border-radius: 2px;
-    transition-duration: 0.3s;
-    position: relative;
-    top: -7px;
-}
-/* 新增激活状态样式 */
-.nav .nav-list .nav-list--active {
-    font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
-    font-weight: bold;
-    color: #333333;
-    transition: all 0.3s;
-}
-.science {
-    text-align: center;
-    width: 120px;
-    font-size: 26px;
-    color: #2e5cb8;
-    border-bottom: 2px solid transparent;
-    margin-left: -25px;
-}
-.science:hover {
-    text-align: center;
-    width: 120px;
-    color: #ff751a;
-    cursor: pointer;
-    text-decoration: none;
-    border-bottom: 2px solid;
-}
-.social {
-    text-align: center;
-    width: 100px;
-    font-size: 26px;
-    color: #2e5cb8;
-    border-bottom: 2px solid transparent;
-    margin-left: -15px;
-}
-.social:hover {
-    text-align: center;
-    width: 100px;
-    color: #ff751a;
-    cursor: pointer;
-    text-decoration: none;
-    border-bottom: 2px solid;
-}
-.engine {
-    text-align: center;
-    width: 60px;
-    font-size: 26px;
-    margin-top: 30px;
-    color: #2e5cb8;
-    border-bottom: 2px solid transparent;
-}
-.engine:hover {
-    text-align: center;
-    width: 60px;
-    color: #ff751a;
-    cursor: pointer;
-    text-decoration: none;
-    border-bottom: 2px solid;
-}
-.maths {
-    text-align: center;
-    width: 60px;
-    font-size: 26px;
-    color: #2e5cb8;
-    border-bottom: 2px solid transparent;
-}
-.maths:hover {
-    text-align: center;
-    width: 60px;
-    color: #ff751a;
-    cursor: pointer;
-    text-decoration: none;
-    border-bottom: 2px solid;
-}
+
 .titleFont{
     background-image:-webkit-linear-gradient(#2E9AFE,#01DFA5);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
     margin-bottom: 10px;
     text-align: left
+}
+.normal_index {
+  font-size: 10px;
+  border-radius: 10px;
+  margin-top: 5px;
+  width:20px;
+  height: 20px;
+  color: #FFF;
+  background-color: #81BEF7;
+  text-align: center
+}
+.index_0 {
+  font-size: 10px;
+  border-radius: 10px;
+  margin-top: 5px;
+  width:20px;
+  height: 20px;
+  color: #FFF;
+  background-image: linear-gradient(to bottom right, #feff0b, #d1bb10);
+  text-align: center
+}
+.index_1 {
+  font-size: 10px;
+  border-radius: 10px;
+  margin-top: 5px;
+  width:20px;
+  height: 20px;
+  color: #FFF;
+  background-image: linear-gradient(to bottom right, #e9e9e9, #8f8f8f);
+  text-align: center
+}
+.index_2 {
+  font-size: 10px;
+  border-radius: 10px;
+  margin-top: 5px;
+  width:20px;
+  height: 20px;
+  color: #FFF;
+  background-image: linear-gradient(to bottom right, goldenrod, #996633);
+  text-align: center
 }
 </style>

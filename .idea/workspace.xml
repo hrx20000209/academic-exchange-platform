@@ -4,6 +4,10 @@
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/api/mysql.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/mysql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/Institution.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Institution.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/homepage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/homepage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +44,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../computer_answer/code_chap_5_student" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -48,17 +52,18 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-    <property name="ts.external.directory.path" value="E:\PyCharm 2021.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="D:\PyCharm 2020.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/front-end/src/views/admin" />
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\86189\Desktop\software\front-end\src\components" />
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
     </key>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
@@ -91,6 +96,11 @@
       <workItem from="1638095961483" duration="35000" />
       <workItem from="1638187115866" duration="2098000" />
       <workItem from="1638359928034" duration="9086000" />
+      <workItem from="1638524627966" duration="6434000" />
+      <workItem from="1638703211273" duration="621000" />
+      <workItem from="1638749060481" duration="13369000" />
+      <workItem from="1638771149432" duration="8741000" />
+      <workItem from="1638863183432" duration="5317000" />
     </task>
     <servers />
   </component>
@@ -114,10 +124,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1638362069441" />
-    <state x="368" y="36" key="FileChooserDialogImpl" timestamp="1638095994720">
+    <state x="368" y="36" key="FileChooserDialogImpl" timestamp="1638879439027">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="368" y="36" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1638095994720" />
+    <state x="368" y="36" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1638879439027" />
     <state x="10" y="0" key="SettingsEditor" timestamp="1638095976507">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
