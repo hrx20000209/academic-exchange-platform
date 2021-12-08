@@ -52,17 +52,17 @@ export default {
         }]
       });
     },
-    getData(id){
-      getRelation({
-        user_id:this.user.id
-      }).then(res=>{
-        console.log(res)
-      })
-    }
+    // getData(id){
+    //   getRelation({
+    //     user_id:this.user.id
+    //   }).then(res=>{
+    //     console.log(res)
+    //   })
+    // }
   },
   //一加载页面就调用
   mounted() {
-    this.getData();
+    // this.getData();
     this.initCharts();
   }
 }

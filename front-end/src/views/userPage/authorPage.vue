@@ -78,7 +78,7 @@
           <stats-digit-total :user="user"></stats-digit-total>
           <cite-and-publish :user="user"></cite-and-publish>
           <author-relationship :user="user" :data="this.datas" :linkm="this.linkmes"></author-relationship>
-          <cooperator-pie-chart></cooperator-pie-chart>
+          <cooperator-pie-chart :author="user"></cooperator-pie-chart>
         </div>
       </div>
 
@@ -257,6 +257,7 @@ export default {
   },
   mounted() {
     // this.id=this.$route.query.id
+    this.id=this.$route.query.id
     this.getAuthorInfo(this.id)
     this.getdataSource(this.id)
   },

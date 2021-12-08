@@ -552,7 +552,7 @@ export default {
       this.$router.push({
         path: '/authorPage',
         query: {
-          // id:this.user.scholarID
+          id:'7F5944CA'
         }
       })
     },
