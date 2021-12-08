@@ -2,10 +2,10 @@
   <div id="statsOverivew">
     <div id="topHead">
       <div id="leftCharacter">数据概览</div>
-      <div id="rightButton">
-        <div>查看详细</div>
-        <i class="el-icon-s-order"></i>
-      </div>
+<!--      <div id="rightButton">-->
+<!--        <div>查看详细</div>-->
+<!--        <i class="el-icon-s-order"></i>-->
+<!--      </div>-->
     </div>
     <div id="mainPane">
       <div class="twoNumber">
@@ -64,7 +64,7 @@ export default {
   background-color: white;
 box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 30px;
+  /*margin-top: 30px;*/
   width: auto;
 }
 
@@ -72,6 +72,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   width: 250px;
   padding: 10px;
   font-family: "Microsoft YaHe";
+  margin-left: 15px;
   font-weight: bold;
   font-size: 18px;
   letter-spacing: 1px;
@@ -111,7 +112,6 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 
 #topHead {
   display: flex;
-  justify-content: center;
 }
 
 #mainPane {

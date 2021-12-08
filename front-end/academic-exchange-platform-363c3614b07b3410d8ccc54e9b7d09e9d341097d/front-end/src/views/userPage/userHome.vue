@@ -310,7 +310,7 @@ export default {
         degree: ''
       },
       add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id='+localStorage.getItem('user_id'),
-      get_pic_url: 'http://139.9.132.83:8000/user/getImage?user_id='+localStorage.getItem('user_id'),
+      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id='+localStorage.getItem('user_id'),
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
