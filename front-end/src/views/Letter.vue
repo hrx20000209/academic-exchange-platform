@@ -127,7 +127,7 @@
 <script>
 import nav_with_searchBox from "../components/nav_with_searchBox"
 import message from "../components/message"
-import { getMessageList, sendMessage, readMessage, uploadImage } from "../request/api"
+import { getMessageList, sendMessage, readMessage, getImage } from "../request/api"
 
 export default {
   name: "Letter",
@@ -179,9 +179,7 @@ export default {
         this.totalPage = response.total_page
       })
       for (let i = 0; i < this.items.length; i++) {
-        uploadImage({
-          user_id: this.items[i].user_id
-        }).then(response => {
+        getImage(this.items[i].user_id).then(response => {
           console.log(response)
         })
       }
