@@ -10,8 +10,11 @@
 </template>
 
 <script>
+import {getPieData} from "../../request/api";
+
 export default {
   name: "cooperatorPieChart",
+  props:['author'],
   data(){
     return{
       data:[{value:16, name:'潘海霞'},
@@ -22,6 +25,15 @@ export default {
     }
   },
   methods: {
+    getData(){
+      getPieData({
+        author_id:this.$props.author.id
+      }).then(res=>{
+        console.log(res)
+        this.data = res.data
+        this.initCharts();
+      })
+    },
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(this.$refs.chart);
@@ -48,11 +60,22 @@ export default {
         }
     ]
       });
+      myChart.on('click', (param) => {
+        console.log(param)
+        this.$router.push({
+            path: '/authorPage',
+            query: {
+             id: param.data.id
+            }
+          }
+        )
+        this.$router.go(0)
+      })
     }
   },
   //一加载页面就调用
   mounted() {
-    this.initCharts();
+    this.getData()
   }
 }
 </script>

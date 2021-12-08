@@ -11,12 +11,18 @@
 </template>
 
 <script>
-import {getRelation} from "../../request/api";
 
 export default {
   name: "citeAndPublish",
-  props:['user'],
-  methods: {
+  props: ['user'],
+  data() {
+    return {
+      x_data: [],
+      pubData: [],
+      citeData: [],
+    }
+  },
+ methods: {
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(this.$refs.chart);
@@ -27,11 +33,11 @@ export default {
         legend: {
           data: ["发表", "被引"],
           orient: 'vertical',
-          x:'right',
-          y:'center',
+          x: 'right',
+          y: 'center',
         },
         xAxis: {
-          data: ["2016", "2017", "2018", "2019", "2020", "2021"]
+          data: this.x_data
         },
         yAxis: [{
           type: "value",
@@ -39,31 +45,51 @@ export default {
         },
           {
             type: "value",
-          name: "被引",
+            name: "被引",
           }],
         series: [{
           name: '发表',
           type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        },{
+          data: this.pubData
+        }, {
           name: '被引',
           type: 'bar',
-          data: [13, 2, 6, 10, 15, 33]
+          data: this.citeData
         }]
       });
     },
-    getData(id){
-      getRelation({
-        user_id:this.user.id
-      }).then(res=>{
-        console.log(res)
-      })
+    prepareJson() {
+      for (var i = 0; i < this.user.year_pubs.length; i++) {
+        if (!this.x_data.includes(this.user.year_pubs[i].year)) {
+          this.x_data.push(this.user.year_pubs[i].year);
+        }
+      }
+      for (var i = 0; i < this.user.year_citation.length; i++) {
+        if (!this.x_data.includes(this.user.year_citation[i].year)) {
+          this.x_data.push(this.user.year_citation[i].year);
+        }
+      }
+      this.x_data.sort();
+      console.log(this.x_data);
+      this.pubData = new Array(this.x_data.length).fill(0);
+      this.citeData = new Array(this.x_data.length).fill(0);
+      for (var i = 0; i < this.user.year_pubs.length; i++) {
+        var pos = this.x_data.indexOf(this.user.year_pubs[i].year);
+        this.pubData[pos] = this.user.year_pubs[i].cnt;
+      }
+      console.log(this.pubData)
+      for (var i = 0; i < this.user.year_citation.length; i++) {
+        var pos = this.x_data.indexOf(this.user.year_citation[i].year);
+        this.citeData[pos] = this.user.year_citation[i].cnt;
+      }
+      console.log(this.citeData)
     }
   },
   //一加载页面就调用
   mounted() {
-    this.getData();
+    this.prepareJson();
     this.initCharts();
+
   }
 }
 </script>

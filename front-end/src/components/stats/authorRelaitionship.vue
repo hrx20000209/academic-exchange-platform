@@ -139,8 +139,8 @@ export default {
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let relaChart = this.$echarts.init(this.$refs.chart);
-      console.log(this.$props.data)
-      console.log(this.$props.linkm)
+      // console.log(this.$props.data)
+      // console.log(this.$props.linkm)
       // 绘制图表
       relaChart.setOption({
         backgroundColor: 'transparent',
@@ -196,13 +196,26 @@ export default {
       })
 
       relaChart.on('click', (param) => {
-        this.$router.push({
-            path: '/wyhTest',
+        console.log(param)
+        let state = param.data.state
+        let id = param.data.num
+        if(state == 2){
+          this.$router.push({
+            path: '/authorPage',
             query: {
-              name: param.name
+             id: id
             }
           }
         )
+        this.$router.go(0)
+        }
+        // this.$router.push({
+        //     path: '/wyhTest',
+        //     query: {
+        //       name: param.name
+        //     }
+        //   }
+        // )
       })
 
     },
