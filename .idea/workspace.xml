@@ -2,29 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/AuthorCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/AuthorCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/Comment.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Comment.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/aboutMe.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/aboutMe.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/followSame_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/followSame_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myLikeAuthor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myLikeAuthor.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/stats/aboutMe_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/stats/aboutMe_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/store/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/userPage/userHome.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/Letter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Letter.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/article/Article.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/article/Article.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/article/CommentsList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/article/CommentsList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/article/Overviews.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/article/Overviews.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/article/References.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/article/References.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/admin/Admin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/admin/Admin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/admin/Applications.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/admin/Applications.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/admin/LoginAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/admin/LoginAdmin.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

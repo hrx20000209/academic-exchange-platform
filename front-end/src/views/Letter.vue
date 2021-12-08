@@ -71,7 +71,8 @@
       title="私信"
       :visible.sync="replyLetterVisible"
       width="35%"
-      :before-close="handleClose">
+      :before-close="handleClose"
+      append-to-body>
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
@@ -97,7 +98,8 @@
       title="私信"
       :visible.sync="newLetterVisible"
       width="35%"
-      :before-close="handleClose">
+      :before-close="handleClose"
+      append-to-body>
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
