@@ -53,6 +53,7 @@ export default {
           })
         } else {
           localStorage.setItem('user_id',response.user_id)
+          localStorage.setItem('user_name', this.account)
           localStorage.setItem('ifLogin', 1)
           this.$message({
             type: 'success',

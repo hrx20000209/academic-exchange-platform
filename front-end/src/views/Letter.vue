@@ -22,7 +22,7 @@
                      @mouseleave="removeActive($event)"
                      @click="read(item.user_id)">
                   <div>
-                    <el-avatar shape="circle" :size="size" :src="item.head"></el-avatar>
+                    <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
                   </div>
                   <div class="item-name-box">
                     {{ item.user_name }}
@@ -127,7 +127,7 @@
 <script>
 import nav_with_searchBox from "../components/nav_with_searchBox"
 import message from "../components/message"
-import { getMessageList, sendMessage, readMessage } from "../request/api"
+import { getMessageList, sendMessage, readMessage, uploadImage } from "../request/api"
 
 export default {
   name: "Letter",
@@ -151,7 +151,8 @@ export default {
       items: [{
         unread: '',
         user_id: '',
-        user_name: ''
+        user_name: '',
+        head:'',
       }],
       messages: [{
         receiver_id: '',
@@ -163,7 +164,8 @@ export default {
     }
   },
   mounted() {
-    this.userId = localStorage.getItem('userId')
+    this.userId = localStorage.getItem('user_id')
+    this.userName = localStorage.getItem('user_name')
     this.load = false
     this.LoadMessageList(this.currentPage)
   },
@@ -176,6 +178,13 @@ export default {
         this.items = response.list
         this.totalPage = response.total_page
       })
+      for (let i = 0; i < this.items.length; i++) {
+        uploadImage({
+          user_id: this.items[i].user_id
+        }).then(response => {
+          console.log(response)
+        })
+      }
     },
     read(id) {
       this.load = true
@@ -188,18 +197,11 @@ export default {
           if (this.messages[i].sender_id == this.userId) {
             this.messages[i].sender_name = '你'
             this.userName = this.messages[i].sender_name
-          }
-          if (this.messages[i].sender_id !== this.userId) {
-            this.receiver.user_id = this.messages[i].sender_id
+          } else {
             this.receiver.name = this.messages[i].sender_name
           }
-          if (this.messages[i].receiver_id !== this.userId) {
-            this.receiver.user_id = this.messages[i].receiver_id
+          if (this.messages[i].receiver_name != this.userName) {
             this.receiver.name = this.messages[i].receiver_name
-          }
-          if (this.userName === ''
-            && this.messages[i].receiver_id === this.userId) {
-            this.userName = this.messages[i].receiver_name
           }
         }
       })
@@ -220,10 +222,6 @@ export default {
           receiver_name: this.receiver.name,
           text: this.text
         }).then(response => {
-          console.log(response)
-
-          console.log(this.userName)
-          console.log(this.receiver.name)
           if (this.userName == this.receiver.name) {
             this.$message({
               type: 'warning',
@@ -240,12 +238,10 @@ export default {
               type: 'success',
               message: '发送成功'
             })
-            if (this.replyLetterVisible) {
-              this.read(this.receiver.user_id)
-            }
             this.newLetterVisible = false
             this.replyLetterVisible = false
             this.LoadMessageList(this.currentPage)
+            this.read(this.receiver.user_id)
             this.text = ''
           }
         })
