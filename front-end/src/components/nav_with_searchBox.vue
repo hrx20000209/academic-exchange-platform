@@ -80,16 +80,17 @@ export default {
     },
     toLogin() {
       this.$router.push('/login')
-      localStorage.setItem('ifLogin', 1)
+      // localStorage.setItem('ifLogin', 1)
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {
-      if (command === "exit") {
+      if (command == "exit") {
         localStorage.setItem('user_id','-1')
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
         console.log(this.ifLogin)
+        this.$router.go(0)
       }
     },
     toUsrHome() {
@@ -101,6 +102,7 @@ export default {
   },
   mounted() {
     this.ifLogin = localStorage.getItem('ifLogin')
+    console.log(this.ifLogin)
   }
 }
 </script>
