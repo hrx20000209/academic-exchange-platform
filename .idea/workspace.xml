@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
+    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-<<<<<<< Updated upstream
-      <change beforePath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/api/mysql.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/api/mysql.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/components/stats/citeAndPublish.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/components/stats/citeAndPublish.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/academic-exchange-platform-363c3614b07b3410d8ccc54e9b7d09e9d341097d/front-end/src/views/userPage/userHome.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/api/mysql.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/mysql.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/followSame.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/followSame.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/followSame_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/followSame_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/stats/authorRelaitionship.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/stats/authorRelaitionship.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/statsOverview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/statsOverview.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" afterDir="false" />
-=======
->>>>>>> Stashed changes
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/Letter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Letter.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +40,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-end/src/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -65,7 +49,6 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\assets" />
       <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
       <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
     </key>
@@ -104,7 +87,8 @@
       <workItem from="1638359920351" duration="7918000" />
       <workItem from="1638426814416" duration="30293000" />
       <workItem from="1638714085114" duration="609000" />
-      <workItem from="1638748914441" duration="41713000" />
+      <workItem from="1638748914441" duration="25385000" />
+      <workItem from="1638838482149" duration="95000" />
     </task>
     <servers />
   </component>

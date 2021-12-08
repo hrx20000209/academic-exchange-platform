@@ -4,7 +4,7 @@
       <el-col class="side-bar">
         <el-menu default-active="1" class="el-menu-vertical-demo" router>
           <div class="head-box">
-            <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
+            <el-avatar shape="circle" :size="size" :src="require('../../assets/admin.png')"></el-avatar>
           </div>
           <div class="name-box">
             管理员
@@ -36,8 +36,7 @@ export default {
   name: "Admin",
   data() {
     return {
-      size: 100,
-      head: require('../../assets/admin.png')
+      size: 100
     };
   },
   methods: {
@@ -50,17 +49,18 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: #00CCBB;
+  background-color: #ededed;
 }
 
 .body {
+  box-shadow: 0 0 30px 10px lightgrey;
   background-color: white;
   position: center;
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 2%;
-  height: 100%;
+  height: 95%;
 }
 
 .side-bar {

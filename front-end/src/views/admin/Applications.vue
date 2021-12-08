@@ -66,7 +66,7 @@
       </el-card>
     </el-card>
 
-    <el-dialog title="认证" :visible.sync="detailsVisible" width="80%">
+    <el-dialog title="认证" :visible.sync="detailsVisible" width="80%" append-to-body>
       <h2>系统中存在以下相关学者</h2>
       <div class="text-box">请对该用户的身份进行匹配并完成认证，完成认证后用户即可关联该学者门户</div>
       <el-table
