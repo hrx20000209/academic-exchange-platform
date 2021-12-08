@@ -135,44 +135,6 @@ export default {
       citation_by_year: {},
       flag: 1,
       relatedArticle: [],
-      AuthorCitation: [
-        {
-          name: 'a1',
-          value: '100'
-        },
-        {
-          name: 'a2',
-          value: '160'
-        },
-        {
-          name: 'a3',
-          value: '123'
-        },
-        {
-          name: 'a4',
-          value: '100'
-        },
-        {
-          name: 'a5',
-          value: '160'
-        },
-        {
-          name: 'a6',
-          value: '123'
-        },
-        {
-          name: 'a7',
-          value: '100'
-        },
-        {
-          name: 'a8',
-          value: '160'
-        },
-        {
-          name: 'a9',
-          value: '123'
-        },
-      ],
     }
   },
   mounted() {

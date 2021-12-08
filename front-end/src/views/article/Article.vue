@@ -17,7 +17,7 @@
               <div style="height: 10px"></div>
               <!--              作者这里 应该是需要改点什么-->
               <div class="articleActhor">
-                <div class="author" v-for="(item2) in authors" :key="item2" @click="toActhor(item2.id)">{{item2.name}}</div>
+                <div class="author" v-for="(item2) in authors" :key="item2" @click="toAuthor(item2.id)">{{item2.name}}</div>
               </div>
             </div>
           </div>
@@ -142,6 +142,15 @@ export default {
     // this.searchRelated();
   },
   methods: {
+    toAuthor(id){
+      this.$router.push({
+          path: '/authorPage',
+          query: {
+            id: id
+          }
+        }
+      )
+    },
     //获取收藏夹信息
     get(){
       console.log('11111')
