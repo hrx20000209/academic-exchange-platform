@@ -1,8 +1,5 @@
 <template>
   <div id="navBar">
-    <div id="navLogoPlace">
-      <div id="navLogo"></div>
-    </div>
     <div id="jumpRouterPlace">
       <div class="myBox">
         <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
@@ -17,13 +14,6 @@
         广场
       </div>
     </div>
-    <div id="searchWrapper">
-      <div id="searchBar">
-        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-      </div>
-    </div>
     <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
         <div class="infoBox">
@@ -33,18 +23,18 @@
           <i class="el-icon-s-promotion"></i>
         </div>
         <div class="infoBox">
-          <i class="el-icon-chat-round" @click="toLetter"></i>
+          <i class="el-icon-chat-round"></i>
         </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
           <el-dropdown @command="handleDropDown">
-  <span class="el-dropdown-link">
-    <i class="el-icon-arrow-down el-icon--right"></i>
-  </span>
+          <span class="el-dropdown-link">
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item class="myDropdown">个人信息</el-dropdown-item>
               <el-dropdown-item class="myDropdown">系统设置</el-dropdown-item>
-              <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
+              <el-dropdown-item class="myDropdown">系统反馈</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -53,101 +43,26 @@
           <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>
         </div>
       </div>
-      <div v-else id="LoginPane">
+      <div v-else id="LoginPane" style="margin-left: 150px;">
         <button id="Login" @click="toLogin">登录</button>
         <button id="register" @click="toRegister">注册</button>
       </div>
-      <el-dialog
-        title="修改密码"
-        :visible.sync="changePWVisible"
-        width="30%" :show-close="false">
-        <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
-                 class="demo-ruleForm" id="myForm">
-          <el-form-item label="密码:" prop="pass" class="info">
-            <el-input type="password" v-model="ruleForm.pass" autocomplete="off" class="inPut"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码:" prop="checkPass" class="info">
-            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" class="inPut"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <div id="twoButton">
-            <el-button @click="changePWVisible = false">取 消</el-button>
-            <el-button type="primary" @click="changePassword">确 定</el-button>
-          </div>
-        </div>
-      </el-dialog>
+
     </div>
   </div>
+
 </template>
 
 <script>
-import {changeUserPassword} from "../request/api";
-
 export default {
-  name: "nav_with_searchBox",
+  name: "nav_with_searchBox_transparent",
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'));
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error('两次输入密码不一致!'));
-        console.log(value)
-        console.log(this.ruleForm.pass)
-      } else {
-        callback();
-      }
-    };
     return {
       ifLogin: '',
-      input2: '',
-      changePWVisible: false,
-      ruleForm: {
-        pass: '',
-        checkPass: ''
-      },
-      rules: {
-        pass: [
-          {required: true, validator: validatePass, trigger: 'blur'}
-        ],
-        checkPass: [
-          {required: true, validator: validatePass2, trigger: 'blur'}
-        ],
-      }
-    };
+      input2: ''
+    }
   },
   methods: {
-    changePassword() {
-      this.$refs.ruleForm.validate((valid) => {
-        if (valid) {
-          changeUserPassword({
-            user_id: localStorage.getItem('user_id'),
-            password: this.ruleForm.pass
-          }).then(res => {
-            if(res.message == 'success'){
-              this.changePWVisible = false
-              this.$message('修改成功')
-            }else{
-              this.$message('修改失败')
-            }
-          })
-
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
     createNew() {
     },
     toRegister() {
@@ -155,60 +70,36 @@ export default {
     },
     toLogin() {
       this.$router.push('/login')
-      // localStorage.setItem('ifLogin', 1)
+      localStorage.setItem('ifLogin', 1)
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {
       if (command == "exit") {
-        localStorage.setItem('user_id', '-1')
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
         console.log(this.ifLogin)
-        this.$router.go(0)
-      } else if (command == "changePW") {
-        this.changePWVisible = true
       }
     },
     toUsrHome() {
       this.$router.push('/userHome')
-    },
-    toLetter() {
-      this.$router.push('/letter')
     }
   },
   mounted() {
     this.ifLogin = localStorage.getItem('ifLogin')
-    console.log(this.ifLogin)
   }
 }
 </script>
 
 <style scoped>
-#twoButton {
-  margin-top: 10px;
-  margin-right: 10px;
-  padding-bottom: 10px;
-}
-
 #navBar {
   z-index: 100;
-  background-color: white !important;
+  background-color: transparent;
   height: 60px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  border-bottom: #e5e5e5 solid 1px;
-}
-
-#navLogoPlace {
-  margin-right: 30px;
-}
-
-#navLogo {
-  background-color: #00CCBB;
-  width: 60px;
-  height: 60px;
+  justify-content: space-between;
 }
 
 #jumpRouterPlace {
@@ -223,31 +114,30 @@ export default {
 
 .jumpRouterDetail {
   font-size: 14px;
-  color: #616161;
+  color: #FFF;
   letter-spacing: 3px;
   margin-right: 30px;
   height: 40px;
-  border: black;
   padding-top: 20px;
   -ms-flex-direction: column;
   -ms-flex-align: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  border-bottom: #dcdcdc solid 2px;
 }
 
 .jumpRouterDetail:hover {
   font-size: 14px;
-  color: black;
+  color: #00ffff;
   letter-spacing: 3px;
-  border-bottom: #0080ff solid 2px;
   margin-right: 30px;
   cursor: pointer;
 }
 
 .myActiveClass {
-  color: black;
-  border-bottom: #0080ff solid 2px;
+  background: linear-gradient(#73fcff, #006ced);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight: bold;
 }
 
 .myLine {
@@ -291,11 +181,11 @@ export default {
   margin-left: 20px;
   height: auto;
   width: auto;
-  color: #616161;
+  color: lightsteelblue;
 }
 
 .infoBox:hover {
-  color: #343434;
+  color: lightskyblue;
   cursor: pointer;
 }
 
@@ -306,7 +196,6 @@ export default {
 .myDropdown:hover {
   background-color: whitesmoke;
   color: black;
-  border-left: grey solid 2px;
 }
 
 #createNew {
@@ -352,24 +241,21 @@ export default {
 
 #Login {
   border: none;
-  border-bottom: transparent solid 2px;
   background: transparent;
-  color: #343434;
+  color: #E6E6E6;
   font-family: "Microsoft YaHei";
   font-weight: bold;
   font-size: 15px;
   letter-spacing: 3px;
-  padding: 5px 0 5px 0;
+  padding: 5px 0px 5px 0px;
 }
 
 #Login:hover {
-  border-bottom: #343434 solid 2px;
   cursor: pointer;
 }
 
 #register {
   border: none;
-  border-bottom: transparent solid 2px;
   background: transparent;
   color: #00CCBB;
   font-family: "Microsoft YaHei";
@@ -377,11 +263,10 @@ export default {
   font-size: 15px;
   letter-spacing: 3px;
   margin-left: 20px;
-  padding: 5px 0 5px 0;
+  padding: 5px 0px 5px 0px;
 }
 
 #register:hover {
-  border-bottom: #00ccbb solid 2px;
   cursor: pointer;
 }
 
