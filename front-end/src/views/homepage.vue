@@ -22,6 +22,9 @@
                                       font-family: siyuan;">
                                       专业的学术成果分享平台
                                   </el-row>
+                                  <div style="color: #848484; letter-spacing: 4px; font-size: 17px; margin-bottom: 23px; margin-left: 2px">
+                                    论文搜索 · 学术讨论
+                                  </div>
                                   <div>
                                      <div class="search-box">
                                        <div style="width: 650px">
@@ -42,7 +45,12 @@
                                 浏览最新，最热的文章和最受欢迎的作者
                             </el-row>
                             <el-row>
-                                    <div style="margin-top: 30px; display: flex;justify-content: space-around">
+                                <el-tabs v-model="activeName" @tab-click="handleClick">
+                                  <el-tab-pane label="最新文章" name="first">用户管理</el-tab-pane>
+                                  <el-tab-pane label="最热文章" name="second">配置管理</el-tab-pane>
+                                  <el-tab-pane label="最受欢迎作者" name="third">角色管理</el-tab-pane>
+                                </el-tabs>
+                                    <!--<div style="margin-top: 30px; display: flex;justify-content: space-around">
                                         <div style="width: 150px; display: flex; flex-direction: column">
                                             <div class="titleFont">最受欢迎作者</div>
                                             <div v-for="(item, index) in this.authors" :key="index"
@@ -116,7 +124,7 @@
                                               </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                             </el-row>
                         </el-col>
                     </el-row>
@@ -158,6 +166,7 @@
         components: {Nav_with_searchBox_transparent},
         data(){
             return {
+                activeName: 'second',
                 pic:[],
                 maxCites:0,
                 maxLen:20,
@@ -183,6 +192,9 @@
             window.removeEventListener('scroll', this.handleScroll);
         },
         methods:{
+            handleClick(tab, event) {
+              console.log(tab, event);
+            },
             test(){
               Api.getUsrId('05B090CE').then(
                 res => {
@@ -333,38 +345,7 @@
   border-left: none;
 
 }
-.search-left{
-  box-shadow: rgb(11, 234, 235) -2px 0px 10px;
-    text-indent: 20px;
-     width:80%;
-    height:50px;
-    border:#00ffff 1px solid;
-    // float:left;
-    margin-top:20px;
-    border-bottom-left-radius:25px;
-    border-top-left-radius:25px;
-    outline:none;
-    // text-align:20px ;
-}
-.search-right{
-    box-shadow: rgb(11, 234, 235) 5px 0px 5px;
-    width:13%;
-    height:53px;
-    background:#00cfff;
-    color: #fff;
-    border:none;
-    margin-top:20px;
-    border-bottom-right-radius:25px;
-    border-top-right-radius:25px;
-    outline:none;
-}
 
-.intro_text {
-    color: #fff;
-    font-size: 16px;
-    line-height: 25px;
-    padding: 20px;
-}
 .welcome {
     font-size: 26px;
     color:#505050;

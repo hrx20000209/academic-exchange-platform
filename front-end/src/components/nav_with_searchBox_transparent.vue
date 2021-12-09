@@ -44,8 +44,14 @@
         </div>
       </div>
       <div v-else id="LoginPane" style="margin-left: 150px;">
-        <button id="Login" @click="toLogin">登录</button>
-        <button id="register" @click="toRegister">注册</button>
+        <div style="display: flex; ">
+          <div style="color:#848484;font-size: 10px;margin-right: 10px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
+          <div style="cursor:pointer;" @click="toLogin">
+            <el-avatar :size="'large'" :src="circleUrl"></el-avatar>
+          </div>
+        </div>
+        <!--<button id="Login" @click="toLogin">登录</button>
+        <button id="register" @click="toRegister">注册</button>-->
       </div>
 
     </div>
@@ -58,6 +64,7 @@ export default {
   name: "nav_with_searchBox_transparent",
   data() {
     return {
+      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       ifLogin: '',
       input2: ''
     }
@@ -114,7 +121,7 @@ export default {
 
 .jumpRouterDetail {
   font-size: 14px;
-  color: #FFF;
+  color: #848484;
   letter-spacing: 3px;
   margin-right: 30px;
   height: 40px;
@@ -127,16 +134,14 @@ export default {
 
 .jumpRouterDetail:hover {
   font-size: 14px;
-  color: #00ffff;
+  color: lightskyblue;
   letter-spacing: 3px;
   margin-right: 30px;
   cursor: pointer;
 }
 
 .myActiveClass {
-  background: linear-gradient(#73fcff, #006ced);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+  color: #6E6E6E;
   font-weight: bold;
 }
 
@@ -181,7 +186,7 @@ export default {
   margin-left: 20px;
   height: auto;
   width: auto;
-  color: lightsteelblue;
+  color: #A4A4A4;
 }
 
 .infoBox:hover {
@@ -202,7 +207,7 @@ export default {
   font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
-  background-color: #0080ff;
+  background-color: #BDBDBD;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
   font-size: 14px;
@@ -242,7 +247,7 @@ export default {
 #Login {
   border: none;
   background: transparent;
-  color: #E6E6E6;
+  color: #6E6E6E;
   font-family: "Microsoft YaHei";
   font-weight: bold;
   font-size: 15px;
