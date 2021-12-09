@@ -127,6 +127,11 @@ const routes = [
     path: '/authorPage',
     name: 'authorPage',
     component: () => import('../views/userPage/authorPage')
+  },
+  {
+    path: '/identification',
+    name: 'identification',
+    component: () => import('../views/userPage/identification')
   }
 ]
 
