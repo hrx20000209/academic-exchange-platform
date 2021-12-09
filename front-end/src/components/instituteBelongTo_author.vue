@@ -144,7 +144,7 @@ export default {
 }
 #someIns{
   display: flex;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 #leftCharacter {
   width: 250px;
@@ -165,12 +165,10 @@ export default {
 #mainPane {
   /*display: flex;*/
   border-top: 1px solid #dedede;
-  padding: 15px;
 }
 
 #leftDescription {
   width: 250px;
-  padding: 15px;
 }
 
 #insName {
@@ -180,6 +178,7 @@ export default {
   font-size: 16px;
   color: black;
   margin-top: 5px;
+  margin-left: 10px;
 }
 
 .desInfo {

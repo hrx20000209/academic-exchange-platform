@@ -4,7 +4,7 @@
       <div id="leftCharacter">专家关系网络</div>
     </div>
     <div id="mainPane">
-      <div style="width:700px;height:500px" ref="chart"></div>
+      <div style="width:1000px;height:500px" ref="chart"></div>
     </div>
 
   </div>

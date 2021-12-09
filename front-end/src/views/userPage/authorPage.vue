@@ -33,8 +33,8 @@
           <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
           <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
           <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>
+<!--          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>-->
+<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
@@ -283,6 +283,9 @@ export default {
         console.log(response);
         this.ELres = response.data.hits.hits[0]._source;
         this.user = this.ELres;
+        if(this.user.orgs.length>3){
+          this.user.orgs = this.user.orgs.slice(0,3)
+        }
         console.log(this.user)
         this.research = this.ELres.pubs;
       })
