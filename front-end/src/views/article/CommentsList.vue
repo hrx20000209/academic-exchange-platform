@@ -34,15 +34,16 @@
                     <el-divider></el-divider>
                     <div class="bottom">
                       <div class="bottom-btn"
-                           v-if="item.done"
-                           @click="addLike">
-                        <img src="@/assets/已点赞.png" width="10%"/>
+                           v-if="!item.done"
+                           @click="addLike(item.comment_id);item.done =!item.done">
+<!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
+                        <img src="@/assets/点赞.png" width="10%"/>
                         点赞
                       </div>
                       <div class="bottom-btn-mouse-on"
                            v-else
-                           @click="cancelLike">
-                        <img src="@/assets/点赞.png" width="10%"/>
+                           @click="cancelLike(item.comment_id);item.done =!item.done">
+                        <img src="@/assets/已点赞.png" width="10%"/>
                         点赞
                       </div>
                     </div>

@@ -1,6 +1,7 @@
 <template>
   <!--  总体-->
   <div class="main">
+    <nav_with_search-box></nav_with_search-box>
     <!--  包含下面那栏-->
     <div>
       <!--    上下两块-->
@@ -30,10 +31,10 @@
               <el-menu-item :index="overviewIndex">Overviews</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
               <!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
-              <el-menu-item index="/article/1/comments">Comments</el-menu-item>
+              <el-menu-item :index="commentIndex">Comments</el-menu-item>
               <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <!--              <el-menu-item index="/article/references">References</el-menu-item>-->
-              <el-menu-item index="/article/1/references">References</el-menu-item>
+              <el-menu-item :index="referenceIndex">References</el-menu-item>
               <el-menu-item>
                 <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">下载全文</a></el-button>
                 <el-button type="primary"  disabled v-else>下载全文</el-button>
@@ -96,12 +97,16 @@
 import axios from "axios"
 import ESApi from '../../api/elastic search'
 import Nav_with_searchBox from "../../components/nav_with_searchBox";
+
 export default {
   name: "Article",
+  components: {
+    Nav_with_searchBox
+  },
   data(){
     return{
       indexActive:1,
-      paper_id: "7C4C2B3B",
+      paper_id: '',
       overviewIndex:'',
       ra:'3',
       dialogVisible: false,
@@ -132,7 +137,10 @@ export default {
   },
   mounted() {
     let paper_id = this.$route.params.paper_id
-    this.overviewIndex = '/article/'+this.paper_id+'/overviews'
+    this.paper_id = paper_id
+    this.overviewIndex = '/article/'+paper_id+'/overviews'
+    this.commentIndex = '/article/'+paper_id+'/comments'
+    this.referenceIndex = '/article/'+paper_id+'/references'
     console.log(this.paper_id)
     console.log(this.overviewIndex)
     this.search(paper_id);
@@ -271,7 +279,7 @@ export default {
         console.log(this.length)
         this.$store.state.abstract = ''
         for(var i = 0; i < this.length; i++){
-          if(response.data.hits.hits[i]._source.id === '7C4C2B3B'){
+          if(response.data.hits.hits[i]._source.id === paper_id){
             let article = response.data.hits.hits[i]
             this.title = article._source.title
             console.log(this.title)
@@ -321,25 +329,6 @@ export default {
 
       })
     },
-    // searchRelated(){
-    //   console.log('related');
-    //   ESTitle.getTitle(this.$store.state.title).then(response =>{
-    //     console.log(response.data)
-    //     this.length = response.data.hits.total.value
-    //     // Vue.set(this.relatedArticle, 1, response.data.hits.hits[1].)//给列表对象新增属性
-    //     for(var i = 0; i < this.length - 1; i++){
-    //       let re = response.data.hits.hits[i+1]
-    //       // this.relatedArticle[i-1].name = re._source.title
-    //       // this.relatedArticle[i-1].value = re._score
-    //       // console.log(this.relatedArticle[i-1].name)
-    //       // console.log(this.relatedArticle[i-1].value)
-    //       this.relatedArticle[i] = re
-    //       console.log(this.relatedArticle[i])
-    //       console.log(this.relatedArticle[i]._source.title)
-    //       console.log(this.relatedArticle[i]._score)
-    //     }
-    //   })
-    // },
     gotoTotalContent(){
       if(this.flag === 0){
         console.log('错误')

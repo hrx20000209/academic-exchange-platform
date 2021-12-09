@@ -138,30 +138,11 @@ export default {
     }
   },
   mounted() {
-    // this.searchAb();
     console.log('333')
     this.search(this.id)
     console.log(this.title)
   },
   methods: {
-    // searchAb() {
-    //   console.log('111')
-    //   ESApi.getMsg('808411C2').then(response =>{
-    //     console.log(response.data)
-    //     this.length = response.data.hits.total.value
-    //     console.log(this.length)
-    //     for(var i = 0; i < this.length; i++){
-    //       let article = response.data.hits.hits[i]
-    //       console.log(this.abstract)
-    //       if(article._source.abstract === undefined){
-    //         this.flag = 0
-    //         console.log('flag')
-    //       }else{
-    //         this.abstract = article._source.abstract
-    //       }
-    //     }
-    //   })
-    // },
     search(paper_id) {
       console.log('111')
       ESApi.getMsg(paper_id).then(response => {
@@ -171,7 +152,7 @@ export default {
         console.log(this.length)
         this.$store.state.abstract = ''
         for (var i = 0; i < this.length; i++) {
-          if (response.data.hits.hits[i]._source.id === '7C4C2B3B') {
+          if (response.data.hits.hits[i]._source.id === paper_id) {
             let article = response.data.hits.hits[i]
             this.title = article._source.title
             console.log(this.title)
@@ -197,7 +178,7 @@ export default {
             for (var k = 0; k < article._source.citation_by_year.length; k++) {
               // console.log(article._source.citation_by_year[k])
               this.$store.commit('setCitation', article._source.citation_by_year[k])
-              console.log(this.$store.state.citation_by_year[k])
+              // console.log(this.$store.state.citation_by_year[k])
             }
             for (var l = 0; l < article._source.reference.length; l++) {
               console.log(article._source.reference[l])
@@ -207,13 +188,7 @@ export default {
             for (var j = 0; j < article._source.authors.length; j++) {
               // this.authors[j] = article._source.authors[j]
               this.authors.push(article._source.authors[j])
-              // console.log(this.authors[j])
-              // this.author += this.authors[j].name
-              // this.author += ' 、'
             }
-            // this.authors[j] = article._source.authors[j]
-            // console.log(this.authors[j])
-            // this.author += this.authors[j].name
             console.log(this.authors)
             this.searchRelated();
             this.buildPie();
@@ -231,10 +206,6 @@ export default {
         // Vue.set(this.relatedArticle, 1, response.data.hits.hits[1].)//给列表对象新增属性
         for (var i = 0; i < this.length - 1; i++) {
           let re = response.data.hits.hits[i + 1]
-          // this.relatedArticle[i-1].name = re._source.title
-          // this.relatedArticle[i-1].value = re._score
-          // console.log(this.relatedArticle[i-1].name)
-          // console.log(this.relatedArticle[i-1].value)
           this.relatedArticle[i] = re
           console.log(this.relatedArticle[i])
           console.log(this.relatedArticle[i]._source.title)
@@ -268,18 +239,19 @@ export default {
         console.log('sjia')
         for (var k = 1992; k < 2016; k++) {
           // console.log(this.$store.state.citation_by_year[0].year)
-          console.log('awe')
-          console.log(this.$store.state.citation_by_year[j].year)
+          // console.log('awe')
+          // console.log(this.$store.state.citation_by_year[j].year)
           if (this.$store.state.citation_by_year[j].year === k + '') {
-            console.log(this.$store.state.citation_by_year[j].year)
+            // console.log(this.$store.state.citation_by_year[j].year)
             // console.log(k+1992)
             Ydata[k - 1992] = this.$store.state.citation_by_year[j].cnt
+            console.log(this.$store.state.citation_by_year[j].year+','+this.$store.state.citation_by_year[j].cnt)
+            console.log(Ydata[k-1992])
             console.log('right')
-          } else {
-            Ydata[k - 1992] = 0;
           }
         }
       }
+      console.log('这里是ydata')
       console.log(Ydata)
       const color1 = this.randomColor()
       let option1 = {
@@ -357,8 +329,8 @@ export default {
       return res;
     },
     randomColor() {
-      let r = Math.floor(Math.random() * 256);
-      let g = Math.floor(Math.random() * 256);
+      let r = Math.floor(Math.random() * 120);
+      let g = Math.floor(Math.random() * 120);
       let b = Math.floor(Math.random() * 256);
       let color = `rgb(${r},${g},${b})`
       // let color= '#' + r.toString(16) + g.toString(16) + b.toString(16);

@@ -25,7 +25,7 @@
         <div v-else>
           <div class="downFrame" v-for="(item,index) in references" :key="item">
             <div class="downFrameContent">
-              <div style="margin-bottom: 10px;font-size: 18px">
+              <div style="margin-bottom: 10px;font-size: 18px" @click="toOtherPaper(item.id)">
                 {{item.title}}
               </div>
               <div style="margin-bottom: 10px;font-size: 15px;color: dimgrey">
@@ -113,11 +113,18 @@ export default {
     this.bianli();
   },
   methods:{
+    toOtherPaper(id){
+      let router = '/article/'+ id
+      this.$route.params.paper_id = id
+      console.log(this.$route.params.paper_id)
+      this.$router.push(router)
+    },
     bianli(){
       for(var i = 0; i < this.$store.state.references.length;i++) {
         // console.log(this.$store.state.references[i])
         this.reference.push(this.$store.state.references[i])
       }
+      this.references = []
       console.log(this.reference)
       for(var j = 0; j < this.reference.length;j++){
         console.log('1.1')
@@ -130,41 +137,9 @@ export default {
           this.references.push(article._source)
           console.log(this.references)
           console.log(this.references.length)
-          // for(var k = 0; k < response.data.hits.total.value;k++){
-          //   console.log('1.3')
-          //   console.log(response.data.hits.hits[k])
-          //   if(response.data.hits.hits[k]._source.id.trim() === (this.reference[j]+'').trim()){
-          //     console.log('1.4')
-          //     this.length = response.data.hits.total.value
-          //     console.log('asadqw')
-          //     console.log(this.length)
-          //     let article = response.data.hits.hits[0]
-          //     console.log(article)
-          //     console.log(article._source.title)
-          //     this.references_title.push(article._source.title)
-          //     console.log(this.references_title[j])
-          //     // this.ryear = article._source.year
-          //   }
-          // }
-
         })
       }
     },
-    // searchRe() {
-    //   console.log('111')
-    //   ESApi.getMsg('808411C2').then(response =>{
-    //     console.log(response.data)
-    //     this.length = response.data.hits.total.value
-    //     console.log(this.length)
-    //     for(var i = 0; i < this.length; i++){
-    //       let article = response.data.hits.hits[i]
-    //       for(var j = 0; j < article._source.reference.length; j++){
-    //         this.reference[j] = article._source.reference[j]
-    //         console.log(this.reference[j])
-    //       }
-    //     }
-    //   })
-    // },
   }
 }
 </script>
