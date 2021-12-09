@@ -200,6 +200,9 @@ export default {
           if (this.messages[i].receiver_name != this.userName) {
             this.receiver.name = this.messages[i].receiver_name
           }
+          if (this.messages[i].sender_name != this.userName) {
+            this.receiver.name = this.messages[i].sender_name
+          }
         }
       })
       this.LoadMessageList(this.currentPage)
