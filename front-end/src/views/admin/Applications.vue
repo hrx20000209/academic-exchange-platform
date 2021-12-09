@@ -1,31 +1,14 @@
 <template>
   <div>
-    <el-card style="height: 100%;">
+    <el-card style="height: 747px;">
       <h1>认证申请列表</h1>
       <el-divider></el-divider>
-      <el-card>
+      <div class="list-box">
         <el-table
           :data="tableData"
           stripe
-          style="width: 100%">
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="姓名">
-                  <span>{{ props.row.name }}</span>
-                </el-form-item>
-                <el-form-item label="学历">
-                  <span>{{ props.row.background }}</span>
-                </el-form-item>
-                <el-form-item label="电话">
-                  <span>{{ props.row.phone }}</span>
-                </el-form-item>
-                <el-form-item label="研究领域">
-                  <span>{{ props.row.fields }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column>
+          style="width: 100%"
+          :row-class-name="tableRowClassName">
           <el-table-column
             type="index"
             :index="indexMethod">
@@ -48,12 +31,13 @@
             <template slot-scope="scope">
               <el-button
                 size="small"
-                @click="confirm(scope.row.name)">认证
+                type="primary"
+                @click="openDetails(scope.row)">查看详情
               </el-button>
               <el-button
                 size="small"
-                type="primary"
-                @click="handleDelete(scope.$index, scope.row)">同意
+                type="success"
+                @click="confirm(scope.row.name)">认证
               </el-button>
               <el-button
                 size="small"
@@ -63,10 +47,61 @@
             </template>
           </el-table-column>
         </el-table>
-      </el-card>
+        <div class="pagination-box">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="totalPage">
+          </el-pagination>
+        </div>
+      </div>
     </el-card>
-
-    <el-dialog title="认证" :visible.sync="detailsVisible" width="80%" append-to-body>
+    <el-dialog title="详细信息" :visible.sync="detailsVisible" width="50%" append-to-body>
+      <el-descriptions class="margin-top" :title="userDetail.userName" :column="2" border>
+        <template slot="extra">
+          <el-button type="primary" @click="visitUser" plain>查看用户主页</el-button>
+        </template>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            姓名
+          </template>
+          {{ userDetail.name }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-mobile-phone"></i>
+            手机号
+          </template>
+          {{ userDetail.phone }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-reading"></i>
+            学历
+          </template>
+          {{ userDetail.background }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-office-building"></i>
+            机构
+          </template>
+          {{ userDetail.institution }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-view"></i>
+            研究领域
+          </template>
+          {{ userDetail.fields }}
+        </el-descriptions-item>
+      </el-descriptions>
+      <div class="btn-box">
+        <el-button type="primary" @click="closeDetail">确定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="认证" :visible.sync="relatedVisible" width="80%" append-to-body>
       <h2>系统中存在以下相关学者</h2>
       <div class="text-box">请对该用户的身份进行匹配并完成认证，完成认证后用户即可关联该学者门户</div>
       <el-table
@@ -122,9 +157,22 @@ export default {
   data() {
     return {
       detailsVisible: false,
+      relatedVisible: false,
+      currentPage: 0,
+      totalPage: 5,
+      userDetail: [{
+        name: '',
+        user_id: '',
+        userName: '',
+        phone: '',
+        fields: '',
+        background: '',
+        institution: ''
+      }],
       tableData: [{
         date: '2016-05-02',
         name: 'Tom',
+        user_id: 1,
         userName: '谭火彬',
         phone: '12345678910',
         fields: '软件工程 计算机科学',
@@ -133,6 +181,7 @@ export default {
       }, {
         date: '2016-05-04',
         name: '👓🐸',
+        user_id: 2,
         userName: '谭火彬',
         phone: '12345678910',
         fields: '软件工程 计算机科学',
@@ -141,6 +190,7 @@ export default {
       }, {
         date: '2016-05-01',
         name: '勒布朗·詹姆斯',
+        user_id: 3,
         userName: '谭火彬',
         phone: '12345678910',
         fields: '软件工程 计算机科学',
@@ -149,6 +199,7 @@ export default {
       }, {
         date: '2016-05-03',
         name: '随便起一个名字',
+        user_id: 4,
         userName: '谭火彬',
         phone: '12345678910',
         fields: '软件工程 计算机科学',
@@ -159,11 +210,18 @@ export default {
     }
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 == 1) {
+        return 'row-one';
+      } else {
+        return 'row-two';
+      }
+    },
     indexMethod(index) {
       return index + 1
     },
     confirm(name){
-      this.detailsVisible = true
+      this.relatedVisible = true
       this.SearchAuthorByName(name)
     },
     SearchAuthorByName(name) {
@@ -207,10 +265,26 @@ export default {
       }
     },
     confirmApplication() {
-      this.detailsVisible = false
+      this.relatedVisible = false
+    },
+    openDetails(user) {
+      this.detailsVisible = true
+      this.userDetail = user
     },
     associate(id) {
       console.log(id)
+    },
+    visitUser() {
+      const route = this.$router.resolve({
+        name: 'authorPage',
+        query: {
+          id: this.userDetail.user_id
+        }
+      })
+      window.open(route.href, '_blank')
+    },
+    closeDetail() {
+      this.detailsVisible = false
     }
   }
 }
@@ -242,4 +316,24 @@ export default {
   color: grey;
   margin: 1%;
 }
+
+.el-table .row-one {
+  background: oldlace;
+}
+
+.el-table .row-two {
+  background: cornflowerblue;
+}
+
+.pagination-box {
+  margin-top: 10%;
+  text-align: center;
+}
+
+.list-box {
+  box-shadow: 0 0 20px 5px lightgrey;
+  padding: 2%;
+  height: 580px;
+}
+
 </style>
