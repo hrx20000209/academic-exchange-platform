@@ -11,8 +11,8 @@
       <div class="twoNumber">
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">{{ user.n_pubs }}</div>
-            <div class="NumberInfo">发表量</div>
+            <div class="Number">13</div>
+            <div class="NumberInfo">浏览量</div>
           </div>
           <div class="rightPart">
             <i class="el-icon-view"></i>
@@ -20,7 +20,7 @@
         </div>
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">{{ user.n_citation }}</div>
+            <div class="Number">19</div>
             <div class="NumberInfo">被引</div>
           </div>
           <div class="rightPart">
@@ -40,7 +40,7 @@
         </div>
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">{{ user.h_index }}</div>
+            <div class="Number">12.7</div>
             <div class="NumberInfo">学术影响力</div>
           </div>
           <div class="rightPart">
@@ -62,9 +62,9 @@ export default {
 <style scoped>
 #statsOverivew {
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 10px;
+  margin-top: 20px;
   height: fit-content;
 }
 
@@ -74,7 +74,7 @@ export default {
   font-family: "Microsoft YaHe";
   margin-left: 20px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -87,7 +87,7 @@ export default {
   padding-right: 20px;
   color: #8e8e8e;
   font-family: "Microsoft YaHe";
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
 }
 
@@ -145,12 +145,12 @@ export default {
 .Number{
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
 }
 .NumberInfo{
   font-family: "Microsoft YaHei";
   color: #343434;
   margin-top: 5px;
-  font-size: 13px;
+  font-size: 18px;
 }
 </style>

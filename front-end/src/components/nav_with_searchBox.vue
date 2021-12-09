@@ -33,7 +33,7 @@
           <i class="el-icon-s-promotion"></i>
         </div>
         <div class="infoBox">
-          <i class="el-icon-chat-round"></i>
+          <i class="el-icon-chat-round" @click="toLetter"></i>
         </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
@@ -44,7 +44,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item class="myDropdown">个人信息</el-dropdown-item>
               <el-dropdown-item class="myDropdown">系统设置</el-dropdown-item>
-              <el-dropdown-item class="myDropdown">系统反馈</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -57,22 +57,97 @@
         <button id="Login" @click="toLogin">登录</button>
         <button id="register" @click="toRegister">注册</button>
       </div>
-
+      <el-dialog
+        title="修改密码"
+        :visible.sync="changePWVisible"
+        width="30%" :show-close="false">
+        <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                 class="demo-ruleForm" id="myForm">
+          <el-form-item label="密码:" prop="pass" class="info">
+            <el-input type="password" v-model="ruleForm.pass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码:" prop="checkPass" class="info">
+            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <div id="twoButton">
+            <el-button @click="changePWVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changePassword">确 定</el-button>
+          </div>
+        </div>
+      </el-dialog>
     </div>
   </div>
-
 </template>
 
 <script>
+import {changeUserPassword} from "../request/api";
+
 export default {
   name: "nav_with_searchBox",
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入密码不一致!'));
+        console.log(value)
+        console.log(this.ruleForm.pass)
+      } else {
+        callback();
+      }
+    };
     return {
       ifLogin: '',
-      input2: ''
-    }
+      input2: '',
+      changePWVisible: false,
+      ruleForm: {
+        pass: '',
+        checkPass: ''
+      },
+      rules: {
+        pass: [
+          {required: true, validator: validatePass, trigger: 'blur'}
+        ],
+        checkPass: [
+          {required: true, validator: validatePass2, trigger: 'blur'}
+        ],
+      }
+    };
   },
   methods: {
+    changePassword() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          changeUserPassword({
+            user_id: localStorage.getItem('user_id'),
+            password: this.ruleForm.pass
+          }).then(res => {
+            if(res.message == 'success'){
+              this.changePWVisible = false
+              this.$message('修改成功')
+            }else{
+              this.$message('修改失败')
+            }
+          })
+
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
     createNew() {
     },
     toRegister() {
@@ -80,28 +155,42 @@ export default {
     },
     toLogin() {
       this.$router.push('/login')
-      localStorage.setItem('ifLogin', 1)
+      // localStorage.setItem('ifLogin', 1)
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {
       if (command == "exit") {
+        localStorage.setItem('user_id', '-1')
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
         console.log(this.ifLogin)
+        this.$router.go(0)
+      } else if (command == "changePW") {
+        this.changePWVisible = true
       }
     },
     toUsrHome() {
       this.$router.push('/userHome')
+    },
+    toLetter() {
+      this.$router.push('/letter')
     }
   },
   mounted() {
     this.ifLogin = localStorage.getItem('ifLogin')
+    console.log(this.ifLogin)
   }
 }
 </script>
 
 <style scoped>
+#twoButton {
+  margin-top: 10px;
+  margin-right: 10px;
+  padding-bottom: 10px;
+}
+
 #navBar {
   z-index: 100;
   background-color: white !important;
@@ -200,7 +289,6 @@ export default {
 
 .infoBox {
   margin-left: 20px;
-  color: #343434;
   height: auto;
   width: auto;
   color: #616161;
@@ -271,7 +359,7 @@ export default {
   font-weight: bold;
   font-size: 15px;
   letter-spacing: 3px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0 5px 0;
 }
 
 #Login:hover {
@@ -289,7 +377,7 @@ export default {
   font-size: 15px;
   letter-spacing: 3px;
   margin-left: 20px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0 5px 0;
 }
 
 #register:hover {

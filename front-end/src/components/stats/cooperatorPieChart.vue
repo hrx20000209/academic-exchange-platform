@@ -10,8 +10,11 @@
 </template>
 
 <script>
+import {getPieData} from "../../request/api";
+
 export default {
   name: "cooperatorPieChart",
+  props:['author'],
   data(){
     return{
       data:[{value:16, name:'潘海霞'},
@@ -22,6 +25,15 @@ export default {
     }
   },
   methods: {
+    getData(){
+      getPieData({
+        author_id:this.$props.author.id
+      }).then(res=>{
+        console.log(res)
+        this.data = res.data
+        this.initCharts();
+      })
+    },
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(this.$refs.chart);
@@ -48,11 +60,22 @@ export default {
         }
     ]
       });
+      myChart.on('click', (param) => {
+        console.log(param)
+        this.$router.push({
+            path: '/authorPage',
+            query: {
+             id: param.data.id
+            }
+          }
+        )
+        this.$router.go(0)
+      })
     }
   },
   //一加载页面就调用
   mounted() {
-    this.initCharts();
+    this.getData()
   }
 }
 </script>
@@ -60,9 +83,9 @@ export default {
 <style scoped>
 #cooperatorPieChart{
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 #leftCharacter{
   width: 400px;
@@ -70,7 +93,7 @@ export default {
   font-family: "Microsoft YaHe";
   margin-left: 20px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }

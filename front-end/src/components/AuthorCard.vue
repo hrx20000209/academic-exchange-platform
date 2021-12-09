@@ -101,6 +101,7 @@ export default {
   background-color: white;
   border: 1px solid #dedede;
   border-radius: 2px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #editMainPane {
@@ -113,14 +114,14 @@ export default {
   margin-top: 10px;
   margin-left: 10px;
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 18px;
   color: #606266;
 }
 
 .mainPaneTitleDescribe {
   padding: 10px;
   font-family: "Microsoft YaHei UI Light";
-  font-size: 11px;
+  font-size: 16px;
   color: #8e8e8e;
 }
 
@@ -138,14 +139,14 @@ export default {
 #usrName {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 
 #userDegree {
   font-family: "Microsoft YaHei";
   margin-top: 3px;
-  font-size: 13px;
+  font-size: 18px;
   color: #606266;
 }
 
@@ -154,7 +155,7 @@ export default {
   font-family: "Microsoft YaHei";
   font-style: italic;
   color: black;
-  font-size: 13px;
+  font-size: 18px;
 
 }
 
@@ -162,14 +163,14 @@ export default {
   margin-top: 15px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 18px;
   color: #a1a1a1;
 }
 
 .userInDetail {
   font-family: "Microsoft YaHei";
   color: black;
-  font-size: 13px;
+  font-size: 18px;
 }
 
 #cardrightPic {
@@ -183,7 +184,7 @@ export default {
 
 #directionInfo {
   font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .myInput {
@@ -228,21 +229,21 @@ export default {
 
 #editDesDetail {
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 18px;
   margin-top: 10px;
 }
 
 #usrNameEdit {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   margin-top: 15px;
 }
 
 .editInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 18px;
   margin-top: 10px;
 }
 
@@ -253,7 +254,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -273,7 +274,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;

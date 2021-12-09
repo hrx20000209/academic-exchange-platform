@@ -102,7 +102,7 @@ const routes = [
   {
     path:'/userHome',
     name: 'userHome',
-    component: () => import('../userPage/userHome')
+    component: () => import('../views/userPage/userHome')
   },
   {
     path:'/Institution',
@@ -120,9 +120,19 @@ const routes = [
     component: ()=> import('../views/wyhRelationshipMapClickEventTest')
   },
   {
-    path:'/authorPage',
-    name:"authorPage",
-    component:()=>import('../userPage/authorPage')
+    path: '/letter',
+    name: 'Letter',
+    component: () => import('../views/Letter')
+  },
+  {
+    path: '/authorPage',
+    name: 'authorPage',
+    component: () => import('../views/userPage/authorPage')
+  },
+  {
+    path: '/identification',
+    name: 'identification',
+    component: () => import('../views/userPage/identification')
   }
 ]
 
@@ -133,3 +143,16 @@ const router = new VueRouter({
 })
 
 export default router
+router.beforeEach((to, from, next) => {
+  if (to.path === '/userHome') {
+    const state = localStorage.getItem('ifLogin')
+    if(state == 1){
+      next()
+    }else {
+      next('/login')
+      this.$message.error('请先登录！');
+    }
+  }else {
+    next()
+  }
+})

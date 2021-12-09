@@ -8,40 +8,46 @@
 <!--      </div>-->
     </div>
     <div id="mainPane">
-      <div id="leftDescription">
-        <div id="insName">{{ this.institute.name }}</div>
-        <div class="desInfo">地点</div>
-        <div class="desDetail">中国北京</div>
-        <div class="desInfo">部门</div>
-        <div class="desDetail">软件工程学院(SEI)</div>
-        <div class="desInfo">职位</div>
-        <div class="desDetail">待补充</div>
-        <div class="desInfo">时间段</div>
-        <div class="desDetail">2011年8月-至今</div>
-      </div>
-      <div id="rightPic">
-        <el-avatar :size="60" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"></el-avatar>
-      </div>
-    </div>
-    <div id="bottomLab">
-      <div id="LabName">软件工程实验室</div>
-      <div class="labInfo">实验室负责人</div>
-      <div class="labDetail">
-        <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
-        <div id="managerName">谭火彬</div>
-      </div>
-      <div class="labInfo">实验室成员(2)</div>
-      <div class="labDetail">
-        <div class="labPeople">
-          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
-          <div class="labPersonName">谭火彬</div>
+       <div id="someIns" v-for="(item,index) in user.orgs" :key='index'>
+          <div id="insName" >{{ item.name }}</div>
+          <div id="intoButton">
+            <el-button size="mini" plain @click="toAffli(item.id)">查看</el-button>
+          </div>
         </div>
-        <div class="labPeople">
-          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
-          <div class="labPersonName">梁灏然</div>
-        </div>
-      </div>
+<!--      <div id="leftDescription">-->
+<!--       -->
+<!--&lt;!&ndash;        <div class="desInfo">地点</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desDetail">中国北京</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desInfo">部门</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desDetail">软件工程学院(SEI)</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desInfo">职位</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desDetail">待补充</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desInfo">时间段</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="desDetail">2011年8月-至今</div>&ndash;&gt;-->
+<!--      </div>-->
+<!--      <div id="rightPic">-->
+<!--        <el-avatar :size="60" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"></el-avatar>-->
+<!--      </div>-->
     </div>
+<!--    <div id="bottomLab">-->
+<!--      <div id="LabName">软件工程实验室</div>-->
+<!--      <div class="labInfo">实验室负责人</div>-->
+<!--      <div class="labDetail">-->
+<!--        <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>-->
+<!--        <div id="managerName">谭火彬</div>-->
+<!--      </div>-->
+<!--      <div class="labInfo">实验室成员(2)</div>-->
+<!--      <div class="labDetail">-->
+<!--        <div class="labPeople">-->
+<!--          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>-->
+<!--          <div class="labPersonName">谭火彬</div>-->
+<!--        </div>-->
+<!--        <div class="labPeople">-->
+<!--          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>-->
+<!--          <div class="labPersonName">梁灏然</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <el-dialog title="更新您当前的所属机构" :visible.sync="instituteDialog" class="infoDialog">
       <div class="dialogMainPane">
         <div class="introInfo">机构</div>
@@ -104,11 +110,20 @@ export default {
         console.log(response)
         this.institute = response.data.hits.hits[0]._source
       })
+    },
+    toAffli(id){
+      this.$router.push({
+        path:'/Institution',
+        query:{
+          id:id,
+        }
+        }
+      )
     }
   },
   mounted() {
     console.log(this.user)
-    this.prepareDate(this.user.orgs[0].id)
+    // this.prepareDate(this.user.orgs[0].id)
   }
 }
 </script>
@@ -119,14 +134,23 @@ export default {
   border: 1px solid #dedede;
   border-radius: 2px;
   margin-top: 20px;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
-
+#intoButton{
+  margin-left: auto;
+  margin-right: 10px;
+  /*margin-right: 10px;*/
+}
+#someIns{
+  display: flex;
+  margin-top: 10px;
+}
 #leftCharacter {
   width: 250px;
   padding: 10px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
   margin-left: 10px;
@@ -138,34 +162,37 @@ export default {
 }
 
 #mainPane {
-  display: flex;
+  /*display: flex;*/
   border-top: 1px solid #dedede;
+  padding: 15px;
 }
 
 #leftDescription {
-  width: 200px;
-  padding: 20px;
+  width: 250px;
+  padding: 15px;
 }
 
 #insName {
   font-family: "Microsoft YaHei";
+  width: 300px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
   color: black;
+  margin-top: 5px;
 }
 
 .desInfo {
   margin-top: 15px;
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 17px;
   color: #7f7f7f;
 }
 
 .desDetail {
   margin-top: 3px;
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 17px;
   color: black;
 }
 
@@ -207,7 +234,7 @@ export default {
 .dialogInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 
@@ -223,7 +250,7 @@ export default {
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -243,7 +270,7 @@ export default {
   background-color: transparent;
   color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -258,14 +285,14 @@ export default {
 /deep/ .el-dialog__body {
   padding: 16px 8px;
   color: #606266;
-  font-size: 14px;
+  font-size: 18px;
   word-break: break-all;
 }
 
 .introInfo {
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 13px;
+  font-size: 18px;
   margin-top: 10px;
   color: black;
 }
@@ -281,14 +308,14 @@ export default {
 #LabName{
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   color: black;
 }
 .labInfo{
   font-family: "Microsoft YaHei";
   font-weight: bold;
   color: #8e8e8e;
-  font-size: 13px;
+  font-size: 18px;
   margin-top: 10px;
 }
 .labDetail{
@@ -297,11 +324,11 @@ export default {
 }
 .labPersonName{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 18px;
 }
 #managerName{
   font-family: "Microsoft YaHei";
-  font-size: 13px;
+  font-size: 18px;
   margin-left: 10px;
   margin-top: 5px;
 }

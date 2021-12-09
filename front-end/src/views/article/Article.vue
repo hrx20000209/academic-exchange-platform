@@ -1,6 +1,7 @@
 <template>
   <!--  总体-->
   <div class="main">
+
     <!--  包含下面那栏-->
     <div>
       <!--    上下两块-->
@@ -14,37 +15,12 @@
               <div class="articleType">Article</div>
               <div class="articleTitle">{{this.title}}</div>
               <div class="articleDate">{{this.year}}</div>
-              <div class="articleDOI">DOI: 10.52554/kjcl.2021.96.3</div>
               <div style="height: 20px"></div>
 <!--              作者这里 应该是需要改点什么-->
               <div class="articleActhor">
-                {{this.author}}
+                <div class="author" v-for="(item2) in authors" :key="item2">{{item2.name}}</div>
               </div>
             </div>
-<!--        这里大概率不需要    -->
-<!--            <div class="rightPart" style="overflow:hidden;">-->
-<!--              <div class="rightPartContent">-->
-<!--                Research Interest  <span>—————————————</span>  0.3-->
-<!--              </div>-->
-<!--              <div class="rightPartContent">-->
-<!--                Citations  <span>—————————————————</span>  0.3-->
-<!--              </div>-->
-<!--              <div class="rightPartContent">-->
-<!--                Recommendations <span>————————————</span>0.3-->
-<!--              </div>-->
-<!--              <div class="rightPartContent">-->
-<!--                Reads  <span>——————————————————</span>  0.3-->
-<!--              </div>-->
-<!--              <div class="rightPartContent">-->
-<!--                <div>Saved to your list-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <div style="float: right;font-size: 14px;color:grey;">-->
-<!--                  更多细节-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
           <!--      分界线-->
           <div class="dividingLine"></div>
@@ -52,15 +28,23 @@
           <div>
             <el-menu class="el-menu-demo" mode="horizontal" router>
               <el-menu-item index="/article/overviews">Overviews</el-menu-item>
-              <el-menu-item index="/article/stats">Stats</el-menu-item>
+<!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
               <el-menu-item index="/article/comments">Comments</el-menu-item>
 <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <el-menu-item index="/article/references">References</el-menu-item>
               <el-menu-item>
-                <el-button type="primary" v-if="flag !== 0">下载全文</el-button>
+                <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">下载全文</a></el-button>
                 <el-button type="primary"  disabled v-else>下载全文</el-button>
               </el-menu-item>
-              <el-menu-item index="7">分享文献</el-menu-item>
+
+              <el-menu-item>
+                <el-button type="warning" v-if="!this.flagShoucang" @click="shoucang">收藏文献</el-button>
+                <el-button type="warning" plain v-else @click="bushoucang">取消收藏</el-button>
+              </el-menu-item>
+              <el-menu-item>
+                <el-button type="success" v-if="!this.flagQingDan" @click="qingdan">加入清单</el-button>
+                <el-button type="success" plain v-else @click="buqingdan">已加入清单</el-button>
+              </el-menu-item>
             </el-menu>
           </div>
         </div>
@@ -77,61 +61,131 @@
 <script>
 import axios from "axios"
 import ESApi from '../../api/elastic search'
+import Nav_with_searchBox from "../../components/nav_with_searchBox";
 export default {
   name: "Article",
   data(){
     return{
-      flag: 1,
-      
+      flagShoucang: true,
+      flagQingDan: true,
+      flagLoad: true,
         id: "",
         title: "",
         authors: [],
         author:'',
-        abstract: "",
+        abstracts: "",
         year: "",
         reference:[],
         venue: {},
-        url: "",
-        citation_by_year:{},
-      
+      urlArticle: "",
+      citation_by_year:{},
+      flag:'',
       length:'',
     }
   },
   mounted() {
     this.search();
     console.log('333')
+    // this.searchRelated();
   },
   methods: {
+    shoucang(){
+      this.flagShoucang = true;
+    },
+    bushoucang(){
+      this.flagShoucang = false;
+    },
+    qingdan(){
+      this.flagQingDan = true;
+    },
+    buqingdan(){
+      this.flagQingDan = false;
+    },
+    toWebsite(){
+      return this.urlArticle
+    },
+    // search1(){
+    //   this.$store.commit('setTitle','._source.title')
+    //   console.log(this.$store.state.title)
+    // },
     search() {
       console.log('111')
-      ESApi.getMsg('808411C2').then(response =>{
-        console.log(response.data)
-        this.length = response.data.hits.total.value
-        console.log(this.length)
-        for(var i = 0; i < this.length; i++){
-          let article = response.data.hits.hits[i]
-          this.title = article._source.title
-          console.log(this.title)
-          this.year = article._source.year
-          if(article._source.url === undefined){
-            this.flag = 0
-            console.log('aaaa')
-          }else{
-            this.url = article._source.url
+      ESApi.getMsg('7C4C2B3B').then(response =>{
+        // if(response.data.hits.hits._source.id === '7C4C2B3B'){
+          console.log(response.data)
+          this.length = response.data.hits.total.value
+          console.log(this.length)
+          this.$store.state.abstract = ''
+          for(var i = 0; i < this.length; i++){
+            if(response.data.hits.hits[i]._source.id === '7C4C2B3B'){
+              let article = response.data.hits.hits[i]
+              this.title = article._source.title
+              console.log(this.title)
+              // this.abstracts = article._source.abstract
+              this.$store.commit('setTitle',article._source.title)
+              console.log(this.$store.state.title)
+
+              this.year = article._source.year
+              if(article._source.url === undefined){
+                this.flagLoad = false
+                console.log('aaaa')
+              }else{
+                this.urlArticle = article._source.url
+                console.log(this.urlArticle)
+              }
+              if(article._source.abstract === undefined){
+                this.flag = 0
+                console.log('flag')
+              }else{
+                this.$store.commit('setAbstract',article._source.abstract)
+                console.log(this.$store.state.abstract)
+              }
+              for(var k = 0; k < article._source.citation_by_year.length;k++){
+                // console.log(article._source.citation_by_year[k])
+                this.$store.commit('setCitation',article._source.citation_by_year[k])
+                console.log(this.$store.state.citation_by_year[k])
+              }
+              for(var l = 0; l <article._source.reference.length; l++){
+                console.log(article._source.reference[l])
+                this.$store.commit('setReferences',article._source.reference[l])
+                console.log(this.$store.state.references[l])
+              }
+              for(var j = 0; j < article._source.authors.length;j++){
+                // this.authors[j] = article._source.authors[j]
+                this.authors.push(article._source.authors[j])
+                // console.log(this.authors[j])
+                // this.author += this.authors[j].name
+                // this.author += ' 、'
+              }
+              // this.authors[j] = article._source.authors[j]
+              // console.log(this.authors[j])
+              // this.author += this.authors[j].name
+              console.log(this.authors)
+            }
           }
-          for(var j = 0; j < article._source.authors.length-1;j++){
-            this.authors[j] = article._source.authors[j]
-            console.log(this.authors[j])
-            this.author += this.authors[j].name
-            this.author += ' 、'
-          }
-          this.authors[j] = article._source.authors[j]
-            console.log(this.authors[j])
-            this.author += this.authors[j].name
-          console.log(this.author)
-        }
+        // }
+
       })
     },
+    // searchRelated(){
+    //   console.log('related');
+    //   ESTitle.getTitle(this.$store.state.title).then(response =>{
+    //     console.log(response.data)
+    //     this.length = response.data.hits.total.value
+    //     // Vue.set(this.relatedArticle, 1, response.data.hits.hits[1].)//给列表对象新增属性
+    //     for(var i = 0; i < this.length - 1; i++){
+    //       let re = response.data.hits.hits[i+1]
+    //       // this.relatedArticle[i-1].name = re._source.title
+    //       // this.relatedArticle[i-1].value = re._score
+    //       // console.log(this.relatedArticle[i-1].name)
+    //       // console.log(this.relatedArticle[i-1].value)
+    //       this.relatedArticle[i] = re
+    //       console.log(this.relatedArticle[i])
+    //       console.log(this.relatedArticle[i]._source.title)
+    //       console.log(this.relatedArticle[i]._score)
+    //     }
+    //   })
+    // },
     gotoTotalContent(){
       if(this.flag === 0){
         console.log('错误')
@@ -139,25 +193,34 @@ export default {
       else{
         console.log('成功')
       }
-    }
+    },
+
   }
 }
 </script>
 
 <style scoped>
+.author{
+  text-align: center;
+  padding: 2px;
+  border: #00a39e solid 1px;
+  float: left;
+  margin-right: 3px;
+
+}
 .main{
   width: 100%;
 }
 .white{
-  height: 212px;
+  height: 222px;
 }
 .whitePart{
   width: 80%;
   margin: 0 auto;
-  height: 130px;
+  height: 160px;
 }
 .whiteContent{
-  height: 150px;
+  height: 160px;
 }
 .leftPart{
   width: 62%;

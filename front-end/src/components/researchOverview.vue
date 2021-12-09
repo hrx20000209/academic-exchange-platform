@@ -37,8 +37,9 @@ export default {
 <style scoped>
 #researchOverview {
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
+  margin-top: 15px;
 }
 
 #leftCharacter {
@@ -46,7 +47,7 @@ export default {
   padding: 10px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -58,7 +59,7 @@ export default {
   margin-top: 10px;
   color: #8e8e8e;
   font-family: "Microsoft YaHe";
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
 }
 
@@ -106,7 +107,7 @@ export default {
 }
 .numberInfo{
   font-family: "Microsoft YaHei";
-  font-size: 14px;
+  font-size: 18px;
   margin-top: 10px;
   color: #343434;
 }

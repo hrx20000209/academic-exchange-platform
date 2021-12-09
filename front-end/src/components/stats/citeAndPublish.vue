@@ -11,6 +11,7 @@
 </template>
 
 <script>
+
 export default {
   name: "citeAndPublish",
   props: ['user'],
@@ -21,7 +22,7 @@ export default {
       citeData: [],
     }
   },
-  methods: {
+ methods: {
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(this.$refs.chart);
@@ -94,20 +95,19 @@ export default {
 </script>
 
 <style scoped>
-#citeAndPublish {
+#citeAndPublish{
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
-
 #leftCharacter {
   width: 400px;
   padding: 10px;
   font-family: "Microsoft YaHe";
   margin-left: 20px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -116,8 +116,7 @@ export default {
   display: flex;
   justify-content: flex-start;
 }
-
-#mainPane {
+#mainPane{
   border-top: 1px solid #dedede;
   padding: 10px 20px 15px 20px;
   display: flex;

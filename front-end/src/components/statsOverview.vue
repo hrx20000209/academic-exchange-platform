@@ -2,10 +2,10 @@
   <div id="statsOverivew">
     <div id="topHead">
       <div id="leftCharacter">数据概览</div>
-      <div id="rightButton">
-        <div>查看详细</div>
-        <i class="el-icon-s-order"></i>
-      </div>
+<!--      <div id="rightButton">-->
+<!--        <div>查看详细</div>-->
+<!--        <i class="el-icon-s-order"></i>-->
+<!--      </div>-->
     </div>
     <div id="mainPane">
       <div class="twoNumber">
@@ -62,9 +62,9 @@ export default {
 <style scoped>
 #statsOverivew {
   background-color: white;
-  border: 1px solid #dedede;
+box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 10px;
+  /*margin-top: 30px;*/
   width: auto;
 }
 
@@ -72,8 +72,9 @@ export default {
   width: 250px;
   padding: 10px;
   font-family: "Microsoft YaHe";
+  margin-left: 15px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
@@ -85,7 +86,7 @@ export default {
   margin-top: 10px;
   color: #8e8e8e;
   font-family: "Microsoft YaHe";
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
 }
 
@@ -111,7 +112,6 @@ export default {
 
 #topHead {
   display: flex;
-  justify-content: center;
 }
 
 #mainPane {
@@ -142,12 +142,12 @@ export default {
 .Number{
   font-family: "Microsoft YaHei";
   font-weight: bold;
-  font-size: 15px;
+  font-size: 17px;
 }
 .NumberInfo{
   font-family: "Microsoft YaHei";
   color: #343434;
   margin-top: 5px;
-  font-size: 13px;
+  font-size: 18px;
 }
 </style>
