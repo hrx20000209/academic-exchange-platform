@@ -11,7 +11,7 @@
                             </div>
                             <div class="myStart">
                                 <el-row style="margin-left: 50px;margin-top: 50px">
-                                  
+
                                   <el-row style="
                                       letter-spacing: 4px;
                                       font-weight: bold;
