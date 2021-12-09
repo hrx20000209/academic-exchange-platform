@@ -11,7 +11,7 @@
         <div id="middleDetail">
           <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
-            <div id="usrDegree">{{ this.user.userDegree }}</div>
+            <div id="usrDegree">{{ this.user.orgs[0].name }}</div>
             <!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
@@ -45,41 +45,56 @@
       </div>
     </div>
     <div class="mainPane">
-      <div v-if="activeMode ==1" class="mainPane">
-        <div id="leftMainPane">
-          <div id="editusrInfoPane">
-<!--            <author-card :user="user"></author-card>-->
-<!--            <about-me_author :user="user"></about-me_author>-->
-            <stats-overview :user="user"></stats-overview>
-            <div id="researchLine">
-              <div id="researchInfo">研究项目</div>
-              <el-divider></el-divider>
+      <div v-if="activeMode ==1" id="OnePane">
+        <div id="topOnePane">
+          <div id="leftMainPane">
+            <div id="editusrInfoPane">
+              <!--            <author-card :user="user"></author-card>-->
+              <!--            <about-me_author :user="user"></about-me_author>-->
+              <stats-overview :user="user"></stats-overview>
+<!--              <div id="researchLine">-->
+<!--                <div id="researchInfo">研究项目</div>-->
+<!--                <el-divider></el-divider>-->
+<!--              </div>-->
+<!--              <research-overview></research-overview>-->
             </div>
-            <research-overview></research-overview>
+          </div>
+          <div id="rightMainPane">
+            <div v-if="activeMode ==1">
+              <institute-belong-to_author :user="user"></institute-belong-to_author>
+<!--              <follow-same-author></follow-same-author>-->
+            </div>
           </div>
         </div>
-        <div id="rightMainPane">
-          <div v-if="activeMode ==1">
-            <institute-belong-to_author :user="user"></institute-belong-to_author>
-            <follow-same-author></follow-same-author>
+
+        <div id="statsMainPane">
+          <!--          <stats-digit-total :user="user"></stats-digit-total>-->
+          <div style="display: flex;justify-content: center;margin-top: 10px">
+            <cite-and-publish></cite-and-publish>
+            <cooperator-pie-chart></cooperator-pie-chart>
           </div>
+
+          <author-relationship ></author-relationship>
+
         </div>
+
+<!--        <div id="researchPane">-->
+<!--          <div id="researchItem">-->
+<!--            <research-detail-item v-for="(item, index) in research" :key='index'-->
+<!--                                  :research='item'></research-detail-item>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <div v-else-if="activeMode == 2" class="mainPane">
-        <div id="researchPane">
-          <div id="researchItem">
-            <research-detail-item v-for="(item, index) in research" :key='index'
-                                  :research='item'></research-detail-item>
-          </div>
-        </div>
+                <div id="researchPane">
+                  <div id="researchItem">
+                    <research-detail-item v-for="(item, index) in research" :key='index'
+                                          :research='item'></research-detail-item>
+                  </div>
+                </div>
       </div>
       <div v-else-if="activeMode == 4" class="mainPane">
-        <div id="statsMainPane">
-          <stats-digit-total :user="user"></stats-digit-total>
-          <cite-and-publish :user="user"></cite-and-publish>
-          <author-relationship :user="user" :data="this.datas" :linkm="this.linkmes"></author-relationship>
-          <cooperator-pie-chart :author="user"></cooperator-pie-chart>
-        </div>
+
       </div>
 
     </div>
@@ -180,8 +195,8 @@ export default {
   data() {
     return {
       id: "7F5944CA",
-      datas:[],
-      linkmes:[],
+      datas: [],
+      linkmes: [],
       ELres: [],
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {
@@ -257,19 +272,20 @@ export default {
   },
   mounted() {
     // this.id=this.$route.query.id
-    this.id=this.$route.query.id
+    this.id = this.$route.query.id
     this.getAuthorInfo(this.id)
-    this.getdataSource(this.id)
+    // this.getdataSource(this.id)
   },
   methods: {
-    getAuthorInfo(id){
-      console.log(this.id)
-      ESApi.getAuthorInfo(id).then(response=>{
+    getAuthorInfo(id) {
+      console.log('this.id')
+      ESApi.getAuthorInfo(id).then(response => {
         console.log(response);
-      this.ELres = response.data.hits.hits[0]._source;
-      this.user = this.ELres;
-      this.research = this.ELres.pubs;
-    })
+        this.ELres = response.data.hits.hits[0]._source;
+        this.user = this.ELres;
+        console.log(this.user)
+        this.research = this.ELres.pubs;
+      })
     },
     editSympleInfo() {
       this.dialogFormVisible = true
@@ -291,10 +307,10 @@ export default {
         this.activeMode = 7;
       }
     },
-    getdataSource(id){
+    getdataSource(id) {
       getdata({
-        author_id:id
-      }).then(res=>{
+        author_id: id
+      }).then(res => {
         console.log(res)
         this.datas = res.datas
         this.linkmes = res.linkmes
@@ -323,11 +339,13 @@ export default {
 
 <style scoped>
 #topPane {
+  /*background-size: contain;*/
+  /*background: url("../../assets/bg.png");*/
 }
 
 #authorPage {
-  background-color: whitesmoke;
-  /*background: url("../../assets/tmpbk.jpg");*/
+  /*background-color: #f1f2f6;*/
+  background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");
   width: 100%;
   height: 100vh;
   overflow-y: auto;
@@ -352,9 +370,7 @@ export default {
 }
 
 .confirm {
-  font-family: "Microsoft YaHei UI";
   display: inline;
-  background-color: transparent;
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
@@ -373,7 +389,6 @@ export default {
 }
 
 .cancel {
-  font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
   color: #0080ff;
@@ -407,18 +422,20 @@ export default {
 
 #usrName {
   font-size: 20px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   letter-spacing: 2px;
   color: #343434;
+  margin-top: 10px;
 }
 
 #usrDegree {
   margin-top: 10px;
-  font-size: 17px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
-  color: #606266;
+  font-size: 15px;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #3d3d3d;
+  font-style: italic
 }
 
 #editInfoRow {
@@ -428,7 +445,7 @@ export default {
 #usrAbility {
   margin-top: 2px;
   font-size: 17px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 2px;
   color: #343434;
 }
@@ -436,7 +453,7 @@ export default {
 #editYourInfo {
   margin-top: 10px;
   font-size: 14px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 2px;
   border-bottom: #606266 1px solid;
   color: #606266;
@@ -456,7 +473,7 @@ export default {
 }
 
 #directionInfo {
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
 }
 
@@ -477,7 +494,7 @@ export default {
   padding: 20px 20px 10px;
   background-color: #00a39e;
   height: 30px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   color: white;
 }
@@ -533,7 +550,7 @@ export default {
 .usrTabsUnchosen {
   border-bottom: transparent 2px solid;
   color: darkgray;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
@@ -547,7 +564,7 @@ export default {
   color: #005abb;
   border-bottom: #005abb 2px solid;
   margin-left: 15px;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Roboto", Arial, sans-serif;
   padding-bottom: 2px;
   font-size: 18px;
   padding-bottom: 20 hpx;
@@ -564,6 +581,12 @@ export default {
   justify-content: center;
 }
 
+#OnePane {
+  display: block;
+}
+#topOnePane{
+  display: flex;
+}
 #leftMainPane {
   display: flex;
 }
@@ -582,7 +605,7 @@ export default {
 #researchInfo {
   width: 100px;
   padding: 10px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
   letter-spacing: 1px;
@@ -613,6 +636,7 @@ export default {
 #statsMainPane {
   display: block;
 }
+
 .letter-body {
   margin-left: 5%;
   margin-right: 5%;
