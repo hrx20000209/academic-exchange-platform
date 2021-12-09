@@ -10,37 +10,29 @@
                               <Nav_with_searchBox_transparent></Nav_with_searchBox_transparent>
                             </div>
                             <div class="myStart">
-                                <!--<template slot="title">-->
-                                    <!--<div @click.stop="">-->
                                 <el-row style="margin-left: 50px;margin-top: 50px">
+                                  
                                   <el-row style="
                                       letter-spacing: 4px;
                                       font-weight: bold;
-                                      background-image:-webkit-linear-gradient(#FFF,#00ffff);
-                                      -webkit-background-clip:text;
-                                      -webkit-text-fill-color:transparent;
-                                      font-size: 20px;
+                                      color: #585858;
+                                      font-size: 40px;
                                       margin-top: 45px;
                                       margin-bottom: 20px;
-                                      font-family: siyuan;
-                                      margin-left: 450px;
-                                  ">
-                                      检索您想要的文献：
+                                      font-family: siyuan;">
+                                      专业的学术成果分享平台
                                   </el-row>
                                   <div>
                                      <div class="search-box">
-
-                                       <div style="display: flex; width: 700px">
+                                       <div style="width: 650px">
                                         <!--<input type="text" class="search-left" placeholder="请输入要搜索的内容"><input type="button" class="search-right" value="搜 索" icon="el-icon-search">-->
-                                         <el-input placeholder="请输入内容" v-model="keywords" class="SearchInput"></el-input>
-                                         <el-button icon="el-icon-search" class="searchIcon"></el-button>
+                                         <el-input placeholder="搜索你想了解的论文" v-model="keywords" class="SearchInput">
+                                           <el-button slot="append" class="searchButton">搜索</el-button>
+                                         </el-input>
                                        </div>
-
                                      </div>
                                   </div>
                                 </el-row>
-                                    <!--</div>-->
-                                <!--</template>-->
                             </div>
                         </div>
                     </el-row>
@@ -191,11 +183,6 @@
             window.removeEventListener('scroll', this.handleScroll);
         },
         methods:{
-            format(cites){
-
-                return cites + '次引用'
-
-            },
             test(){
               Api.getUsrId('05B090CE').then(
                 res => {
@@ -207,9 +194,6 @@
             },
             getPercentage(nub){
               return  Math.floor(nub/this.maxCites * 10000) / 100
-            },
-            jump2engine() {
-                console.log('ok')
             },
             t(){
                 let that = this
@@ -277,10 +261,6 @@
                   }
                 )
             },
-            getpicfrombase64(base) {
-              let file = this.base64ImgtoFile(base)
-              return window.webkitURL.createObjectURL(file) || window.URL.createObjectURL(file)
-            },
             getName(name, id) {
               //TODO: input id output pic or bool
 
@@ -296,33 +276,6 @@
                 }
               })
             },
-            blobToBase64(blob) {
-              return new Promise((resolve, reject) => {
-                const fileReader = new FileReader();
-                fileReader.onload = (e) => {
-                  resolve(e.target.result)
-                }
-                fileReader.readAsDataURL(blob);
-                fileReader.onerror = () => {
-                  reject(new Error('文件流异常'))
-                }
-              })
-            },
-            base64ImgtoFile (dataurl, filename = 'file') {
-                console.log('dataurl is',dataurl)
-                const arr = dataurl.split(',')
-                const mime = arr[0].match(/:(.*?);/)[1]
-                const suffix = mime.split('/')[1]
-                const bstr = atob(arr[1])
-                let n = bstr.length
-                const u8arr = new Uint8Array(n)
-                while (n--) {
-                  u8arr[n] = bstr.charCodeAt(n)
-                }
-                return new File([u8arr], `${filename}.${suffix}`, {
-                  type: mime
-                })
-              },
         }
     }
 </script>
@@ -346,12 +299,12 @@
     border-radius: 0;
 }
 .sky {
-    background-image: url(http://bpic.588ku.com/back_pic/05/48/20/855abafb634406c.jpg);
-    height: 450px;
-    width: 103%;
+    background-image: url(../assets/background.png);
+    height: 600px;
+    width: 105%;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 60% 100%;
+    background-position: 50% 50%;
     margin-left: -20px;
     margin-top: 20px;
     z-index: 0;
@@ -362,20 +315,21 @@
     background-color: rgba(0,0,0,.7);
 }
 .search-box{
-     display: flex;
-      justify-content: center;
      width: auto;
  }
 .SearchInput /deep/ .el-input__inner {
-  border-radius: 25px 0px 0px 25px;
-  border:royalblue 2px solid;
   border-right: none;
-  height: 40px;
+  height: 45px;
 }
-.searchIcon{
-  border-radius: 0px 25px 25px 0px;
-  border:royalblue 2px solid;
-  height: 40px;
+.el-input-group__append button.el-button, .el-input-group__append div.el-select .el-input__inner, .el-input-group__append div.el-select:hover .el-input__inner, .el-input-group__prepend button.el-button, .el-input-group__prepend div.el-select .el-input__inner, .el-input-group__prepend div.el-select:hover .el-input__inner{
+  border-radius: 0 4px 4px 0px;
+  color: white;
+  width: 80px;
+  padding: 0 25px 0 20px;
+  font-size: 17px;
+  letter-spacing:5px;
+  background-color:royalblue;
+  height: 45px;
   border-left: none;
 
 }
