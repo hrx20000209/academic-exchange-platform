@@ -55,7 +55,8 @@
           <el-result icon="warning" title="审核中"></el-result>
         </div>
         <div class="result-box" v-else-if="step===4">
-          <el-result icon="success" title="认证通过"></el-result>
+          <el-result icon="success" title="认证通过" v-if="success"></el-result>
+          <el-result icon="error" title="认证不通过" v-else></el-result>
         </div>
         <div class="result-box" v-else>
           <el-result icon="info" title="未提交"></el-result>
@@ -73,6 +74,7 @@ export default {
   data() {
     return {
       step: 0,
+      success: true,
       info: {
         name: '',
         institution: '',
