@@ -18,3 +18,4 @@ export const getdata = user_id => get('/relationshipMap',user_id)
 export const getPieData = user_id => get('/cooperateAuthor',user_id)
 export const changeUserPassword = params => post('/changePassword',params)
 export const getFavo = user_id => get('/user/get_all_favo',user_id)
+

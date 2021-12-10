@@ -64,14 +64,15 @@ const routes = [
     component: () => import('../components/search')
   },
   {
-    path: '/article',
+    path: '/article/:paper_id',
     name: 'Article',
+    redirect:'/article/:paper_id/overviews',
     component: () => import('../views/article/Article.vue'),
     children: [
-      {
-        path: '',
-        component: () => import ('../views/article/Overviews')
-      },
+      // {
+      //   path: '',
+      //   component: () => import ('../views/article/Overviews')
+      // },
       {
         path: 'comments',
         name: 'Comments',
@@ -105,7 +106,7 @@ const routes = [
     component: () => import('../views/userPage/userHome')
   },
   {
-    path:'/Institution',
+    path:'/Institution/:id',
     name: 'Institution',
     component: () => import('../views/Institution')
   },

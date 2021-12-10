@@ -6,19 +6,54 @@
         <div class="upFrameContent">评论</div>
       </div>
       <div class="downFrame">
-        <div class="downFrameContent">
+        <div class="downFrameContent" v-if="this.items.length !== 0">
           <div v-for="item in items" :key="item.id">
-            <comment
-              :head="item.head"
-              :author="item.author"
-              :likeCnt="item.likeCnt"
-              :description="item.description"
-              :time="item.time"
-              :text="item.text"
-              :done="item.done"
-            />
+            <div>
+              <el-card class="card">
+                <div class="top" slot="header">
+                  <div>
+                    <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
+                  </div>
+                  <div style="width: 100%">
+                    <div class="author-name">
+                      {{ item.author }}
+                    </div>
+                    <div class="description-box">
+                      {{ item.description }}
+                    </div>
+                  </div>
+                  <div class="time-box">
+                    {{ item.time }}
+                  </div>
+                </div>
+                <div>
+                  <div class="body">
+                    <div>
+                      {{ item.text }}
+                    </div>
+                    <el-divider></el-divider>
+                    <div class="bottom">
+                      <div class="bottom-btn"
+                           v-if="!item.done"
+                           @click="addLike(item.comment_id);item.done =!item.done">
+<!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
+                        <img src="@/assets/点赞.png" width="10%"/>
+                        点赞
+                      </div>
+                      <div class="bottom-btn-mouse-on"
+                           v-else
+                           @click="cancelLike(item.comment_id);item.done =!item.done">
+                        <img src="@/assets/已点赞.png" width="10%"/>
+                        点赞
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </el-card>
+            </div>
           </div>
         </div>
+        <div class="downFrameContent" v-else></div>
         <el-divider></el-divider>
         <div class="input-box">
           <div class="top">
@@ -31,13 +66,14 @@
               </div>
               <div class="description-box">
                 {{ user.description }}
+
               </div>
             </div>
           </div>
           <div class="input-box">
             <div id="div1"></div>
             <div class="btn-box">
-              <el-button type="primary" @click="getEditorData">提交</el-button>
+              <el-button type="primary" @click="addComment">提交</el-button>
             </div>
           </div>
         </div>
@@ -49,10 +85,8 @@
 
 <script>
 import E from 'wangeditor'
-import comment from '@/components/Comment'
 export default {
   name: "CommentList",
-  components: { comment },
   mounted() {
     const editor = new E('#div1')
     editor.config.menus = [
@@ -62,12 +96,15 @@ export default {
       'list'
     ]
     editor.config.showFullScreen = false
-    editor.config.height = 150
+    editor.config.height = 120
     editor.config.onchange = (newHtml) => {
       this.editorData = newHtml
     }
     editor.create()
     this.editor = editor
+  },
+  created() {
+    this.getCommentsList()
   },
   beforeDestroy() {
     this.editor.destroyed()
@@ -79,6 +116,7 @@ export default {
       editorData: '',
       cnt: 3,
       user: {
+        user_id:'',
         name: 'HRX',
         head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
         description: '一个苦逼的前端'
@@ -114,14 +152,76 @@ export default {
           text: '噫！芜！',
           done: false
         }
-      ]
+      ],
+      data:''
     }
   },
   methods: {
-    getEditorData() {
-      // 这个函数的作用是获取文本框中的内容，点击提交按钮触发
+    getCommentsList(){
+      console.log('进入获取评论');
+      console.log(this.$route.params.paper_id)
+      this.axios({
+        method: "get",
+        // url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$store.state.paper_id,
+        url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$route.params.paper_id,
+        // url:"http://192.168.206.1:8000/user/GetFavorite",
+        data:{
+          // commented_id: this.$store.state.paper_id
+          commented_id:this.$route.params.paper_id,
+          like_id:'1',
+        },
+        // timeout:1000,
+      })
+        .then(response=>{
+          console.log('获取评论信息')
+          console.log(response.data)
+
+          //这里再赋值
+        })
+    },
+    addComment(){
       const data = this.editor.txt.html()
-      alert(data)
+      console.log(data)
+      this.axios({
+        method: "post",
+        url:"http://139.9.132.83:8000/communicate/comment_add",
+        data:{
+          commented_id: '7C4C2B3B', //论文id
+          commentator_id: '1',      //评论人id
+          comment_content: data,    //评论内容
+        },
+        // timeout:1000,
+      })
+        .then(response=>{
+          console.log('成功？')
+          console.log(response.data)
+        })
+    },
+    addLike(){
+      this.axios({
+        method: "post",
+        url: "http://139.9.132.83:8000/communicate/like",
+        data:{
+          user_id:this.user_id,
+          post_id: this.comment_id
+        }
+      })
+        .then(response=>{
+          console.log('点赞成功')
+        })
+    },
+    cancelLike(){
+      this.axios({
+        method: "post",
+        url: "http://139.9.132.83:8000/communicate/cancellike",
+        data:{
+          user_id:this.user_id,
+          comment_id: this.comment_id
+        }
+      })
+        .then(response => {
+          console.log('取消点赞成功')
+        })
     }
   }
 }
@@ -132,11 +232,12 @@ export default {
   background: rgba(221,221,221,0.3);
 }
 .bigFrame{
-  width: 50%;
+  width: 66%;
   background: white;
   border-radius: 2px;
   margin-left: 10%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  /*box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)*/
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2)
 }
 .upFrame{
   height: 50px;
@@ -179,5 +280,47 @@ export default {
 }
 .input-box {
   margin: 1%;
+}
+.card {
+  margin-bottom: 1%;
+}
+
+.top {
+  display: flex;
+}
+
+.author-name {
+  margin-left: 3%;
+  margin-top: 1%;
+  color: dodgerblue;
+}
+
+.description-box {
+  margin-left: 3%;
+}
+
+.time-box {
+  font-size: small;
+  width: 10%;
+  color: #cecece;
+  margin-top: 3%;
+}
+
+.body {
+  padding: 20px;
+}
+
+.bottom {
+  display: flex;
+  height: 20%;
+}
+
+.bottom-btn {
+  font-weight: bold;
+}
+
+.bottom-btn-mouse-on {
+  font-weight: bold;
+  text-decoration: underline;
 }
 </style>
