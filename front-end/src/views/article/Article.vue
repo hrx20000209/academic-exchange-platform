@@ -2,6 +2,7 @@
   <!--  总体-->
   <div class="main">
     <nav_with_search-box></nav_with_search-box>
+    <div style="height: 10px"></div>
     <!--  包含下面那栏-->
     <div>
       <!--    上下两块-->
@@ -26,7 +27,7 @@
           <div class="dividingLine"></div>
           <!--      导航栏-->
           <div>
-            <el-menu class="el-menu-demo" mode="horizontal" router :default-active="overviewIndex">
+            <el-menu class="el-menu-demo" mode="horizontal" router >
 <!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
               <el-menu-item :index="overviewIndex">Overviews</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
@@ -36,8 +37,8 @@
               <!--              <el-menu-item index="/article/references">References</el-menu-item>-->
               <el-menu-item :index="referenceIndex">References</el-menu-item>
               <el-menu-item>
-                <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">下载全文</a></el-button>
-                <el-button type="primary"  disabled v-else>下载全文</el-button>
+                <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">查看全文</a></el-button>
+                <el-button type="primary"  disabled v-else>查看全文</el-button>
               </el-menu-item>
 
               <el-menu-item>
@@ -371,7 +372,8 @@ export default {
 }
 .articleType{
   width: 60px;
-  background: lightblue;
+  background: #C5E8E5;
+  color: #007478;
   border-radius: 2px;
   text-align: center;
 }

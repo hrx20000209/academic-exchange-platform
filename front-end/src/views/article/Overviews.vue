@@ -146,11 +146,11 @@ export default {
     search(paper_id) {
       console.log('111')
       ESApi.getMsg(paper_id).then(response => {
-        // if(response.data.hits.hits._source.id === '7C4C2B3B'){
         console.log(response.data)
         this.length = response.data.hits.total.value
         console.log(this.length)
         this.$store.state.abstract = ''
+        this.$store.state.references = []
         for (var i = 0; i < this.length; i++) {
           if (response.data.hits.hits[i]._source.id === paper_id) {
             let article = response.data.hits.hits[i]
@@ -180,6 +180,7 @@ export default {
               this.$store.commit('setCitation', article._source.citation_by_year[k])
               // console.log(this.$store.state.citation_by_year[k])
             }
+
             for (var l = 0; l < article._source.reference.length; l++) {
               console.log(article._source.reference[l])
               this.$store.commit('setReferences', article._source.reference[l])

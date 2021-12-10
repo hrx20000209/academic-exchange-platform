@@ -29,7 +29,7 @@
                 {{item.title}}
               </div>
               <div style="margin-bottom: 10px;font-size: 15px;color: dimgrey">
-                <a class="articleType" style="color:black;">Article</a>
+                <a class="articleType">Article</a>
                 {{item.year}}
               </div>
               <div style="margin-bottom: 10px;font-size: 16.5px;overflow: hidden">
@@ -114,12 +114,13 @@ export default {
   },
   methods:{
     toOtherPaper(id){
-      let router = '/article/'+ id
+      let router = '/article/'+ id + '/overviews'
       this.$route.params.paper_id = id
       console.log(this.$route.params.paper_id)
       this.$router.push(router)
     },
     bianli(){
+      this.reference = []
       for(var i = 0; i < this.$store.state.references.length;i++) {
         // console.log(this.$store.state.references[i])
         this.reference.push(this.$store.state.references[i])
@@ -155,7 +156,8 @@ export default {
 }
 .articleType{
   width: 60px;
-  background: lightblue;
+  background: #C5E8E5;
+  color: #007478;
   border-radius: 2px;
   text-align: center;
 }

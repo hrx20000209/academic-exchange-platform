@@ -6,7 +6,7 @@
         <div class="upFrameContent">评论</div>
       </div>
       <div class="downFrame">
-        <div class="downFrameContent">
+        <div class="downFrameContent" v-if="item.length !== 0">
           <div v-for="item in items" :key="item.id">
             <div>
               <el-card class="card">
@@ -53,6 +53,7 @@
             </div>
           </div>
         </div>
+        <div class="downFrameContent" v-else></div>
         <el-divider></el-divider>
         <div class="input-box">
           <div class="top">
@@ -158,14 +159,15 @@ export default {
   methods: {
     getCommentsList(){
       console.log('进入获取评论');
+      console.log(this.$route.params.paper_id)
       this.axios({
         method: "get",
         // url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$store.state.paper_id,
-        url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + '7C4C2B3B',
+        url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$route.params.paper_id,
         // url:"http://192.168.206.1:8000/user/GetFavorite",
         data:{
           // commented_id: this.$store.state.paper_id
-          commented_id:'7C4C2B3B',
+          commented_id:this.$route.params.paper_id,
           like_id:'1',
         },
         // timeout:1000,
@@ -179,13 +181,14 @@ export default {
     },
     addComment(){
       const data = this.editor.txt.html()
+      console.log(data)
       this.axios({
         method: "post",
         url:"http://139.9.132.83:8000/communicate/comment_add",
         data:{
-          commented_id: '7C4C2B3B',
-          commentator_id: '1',
-          comment_content:data,
+          commented_id: '7C4C2B3B', //论文id
+          commentator_id: '1',      //评论人id
+          comment_content: data,    //评论内容
         },
         // timeout:1000,
       })
@@ -233,7 +236,8 @@ export default {
   background: white;
   border-radius: 2px;
   margin-left: 10%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  /*box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)*/
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2)
 }
 .upFrame{
   height: 50px;
