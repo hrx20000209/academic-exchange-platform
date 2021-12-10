@@ -70,7 +70,7 @@ const ESApi = {
     return res
   },
     getAuthorPaper: async (id) =>{
-    let url = 'http://119.3.223.135:9200/cspaper/_search?source_content_type=application/json&source={"query": {"nested": {"path": "authors","query": {"bool": {"must": [{ "match": { "authors.id": "'+id+'" }}]}}}}}'
+    let url = 'http://119.3.223.135:9200/cspaper/_search?source_content_type=application/json&source={"query": {"nested": {"path": "authors","query": {"bool": {"must": [{ "match": { "authors.id": "'+id+'" }}]}}}},"size": 10000}'
     const res = await axios({
       url: url
     })

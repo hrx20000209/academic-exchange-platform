@@ -1,42 +1,46 @@
 <template>
   <div id="researchItemDetail">
-    <div style="display: flex">
-      <div id="leftPane">
-      <div id="title" @click="toPaper(research.id)">
-        {{ research.title }}
+    <div id="leftPane">
+      <div id="title" @click="toPaper(research._id)">
+        {{ titleCase2(research._source.title) }}
       </div>
       <div id="someInfo">
         <div id="articleInfo">
-          {{ research.type }}
+          Article
         </div>
-        <div v-if="research.hasFull == true" id="hasFullText">全文阅读</div>
+
         <div id="time">
-          {{ research.publishDate }}
+          {{ research._source.year }} {{ research._source.venue.raw }}
         </div>
+
       </div>
       <div id="authorInfo">
-        <div class="authorName" v-for="(item,index) in research.Author" :key="index">
-          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
-          <div class="authorNameInfo">{{ item.name }}</div>
+        <div class="authorName" v-for="(item,index) in research._source.authors" :key="index">
+<!--          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>-->
+          <div class="authorNameInfo">{{ titleCase2(item.name) }}</div>
+          <div v-if="index < research._source.authors.length-1" class="myspace">·</div>
         </div>
+        <div id="cite">{{research._source.n_citation}} citations</div>
       </div>
-      <div id="abstract">{{research.abstract}}</div>
+<!--      <div id="abstract">{{research.abstract}}</div>-->
+<!--    <div style="display: flex">-->
+<!--      -->
+<!--    </div>-->
+<!--    <div id="rightPane" v-if="research.hasFull == true">-->
+<!--      <i class="el-icon-tickets"></i>-->
+<!--    </div>-->
     </div>
-    <div id="rightPane" v-if="research.hasFull == true">
-      <i class="el-icon-tickets"></i>
-    </div>
-    </div>
-    <div id="bottomPane">
-        <div id="leftBottom">
-          <div v-if="research.hasFull == true" class="myButton">下载</div>
-          <div v-else class="myButton">申请获得全文</div>
-        </div>
-        <div id="rightBottom">
-          <div class="threeButton">推荐</div>
-          <div class="threeButton">关注</div>
-          <div class="threeButton">分享</div>
-        </div>
-      </div>
+<!--    <div id="bottomPane">-->
+<!--        <div id="leftBottom">-->
+<!--          <div v-if="research.hasFull == true" class="myButton">下载</div>-->
+<!--          <div v-else class="myButton">申请获得全文</div>-->
+<!--        </div>-->
+<!--        <div id="rightBottom">-->
+<!--          <div class="threeButton">推荐</div>-->
+<!--          <div class="threeButton">关注</div>-->
+<!--          <div class="threeButton">分享</div>-->
+<!--        </div>-->
+<!--      </div>-->
   </div>
 </template>
 
@@ -49,7 +53,13 @@ export default {
       this.$router.push({
         path:'/article/'+id+'/overviews'
       })
-    }
+    },
+    titleCase2(s) {
+      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+        //return word.slice(0, 1).toUpperCase() + word.slice(1);
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+      });
+    },
   }
 }
 </script>
@@ -61,6 +71,9 @@ export default {
   padding-bottom: 30px;
   border-bottom: 1px solid #dedede;
 }
+#leftPane{
+  display: block;
+}
 #title{
   font-family: "Roboto", Arial, sans-serif;
   color: black;
@@ -70,6 +83,9 @@ export default {
 #someInfo{
   display: flex;
   margin-top: 10px;
+}
+.myspace{
+  margin-left: 10px;
 }
 #articleInfo{
   background-color: #c5e8e5;
@@ -95,20 +111,23 @@ export default {
   font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   margin-left: 10px;
+  /*margin-left: auto;*/
+  /*margin-right: 10px;*/
 }
 #authorInfo{
   display: flex;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 .authorName{
   display: flex;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .authorNameInfo{
   font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   color: black;
-  margin-left: 10px;
+  /*margin-right: auto;*/
+  /*margin-left: 10px;*/
   margin-top: 6px;
 }
 #bottomPane{
@@ -163,5 +182,11 @@ export default {
   font-size: 17px;
   color: #343434;
   margin-top: 10px;
+}
+#cite{
+  margin-left: auto;
+  margin-right: 20px;
+  font-style: italic;
+  color: #727272;
 }
 </style>

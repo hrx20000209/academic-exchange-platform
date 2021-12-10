@@ -586,8 +586,8 @@ export default {
 }
 
 #usrHomePane {
-  /*background-color: whitesmoke;*/
-  background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");
+  background-color: whitesmoke;
+  /*background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");*/
   width: 100%;
   height: 100vh;
   overflow-y: auto;
