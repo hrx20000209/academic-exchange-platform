@@ -177,7 +177,6 @@ export default {
       }).then(response => {
         this.items = response.list
         this.totalPage = response.total_page
-        console.log(response)
         for (let i = 0; i < this.items.length; i++) {
           this.items[i].head = 'http://139.9.132.83:8000/user/getUserImage?user_id=' + this.items[i].user_id
         }

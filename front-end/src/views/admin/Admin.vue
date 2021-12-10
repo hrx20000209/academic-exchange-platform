@@ -25,7 +25,7 @@
             <i class="el-icon-document"></i>
             <span slot="title">个人信息</span>
           </el-menu-item>
-          <el-menu-item index="/" class="list-item">
+          <el-menu-item index="/" class="list-item" @click="logOut">
             <i class="el-icon-setting"></i>
             <span slot="title">退出</span>
           </el-menu-item>
@@ -47,6 +47,9 @@ export default {
     };
   },
   methods: {
+    logout() {
+      localStorage.setItem("isLogin", 0)
+    }
   }
 }
 </script>

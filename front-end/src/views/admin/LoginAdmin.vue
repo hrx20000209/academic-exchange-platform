@@ -23,6 +23,7 @@
 
 <script>
 import Nav_with_searchBox from '../../components/nav_with_searchBox'
+import { adminLogin } from "../../request/api"
 export default {
   name: "LoginAdmin",
   components: { Nav_with_searchBox },
@@ -34,9 +35,23 @@ export default {
   },
   methods: {
     login() {
-      this.$message({
-        type: 'success',
-        message: '登陆成功！'
+      adminLogin({
+        name: this.account,
+        password: this.password
+      }).then(response => {
+        if (response.message === '用户名或密码错误') {
+          this.$message({
+            type: 'warning',
+            message: '用户名或密码错误'
+          })
+        } else {
+          localStorage.setItem('ifLogin', 1)
+          this.$message({
+            type: 'success',
+            message: '登陆成功！'
+          })
+          this.$router.push('/admin')
+        }
       })
     },
   }

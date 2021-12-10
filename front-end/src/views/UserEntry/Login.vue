@@ -59,7 +59,7 @@ export default {
             type: 'success',
             message: '登陆成功！'
           })
-          this.$router.push('/')
+          this.$router.push('/homepage')
         }
       })
     },
