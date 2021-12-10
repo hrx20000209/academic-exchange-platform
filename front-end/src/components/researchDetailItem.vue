@@ -2,7 +2,7 @@
   <div id="researchItemDetail">
     <div style="display: flex">
       <div id="leftPane">
-      <div id="title">
+      <div id="title" @click="toPaper(research.id)">
         {{ research.title }}
       </div>
       <div id="someInfo">
@@ -43,7 +43,14 @@
 <script>
 export default {
   name: "researchDetailItem",
-  props:['research']
+  props:['research'],
+  methods:{
+    toPaper(id){
+      this.$router.push({
+        path:'/article/'+id+'/overviews'
+      })
+    }
+  }
 }
 </script>
 
@@ -55,9 +62,9 @@ export default {
   border-bottom: 1px solid #dedede;
 }
 #title{
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   color: black;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
 }
 #someInfo{
@@ -68,7 +75,7 @@ export default {
   background-color: #c5e8e5;
   color: #007478;
   padding: 5px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   border-radius: 2px;
   font-size: 17px;
 }
@@ -76,7 +83,7 @@ export default {
   color: #007478;
   padding: 5px;
   border: #007478 1px solid;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   margin-left: 10px;
   border-radius: 2px;
@@ -85,7 +92,7 @@ export default {
     color: #939393;
   background-color: transparent;
   padding: 5px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   margin-left: 10px;
 }
@@ -98,7 +105,7 @@ export default {
   margin-left: 10px;
 }
 .authorNameInfo{
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   color: black;
   margin-left: 10px;
@@ -120,7 +127,7 @@ export default {
   border: #0080ff solid 1px;
   padding: 5px 10px 5px 10px;
   background-color: transparent;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   color: #0080ff;
   font-size: 17px;
   text-align: center;
@@ -137,7 +144,7 @@ export default {
   border: none;
   padding: 5px 8px 5px 8px;
   margin-left: 6px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   color: #343434;
 }
@@ -152,7 +159,7 @@ export default {
   font-size:18px;
 }
 #abstract{
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   color: #343434;
   margin-top: 10px;

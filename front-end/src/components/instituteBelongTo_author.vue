@@ -135,6 +135,7 @@ export default {
   border-radius: 2px;
   margin-top: 20px;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+  height: 160px;
 }
 #intoButton{
   margin-left: auto;
@@ -143,16 +144,16 @@ export default {
 }
 #someIns{
   display: flex;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 #leftCharacter {
   width: 250px;
   padding: 10px;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
   margin-left: 10px;
 }
 
@@ -164,21 +165,20 @@ export default {
 #mainPane {
   /*display: flex;*/
   border-top: 1px solid #dedede;
-  padding: 15px;
 }
 
 #leftDescription {
   width: 250px;
-  padding: 15px;
 }
 
 #insName {
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto",Arial,sans-serif;
   width: 300px;
   font-weight: bold;
   font-size: 16px;
   color: black;
   margin-top: 5px;
+  margin-left: 10px;
 }
 
 .desInfo {

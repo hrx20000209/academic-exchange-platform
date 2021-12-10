@@ -11,7 +11,7 @@
         <div id="middleDetail">
           <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
-            <div id="usrDegree">{{ this.user.userDegree }}</div>
+            <div id="usrDegree">{{ this.user.orgs[0].name }}</div>
             <!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
@@ -33,8 +33,8 @@
           <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
           <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
           <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>
+<!--          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>-->
+<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
@@ -45,41 +45,65 @@
       </div>
     </div>
     <div class="mainPane">
-      <div v-if="activeMode ==1" class="mainPane">
-        <div id="leftMainPane">
-          <div id="editusrInfoPane">
-<!--            <author-card :user="user"></author-card>-->
-<!--            <about-me_author :user="user"></about-me_author>-->
-            <stats-overview :user="user"></stats-overview>
-            <div id="researchLine">
-              <div id="researchInfo">研究项目</div>
-              <el-divider></el-divider>
+      <div v-if="activeMode ==1" id="OnePane">
+        <div id="topOnePane">
+          <div id="leftMainPane">
+            <div id="editusrInfoPane">
+              <!--            <author-card :user="user"></author-card>-->
+              <!--            <about-me_author :user="user"></about-me_author>-->
+              <stats-overview :user="user"></stats-overview>
+<!--              <div id="researchLine">-->
+<!--                <div id="researchInfo">研究项目</div>-->
+<!--                <el-divider></el-divider>-->
+<!--              </div>-->
+<!--              <research-overview></research-overview>-->
             </div>
-            <research-overview></research-overview>
+          </div>
+          <div id="rightMainPane">
+            <div v-if="activeMode ==1">
+              <institute-belong-to_author :user="user"></institute-belong-to_author>
+<!--              <follow-same-author></follow-same-author>-->
+            </div>
           </div>
         </div>
-        <div id="rightMainPane">
-          <div v-if="activeMode ==1">
-            <institute-belong-to_author :user="user"></institute-belong-to_author>
-            <follow-same-author></follow-same-author>
+
+        <div id="statsMainPane">
+          <!--          <stats-digit-total :user="user"></stats-digit-total>-->
+          <div style="display: flex;justify-content: center;margin-top: 10px">
+            <cite-and-publish></cite-and-publish>
+            <cooperator-pie-chart></cooperator-pie-chart>
           </div>
+
+          <author-relationship ></author-relationship>
+
         </div>
+
+<!--        <div id="researchPane">-->
+<!--          <div id="researchItem">-->
+<!--            <research-detail-item v-for="(item, index) in research" :key='index'-->
+<!--                                  :research='item'></research-detail-item>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <div v-else-if="activeMode == 2" class="mainPane">
-        <div id="researchPane">
-          <div id="researchItem">
-            <research-detail-item v-for="(item, index) in research" :key='index'
-                                  :research='item'></research-detail-item>
-          </div>
-        </div>
+                <div id="researchPane">
+                  <div id="researchItem">
+                    <research-detail-item v-for="(item, index) in research" :key='index'
+                                          :research='item'></research-detail-item>
+                  </div>
+                  <el-pagination
+                    :total="cutTotal"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage3"
+      :page-size="10"
+      layout="total, prev, pager, next, jumper"
+      >
+    </el-pagination>
+                </div>
       </div>
       <div v-else-if="activeMode == 4" class="mainPane">
-        <div id="statsMainPane">
-          <stats-digit-total :user="user"></stats-digit-total>
-          <cite-and-publish :user="user"></cite-and-publish>
-          <author-relationship :user="user" :data="this.datas" :linkm="this.linkmes"></author-relationship>
-          <cooperator-pie-chart :author="user"></cooperator-pie-chart>
-        </div>
+
       </div>
 
     </div>
@@ -179,9 +203,11 @@ export default {
   },
   data() {
     return {
+      cutTotal:0,
+      currentPage3: 5,
       id: "7F5944CA",
-      datas:[],
-      linkmes:[],
+      datas: [],
+      linkmes: [],
       ELres: [],
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {
@@ -257,23 +283,44 @@ export default {
   },
   mounted() {
     // this.id=this.$route.query.id
-    this.id=this.$route.query.id
+    this.id = this.$route.query.id
     this.getAuthorInfo(this.id)
-    this.getdataSource(this.id)
+    this.getAuthorsPaper(this.id)
+    // this.getdataSource(this.id)
   },
   methods: {
-    getAuthorInfo(id){
-      console.log(this.id)
-      ESApi.getAuthorInfo(id).then(response=>{
+    getAuthorInfo(id) {
+      console.log('this.id')
+      ESApi.getAuthorInfo(id).then(response => {
         console.log(response);
-      this.ELres = response.data.hits.hits[0]._source;
-      this.user = this.ELres;
-      this.research = this.ELres.pubs;
-    })
+        this.ELres = response.data.hits.hits[0]._source;
+        this.user = this.ELres;
+        if(this.user.orgs.length>3){
+          this.user.orgs = this.user.orgs.slice(0,3)
+        }
+        console.log('this.user')
+
+      })
+    },
+    getAuthorsPaper(id){
+      ESApi.getAuthorPaper(id).then(res=>{
+        console.log('ssss')
+        console.log(res)
+        // this.research = this.ELres.pubs.slice(0,10);
+        // this.cutTotal = this.ELres.pubs.length
+        // console.log(this.research)
+      })
     },
     editSympleInfo() {
       this.dialogFormVisible = true
     },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.research = this.ELres.pubs.slice((val-1)*10,val*10)
+      },
     selectActiveMode(flag) {
       if (flag == 1) {
         this.activeMode = 1;
@@ -291,10 +338,10 @@ export default {
         this.activeMode = 7;
       }
     },
-    getdataSource(id){
+    getdataSource(id) {
       getdata({
-        author_id:id
-      }).then(res=>{
+        author_id: id
+      }).then(res => {
         console.log(res)
         this.datas = res.datas
         this.linkmes = res.linkmes
@@ -323,11 +370,13 @@ export default {
 
 <style scoped>
 #topPane {
+  /*background-size: contain;*/
+  /*background: url("../../assets/bg.png");*/
 }
 
 #authorPage {
-  background-color: whitesmoke;
-  /*background: url("../../assets/tmpbk.jpg");*/
+  /*background-color: #f1f2f6;*/
+  background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");
   width: 100%;
   height: 100vh;
   overflow-y: auto;
@@ -352,9 +401,7 @@ export default {
 }
 
 .confirm {
-  font-family: "Microsoft YaHei UI";
   display: inline;
-  background-color: transparent;
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
@@ -373,7 +420,6 @@ export default {
 }
 
 .cancel {
-  font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
   color: #0080ff;
@@ -407,18 +453,20 @@ export default {
 
 #usrName {
   font-size: 20px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   letter-spacing: 2px;
   color: #343434;
+  margin-top: 10px;
 }
 
 #usrDegree {
   margin-top: 10px;
-  font-size: 17px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
-  color: #606266;
+  font-size: 15px;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #3d3d3d;
+  font-style: italic
 }
 
 #editInfoRow {
@@ -428,7 +476,7 @@ export default {
 #usrAbility {
   margin-top: 2px;
   font-size: 17px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 2px;
   color: #343434;
 }
@@ -436,7 +484,7 @@ export default {
 #editYourInfo {
   margin-top: 10px;
   font-size: 14px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 2px;
   border-bottom: #606266 1px solid;
   color: #606266;
@@ -456,7 +504,7 @@ export default {
 }
 
 #directionInfo {
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
 }
 
@@ -477,7 +525,7 @@ export default {
   padding: 20px 20px 10px;
   background-color: #00a39e;
   height: 30px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   color: white;
 }
@@ -533,7 +581,7 @@ export default {
 .usrTabsUnchosen {
   border-bottom: transparent 2px solid;
   color: darkgray;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
@@ -547,7 +595,7 @@ export default {
   color: #005abb;
   border-bottom: #005abb 2px solid;
   margin-left: 15px;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Roboto", Arial, sans-serif;
   padding-bottom: 2px;
   font-size: 18px;
   padding-bottom: 20 hpx;
@@ -564,6 +612,12 @@ export default {
   justify-content: center;
 }
 
+#OnePane {
+  display: block;
+}
+#topOnePane{
+  display: flex;
+}
 #leftMainPane {
   display: flex;
 }
@@ -582,7 +636,7 @@ export default {
 #researchInfo {
   width: 100px;
   padding: 10px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
   letter-spacing: 1px;
@@ -596,23 +650,29 @@ export default {
 }
 
 #researchPane {
-  display: flex;
+  /*display: flex;*/
   flex-direction: row;
   justify-content: center;
+  padding: 20px;
+  /*background-color: whitesmoke;*/
+  margin-top: 20px;
+  background-color: white;
+  border: 1px solid #dedede;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #researchItem {
   background-color: white;
-  border: 1px solid #dedede;
+
   width: 875px;
-  margin-top: 30px;
   border-radius: 1px;
-  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+
 }
 
 #statsMainPane {
   display: block;
 }
+
 .letter-body {
   margin-left: 5%;
   margin-right: 5%;
@@ -629,5 +689,14 @@ export default {
 .letter-btn-box {
   text-align: right;
   margin-top: 5%;
+}
+/deep/ .el-pagination {
+    white-space: nowrap;
+    padding: 2px 5px;
+    color: #303133;
+    width: fit-content;
+    font-weight: 700;
+    margin-right: auto;
+    margin-left: auto;
 }
 </style>
