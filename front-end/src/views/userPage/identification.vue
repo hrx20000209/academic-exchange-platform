@@ -65,6 +65,7 @@ export default {
   components: { Nav_with_searchBox },
   data() {
     return {
+      user_id:localStorage.getItem('user_id'),
       step: 1,
       success: true,
       info: {

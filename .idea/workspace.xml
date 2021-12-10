@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
+    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/instituteBelongTo_author.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/stats/authorRelaitionship.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/stats/authorRelaitionship.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/researchDetailItem.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/researchDetailItem.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/identification.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/identification.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +63,7 @@
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -90,6 +93,7 @@
       <workItem from="1638714085114" duration="609000" />
       <workItem from="1638748914441" duration="25385000" />
       <workItem from="1638838482149" duration="95000" />
+      <workItem from="1639101041542" duration="464000" />
     </task>
     <servers />
   </component>

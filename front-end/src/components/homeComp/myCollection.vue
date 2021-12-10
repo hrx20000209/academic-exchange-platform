@@ -19,6 +19,9 @@
           </div>
         </el-collapse-item>
       </el-collapse>
+      <div v-if="CollectionList.length == 0">
+        <el-empty description="你还没有收藏夹噢，新建一个试试吧"></el-empty>
+      </div>
       <!--      <div id="empty"></div>-->
       <div id="bottomButton">
         <div id="twoButton">
@@ -33,7 +36,7 @@
         <div class="DetailInfo">新建一个收藏夹，使你感兴趣的文献井井有序</div>
         <div class="introInfo">收藏夹的名字</div>
         <div class="myInput">
-          <el-input autocomplete="off" type="textarea" rows="1"></el-input>
+          <el-input autocomplete="off" type="textarea" rows="1" v-model="newName"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -63,14 +66,16 @@
         </div>
       </div>
     </el-dialog>
-<el-dialog title="移动文献" :visible.sync="move" class="infoDialog">
+    <el-dialog title="移动文献" :visible.sync="move" class="infoDialog">
       <div class="dialogMainPane">
         <div class="DetailInfo">将文献移动到另一个更合适的收藏夹中</div>
         <div class="introInfo">选择目标收藏夹</div>
         <div id="single">
-           <el-radio-group v-model="radio">
-    <el-radio v-for="(item,index) in CollectionList" :label=index :key=index class="singleRadio">{{item.name}}</el-radio>
-  </el-radio-group>
+          <el-radio-group v-model="radio">
+            <el-radio v-for="(item,index) in CollectionList" :label=index :key=index class="singleRadio">
+              {{ item.name }}
+            </el-radio>
+          </el-radio-group>
         </div>
 
       </div>
@@ -85,6 +90,8 @@
 </template>
 
 <script>
+import {uploadNewFavo} from "../../request/api";
+
 export default {
   name: "myCollection",
   props: ['user', 'CollectionList'],
@@ -95,8 +102,9 @@ export default {
       deleteCollection: false,
       checkList: [],
       move: false,
-      curMovePaperId:'',
-      radio:''
+      curMovePaperId: '',
+      radio: '',
+      newName: ''
     };
   },
   methods: {
@@ -106,7 +114,7 @@ export default {
     deletefav() {
       this.deleteCollection = true;
     },
-    movePaper(id){
+    movePaper(id) {
       this.move = true;
       this.curMovePaperId = id
     },
@@ -114,7 +122,15 @@ export default {
       this.create = false;
     },
     createConfirm() {
-      this.create = false;
+      console.log(this.newName)
+      uploadNewFavo({
+        user_id: localStorage.getItem('user_id'),
+        favorite_name: this.newName
+      }).then(res => {
+        console.log(res)
+        // this.$router.go(0)
+        this.create = false;
+      })
     },
     deleteColCancel() {
       this.deleteCollection = false;
@@ -136,7 +152,7 @@ export default {
 #myCollection {
   margin-top: 20px;
   background-color: white;
-box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding-bottom: 10px;
   border-radius: 2px;
   width: 900px;
@@ -147,11 +163,11 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding: 10px;
   margin-left: 10px;
   justify-content: flex-start;
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
 }
 
 #multi {
@@ -165,7 +181,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #collectionTitle {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   color: black;
   font-weight: bold;
 }
@@ -177,7 +193,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 
 .paperName {
   margin-left: 20px;
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 18px;
   width: 500px;
@@ -223,11 +239,10 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .threeButton button {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   display: inline;
   /*background-color: transparent;*/
   /*background-color: #1f86fd;*/
-  font-family: "siyuan";
   font-weight: bold;
   /*color: #ffffff;*/
   font-size: 16px;
@@ -274,13 +289,13 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #twoButton button {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   display: inline;
   /*background-color: transparent;*/
   /*background-color: #1f86fd;*/
   /*color: #ffffff;*/
-  font-size: 17px;
+  font-size: 15px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -295,13 +310,21 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 
 #addNew {
   background-color: #d2ecff;
-  color: blue;
+  color: #151515;
+}
+
+#addNew:hover {
+  background-color: #adc5ea;
 }
 
 #deleCollection {
   border: 1px solid red;
   background-color: #ffe6e6;
-  color: red;
+  color: #920000;
+}
+
+#deleCollection:hover {
+  background-color: #d9bcbc;
 }
 
 .infoDialog {
@@ -316,7 +339,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .dialogInfo {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 18px;
   color: black;
@@ -333,10 +356,9 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .confirm {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   display: inline;
-  background-color: transparent;
   background-color: #0080ff;
   color: #ffffff;
   font-size: 18px;
@@ -354,8 +376,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .introInfo {
-  font-family: "siyuan";
-  font-weight: bold;
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 17px;
   margin-top: 20px;
@@ -363,7 +384,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .cancel {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   display: inline;
   background-color: transparent;
@@ -379,10 +400,12 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 .cancel:hover {
   background-color: whitesmoke;
 }
-#single{
+
+#single {
   margin-top: 10px;
 }
-.singleRadio{
+
+.singleRadio {
   display: block;
   margin-top: 5px;
 }

@@ -286,8 +286,9 @@ export default {
         if(this.user.orgs.length>3){
           this.user.orgs = this.user.orgs.slice(0,3)
         }
-        console.log(this.user)
+        console.log('this.user')
         this.research = this.ELres.pubs;
+        console.log(this.research)
       })
     },
     editSympleInfo() {
@@ -625,13 +626,15 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding: 20px;
+  background-color: whitesmoke;
+  margin-top: 20px;
 }
 
 #researchItem {
   background-color: white;
   border: 1px solid #dedede;
   width: 875px;
-  margin-top: 30px;
   border-radius: 1px;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
