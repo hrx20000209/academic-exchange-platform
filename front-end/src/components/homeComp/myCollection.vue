@@ -13,10 +13,8 @@
             <div class="paperName" @click="toPaper(paper.id)">{{ paper.paper_name }}</div>
             <div class="threeButton" v-if="editMode == true">
               <button class="delete">移出收藏夹</button>
-              <button class="move" @click="movePaper(paper.paper_id)">移动到</button>
+              <button class="move" @click="movePaper(paper.paper_id,index,i)">移动到</button>
             </div>
-
-
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -91,7 +89,7 @@
 </template>
 
 <script>
-import {uploadNewFavo} from "../../request/api";
+import {deleFavo, moveFavo, uploadNewFavo} from "../../request/api";
 
 export default {
   name: "myCollection",
@@ -116,10 +114,23 @@ export default {
     },
     deletefav() {
       this.deleteCollection = true;
+      for(var i=0;i<this.checkList.length;i++){
+        deleFavo({
+          user_id:localStorage.getItem('user_id'),
+          favorite_name:this.checkList[i].toString()
+      }).then(res=>{
+        console.log(res)
+          this.deleteCollection = false;
+        })
+      }
+
     },
-    movePaper(id) {
+    movePaper(id,pre,pos) {
       this.move = true;
       this.curMovePaperId = id
+      moveFavo({
+        
+      })
     },
     createCancel() {
       this.create = false;
@@ -139,7 +150,7 @@ export default {
       this.deleteCollection = false;
     },
     deleteColConfirm() {
-      this.deleteCollection = false;
+      this.deletefav()
     },
     moveCancel() {
       this.move = false;

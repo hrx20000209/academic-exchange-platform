@@ -9,9 +9,9 @@
           </div>
         </div>
         <div id="middleDetail">
-          <div id="usrName">{{ this.user.name }}</div>
+          <div id="usrName">{{ titleCase2(this.user.name) }}</div>
           <div id="editInfoRow">
-            <div id="usrDegree">{{ this.user.orgs[0].name }}</div>
+            <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
             <!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
@@ -33,8 +33,8 @@
           <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
           <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
           <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-<!--          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>-->
-<!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>-->
+          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
@@ -52,17 +52,17 @@
               <!--            <author-card :user="user"></author-card>-->
               <!--            <about-me_author :user="user"></about-me_author>-->
               <stats-overview :user="user"></stats-overview>
-<!--              <div id="researchLine">-->
-<!--                <div id="researchInfo">研究项目</div>-->
-<!--                <el-divider></el-divider>-->
-<!--              </div>-->
-<!--              <research-overview></research-overview>-->
+              <!--              <div id="researchLine">-->
+              <!--                <div id="researchInfo">研究项目</div>-->
+              <!--                <el-divider></el-divider>-->
+              <!--              </div>-->
+              <!--              <research-overview></research-overview>-->
             </div>
           </div>
           <div id="rightMainPane">
             <div v-if="activeMode ==1">
               <institute-belong-to_author :user="user"></institute-belong-to_author>
-<!--              <follow-same-author></follow-same-author>-->
+              <!--              <follow-same-author></follow-same-author>-->
             </div>
           </div>
         </div>
@@ -74,33 +74,33 @@
             <cooperator-pie-chart></cooperator-pie-chart>
           </div>
 
-          <author-relationship ></author-relationship>
+          <author-relationship></author-relationship>
 
         </div>
 
-<!--        <div id="researchPane">-->
-<!--          <div id="researchItem">-->
-<!--            <research-detail-item v-for="(item, index) in research" :key='index'-->
-<!--                                  :research='item'></research-detail-item>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--        <div id="researchPane">-->
+        <!--          <div id="researchItem">-->
+        <!--            <research-detail-item v-for="(item, index) in research" :key='index'-->
+        <!--                                  :research='item'></research-detail-item>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
       <div v-else-if="activeMode == 2" class="mainPane">
-                <div id="researchPane">
-                  <div id="researchItem">
-                    <research-detail-item v-for="(item, index) in research" :key='index'
-                                          :research='item'></research-detail-item>
-                  </div>
-                  <el-pagination
-                    :total="cutTotal"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
-      :page-size="10"
-      layout="total, prev, pager, next, jumper"
-      >
-    </el-pagination>
-                </div>
+        <div id="researchPane">
+          <div id="researchItem">
+            <research-detail-item v-for="(item, index) in research" :key='index'
+                                  :research='item'></research-detail-item>
+          </div>
+          <el-pagination
+            :total="cutTotal"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage3"
+            :page-size="10"
+            layout="total, prev, pager, next, jumper"
+          >
+          </el-pagination>
+        </div>
       </div>
       <div v-else-if="activeMode == 4" class="mainPane">
 
@@ -203,8 +203,9 @@ export default {
   },
   data() {
     return {
-      cutTotal:0,
-      currentPage3: 5,
+      cutTotal: 0,
+      currentPage3: 1,
+      oriResearch: [],
       id: "7F5944CA",
       datas: [],
       linkmes: [],
@@ -289,38 +290,53 @@ export default {
     // this.getdataSource(this.id)
   },
   methods: {
+    titleCase2(s) {
+      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+        //return word.slice(0, 1).toUpperCase() + word.slice(1);
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+      });
+    },
     getAuthorInfo(id) {
       console.log('this.id')
       ESApi.getAuthorInfo(id).then(response => {
         console.log(response);
         this.ELres = response.data.hits.hits[0]._source;
         this.user = this.ELres;
-        if(this.user.orgs.length>3){
-          this.user.orgs = this.user.orgs.slice(0,3)
+        if (this.user.orgs.length > 3) {
+          this.user.orgs = this.user.orgs.slice(0, 3)
         }
         console.log('this.user')
 
       })
     },
-    getAuthorsPaper(id){
-      ESApi.getAuthorPaper(id).then(res=>{
+    getAuthorsPaper(id) {
+      ESApi.getAuthorPaper(id).then(res => {
         console.log('ssss')
         console.log(res)
-        // this.research = this.ELres.pubs.slice(0,10);
-        // this.cutTotal = this.ELres.pubs.length
-        // console.log(this.research)
+        this.oriResearch = res.data.hits.hits
+        for(var i=0;i<this.oriResearch.length;i++){
+          // console.log(this.research[i]._source.authors)
+          if(this.oriResearch[i]._source.authors.length>4){
+            console.log('22323')
+            this.oriResearch[i]._source.authors = this.oriResearch[i]._source.authors.slice(0,4)
+          }
+        }
+        this.research = this.oriResearch.slice(0, 10);
+        console.log(this.research.length)
+        this.cutTotal = this.oriResearch.length
+        console.log(this.research)
       })
     },
     editSympleInfo() {
       this.dialogFormVisible = true
     },
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-        this.research = this.ELres.pubs.slice((val-1)*10,val*10)
-      },
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.research = this.oriResearch.slice((val - 1) * 10, val * 10)
+    },
     selectActiveMode(flag) {
       if (flag == 1) {
         this.activeMode = 1;
@@ -615,9 +631,11 @@ export default {
 #OnePane {
   display: block;
 }
-#topOnePane{
+
+#topOnePane {
   display: flex;
 }
+
 #leftMainPane {
   display: flex;
 }
@@ -655,7 +673,7 @@ export default {
   justify-content: center;
   padding: 20px;
   /*background-color: whitesmoke;*/
-  margin-top: 20px;
+  margin-top: 30px;
   background-color: white;
   border: 1px solid #dedede;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
@@ -666,7 +684,7 @@ export default {
 
   width: 875px;
   border-radius: 1px;
-
+  margin-bottom: 20px;
 }
 
 #statsMainPane {
@@ -690,13 +708,14 @@ export default {
   text-align: right;
   margin-top: 5%;
 }
+
 /deep/ .el-pagination {
-    white-space: nowrap;
-    padding: 2px 5px;
-    color: #303133;
-    width: fit-content;
-    font-weight: 700;
-    margin-right: auto;
-    margin-left: auto;
+  white-space: nowrap;
+  padding: 2px 5px;
+  color: #303133;
+  width: fit-content;
+  font-weight: 700;
+  margin-right: auto;
+  margin-left: auto;
 }
 </style>

@@ -9,7 +9,7 @@
     </div>
     <div id="mainPane">
        <div id="someIns" v-for="(item,index) in user.orgs" :key='index'>
-          <div id="insName" >{{ item.name }}</div>
+          <div id="insName" >{{ titleCase2(item.name) }}</div>
           <div id="intoButton">
             <el-button size="mini" plain @click="toAffli(item.id)">查看</el-button>
           </div>
@@ -95,6 +95,12 @@ export default {
     }
   },
   methods: {
+    titleCase2(s) {
+      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+        //return word.slice(0, 1).toUpperCase() + word.slice(1);
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+      });
+    },
     showDialog() {
       this.instituteDialog = true;
     },
