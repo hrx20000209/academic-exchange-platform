@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-container style="display: flex; justify-content: center; flex-direction: column">
-            <el-main class="MainArea">
-                <el-col style="margin-top: -20px">
+        <div style="display: flex; justify-content: center; flex-direction: column; ">
+            <div class="MainArea">
+                <div style="margin-top: -20px">
                 <div>
-                    <el-row style="margin-top: -20px">
+                    <div style="margin-top: -20px">
                         <div class="sky">
                             <div>
                               <Nav_with_searchBox_transparent></Nav_with_searchBox_transparent>
@@ -38,18 +38,94 @@
                                 </el-row>
                             </div>
                         </div>
-                    </el-row>
-                    <el-row>
-                        <el-col :offset=0 :span=24 style="margin-left: 0px">
-                            <el-row class="welcome">
+                    </div>
+                    <div>
+                        <div style="display: flex; flex-direction: column">
+                            <div style="display: flex; justify-content: center">
+                              <div class="welcome">
                                 浏览最新，最热的文章和最受欢迎的作者
-                            </el-row>
-                            <el-row>
+                              </div>
+                            </div>
+                            <div style="display: flex; justify-content: center">
+                              <div style="display:flex; justify-content:center;background-color: #FFF; width: 1000px; margin-top: 20px;">
+                                <div style="background-color: #FFF; width: 900px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
-                                  <el-tab-pane label="最新文章" name="first">用户管理</el-tab-pane>
-                                  <el-tab-pane label="最热文章" name="second">配置管理</el-tab-pane>
-                                  <el-tab-pane label="最受欢迎作者" name="third">角色管理</el-tab-pane>
+                                  <el-tab-pane label="最热文章" name="first">
+                                    <div style="margin-left: -20px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
+                                      <div v-for="(item, index) in this.engine_popular" :key="index"
+                                         style="width:850px;display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                      <div style="
+                                        width: 20px;
+                                        display: flex;
+                                        justify-content: center;margin-right: 10px">
+                                          <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
+                                      </div>
+                                      <div style="flex-direction: column; width:800px">
+                                        <div style="width: 800px; display: flex; justify-content: space-between">
+                                          <div style="width: 700px">
+                                            <el-link style="font-family: Georgia; font-size: 16px" :underline="false">
+                                              {{item['title']}}
+                                            </el-link>
+                                          </div>
+                                          <div style="display: flex; justify-content: end">
+                                          <div style="font-size: 10px">
+                                            <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
+                                          </div>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; justify-content: center">
+                                          <el-progress :show-text="false" :percentage="getPercentage(item['cites'])"></el-progress>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
+                                  </el-tab-pane>
+                                  <el-tab-pane label="最新文章" name="second">
+                                    <div style="margin-left: -10px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
+                                      <div v-for="(item, index) in this.engine_latest" :key="index"
+                                         style="display: flex; justify-content: space-between; margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                      <div style="width:780px; display: flex; ">
+                                        <div style="
+                                        width: 20px;
+                                        display: flex;
+                                        justify-content: center;margin-right: 10px">
+                                          <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
+                                        </div>
+                                        <div style="width: 700px">
+                                          <el-link :underline="false">
+                                            {{item['title']}}
+                                          </el-link>
+                                        </div>
+                                      </div>
+                                      <div style="display: flex; flex-direction: column; justify-content: center">
+                                        <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
+                                          {{item['year']}}年
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
+                                  </el-tab-pane>
+                                  <el-tab-pane label="最受欢迎作者" name="third">
+                                    <div style="margin-top: 15px">
+                                      <div style="margin-bottom:10px;display: flex; justify-content: space-around" v-for="(row, index0) in this.authors" :key="index0">
+                                      <el-tooltip v-for="(item, index) in row" :key="index"
+                                         style="
+                                         margin-bottom: 20px;
+                                         width: 150px;
+                                         box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                        <div slot="content">姓名：{{item.name}}<br/>被引次数：{{item.cites}}</div>
+                                        <div style="display: flex; flex-direction: column; align-items: center" @click="jump2authors(item.id)">
+                                          <el-avatar :src="pic[index0*rowPic+index]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+                                          <div style="text-align: center; margin-top: 5px; margin-bottom: 5px; color: #A4A4A4">
+                                            {{shortName(item.name)}}
+                                          </div>
+                                        </div>
+                                    </el-tooltip>
+                                    </div>
+                                    </div>
+                                  </el-tab-pane>
                                 </el-tabs>
+                                </div>
                                     <!--<div style="margin-top: 30px; display: flex;justify-content: space-around">
                                         <div style="width: 150px; display: flex; flex-direction: column">
                                             <div class="titleFont">最受欢迎作者</div>
@@ -125,51 +201,35 @@
                                             </div>
                                         </div>
                                     </div>-->
-                            </el-row>
-                        </el-col>
-                    </el-row>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </el-col>
-            </el-main>
-        </el-container>
+                </div>
+            </div>
+        </div>
         <!--<el-button @click="test">test</el-button>-->
         <!--<el-image :src="pic[0]"></el-image>-->
     </div>
 </template>
 
 <script>
-  import Vue from "vue";
-  import VueScrollTo from "vue-scrollto";
   import ESApi from '../api/elastic search'
   import Nav_with_searchBox_transparent from "../components/nav_with_searchBox_transparent";
   import Api from '../api/mysql'
-
-  Vue.use(VueScrollTo, options);
-
-
-    let options = {
-      container: "body", //滚动的容器
-      duration: 500, //滚动时间
-      easing: "ease", //缓动类型
-      offset: 0, //滚动时应应用的偏移量。此选项接受回调函数
-      force: true, //是否应执行滚动
-      cancelable: true,
-      onStart: false,
-      onDone: false,
-      onCancel: false,
-      x: false,
-      y: true
-    }
 
     export default {
         name: "homepage",
         components: {Nav_with_searchBox_transparent},
         data(){
             return {
-                activeName: 'second',
+                activeName: 'first',
                 pic:[],
+                rowPic: 5,
                 maxCites:0,
-                maxLen:20,
+                maxLen:100,
+                maxNameLen:10,
                 active:0,
                 keywords: '',
                 author: '',
@@ -250,6 +310,8 @@
                 ESApi.getPopularAuthor().then(
                   res =>{
                     // console.log(res.data.hits.hits)
+                    let row = []
+                    let j = 0
                     let papers = res.data.hits.hits
                     for (let i=0; i<papers.length; i++) {
                       let item = papers[i]._source
@@ -260,18 +322,33 @@
                       temp['id'] = item.id
                       temp['pic'] = that.getName(item.name, item.id)
 
-                      Api.getRealPic('1').then(
+                      Api.getRealPic(item.id).then(
                       res => {
                         const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
                         this.pic.push(imgUrl)
                       }
                     )
-                      that.authors.push(temp)
+                      row.push(temp)
+                      j++
+                      if (j === this.rowPic){
+                        that.authors.push(row)
+                        row = []
+                        j = 0
+                      }
+                      //that.authors.push(temp)
                     }
                     console.log('authorlist', this.authors)
 
                   }
                 )
+            },
+            shortName(name) {
+              let res
+              if (name.length>this.maxNameLen)
+                res = name.slice(0, this.maxNameLen) + '...'
+              else
+                res = name
+              return res
             },
             getName(name, id) {
               //TODO: input id output pic or bool
@@ -294,7 +371,7 @@
 
 <style scoped>
 .MainArea{
-    background-color: #fff;
+    background-color: #f2f4f7;
     width: 100%;
     min-height: 1000px;
 }
@@ -313,11 +390,11 @@
 .sky {
     background-image: url(../assets/background.png);
     height: 600px;
-    width: 105%;
+    width: 100%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 50%;
-    margin-left: -20px;
+    // margin-left: -24px;
     margin-top: 20px;
     z-index: 0;
 }
@@ -350,6 +427,7 @@
     font-size: 26px;
     color:#505050;
     margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .titleFont{
@@ -399,4 +477,6 @@
   background-image: linear-gradient(to bottom right, goldenrod, #996633);
   text-align: center
 }
+
+.el-scrollbar__wrap { overflow-x: hidden; }
 </style>
