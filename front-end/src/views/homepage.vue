@@ -477,6 +477,28 @@
   background-image: linear-gradient(to bottom right, goldenrod, #996633);
   text-align: center
 }
-
+/deep/ .el-tabs__item {
+    padding: 0 20px;
+    height: 40px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 40px;
+    display: inline-block;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(153 153 153);
+    position: relative;
+}
+/deep/ .el-tabs__item:hover {
+    color: rgb(38 38 38);
+    cursor: pointer;
+}
+/deep/ .el-tabs__item.is-active {
+    color: rgb(38 38 38);
+}
+/deep/ .el-tabs__active-bar {
+  background-color: black;
+}
 .el-scrollbar__wrap { overflow-x: hidden; }
 </style>

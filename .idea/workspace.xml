@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/api/elastic search.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/elastic search.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/homepage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/homepage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,6 +94,7 @@
       <workItem from="1639041646016" duration="2852000" />
       <workItem from="1639056438426" duration="5066000" />
       <workItem from="1639100886254" duration="2585000" />
+      <workItem from="1639114974528" duration="1078000" />
     </task>
     <servers />
   </component>
@@ -118,5 +118,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1639101642995" />
+    <state x="219" y="-1" width="840" height="1034" key="search.everywhere.popup" timestamp="1639121672672">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="219" y="-1" width="840" height="1034" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1639121672672" />
   </component>
 </project>
