@@ -17,7 +17,8 @@ export const uploadNewFavo = param => post('/user/AddFavorite',param)
 export const getdata = user_id => get('/relationshipMap',user_id)
 export const getPieData = user_id => get('/cooperateAuthor',user_id)
 export const changeUserPassword = params => post('/changePassword',params)
-export const getFavo = user_id => get('/user/get_all_favo',user_id)
+export const getFavo = user_id => get('/user/get_all_favo',user_id)/AdminLogin
+export const adminLogin = params => get('/AdminLogin', params)
 
 export const deleFavo = user_id => post('/user/DeleteFavorite',user_id)
 export const moveFavo = user_id => post('/user/move_paper',user_id)

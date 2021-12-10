@@ -37,7 +37,7 @@
       <div class="step-box">
         <el-steps :active="step" finish-status="success">
           <el-step title="第一步 用户填写信息" description="请按照实际情况填写信息"></el-step>
-          <el-step title="第二步 用户提交申请" description="点击提交按钮提交申请"></el-step>
+          <el-step title="第二步 搜索门户" description="点击搜索按钮获取"></el-step>
           <el-step title="第三步 管理员审核用户申请" description="您的认证申请正在审核，请耐心等待"></el-step>
           <el-step title="第四步 审核完成" description="用户查看申请结果"></el-step>
         </el-steps>
