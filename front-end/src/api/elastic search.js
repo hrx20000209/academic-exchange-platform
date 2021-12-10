@@ -55,7 +55,7 @@ const ESApi = {
   },
   getPopularAuthor: async () =>{
     let url = 'http://119.3.223.135:9200/csauthor/_search?source_content_type=application/json&source=' +
-      '{"query":{"match_all": {}}, "sort":[{"n_citation":"desc"}], "size": 10}'
+      '{"query":{"match_all": {}}, "sort":[{"n_citation":"desc"}], "size": 15}'
     const res = await axios({
       url: url
     })
