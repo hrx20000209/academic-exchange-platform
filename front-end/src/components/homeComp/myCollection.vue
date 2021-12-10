@@ -129,7 +129,7 @@ export default {
       this.move = true;
       this.curMovePaperId = id
       moveFavo({
-        
+
       })
     },
     createCancel() {

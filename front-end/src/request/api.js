@@ -21,3 +21,6 @@ export const getFavo = user_id => get('/user/get_all_favo',user_id)
 
 export const deleFavo = user_id => post('/user/DeleteFavorite',user_id)
 export const moveFavo = user_id => post('/user/move_paper',user_id)
+export const followAuthor = user_id => post('/user/FollowAuthor',user_id)
+export const checkIfFollow = user_id => get('/user/CheckFollow',user_id)
+export const undoFollow = user_id => get('/user/CancelFollow',user_id)

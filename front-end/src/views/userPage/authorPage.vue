@@ -21,7 +21,8 @@
             <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
           </div>
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus">关注</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" v-if="ifFollow == false" @click="follow">关注</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" v-else @click="unfollow">已关注</el-button>
           </div>
         </div>
       </div>
@@ -179,7 +180,7 @@ import InstituteBelongTo_author from "../../components/instituteBelongTo_author"
 import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
 import ESApi from "../../api/elastic search"
-import {getdata} from "../../request/api";
+import {checkIfFollow, followAuthor, getdata, undoFollow} from "../../request/api";
 
 export default {
   name: "authorPage",
@@ -203,6 +204,7 @@ export default {
   },
   data() {
     return {
+      ifFollow:false,
       cutTotal: 0,
       currentPage3: 1,
       oriResearch: [],
@@ -287,9 +289,40 @@ export default {
     this.id = this.$route.query.id
     this.getAuthorInfo(this.id)
     this.getAuthorsPaper(this.id)
+    this.checkFollow()
     // this.getdataSource(this.id)
   },
   methods: {
+    follow(){
+      if(localStorage.getItem('user_id')){
+        followAuthor({
+        follow_id:this.$route.query.id,
+          follower_id:localStorage.getItem('user_id')
+      }).then(res=>{
+        console.log(res)
+        })
+      }
+    },
+    checkFollow(){
+      if(localStorage.getItem('user_id')){
+        checkIfFollow({
+        follow_id:this.$route.query.id,
+          follower_id:localStorage.getItem('user_id')
+      }).then(res=>{
+        console.log(res)
+        })
+      }
+    },
+    unfollow(){
+      if(localStorage.getItem('user_id')){
+        undoFollow({
+        follow_id:this.$route.query.id,
+          follower_id:localStorage.getItem('user_id')
+      }).then(res=>{
+        console.log(res)
+        })
+      }
+    },
     titleCase2(s) {
       return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
         //return word.slice(0, 1).toUpperCase() + word.slice(1);
