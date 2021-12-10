@@ -418,7 +418,7 @@ export default {
     },
     getFavo() {
       getFavo({
-        user_id: this.user.user_id
+        user_id: localStorage.getItem('user_id')
       }).then(res => {
         console.log(res)
         this.collectionList = res.favorites

@@ -2,15 +2,16 @@
   <div id="myCollection">
     <div id="topHead">
       <div id="leftCharacter">我的收藏</div>
+      <button class="rightButton" v-if="editMode == false" id="beginEdit" @click="toEdit">整理</button>
+      <button class="rightButton" v-else id="endEdit" @click="endEdit">完成</button>
     </div>
     <div id="mainPane">
       <el-collapse v-model="activeName" accordion>
         <el-collapse-item v-for="(item,index) in CollectionList" :key=index :title=item.name :name=index
                           id="collectionTitle">
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
-            <div class="paperName">{{ paper.paper_name }}</div>
-            <div class="threeButton">
-              <button class="gotoPaper">查看文献</button>
+            <div class="paperName" @click="toPaper(paper.id)">{{ paper.paper_name }}</div>
+            <div class="threeButton" v-if="editMode == true">
               <button class="delete">移出收藏夹</button>
               <button class="move" @click="movePaper(paper.paper_id)">移动到</button>
             </div>
@@ -24,7 +25,7 @@
       </div>
       <!--      <div id="empty"></div>-->
       <div id="bottomButton">
-        <div id="twoButton">
+        <div id="twoButton" v-if="editMode == true">
           <button id="addNew" @click="createCollection">新建收藏夹</button>
           <button id="deleCollection" @click="deletefav">删除收藏夹</button>
         </div>
@@ -104,10 +105,12 @@ export default {
       move: false,
       curMovePaperId: '',
       radio: '',
-      newName: ''
+      newName: '',
+      editMode:false
     };
   },
   methods: {
+    toPaper(id){},
     createCollection() {
       this.create = true;
     },
@@ -144,6 +147,12 @@ export default {
     moveConfirm() {
       this.move = false;
     },
+    toEdit(){
+      this.editMode = true
+    },
+    endEdit(){
+      this.editMode = false
+    }
   }
 }
 </script>
@@ -179,11 +188,33 @@ export default {
   justify-content: flex-start;
   /*border-bottom: 1px solid #dedede;*/
 }
-
+/deep/[data-v-d25ff02a] .el-collapse-item__header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 48px;
+    line-height: 48px;
+    background-color: #FFF;
+    color: black;
+    cursor: pointer;
+    border-bottom: 1px solid #EBEEF5;
+    font-size: 16px;
+    font-weight: bold;
+    /* font-weight: 500; */
+    font-family: "Roboto", Arial, sans-serif;
+    padding-left: 20px;
+    -webkit-transition: border-bottom-color .3s;
+    transition: border-bottom-color .3s;
+    outline: 0;
+}
 #collectionTitle {
   font-family: "Roboto", Arial, sans-serif;
   color: black;
   font-weight: bold;
+  font-size: 17px;
 }
 
 .eachFav {
@@ -192,13 +223,16 @@ export default {
 }
 
 .paperName {
-  margin-left: 20px;
-  font-family: "Roboto", Arial, sans-serif;
-  font-weight: bold;
-  font-size: 18px;
-  width: 500px;
+    margin-left: 10px;
+    color: #010101;
+    font-family: "Roboto", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
 }
-
+.paperName:hover{
+  cursor: pointer;
+  color: #005abb;
+}
 .threeButton {
   margin-left: auto;
   margin-right: 20px;
@@ -233,25 +267,30 @@ export default {
 }
 
 .eachPaper {
-  display: flex;
-  padding: 10px;
-  border-bottom: 1px whitesmoke solid;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-bottom: 1px #e8e8e8 solid;
+    height: 30px;
 }
 
 .threeButton button {
-  font-family: "Roboto", Arial, sans-serif;
-  display: inline;
-  /*background-color: transparent;*/
-  /*background-color: #1f86fd;*/
-  font-weight: bold;
-  /*color: #ffffff;*/
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 3px;
-  text-align: center;
-  margin-left: 5px;
-  padding: 5px;
-  border: none;
+    font-family: "Roboto", Arial, sans-serif;
+    display: inline;
+    /* background-color: transparent; */
+    /* background-color: #1f86fd; */
+    font-weight: 600;
+    /* color: #ffffff; */
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    margin-left: 15px;
+    /* padding: 3px 10px 3px 10px; */
+    border: none;
 }
 
 .threeButton button:hover {
@@ -264,14 +303,13 @@ export default {
 }
 
 .delete {
-  border: 1px solid red;
-  background-color: #ffe6e6;
-  color: red;
+  background-color: transparent;
+  color: #e13939;
 }
 
 .move {
-  background-color: #cffffa;
-  color: green;
+  background-color: transparent;
+  color: #458957;
 }
 
 #bottomButton {
@@ -408,5 +446,25 @@ export default {
 .singleRadio {
   display: block;
   margin-top: 5px;
+}
+.rightButton{
+    font-family: "Roboto", Arial, sans-serif;
+  display: inline;
+  color: #525252;
+  border: none;
+  /*background-color: transparent;*/
+  /*background-color: #1f86fd;*/
+  /*color: #ffffff;*/
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 20px;
+  background-color: transparent;
+
+}
+.rightButton:hover{
+  color: black;
 }
 </style>

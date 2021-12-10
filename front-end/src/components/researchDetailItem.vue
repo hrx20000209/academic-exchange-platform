@@ -2,48 +2,55 @@
   <div id="researchItemDetail">
     <div style="display: flex">
       <div id="leftPane">
-      <div id="title">
+      <div id="title" @click="toPaper(research.id)">
         {{ research.title }}
       </div>
-<!--      <div id="someInfo">-->
-<!--        <div id="articleInfo">-->
-<!--          {{ research.type }}-->
-<!--        </div>-->
-<!--        <div v-if="research.hasFull == true" id="hasFullText">全文阅读</div>-->
-<!--        <div id="time">-->
-<!--          {{ research.publishDate }}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div id="authorInfo">-->
-<!--        <div class="authorName" v-for="(item,index) in research.Author" :key="index">-->
-<!--          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>-->
-<!--          <div class="authorNameInfo">{{ item.name }}</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div id="abstract">{{research.abstract}}</div>-->
+      <div id="someInfo">
+        <div id="articleInfo">
+          {{ research.type }}
+        </div>
+        <div v-if="research.hasFull == true" id="hasFullText">全文阅读</div>
+        <div id="time">
+          {{ research.publishDate }}
+        </div>
+      </div>
+      <div id="authorInfo">
+        <div class="authorName" v-for="(item,index) in research.Author" :key="index">
+          <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+          <div class="authorNameInfo">{{ item.name }}</div>
+        </div>
+      </div>
+      <div id="abstract">{{research.abstract}}</div>
     </div>
-<!--    <div id="rightPane" v-if="research.hasFull == true">-->
-<!--      <i class="el-icon-tickets"></i>-->
-<!--    </div>-->
+    <div id="rightPane" v-if="research.hasFull == true">
+      <i class="el-icon-tickets"></i>
     </div>
-<!--    <div id="bottomPane">-->
-<!--        <div id="leftBottom">-->
-<!--          <div v-if="research.hasFull == true" class="myButton">下载</div>-->
-<!--          <div v-else class="myButton">申请获得全文</div>-->
-<!--        </div>-->
-<!--        <div id="rightBottom">-->
-<!--          <div class="threeButton">推荐</div>-->
-<!--          <div class="threeButton">关注</div>-->
-<!--          <div class="threeButton">分享</div>-->
-<!--        </div>-->
-<!--      </div>-->
+    </div>
+    <div id="bottomPane">
+        <div id="leftBottom">
+          <div v-if="research.hasFull == true" class="myButton">下载</div>
+          <div v-else class="myButton">申请获得全文</div>
+        </div>
+        <div id="rightBottom">
+          <div class="threeButton">推荐</div>
+          <div class="threeButton">关注</div>
+          <div class="threeButton">分享</div>
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "researchDetailItem",
-  props:['research']
+  props:['research'],
+  methods:{
+    toPaper(id){
+      this.$router.push({
+        path:'/article/'+id+'/overviews'
+      })
+    }
+  }
 }
 </script>
 

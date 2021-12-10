@@ -91,6 +91,15 @@
                     <research-detail-item v-for="(item, index) in research" :key='index'
                                           :research='item'></research-detail-item>
                   </div>
+                  <el-pagination
+                    :total="cutTotal"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage3"
+      :page-size="10"
+      layout="total, prev, pager, next, jumper"
+      >
+    </el-pagination>
                 </div>
       </div>
       <div v-else-if="activeMode == 4" class="mainPane">
@@ -194,6 +203,8 @@ export default {
   },
   data() {
     return {
+      cutTotal:0,
+      currentPage3: 5,
       id: "7F5944CA",
       datas: [],
       linkmes: [],
@@ -274,6 +285,7 @@ export default {
     // this.id=this.$route.query.id
     this.id = this.$route.query.id
     this.getAuthorInfo(this.id)
+    this.getAuthorsPaper(this.id)
     // this.getdataSource(this.id)
   },
   methods: {
@@ -287,13 +299,28 @@ export default {
           this.user.orgs = this.user.orgs.slice(0,3)
         }
         console.log('this.user')
-        this.research = this.ELres.pubs;
-        console.log(this.research)
+
+      })
+    },
+    getAuthorsPaper(id){
+      ESApi.getAuthorPaper(id).then(res=>{
+        console.log('ssss')
+        console.log(res)
+        // this.research = this.ELres.pubs.slice(0,10);
+        // this.cutTotal = this.ELres.pubs.length
+        // console.log(this.research)
       })
     },
     editSympleInfo() {
       this.dialogFormVisible = true
     },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.research = this.ELres.pubs.slice((val-1)*10,val*10)
+      },
     selectActiveMode(flag) {
       if (flag == 1) {
         this.activeMode = 1;
@@ -623,20 +650,23 @@ export default {
 }
 
 #researchPane {
-  display: flex;
+  /*display: flex;*/
   flex-direction: row;
   justify-content: center;
   padding: 20px;
-  background-color: whitesmoke;
+  /*background-color: whitesmoke;*/
   margin-top: 20px;
+  background-color: white;
+  border: 1px solid #dedede;
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #researchItem {
   background-color: white;
-  border: 1px solid #dedede;
+
   width: 875px;
   border-radius: 1px;
-  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+
 }
 
 #statsMainPane {
@@ -659,5 +689,14 @@ export default {
 .letter-btn-box {
   text-align: right;
   margin-top: 5%;
+}
+/deep/ .el-pagination {
+    white-space: nowrap;
+    padding: 2px 5px;
+    color: #303133;
+    width: fit-content;
+    font-weight: 700;
+    margin-right: auto;
+    margin-left: auto;
 }
 </style>

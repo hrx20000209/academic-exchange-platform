@@ -7,12 +7,12 @@
       <div v-for="(item,index) in followList" :key="index">
         <div class="eachFollowAuthorPane">
           <div class="leftPic">
-            <el-avatar :size="70" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
+            <el-avatar :size="65" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
               <!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
             </el-avatar>
           </div>
           <div class="rightPart">
-            <div class="authorName">{{ item.name }}</div>
+            <div class="authorName" @click="toPage(index)">{{ item.name }}</div>
             <div class="authorData">
               <div class="pub">
                 发表:{{ item.n_pubs }}
@@ -22,9 +22,7 @@
             <div class="intro">简介:{{ item.summary }}</div>
           </div>
           <div class="rightButton">
-
-            <button class="toAuthor" @click="toPage(index)">进入门户</button>
-            <button class="cancelFollow" @click="cancelFollow(index)">取消关注</button>
+            <button class="cancelFollow" @click="cancelFollow(index)">已关注</button>
           </div>
         </div>
       </div>
@@ -74,11 +72,11 @@ export default {
   padding: 10px;
   margin-left: 10px;
   justify-content: flex-start;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
 }
 
 #topHead {
@@ -103,7 +101,7 @@ export default {
 }
 
 .authorName {
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 18px;
   color: black;
@@ -111,15 +109,15 @@ export default {
 
 .authorData {
   display: flex;
-  font-family: "Microsoft YaHei";
-  font-size: 15px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 14px;
   color: #606266;
   margin-top: 5px;
 }
 
 .intro {
-  font-family: "Microsoft YaHei";
-  font-size: 18px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 16px;
   color: #343434;
   margin-top: 6px;
 }
@@ -129,19 +127,14 @@ export default {
 }
 
 .rightButton {
-  justify-content: flex-end;
   margin-left: auto;
-  display: flex;
-  flex-direction: column;
   margin-right: 20px;
 }
 
 .toAuthor {
-  font-family: "Microsoft YaHei UI";
-  display: inline;
-  background-color: transparent;
-  background-color: #1f86fd;
   font-family: "Roboto", Arial, sans-serif;
+  display: inline;
+  background-color: #1f86fd;
   color: #ffffff;
   font-size: 17px;
   cursor: pointer;
@@ -158,24 +151,21 @@ export default {
 }
 
 .cancelFollow {
-  font-family: "Microsoft YaHei UI";
   display: inline;
-  background-color: transparent;
-  background-color: #d0d0d0;
+  background-color: #ffffff;
+  border:1px solid #005abb;
   font-family: "Roboto", Arial, sans-serif;
-  color: #5a5a5a;
-  font-size: 17px;
+  color: #0d49dc;
+  font-size: 15px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
   margin-left: 30px;
-  padding: 8px;
-  border: none;
-  margin-top: 10px;
+  padding: 4px 20px 4px 20px;
+  margin-top: 20px;
 }
 
 .cancelFollow:hover {
-  background-color: #999999;
-  color: white;
+  background-color: #eeefff;
 }
 </style>
