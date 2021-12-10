@@ -6,7 +6,7 @@
         <div class="upFrameContent">评论</div>
       </div>
       <div class="downFrame">
-        <div class="downFrameContent" v-if="item.length !== 0">
+        <div class="downFrameContent" v-if="this.items.length !== 0">
           <div v-for="item in items" :key="item.id">
             <div>
               <el-card class="card">
