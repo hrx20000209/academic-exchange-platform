@@ -8,11 +8,31 @@ const ESApi = {
     })
     return res
   },
-  getAuthor: async (name) => {
-    let url = 'http://119.3.223.135:9200/csauthor/_search?source_content_type=application/json&source={"query":{"bool":{"must":[{"match": {"name":"' + name + '"}}]}}}'
-    const res = await axios({
-      url: url
-    })
+  getAuthor: async (name, institution) => {
+    const res = await axios.post(
+      'http://119.3.223.135:9200/csauthor/_search',
+      {
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "name":  name }},
+              {
+                "nested": {
+                  "path": "orgs",
+                  "query": {
+                    "bool": {
+                      "must": [
+                        { "match": { "orgs.name": institution } }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    )
     return res
   },
   getAuthorInfo: async (id) => {
@@ -69,7 +89,7 @@ const ESApi = {
     })
     return res
   },
-    getAuthorPaper: async (id) =>{
+  getAuthorPaper: async (id) =>{
     let url = 'http://119.3.223.135:9200/cspaper/_search?source_content_type=application/json&source={"query": {"nested": {"path": "authors","query": {"bool": {"must": [{ "match": { "authors.id": "'+id+'" }}]}}}}}'
     const res = await axios({
       url: url

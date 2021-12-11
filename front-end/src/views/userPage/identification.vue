@@ -4,7 +4,7 @@
     <div class="main">
       <h2 class="title-box">认证学者申请</h2>
       <div class="description-box">
-        请按照要求如实填写以下信息，信息的真实性将影响您的认证申请能否通过。
+        请按照要求如实填写以下信息，信息的真实性将提高搜索结果的准确度。
       </div>
       <div class="form-box">
         <el-form ref="form" :model="info" :rules="rules" label-width="100px">
@@ -22,36 +22,40 @@
               @change="checkInput"
             ></el-input>
           </el-form-item>
-          <el-form-item label="邮箱" prop="email">
-            <el-input
-              v-model="info.email"
-              placeholder="邮箱是我们与您取得联系的方式，请填写您常用的邮箱"
-              @change="checkInput"
-            ></el-input>
-          </el-form-item>
           <el-form-item style="text-align: center">
-            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button type="primary" @click="search">搜索</el-button>
           </el-form-item>
         </el-form>
+      </div>
+      <div v-if="success">
+        <div class="search-result-text">
+          为您检索到以下结果：
+        </div>
+        <div class="search-result">
+          <div v-for="item in authorList" :key="item.id">
+            <author-search-result
+              :author="item"
+            />
+          </div>
+        </div>
       </div>
       <div class="step-box">
         <el-steps :active="step" finish-status="success">
           <el-step title="第一步 用户填写信息" description="请按照实际情况填写信息"></el-step>
-          <el-step title="第二步 搜索门户" description="点击搜索按钮获取"></el-step>
-          <el-step title="第三步 管理员审核用户申请" description="您的认证申请正在审核，请耐心等待"></el-step>
-          <el-step title="第四步 审核完成" description="用户查看申请结果"></el-step>
+          <el-step title="第二步 搜索门户" description="点击搜索按钮查找是否有您的门户"></el-step>
+          <el-step title="第三步 邮箱验证" description="通过邮箱验证码对您的身份进行确认"></el-step>
+          <el-step title="认证完成" description="学者门户将与您的账号绑定"></el-step>
         </el-steps>
       </div>
       <div class="bottom-box">
         <div class="result-box" v-if="step===3">
-          <el-result icon="warning" title="审核中"></el-result>
+          <el-result icon="warning" title="验证中"></el-result>
         </div>
         <div class="result-box" v-else-if="step===4">
-          <el-result icon="success" title="认证通过" v-if="success"></el-result>
-          <el-result icon="error" title="认证不通过" v-else></el-result>
+          <el-result icon="success" title="认证完成"></el-result>
         </div>
         <div class="result-box" v-else>
-          <el-result icon="info" title="未提交"></el-result>
+          <el-result icon="info" title="未认证"></el-result>
         </div>
       </div>
     </div>
@@ -59,15 +63,17 @@
 </template>
 
 <script>
-import Nav_with_searchBox from "../../components/nav_with_searchBox";
+import Nav_with_searchBox from "../../components/nav_with_searchBox"
+import ESApi from "../../api/elastic search"
+import AuthorSearchResult from "../../components/authorSearchResult";
 export default {
   name: "identification",
-  components: { Nav_with_searchBox },
+  components: {AuthorSearchResult, Nav_with_searchBox },
   data() {
     return {
       user_id:localStorage.getItem('user_id'),
       step: 1,
-      success: true,
+      success: false,
       info: {
         name: '',
         institution: '',
@@ -80,10 +86,8 @@ export default {
         institution: [
           { required: true, message: '请输入所属机构', trigger: 'blur' },
         ],
-        email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-        ],
-      }
+      },
+      authorList: []
     }
   },
   methods: {
@@ -94,7 +98,7 @@ export default {
         this.step = 0
       }
     },
-    submit() {
+    search() {
       this.$confirm('请您确认所有信息是否都已经正确填写。是否确认提交认证申请？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -111,16 +115,11 @@ export default {
             type: 'warning',
             message: '机构不能为空'
           });
-        } else if (this.info.email === '') {
-          this.$message({
-            type: 'warning',
-            message: '邮箱不能为空'
-          });
         } else {
-          this.$message({
-            type: 'success',
-            message: '提交成功!'
-          });
+          ESApi.getAuthor(this.info.name, this.info.institution).then(response => {
+            this.authorList = response.data.hits.hits
+          })
+          this.success = true
           this.step = 2
         }
       })
@@ -132,7 +131,8 @@ export default {
 <style scoped>
 .background {
   position: fixed;
-  height: 100%;
+  height: 100vh;
+  overflow-y: auto;
   width: 100%;
   background-color: #ededed;
 }
@@ -140,7 +140,8 @@ export default {
 .main {
   margin-left: 5%;
   margin-right: 5%;
-  height: 100%;
+  height: 100vh;
+  overflow-y: auto;
   background-color: white;
 }
 
@@ -180,5 +181,18 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 3%;
+  margin-bottom: 5%;
+}
+
+.search-result {
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-bottom: 5%;
+}
+
+.search-result-text {
+  margin-left: 13%;
+  margin-bottom: 2%;
 }
 </style>
