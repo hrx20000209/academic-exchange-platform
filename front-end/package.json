@@ -17,6 +17,7 @@
     "axios": "^0.24.0",
     "chokidar": "^3.0.0",
     "echarts": "^5.2.2",
+    "echarts-gl": "^2.0.8",
     "element-ui": "^2.15.6",
     "store": "^2.0.12",
     "vue": "^2.5.2",

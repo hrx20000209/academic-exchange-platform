@@ -48,21 +48,21 @@
                             </div>
                             <div style="display: flex; justify-content: center">
                               <div style="display:flex; justify-content:center;background-color: #FFF; width: 1000px; margin-top: 20px;">
-                                <div style="background-color: #FFF; width: 900px; margin-top: 15px">
+                                <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
                                   <el-tab-pane label="最热文章" name="first">
                                     <div style="margin-left: -20px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
                                       <div v-for="(item, index) in this.engine_popular" :key="index"
-                                         style="width:850px;display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                         style="display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
                                       <div style="
                                         width: 20px;
                                         display: flex;
                                         justify-content: center;margin-right: 10px">
                                           <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                       </div>
-                                      <div style="flex-direction: column; width:800px">
-                                        <div style="width: 800px; display: flex; justify-content: space-between">
-                                          <div style="width: 700px">
+                                      <div style="flex-direction: column; width:620px">
+                                        <div style="display: flex; justify-content: space-between">
+                                          <div>
                                             <el-link style="font-family: Georgia; font-size: 16px" :underline="false">
                                               {{item['title']}}
                                             </el-link>
@@ -124,83 +124,13 @@
                                     </div>
                                     </div>
                                   </el-tab-pane>
+                                  <el-tab-pane label="最强机构" name="fourth">
+                                    <div style="display: flex; justify-content: center; height: 650px">
+                                      <div style="margin-top: -50px;width: 800px; height: 600px" id="chart"></div>
+                                    </div>
+                                  </el-tab-pane>
                                 </el-tabs>
                                 </div>
-                                    <!--<div style="margin-top: 30px; display: flex;justify-content: space-around">
-                                        <div style="width: 150px; display: flex; flex-direction: column">
-                                            <div class="titleFont">最受欢迎作者</div>
-                                            <div v-for="(item, index) in this.authors" :key="index"
-                                                 @click="jump2authors(item.id)"
-                                                 style="
-                                                 display: flex;
-                                                 margin-bottom: 20px;
-                                                 align-items: center;
-                                                 flex-direction: column;
-                                                 cursor:pointer;
-                                                 box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <el-avatar v-if="true" :src="pic[index]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
-                                              <el-avatar v-if="false" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
-                                                {{item.pic}}
-                                              </el-avatar>
-                                              <div style="text-align: center; margin-top: 5px; margin-bottom: 5px; color: #A4A4A4">
-                                                {{item.name}}
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div style="width: 350px; display: flex; flex-direction: column;">
-                                            <div class="titleFont">最热文章</div>
-                                            <div v-for="(item, index) in this.engine_popular" :key="index"
-                                                 style="display: flex; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <div style="
-                                                width: 20px;
-                                                display: flex;
-                                                justify-content: center;margin-right: 10px">
-                                                  <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
-                                              </div>
-                                              <div style="flex-direction: column; width:300px">
-                                                <div style="width: 300px; display: flex; justify-content: space-between">
-                                                  <div style="width: 200px">
-                                                    <el-link :underline="false">
-                                                      {{item['title']}}
-                                                    </el-link>
-                                                  </div>
-                                                  <div style="display: flex; justify-content: end">
-                                                  <div style="font-size: 10px">
-                                                    <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
-                                                  </div>
-                                                </div>
-                                                </div>
-                                                <div style="display: flex; flex-direction: column; justify-content: center">
-                                                  <el-progress :show-text="false" :percentage="getPercentage(item['cites'])"></el-progress>
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div style="width: 350px; display: flex; flex-direction: column;">
-                                            <div class="titleFont">最新文章</div>
-                                            <div v-for="(item, index) in this.engine_latest" :key="index"
-                                                 style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <div style="width:300px; display: flex; ">
-                                                <div style="
-                                                width: 20px;
-                                                display: flex;
-                                                justify-content: center;margin-right: 10px">
-                                                  <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
-                                                </div>
-                                                <div style="width: 200px">
-                                                  <el-link :underline="false">
-                                                    {{item['title']}}
-                                                  </el-link>
-                                                </div>
-                                              </div>
-                                              <div style="display: flex; flex-direction: column; justify-content: center">
-                                                <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
-                                                  {{item['year']}}年
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
                             </div>
                             </div>
                         </div>
@@ -218,6 +148,8 @@
   import ESApi from '../api/elastic search'
   import Nav_with_searchBox_transparent from "../components/nav_with_searchBox_transparent";
   import Api from '../api/mysql'
+  const echarts = require('echarts/lib/echarts')
+  import 'echarts-gl'
 
     export default {
         name: "homepage",
@@ -225,15 +157,17 @@
         data(){
             return {
                 activeName: 'first',
+                Indata:[],
                 pic:[],
                 rowPic: 5,
                 maxCites:0,
-                maxLen:100,
+                maxLen:50,
                 maxNameLen:10,
                 active:0,
                 keywords: '',
                 author: '',
                 book: '',
+                Iname: [],
                 // imgUrl:'',
                 fixed: false,
                 beforeFixed:false,
@@ -246,6 +180,7 @@
         },
         mounted() {
             this.t()
+            this.load3D()
             // this.testImage('1')
         },
         destroyed(){
@@ -254,6 +189,111 @@
         methods:{
             handleClick(tab, event) {
               console.log(tab, event);
+            },
+            load3D(){
+              ESApi.getPopularInstitution().then(
+                res => {
+                  const Idata = res.data.hits.hits
+                  this.getIname(Idata)
+                  for (let i=0; i < Idata.length; i++) {
+                    const Ins = Idata[i]._source.year_pubs
+                    for (let y=0; y<Ins.length; y++){
+                      let temp = []
+                      temp.push(Ins[y].year)
+                      temp.push(Idata[i]._source.name)
+                      temp.push(Ins[y].cnt)
+                      this.Indata.push(temp)
+                    }
+                  }
+                  this.build3D()
+                }
+              )
+            },
+            getIname(data){
+              for (let i=0; i<data.length; i++){
+                this.Iname.push(data[i]._source.name)
+              }
+            },
+            build3D(){
+              let pie = echarts.init(document.getElementById('chart'))
+              let option = {
+                  tooltip: {},
+                  visualMap: {
+                    max: 250,
+                    inRange: {
+                      color: [
+                        '#313695',
+                        '#4575b4',
+                        '#74add1',
+                        '#abd9e9',
+                        '#e0f3f8',
+                        '#ffffbf',
+                        '#fee090',
+                        '#fdae61',
+                        '#f46d43',
+                        '#d73027',
+                        '#a50026'
+                      ]
+                    }
+                  },
+                  xAxis3D: {
+                    type: 'category',
+
+                  },
+                  yAxis3D: {
+                    type: 'category',
+                    data: this.name
+                  },
+                  zAxis3D: {
+                    type: 'value'
+                  },
+                  grid3D: {
+                    boxWidth: 200,
+                    boxDepth: 80,
+                    viewControl:{
+                      "distance": 250,
+                      // "alpha": 3.069606211544383,
+                      // "beta": 45.74964692390633,
+                    },
+                    light: {
+                      main: {
+                        intensity: 1.2
+                      },
+                      ambient: {
+                        intensity: 0.3
+                      }
+                    }
+                  },
+                  series: [
+                    {
+                      type: 'bar3D',
+                      data: this.Indata,/*.map(function (item) {
+                        return {
+                          value: [item[1], item[0], item[2]]
+                        };
+                      }),*/
+                      shading: 'color',
+                      label: {
+                        show: false,
+                        fontSize: 16,
+                        borderWidth: 1
+                      },
+                      itemStyle: {
+                        opacity: 0.8
+                      },
+                      emphasis: {
+                        label: {
+                          fontSize: 20,
+                          color: '#900'
+                        },
+                        itemStyle: {
+                          color: '#900'
+                        }
+                      }
+                    }
+                  ]
+                };
+                pie.setOption(option)
             },
             test(){
               Api.getUsrId('05B090CE').then(
@@ -389,7 +429,7 @@
 }
 .sky {
     background-image: url(../assets/background.png);
-    height: 600px;
+    height: 100vh;
     width: 100%;
     background-repeat: no-repeat;
     background-size: cover;

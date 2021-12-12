@@ -61,6 +61,13 @@ const ESApi = {
     })
     return res
   },
+  getPopularInstitution: async () =>{
+    let url = 'http://119.3.223.135:9200/csaffiliation/_search?source_content_type=application/json&source={"query":{"match_all": {}}, "sort":[{"n_pubs":"desc"}], "size": 13}'
+    const res = await axios({
+      url: url
+    })
+    return res
+  },
   getRecentPaper: async () =>{
     let url = 'http://119.3.223.135:9200/cspaper/_search?source_content_type=application/json&source=' +
       '{"query":{"match_all": {}}, "sort":[{"year":"desc"}], "size": 15}'
