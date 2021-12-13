@@ -47,7 +47,7 @@
                               </div>
                             </div>
                             <div style="display: flex; justify-content: space-around">
-                              <div style="display: flex; justify-content: center">
+                              <div style="margin-right: -40px;;display: flex; justify-content: center">
                                 <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px;">
                                 <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -64,7 +64,7 @@
                                       <div style="flex-direction: column; width:620px">
                                         <div style="display: flex; justify-content: space-between">
                                           <div>
-                                            <el-link style="font-family: Georgia; font-size: 16px" :underline="false">
+                                            <el-link @click="toOtherPaper(item['id'])" style="font-family: Georgia; font-size: 16px" :underline="false">
                                               {{item['title']}}
                                             </el-link>
                                           </div>
@@ -93,7 +93,7 @@
                                           <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                         </div>
                                         <div style="width: 500px">
-                                          <el-link :underline="false">
+                                          <el-link @click="toOtherPaper(item['id'])" :underline="false">
                                             {{item['title']}}
                                           </el-link>
                                         </div>
@@ -151,7 +151,7 @@
                                   <div style="flex-direction: column; width:190px">
                                     <div style="display: flex; justify-content: space-between">
                                       <div>
-                                        <el-link style="font-family: Georgia; font-size: 16px" :underline="false">
+                                        <el-link @click="jump2authors(item['id'])" style="font-family: Georgia; font-size: 16px" :underline="false">
                                           {{shortName(item['name'])}}
                                         </el-link>
                                       </div>
@@ -227,6 +227,7 @@
               console.log(tab, event);
             },
             load3D(){
+              const that = this
               ESApi.getPopularInstitution().then(
                 res => {
                   const Idata = res.data.hits.hits
@@ -235,22 +236,29 @@
                     const Ins = Idata[i]._source.year_pubs
                     for (let y=0; y<Ins.length; y++){
                       let temp = []
+                      let dic = {}
                       temp.push(Ins[y].year)
                       temp.push(Idata[i]._source.name)
                       temp.push(Ins[y].cnt)
-                      this.Indata.push(temp)
+                      dic['value'] = temp
+                      dic['id'] = Idata[i]._source.id
+                      this.Indata.push(dic)
                     }
                   }
-                  this.build3D()
+                  this.build3D(that)
                 }
               )
+            },
+            toOtherPaper(id){
+              let router = '/article/' + id + '/overviews'
+              this.$router.push(router)
             },
             getIname(data){
               for (let i=0; i<data.length; i++){
                 this.Iname.push(data[i]._source.name)
               }
             },
-            build3D(){
+            build3D(that){
               let pie = echarts.init(document.getElementById('chart'))
               let option = {
                   tooltip: {},
@@ -302,6 +310,7 @@
                   },
                   series: [
                     {
+                      name:'Institution',
                       type: 'bar3D',
                       data: this.Indata,/*.map(function (item) {
                         return {
@@ -330,6 +339,10 @@
                   ]
                 };
                 pie.setOption(option)
+                pie.on('click', function(params) {
+                  console.log(params.data.id)
+                  that.jump2Institution(params.data.id)
+                })
             },
             test(){
               Api.getUsrId('05B090CE').then(
@@ -421,6 +434,24 @@
                   }
                 )
             },
+            jump2authors(id){
+              console.log('author id is', id)
+              this.$router.push({
+                path: '/authorPage',
+                query: {
+                  id: id
+                }
+              })
+            },
+            jump2Institution(id){
+              console.log('author id is', id)
+              this.$router.push({
+                path: '/Institution',
+                query: {
+                  id: id
+                }
+              })
+            },
             shortName(name) {
               let res
               if (name.length>this.maxNameLen)
@@ -434,15 +465,6 @@
 
               let lastname = name.split(' ')
               return lastname[lastname.length-1]
-            },
-            jump2authors(id){
-              console.log('author id is', id)
-              this.$router.push({
-                path: '/authorPage',
-                query: {
-                  id: id
-                }
-              })
             },
         }
     }
