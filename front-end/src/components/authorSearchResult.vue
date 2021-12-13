@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { identify } from "../request/api";
+import { identify, checkAuthor } from "../request/api";
 export default {
   name: "authorSearchResult",
   props: ['author', 'user_id'],
@@ -92,7 +92,19 @@ export default {
       window.open(route.href, '_blank')
     },
     openDialog() {
-      this.dialogVisible = true
+      checkAuthor({
+        author_id: this.author._source.id
+      }).then(response => {
+        if (response.ifHaveAccount) {
+          this.$message({
+            type: 'warning',
+            message: '该门户已被认证'
+          })
+          console.log(response)
+        } else {
+          this.dialogVisible = true
+        }
+      })
     },
     confirm() {
       this.dialogVisible = false
