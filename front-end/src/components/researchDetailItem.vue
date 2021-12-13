@@ -1,7 +1,7 @@
 <template>
   <div id="researchItemDetail">
     <div id="leftPane">
-      <div id="title" @click="toPaper(research._id)">
+      <div id="title" @click="toPaper(research._source.id)">
         {{ titleCase2(research._source.title) }}
       </div>
       <div id="someInfo">
@@ -79,6 +79,9 @@ export default {
   color: black;
   font-size: 18px;
   font-weight: bold;
+}
+#title:hover{
+  cursor: pointer;
 }
 #someInfo{
   display: flex;

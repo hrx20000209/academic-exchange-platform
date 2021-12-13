@@ -5,8 +5,8 @@
       <div id="topPicAndAddButton">
         <div id="leftPic">
           <div id="leftPicDetail">
-            <el-avatar :size="85" :src=this.get_pic_url v-if="needUpdate" >
-<!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
+            <el-avatar :size="85" :src=this.get_pic_url v-if="needUpdate">
+              <!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
             </el-avatar>
           </div>
         </div>
@@ -26,7 +26,9 @@
           <!--            <el-button type="primary" icon="el-icon-circle-plus">进入认证门户</el-button>-->
           <!--          </div>-->
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">进入认证门户</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">
+              进入认证门户
+            </el-button>
             <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else>申请认证</el-button>
           </div>
         </div>
@@ -35,12 +37,12 @@
         <div id="centerSomeTabs">
           <div class="usrTabsChosen" v-if="activeMode === 1">概述</div>
           <div class="usrTabsUnChosen" v-else @click="selectActiveMode(1)">概述</div>
-<!--          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>-->
-<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>-->
-<!--          &lt;!&ndash;          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>&ndash;&gt;-->
-<!--          &lt;!&ndash;          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>&ndash;&gt;-->
-<!--          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>-->
-<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>-->
+          <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>-->
+          <!--          &lt;!&ndash;          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>&ndash;&gt;-->
+          <!--          &lt;!&ndash;          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>&ndash;&gt;-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>-->
+          <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
@@ -54,19 +56,20 @@
       <div v-if="activeMode === 1" class="mainPane">
         <div id="leftMainPane">
           <div id="editUsrInfoPane">
-            <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum" :rankindex="rankNum"></edit-usr-info>
+            <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum"
+                           :rankindex="rankNum"></edit-usr-info>
             <about-me :user="this.user"></about-me>
-<!--            <stats-overview :user="user"></stats-overview>-->
-<!--            <div id="researchLine">-->
-<!--              <div id="researchInfo">研究项目</div>-->
-<!--              <el-divider></el-divider>-->
-<!--            </div>-->
-<!--            <research-overview></research-overview>-->
+            <!--            <stats-overview :user="user"></stats-overview>-->
+            <!--            <div id="researchLine">-->
+            <!--              <div id="researchInfo">研究项目</div>-->
+            <!--              <el-divider></el-divider>-->
+            <!--            </div>-->
+            <!--            <research-overview></research-overview>-->
           </div>
         </div>
         <div id="rightMainPane">
           <div v-if="activeMode === 1">
-<!--            <institute-belong-to></institute-belong-to>-->
+            <!--            <institute-belong-to></institute-belong-to>-->
             <follow-same></follow-same>
           </div>
         </div>
@@ -122,7 +125,7 @@
                 :on-change="test"
                 :before-upload="beforeAvatarUpload"
                 :http-request="submitUpload"
-                 :show-file-list="false"
+                :show-file-list="false"
               >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -143,12 +146,12 @@
           <div id="degreeInfo">学位</div>
           <div id="degreeDetail">
             <div id="selectfirst">
-              <el-select  placeholder="请选择学科" v-model="subNum">
+              <el-select placeholder="请选择学科" v-model="subNum">
                 <el-option v-for="(item,index) in subject" :label=item :value="index" :key="index"></el-option>
               </el-select>
             </div>
             <div id="selectsecond">
-              <el-select  placeholder="请选择学历" v-model="rankNum">
+              <el-select placeholder="请选择学历" v-model="rankNum">
                 <el-option v-for="(item,index) in rank" :label=item :value="index" :key="index"></el-option>
               </el-select>
             </div>
@@ -228,25 +231,25 @@ export default {
     AboutMe,
     editUsrInfo,
     Nav_with_searchBox,
-    favo_empty:false
+    favo_empty: false
   },
   data() {
     return {
-      ifAuthor:false,
+      ifAuthor: false,
       ifNUll: false,
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {},
       needUpdate: 1,
       subject: ['哲学', '经济学', '法学', '教育学', '文学', '历史学', '理学', '工学', '农学', '医学', '军事学', '管理学', '艺术学'],
       rank: ['本科生', '研究生', '学士', '硕士', '博士', '博士后'],
-      subNum:'',
-      rankNum:'',
+      subNum: '',
+      rankNum: '',
       previewsrc: '',
       imgRaw: '',
       dialogFormVisible: false,
       dialogLetterVisible: false,
       haveUpload: false,
-      loading:false,
+      loading: false,
       collectionList: [{
         name: '默认收藏夹',
         detail: [
@@ -312,8 +315,8 @@ export default {
         field: '',
         degree: ''
       },
-      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id='+localStorage.getItem('user_id'),
-      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id='+localStorage.getItem('user_id'),
+      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=' + localStorage.getItem('user_id'),
+      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id=' + localStorage.getItem('user_id'),
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
@@ -399,7 +402,7 @@ export default {
         n_pubs: 80,
         n_citation: 980
       }],
-      str:[]
+      str: []
     }
   },
   mounted() {
@@ -420,13 +423,14 @@ export default {
       getFavo({
         user_id: localStorage.getItem('user_id')
       }).then(res => {
+        console.log(1)
         console.log(res)
         this.collectionList = res.favorites
       })
     },
     updateInfor() {
-      // console.log(1)
-      // console.log(this.user)
+      console.log(1)
+      console.log(this.user)
       updateInfo({
         user_id: this.user.user_id,
         field: this.user.field,
@@ -442,7 +446,7 @@ export default {
       this.dialogFormVisible = false;
       this.ifImageUploadVisible = false;
       this.user.field = this.form.field
-      this.user.degree = this.subject[this.subNum]+' '+this.rank[this.rankNum]
+      this.user.degree = this.subject[this.subNum] + ' ' + this.rank[this.rankNum]
       this.updateInfor()
     },
     handleSuccess(response, file, fileList) {
@@ -473,19 +477,19 @@ export default {
     openLetter() {
       this.dialogLetterVisible = true
     },
-          beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isLt2M = file.size  / 1024 < 500;
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 < 500;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 500kB!');
-        }
-        return isJPG && isLt2M;
-      },
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 500kB!');
+      }
+      return isJPG && isLt2M;
+    },
     sendLetter() {
       if (this.text === '') {
         this.$message({
@@ -525,9 +529,9 @@ export default {
         this.activeMode = 7;
       }
     },
-    toApply(){
+    toApply() {
       this.$router.push({
-        path:'/identification'
+        path: '/identification'
       })
     },
     submitUpload() {
@@ -542,8 +546,8 @@ export default {
       uploadImage(formDatas).then(res => {
         console.log(res)
         this.needUpdate++
-        this.loading =false
-         this.$message({
+        this.loading = false
+        this.$message({
           message: '上传成功',
           type: 'success'
         });
@@ -570,7 +574,7 @@ export default {
       this.$router.push({
         path: '/authorPage',
         query: {
-          id:'7F5944CA'
+          id: '7F5944CA'
         }
       })
     },
@@ -592,10 +596,12 @@ export default {
   height: 100vh;
   overflow-y: auto;
 }
+
 /deep/ .el-select > .el-input {
   width: 250px;
   display: block;
 }
+
 #uploadButton {
   justify-content: center;
 }
@@ -678,13 +684,14 @@ export default {
 }
 
 #usrDegree {
-    margin-top: 10px;
-    font-size: 15px;
-    border-bottom: 1px transparent;
-    font-family: "Roboto", Arial, sans-serif;
-    letter-spacing: 1px;
-    color: #606266;
+  margin-top: 10px;
+  font-size: 15px;
+  border-bottom: 1px transparent;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #606266;
 }
+
 #editInfoRow {
   display: inline-flex;
 }
@@ -697,14 +704,14 @@ export default {
   color: #343434;
 }
 
-#editYourInfo{
-    margin-top: 11px;
-    font-size: 13px;
-    font-family: "Roboto", Arial, sans-serif;
-    letter-spacing: 2px;
-    border-bottom: #606266 1px solid;
-    color: #606266;
-    margin-left: 6px;
+#editYourInfo {
+  margin-top: 11px;
+  font-size: 13px;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 2px;
+  border-bottom: #606266 1px solid;
+  color: #606266;
+  margin-left: 6px;
 }
 
 #editYourInfo {
@@ -764,18 +771,20 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 /deep/ .el-upload-dragger {
-    background-color: #fff;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 360px;
-    height: 130px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  background-color: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 360px;
+  height: 130px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
+
 .dialog-footer {
   border-top: gainsboro 1px solid;
   background-color: #f5f5f5;
@@ -953,7 +962,8 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-#selectsecond{
+
+#selectsecond {
   margin-top: 20px;
 }
 </style>

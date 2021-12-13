@@ -12,8 +12,8 @@
           <div id="usrName">{{ titleCase2(this.user.name) }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
-            <!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
           </div>
+          <div id="editYourInfo" @click="editSympleInfo">对认领信息有疑问？点此申诉</div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
         <div id="rightButton" style="display: block;">
@@ -424,8 +424,8 @@ export default {
 }
 
 #authorPage {
-  /*background-color: #f1f2f6;*/
-  background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");
+  background-color: #f1f2f6;
+  /*background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");*/
   width: 100%;
   height: 100vh;
   overflow-y: auto;
@@ -538,6 +538,7 @@ export default {
   border-bottom: #606266 1px solid;
   color: #606266;
   margin-left: 10px;
+  width: fit-content;
 }
 
 #editYourInfo {
