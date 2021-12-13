@@ -13,7 +13,11 @@
           <div id="editInfoRow">
             <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
           </div>
-          <div id="editYourInfo" @click="editSympleInfo">对认领信息有疑问？点此申诉</div>
+          <div id="acountInfo">该门户已被用户
+            <div id="account" @click="toAccountPage">@{{ this.usrName }}</div>
+            认领
+            <div id="editYourInfo">点此申诉</div>
+          </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
         <div id="rightButton" style="display: block;">
@@ -50,8 +54,7 @@
         <div id="topOnePane">
           <div id="leftMainPane">
             <div id="editusrInfoPane">
-              <!--            <author-card :user="user"></author-card>-->
-              <!--            <about-me_author :user="user"></about-me_author>-->
+              <author-card v-if="ifHaveAccount == true" :user="userInfo"></author-card>
               <stats-overview :user="user"></stats-overview>
               <!--              <div id="researchLine">-->
               <!--                <div id="researchInfo">研究项目</div>-->
@@ -62,6 +65,7 @@
           </div>
           <div id="rightMainPane">
             <div v-if="activeMode ==1">
+              <about-me_author v-if="ifHaveAccount == true" :user="userInfo"></about-me_author>
               <institute-belong-to_author :user="user"></institute-belong-to_author>
               <!--              <follow-same-author></follow-same-author>-->
             </div>
@@ -180,7 +184,7 @@ import InstituteBelongTo_author from "../../components/instituteBelongTo_author"
 import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
 import ESApi from "../../api/elastic search"
-import {checkIfFollow, followAuthor, getdata, undoFollow} from "../../request/api";
+import {checkIfFollow, followAuthor, getdata, getScolarUserInfo, undoFollow} from "../../request/api";
 
 export default {
   name: "authorPage",
@@ -204,11 +208,14 @@ export default {
   },
   data() {
     return {
-      ifFollow:false,
+      usrName:'',
+      ifHaveAccount: false,
+      ifFollow: false,
       cutTotal: 0,
       currentPage3: 1,
       oriResearch: [],
       id: "7F5944CA",
+      userInfo: [],
       datas: [],
       linkmes: [],
       ELres: [],
@@ -290,36 +297,56 @@ export default {
     this.getAuthorInfo(this.id)
     this.getAuthorsPaper(this.id)
     this.checkFollow()
+    this.getAccountInfo()
     // this.getdataSource(this.id)
   },
   methods: {
-    follow(){
-      if(localStorage.getItem('user_id')){
+    toAccountPage() {
+      this.$router.push({
+        path: '/userHome',
+        query: {
+          id: this.userInfo.user_id
+        }
+      })
+    },
+    getAccountInfo() {
+      getScolarUserInfo({
+        author_id: this.$route.query.id,
+      }).then(res => {
+        console.log(res)
+        this.ifHaveAccount = res.ifHaveAccount
+        this.userInfo = res.user
+        this.usrName = this.userInfo.name
+        this.userInfo.name = this.user.name
+      })
+    },
+    follow() {
+      if (localStorage.getItem('user_id')) {
         followAuthor({
-        follow_id:this.$route.query.id,
-          follower_id:localStorage.getItem('user_id')
-      }).then(res=>{
-        console.log(res)
+          follow_id: this.$route.query.id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log(res)
         })
       }
     },
-    checkFollow(){
-      if(localStorage.getItem('user_id')){
+    checkFollow() {
+      if (localStorage.getItem('user_id')) {
         checkIfFollow({
-        follow_id:this.$route.query.id,
-          follower_id:localStorage.getItem('user_id')
-      }).then(res=>{
-        console.log(res)
+          follow_id: this.$route.query.id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log(res)
         })
       }
     },
-    unfollow(){
-      if(localStorage.getItem('user_id')){
+    unfollow() {
+      if (localStorage.getItem('user_id')) {
         undoFollow({
-        follow_id:this.$route.query.id,
-          follower_id:localStorage.getItem('user_id')
-      }).then(res=>{
-        console.log(res)
+          follow_id: this.$route.query.id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log(res)
         })
       }
     },
@@ -347,11 +374,11 @@ export default {
         console.log('ssss')
         console.log(res)
         this.oriResearch = res.data.hits.hits
-        for(var i=0;i<this.oriResearch.length;i++){
+        for (var i = 0; i < this.oriResearch.length; i++) {
           // console.log(this.research[i]._source.authors)
-          if(this.oriResearch[i]._source.authors.length>4){
+          if (this.oriResearch[i]._source.authors.length > 4) {
             console.log('22323')
-            this.oriResearch[i]._source.authors = this.oriResearch[i]._source.authors.slice(0,4)
+            this.oriResearch[i]._source.authors = this.oriResearch[i]._source.authors.slice(0, 4)
           }
         }
         this.research = this.oriResearch.slice(0, 10);
@@ -531,7 +558,7 @@ export default {
 }
 
 #editYourInfo {
-  margin-top: 10px;
+  margin-top: 1px;
   font-size: 14px;
   font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 2px;
@@ -654,7 +681,7 @@ export default {
 
 #editusrInfoPane {
   width: 600px;
-  margin-top: 30px;
+  /*margin-top: 30px;*/
 }
 
 .mainPane {
@@ -677,7 +704,7 @@ export default {
 #rightMainPane {
   margin-left: 40px;
   width: 400px;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 
 #researchLine {
@@ -751,5 +778,25 @@ export default {
   font-weight: 700;
   margin-right: auto;
   margin-left: auto;
+}
+
+#acountInfo {
+  display: flex;
+  margin-top: 10px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+#account {
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 2px;
+  font-style: italic;
+  color: #005abb;
+}
+
+#account:hover {
+  cursor: pointer;
 }
 </style>

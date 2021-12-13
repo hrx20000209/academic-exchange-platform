@@ -171,7 +171,12 @@ export default {
       }
     },
     toUsrHome() {
-      this.$router.push('/userHome')
+      this.$router.push({
+        path:'/userHome',
+        query:{
+          id: localStorage.getItem('user_id')
+        }
+      })
     },
     toLetter() {
       this.$router.push('/letter')

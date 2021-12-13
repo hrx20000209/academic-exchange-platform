@@ -1,7 +1,7 @@
 <template>
   <div id="myLikeAuthor">
     <div id="topHead">
-      <div id="leftCharacter">我的关注</div>
+      <div id="leftCharacter">关注列表</div>
     </div>
     <div id="followPane">
       <div v-for="(item,index) in followList" :key="index">
