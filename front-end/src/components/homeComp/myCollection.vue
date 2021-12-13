@@ -2,26 +2,28 @@
   <div id="myCollection">
     <div id="topHead">
       <div id="leftCharacter">我的收藏</div>
+      <button class="rightButton" v-if="editMode == false" id="beginEdit" @click="toEdit">整理</button>
+      <button class="rightButton" v-else id="endEdit" @click="endEdit">完成</button>
     </div>
     <div id="mainPane">
       <el-collapse v-model="activeName" accordion>
         <el-collapse-item v-for="(item,index) in CollectionList" :key=index :title=item.name :name=index
                           id="collectionTitle">
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
-            <div class="paperName">{{ paper.paper_name }}</div>
-            <div class="threeButton">
-              <button class="gotoPaper">查看文献</button>
+            <div class="paperName" @click="toPaper(paper.id)">{{ paper.paper_name }}</div>
+            <div class="threeButton" v-if="editMode == true">
               <button class="delete">移出收藏夹</button>
-              <button class="move" @click="movePaper(paper.paper_id)">移动到</button>
+              <button class="move" @click="movePaper(paper.paper_id,index,i)">移动到</button>
             </div>
-
-
           </div>
         </el-collapse-item>
       </el-collapse>
+      <div v-if="CollectionList.length == 0">
+        <el-empty description="你还没有收藏夹噢，新建一个试试吧"></el-empty>
+      </div>
       <!--      <div id="empty"></div>-->
       <div id="bottomButton">
-        <div id="twoButton">
+        <div id="twoButton" v-if="editMode == true">
           <button id="addNew" @click="createCollection">新建收藏夹</button>
           <button id="deleCollection" @click="deletefav">删除收藏夹</button>
         </div>
@@ -33,7 +35,7 @@
         <div class="DetailInfo">新建一个收藏夹，使你感兴趣的文献井井有序</div>
         <div class="introInfo">收藏夹的名字</div>
         <div class="myInput">
-          <el-input autocomplete="off" type="textarea" rows="1"></el-input>
+          <el-input autocomplete="off" type="textarea" rows="1" v-model="newName"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -63,14 +65,16 @@
         </div>
       </div>
     </el-dialog>
-<el-dialog title="移动文献" :visible.sync="move" class="infoDialog">
+    <el-dialog title="移动文献" :visible.sync="move" class="infoDialog">
       <div class="dialogMainPane">
         <div class="DetailInfo">将文献移动到另一个更合适的收藏夹中</div>
         <div class="introInfo">选择目标收藏夹</div>
         <div id="single">
-           <el-radio-group v-model="radio">
-    <el-radio v-for="(item,index) in CollectionList" :label=index :key=index class="singleRadio">{{item.name}}</el-radio>
-  </el-radio-group>
+          <el-radio-group v-model="radio">
+            <el-radio v-for="(item,index) in CollectionList" :label=index :key=index class="singleRadio">
+              {{ item.name }}
+            </el-radio>
+          </el-radio-group>
         </div>
 
       </div>
@@ -85,6 +89,8 @@
 </template>
 
 <script>
+import {deleFavo, moveFavo, uploadNewFavo} from "../../request/api";
+
 export default {
   name: "myCollection",
   props: ['user', 'CollectionList'],
@@ -95,32 +101,56 @@ export default {
       deleteCollection: false,
       checkList: [],
       move: false,
-      curMovePaperId:'',
-      radio:''
+      curMovePaperId: '',
+      radio: '',
+      newName: '',
+      editMode:false
     };
   },
   methods: {
+    toPaper(id){},
     createCollection() {
       this.create = true;
     },
     deletefav() {
       this.deleteCollection = true;
+      for(var i=0;i<this.checkList.length;i++){
+        deleFavo({
+          user_id:localStorage.getItem('user_id'),
+          favorite_name:this.checkList[i].toString()
+      }).then(res=>{
+        console.log(res)
+          this.deleteCollection = false;
+        })
+      }
+
     },
-    movePaper(id){
+    movePaper(id,pre,pos) {
       this.move = true;
       this.curMovePaperId = id
+      moveFavo({
+
+      })
     },
     createCancel() {
       this.create = false;
     },
     createConfirm() {
-      this.create = false;
+      console.log(this.newName)
+      uploadNewFavo({
+        user_id: localStorage.getItem('user_id'),
+        favorite_name: this.newName
+      }).then(res => {
+        console.log(res)
+        // this.$router.go(0)
+        this.create = false;
+      })
     },
     deleteColCancel() {
       this.deleteCollection = false;
     },
     deleteColConfirm() {
-      this.deleteCollection = false;
+      this.deletefav()
     },
     moveCancel() {
       this.move = false;
@@ -128,6 +158,12 @@ export default {
     moveConfirm() {
       this.move = false;
     },
+    toEdit(){
+      this.editMode = true
+    },
+    endEdit(){
+      this.editMode = false
+    }
   }
 }
 </script>
@@ -136,7 +172,7 @@ export default {
 #myCollection {
   margin-top: 20px;
   background-color: white;
-box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding-bottom: 10px;
   border-radius: 2px;
   width: 900px;
@@ -147,11 +183,11 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding: 10px;
   margin-left: 10px;
   justify-content: flex-start;
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
 }
 
 #multi {
@@ -163,11 +199,33 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   justify-content: flex-start;
   /*border-bottom: 1px solid #dedede;*/
 }
-
+/deep/[data-v-d25ff02a] .el-collapse-item__header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 48px;
+    line-height: 48px;
+    background-color: #FFF;
+    color: black;
+    cursor: pointer;
+    border-bottom: 1px solid #EBEEF5;
+    font-size: 16px;
+    font-weight: bold;
+    /* font-weight: 500; */
+    font-family: "Roboto", Arial, sans-serif;
+    padding-left: 20px;
+    -webkit-transition: border-bottom-color .3s;
+    transition: border-bottom-color .3s;
+    outline: 0;
+}
 #collectionTitle {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   color: black;
   font-weight: bold;
+  font-size: 17px;
 }
 
 .eachFav {
@@ -176,13 +234,16 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .paperName {
-  margin-left: 20px;
-  font-family: "siyuan";
-  font-weight: bold;
-  font-size: 18px;
-  width: 500px;
+    margin-left: 10px;
+    color: #010101;
+    font-family: "Roboto", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
 }
-
+.paperName:hover{
+  cursor: pointer;
+  color: #005abb;
+}
 .threeButton {
   margin-left: auto;
   margin-right: 20px;
@@ -217,26 +278,30 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .eachPaper {
-  display: flex;
-  padding: 10px;
-  border-bottom: 1px whitesmoke solid;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-bottom: 1px #e8e8e8 solid;
+    height: 30px;
 }
 
 .threeButton button {
-  font-family: "siyuan";
-  display: inline;
-  /*background-color: transparent;*/
-  /*background-color: #1f86fd;*/
-  font-family: "siyuan";
-  font-weight: bold;
-  /*color: #ffffff;*/
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 3px;
-  text-align: center;
-  margin-left: 5px;
-  padding: 5px;
-  border: none;
+    font-family: "Roboto", Arial, sans-serif;
+    display: inline;
+    /* background-color: transparent; */
+    /* background-color: #1f86fd; */
+    font-weight: 600;
+    /* color: #ffffff; */
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    margin-left: 15px;
+    /* padding: 3px 10px 3px 10px; */
+    border: none;
 }
 
 .threeButton button:hover {
@@ -249,14 +314,13 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .delete {
-  border: 1px solid red;
-  background-color: #ffe6e6;
-  color: red;
+  background-color: transparent;
+  color: #e13939;
 }
 
 .move {
-  background-color: #cffffa;
-  color: green;
+  background-color: transparent;
+  color: #458957;
 }
 
 #bottomButton {
@@ -274,13 +338,13 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 #twoButton button {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   display: inline;
   /*background-color: transparent;*/
   /*background-color: #1f86fd;*/
   /*color: #ffffff;*/
-  font-size: 17px;
+  font-size: 15px;
   cursor: pointer;
   border-radius: 3px;
   text-align: center;
@@ -295,13 +359,21 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 
 #addNew {
   background-color: #d2ecff;
-  color: blue;
+  color: #151515;
+}
+
+#addNew:hover {
+  background-color: #adc5ea;
 }
 
 #deleCollection {
   border: 1px solid red;
   background-color: #ffe6e6;
-  color: red;
+  color: #920000;
+}
+
+#deleCollection:hover {
+  background-color: #d9bcbc;
 }
 
 .infoDialog {
@@ -316,7 +388,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .dialogInfo {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 18px;
   color: black;
@@ -333,10 +405,9 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .confirm {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   display: inline;
-  background-color: transparent;
   background-color: #0080ff;
   color: #ffffff;
   font-size: 18px;
@@ -354,8 +425,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .introInfo {
-  font-family: "siyuan";
-  font-weight: bold;
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 17px;
   margin-top: 20px;
@@ -363,7 +433,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
 .cancel {
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   display: inline;
   background-color: transparent;
@@ -379,11 +449,33 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 .cancel:hover {
   background-color: whitesmoke;
 }
-#single{
+
+#single {
   margin-top: 10px;
 }
-.singleRadio{
+
+.singleRadio {
   display: block;
   margin-top: 5px;
+}
+.rightButton{
+    font-family: "Roboto", Arial, sans-serif;
+  display: inline;
+  color: #525252;
+  border: none;
+  /*background-color: transparent;*/
+  /*background-color: #1f86fd;*/
+  /*color: #ffffff;*/
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 20px;
+  background-color: transparent;
+
+}
+.rightButton:hover{
+  color: black;
 }
 </style>

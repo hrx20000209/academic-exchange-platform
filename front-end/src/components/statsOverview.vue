@@ -27,8 +27,6 @@
             <i class="el-icon-s-order"></i>
           </div>
         </div>
-      </div>
-      <div class="twoNumber">
         <div class="oneNumber">
           <div class="leftPart">
             <div class="Number">14</div>
@@ -41,12 +39,15 @@
         <div class="oneNumber">
           <div class="leftPart">
             <div class="Number">{{ user.h_index }}</div>
-            <div class="NumberInfo">学术影响力</div>
+            <div class="NumberInfo">影响力</div>
           </div>
           <div class="rightPart">
             <i class="el-icon-s-marketing"></i>
           </div>
         </div>
+      </div>
+      <div class="twoNumber">
+
       </div>
     </div>
   </div>
@@ -71,12 +72,12 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 #leftCharacter {
   width: 250px;
   padding: 10px;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   margin-left: 15px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
 }
 
 #rightButton {
@@ -85,7 +86,7 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   justify-content: flex-end;
   margin-top: 10px;
   color: #8e8e8e;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
   letter-spacing: 1px;
 }
@@ -130,24 +131,24 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   display: flex;
 }
 .leftPart{
-  width: 100px;
+  /*width: 100px;*/
 }
 .rightPart{
-  display: flex;
-  justify-content: flex-end;
-  color: #52bbb5;
-  width: 100px;
+  height: fit-content;
+  margin-left: auto;
+  color: #589ba7;
+  /*width: 100px;*/
   font-size: 20px;
 }
 .Number{
-  font-family: "Microsoft YaHei";
-  font-weight: bold;
-  font-size: 17px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-weight: bolder;
+  font-size: 18px;
 }
 .NumberInfo{
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   color: #343434;
   margin-top: 5px;
-  font-size: 18px;
+  font-size: 15px;
 }
 </style>

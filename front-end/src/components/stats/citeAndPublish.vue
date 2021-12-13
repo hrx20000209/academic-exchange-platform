@@ -4,7 +4,7 @@
       <div id="leftCharacter">年度数据</div>
     </div>
     <div id="mainPane">
-      <div style="width:600px;height:300px" ref="chart"></div>
+      <div style="width:450px;height:300px" ref="chart"></div>
     </div>
 
   </div>
@@ -12,17 +12,30 @@
 
 <script>
 
+import ESApi from "../../api/elastic search";
+
 export default {
   name: "citeAndPublish",
-  props: ['user'],
   data() {
     return {
       x_data: [],
       pubData: [],
       citeData: [],
+      user: [],
     }
   },
- methods: {
+  methods: {
+    getAuthorInfo() {
+      let id = this.$route.query.id
+      ESApi.getAuthorInfo(id).then(response => {
+        console.log(response);
+        this.user = response.data.hits.hits[0]._source;
+        console.log(this.user)
+        // this.research = this.ELres.pubs;
+        this.prepareJson();
+        this.initCharts();
+      })
+    },
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(this.$refs.chart);
@@ -33,8 +46,8 @@ export default {
         legend: {
           data: ["发表", "被引"],
           orient: 'vertical',
-          x: 'right',
-          y: 'center',
+          left: 'center',
+          bottom: 'bottom',
         },
         xAxis: {
           data: this.x_data
@@ -87,36 +100,36 @@ export default {
   },
   //一加载页面就调用
   mounted() {
-    this.prepareJson();
-    this.initCharts();
+    this.getAuthorInfo()
 
   }
 }
 </script>
 
 <style scoped>
-#citeAndPublish{
+#citeAndPublish {
   background-color: white;
-box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
+  box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
   margin-top: 20px;
 }
+
 #leftCharacter {
   width: 400px;
   padding: 10px;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   margin-left: 20px;
   font-weight: bold;
-  font-size: 18px;
-  letter-spacing: 1px;
-  color: #8e8e8e;
+  font-size: 16px;
+  color: #525252;
 }
 
 #topHead {
   display: flex;
   justify-content: flex-start;
 }
-#mainPane{
+
+#mainPane {
   border-top: 1px solid #dedede;
   padding: 10px 20px 15px 20px;
   display: flex;

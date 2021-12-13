@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
+    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/homepage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/homepage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,27 +43,24 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="E:\PyCharm 2021.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/front-end/src/views" />
       <recent name="$PROJECT_DIR$/front-end/src/views/messages" />
       <recent name="$PROJECT_DIR$/front-end/src/views/admin" />
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
-    </key>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -91,17 +90,12 @@
       <workItem from="1638714085114" duration="609000" />
       <workItem from="1638748914441" duration="25385000" />
       <workItem from="1638838482149" duration="95000" />
-      <workItem from="1639041646016" duration="2852000" />
-      <workItem from="1639056438426" duration="5066000" />
-      <workItem from="1639100886254" duration="2585000" />
-      <workItem from="1639114974528" duration="1078000" />
-      <workItem from="1639138489810" duration="9390000" />
-      <workItem from="1639353770139" duration="3602000" />
+      <workItem from="1639101041542" duration="20268000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -114,15 +108,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="92" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1639101642995">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="92" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1639101642995" />
-    <state x="219" y="-1" width="840" height="1034" key="search.everywhere.popup" timestamp="1639139843084">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="219" y="-1" width="840" height="1034" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1639139843084" />
   </component>
 </project>

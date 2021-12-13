@@ -4,16 +4,17 @@
       <div id="leftCharacter">专家关系网络</div>
     </div>
     <div id="mainPane">
-      <div style="width:600px;height:500px" ref="chart"></div>
+      <div style="width:1000px;height:500px" ref="chart"></div>
     </div>
 
   </div>
 </template>
 
 <script>
+import {getdata} from "../../request/api";
+
 export default {
   name: "authorRelationship",
-  props:['data','linkm'],
   data() {
     return {
       datas: [{
@@ -31,7 +32,12 @@ export default {
           category: 1,
           num: "5EF39403",
           symbolSize: 20,
-          state:1
+          state:1,
+          // itemStyle: {
+          //         normal: {
+          //           color: '#000000'
+          //         }
+          // }
         },
         {
           name: '潘海霞',
@@ -136,6 +142,16 @@ export default {
     }
   },
   methods: {
+    getdataSource() {
+      getdata({
+        author_id: this.$route.query.id
+      }).then(res => {
+        console.log(res)
+        this.datas = res.datas
+        this.linkmes = res.linkmes
+        this.initCharts();
+      })
+    },
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let relaChart = this.$echarts.init(this.$refs.chart);
@@ -149,7 +165,7 @@ export default {
         animationEasingUpdate: 'quinticInOut',
         series: [
           {
-            symbolSize:10,
+            symbolSize:20,
             type: 'graph',
             layout: 'force',
             force: {
@@ -162,10 +178,10 @@ export default {
             label: {
               show: false
             },
-            // data: this.datas,
-            // links: this.linkmes,
-            data:this.$props.data,
-            links: this.$props.linkm,
+            data: this.datas,
+            links: this.linkmes,
+            // data:this.$props.data,
+            // links: this.$props.linkm,
             lineStyle: {
               color: "source",
                 width: 1,
@@ -222,7 +238,7 @@ export default {
   },
   //一加载页面就调用
   mounted() {
-    this.initCharts();
+    this.getdataSource()
 
   }
 }
@@ -233,18 +249,18 @@ export default {
   background-color: white;
 box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 #leftCharacter {
   width: 400px;
   padding: 10px;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   margin-left: 20px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
 }
 
 #topHead {
