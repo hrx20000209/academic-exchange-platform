@@ -1,7 +1,7 @@
 <template>
   <div id="myCollection">
     <div id="topHead">
-      <div id="leftCharacter">我的收藏</div>
+      <div id="leftCharacter">收藏列表</div>
       <button class="rightButton" v-if="editMode == false" id="beginEdit" @click="toEdit">整理</button>
       <button class="rightButton" v-else id="endEdit" @click="endEdit">完成</button>
     </div>

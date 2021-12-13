@@ -14,7 +14,7 @@
           <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.degree }}</div>
-            <div id="editYourInfo" @click="editSimpleInfo">编辑信息</div>
+            <div id="editYourInfo" @click="editSimpleInfo" v-if="ifVisitor == false">编辑信息</div>
           </div>
           <div id="usrAbility">{{ this.user.field }}</div>
         </div>
@@ -29,7 +29,7 @@
             <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">
               进入认证门户
             </el-button>
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else>申请认证</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else-if="ifVisitor == false">申请认证</el-button>
           </div>
         </div>
       </div>
@@ -45,10 +45,10 @@
           <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
-          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">你的关注</div>
-          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">你的收藏</div>
+          <div class="usrTabsChosen" v-if="activeMode ==6">关注</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">关注</div>
+          <div class="usrTabsChosen" v-if="activeMode ==7">收藏</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">收藏</div>
         </div>
       </div>
     </div>
@@ -57,8 +57,10 @@
         <div id="leftMainPane">
           <div id="editUsrInfoPane">
             <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum"
-                           :rankindex="rankNum"></edit-usr-info>
-            <about-me :user="this.user"></about-me>
+                           :rankindex="rankNum" v-if="ifVisitor == false"></edit-usr-info>
+             <author-card v-else :user="user"></author-card>
+            <about-me :user="this.user" v-if="ifVisitor == false"></about-me>
+            <about-me_author v-else :user="this.user"></about-me_author>
             <!--            <stats-overview :user="user"></stats-overview>-->
             <!--            <div id="researchLine">-->
             <!--              <div id="researchInfo">研究项目</div>-->
@@ -212,11 +214,14 @@ import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
 import {getFavo, getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
 import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 import MyCollection from "../../components/homeComp/myCollection";
+import AboutMe_author from "../../components/stats/aboutMe_author";
+import AuthorCard from "../../components/AuthorCard";
 import axios from "axios";
-
 export default {
   name: "userHome",
   components: {
+    AboutMe_author,
+    AuthorCard,
     MyCollection,
     MyLikeAuthor,
     CooperatorPieChart,
@@ -236,7 +241,9 @@ export default {
   data() {
     return {
       ifAuthor: false,
+      ifVisitor:true,
       ifNUll: false,
+      scolarId:'',
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {},
       needUpdate: 1,
@@ -250,123 +257,18 @@ export default {
       dialogLetterVisible: false,
       haveUpload: false,
       loading: false,
-      collectionList: [{
-        name: '默认收藏夹',
-        detail: [
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中的聚类算法综述'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中聚类算法研究进展'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '大数据时代下数据挖掘技术的应用'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '研究'
-          }
-        ]
-      }, {
-        name: '数据挖掘',
-        detail: [
-          {
-            paper_id: 12345,
-            paper_name: '可靠性研究'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '可靠研究'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '可靠性'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '研究'
-          }
-        ]
-      }, {
-        name: '毕业课题',
-        detail: [
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中的聚类算法综述'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中聚类算法研究进展'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '大数据时代下数据挖掘技术的应用'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '研究'
-          }
-        ]
-      }],
+      collectionList: [],
       form: {
         field: '',
         degree: ''
       },
-      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=' + localStorage.getItem('user_id'),
-      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id=' + localStorage.getItem('user_id'),
+      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=' + this.$route.query.id,
+      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id=' + this.$route.query.id,
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
-      research: [
-        {
-          title: '数据挖掘中的聚类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: false,
-          abstract: '聚类分析是数据挖掘中重要的研究内容之一,对聚类准则进行了总结,对五类传统的聚类算法的研究现状和进展进行了较为全面的总结,就一些新的聚类算法进行了梳理,根据样本归属关系、样本数据预处理、样本的相似性度量、样本的更新策略、样本的高维性和与其他学科的融合等六个方面对聚类中近20多个新算法,如粒度聚类、不确定聚类、量子聚类、核聚类、谱聚类、聚类集成、概念聚类、球壳聚类、仿射聚类、数据流聚类等,分别进行了详细的概括。这对聚类是一个很好的总结,对聚类的发展具有积极意义。 '
-        }, {
-          title: '数据挖掘中的分类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: true,
-          abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        },
-        {
-          title: '数据挖掘中的分类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: true,
-          abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        },
-        {
-          title: '数据挖掘中的分类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: true,
-          abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        }
-      ],
-      // id:this.localStorage.getItem('token'),
-      id: '',
+      research: [],
+      id:localStorage.getItem('user_id'),
       ifImageUploadVisible: false,
       dialogImageUrl: '',
       dialogVisible: false,
@@ -406,11 +308,18 @@ export default {
     }
   },
   mounted() {
-    this.getUserInformation(localStorage.getItem('user_id'))
+    this.checkVisitorMode()
+    this.getUserInformation(this.$route.query.id)
     // this.getFollowList()
     this.getFavo()
+    console.log(this.ifVisitor == false)
   },
   methods: {
+    checkVisitorMode(){
+      if(this.$route.query.id == localStorage.getItem('user_id')){
+        this.ifVisitor =false
+      }
+    },
     getFollowList() {
       getFollow({
         user_id: this.user.user_id
@@ -556,11 +465,13 @@ export default {
     },
     getUserInformation(id) {
       getUsrInfo({
-        user_id: localStorage.getItem('user_id')
+        user_id: id
       }).then(res => {
         console.log(res)
         this.user = res.data
+        console.log(this.user)
         this.ifAuthor = res.ifAuthor
+        this.scolarId = res.scolarId
         // this.add_pic_url = this.add_pic_url + this.user.user_id
         // this.get_pic_url = this.get_pic_url + this.user.user_id
         this.str = this.user.degree.split(' ')
@@ -571,10 +482,11 @@ export default {
       })
     },
     toAuthorPage() {
+      console.log(this.scolarId)
       this.$router.push({
         path: '/authorPage',
         query: {
-          id: '7F5944CA'
+          id: this.scolarId
         }
       })
     },
@@ -842,7 +754,7 @@ export default {
 
 #editUsrInfoPane {
   width: 625px;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .mainPane {
