@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/front-end/src/api/elastic search.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/api/elastic search.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/aboutMe.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/aboutMe.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" afterDir="false" />
@@ -11,6 +12,8 @@
       <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" afterDir="false" />
+=======
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,8 +98,12 @@
       <workItem from="1638714085114" duration="609000" />
       <workItem from="1638748914441" duration="25385000" />
       <workItem from="1638838482149" duration="95000" />
+<<<<<<< Updated upstream
       <workItem from="1639101041542" duration="20268000" />
       <workItem from="1639360312862" duration="6193000" />
+=======
+      <workItem from="1639101041542" duration="24475000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
