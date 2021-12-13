@@ -63,9 +63,10 @@
 </template>
 
 <script>
+import { identify } from "../request/api";
 export default {
   name: "authorSearchResult",
-  props: ['author'],
+  props: ['author', 'user_id'],
   data() {
     return {
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -95,6 +96,17 @@ export default {
     },
     confirm() {
       this.dialogVisible = false
+      identify({
+        user_id: this.user_id,
+        author_id: this.author._source.id
+      }).then(response => {
+        if (response.message == 'Identify success') {
+          this.$message({
+            type: 'success',
+            message: '认证成功'
+          })
+        }
+      })
     }
   },
 }
