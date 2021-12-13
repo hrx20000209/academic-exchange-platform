@@ -35,6 +35,7 @@
           <div v-for="item in authorList" :key="item.id">
             <author-search-result
               :author="item"
+              :user_id="user_id"
             />
           </div>
         </div>
