@@ -46,8 +46,9 @@
                                 浏览最新，最热的文章和最受欢迎的作者
                               </div>
                             </div>
-                            <div style="display: flex; justify-content: center">
-                              <div style="display:flex; justify-content:center;background-color: #FFF; width: 1000px; margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-around">
+                              <div style="display: flex; justify-content: center">
+                                <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px;">
                                 <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
                                   <el-tab-pane label="最热文章" name="first">
@@ -74,7 +75,7 @@
                                         </div>
                                         </div>
                                         <div style="display: flex; flex-direction: column; justify-content: center">
-                                          <el-progress :show-text="false" :percentage="getPercentage(item['cites'])"></el-progress>
+                                          <el-progress :show-text="false" :percentage="getPercentage(item['cites'], maxCites)"></el-progress>
                                         </div>
                                       </div>
                                     </div>
@@ -84,14 +85,14 @@
                                     <div style="margin-left: -10px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
                                       <div v-for="(item, index) in this.engine_latest" :key="index"
                                          style="display: flex; justify-content: space-between; margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                      <div style="width:780px; display: flex; ">
+                                      <div style="width:580px; display: flex; ">
                                         <div style="
                                         width: 20px;
                                         display: flex;
                                         justify-content: center;margin-right: 10px">
                                           <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                         </div>
-                                        <div style="width: 700px">
+                                        <div style="width: 500px">
                                           <el-link :underline="false">
                                             {{item['title']}}
                                           </el-link>
@@ -105,7 +106,7 @@
                                     </div>
                                     </div>
                                   </el-tab-pane>
-                                  <el-tab-pane label="最受欢迎作者" name="third">
+                                  <!--<el-tab-pane label="最受欢迎作者" name="third">
                                     <div style="margin-top: 15px">
                                       <div style="margin-bottom:10px;display: flex; justify-content: space-around" v-for="(row, index0) in this.authors" :key="index0">
                                       <el-tooltip v-for="(item, index) in row" :key="index"
@@ -123,7 +124,7 @@
                                     </el-tooltip>
                                     </div>
                                     </div>
-                                  </el-tab-pane>
+                                  </el-tab-pane>-->
                                   <el-tab-pane label="最强机构" name="fourth">
                                     <div style="display: flex; justify-content: center; height: 650px">
                                       <div style="margin-top: -50px;width: 800px; height: 600px" id="chart"></div>
@@ -132,6 +133,40 @@
                                 </el-tabs>
                                 </div>
                             </div>
+                              </div>
+                              <div style="margin-top: 15px;display: flex; border-radius: 20px;height: 1050px;background-color: #FFF;align-items: center;width: 270px;flex-direction: column; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2) inset">
+                                <div style="border-radius: 20px;height: 35px;width: 150px;box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);display: flex;margin-top: 25px;margin-bottom: 10px;justify-content: center;align-items: center">
+                                  <div>
+                                    最受欢迎作者
+                                  </div>
+                                </div>
+                                <div v-for="(item, index) in this.authors" :key="index"
+                                 style="display: flex;margin-left: -5px;;margin-bottom: 5px; padding: 10px">
+                                  <div style="
+                                    width: 20px;
+                                    display: flex;
+                                    justify-content: center;margin-right: 10px">
+                                      <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
+                                  </div>
+                                  <div style="flex-direction: column; width:190px">
+                                    <div style="display: flex; justify-content: space-between">
+                                      <div>
+                                        <el-link style="font-family: Georgia; font-size: 16px" :underline="false">
+                                          {{shortName(item['name'])}}
+                                        </el-link>
+                                      </div>
+                                      <div style="display: flex; justify-content: end">
+                                      <div style="font-size: 10px">
+                                        <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
+                                      </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; justify-content: center">
+                                      <el-progress color="#01cbc4" :show-text="false" :percentage="getPercentage(item['cites'], maxAuthorCites)"></el-progress>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -161,7 +196,8 @@
                 pic:[],
                 rowPic: 5,
                 maxCites:0,
-                maxLen:50,
+                maxAuthorCites:0,
+                maxLen:70,
                 maxNameLen:10,
                 active:0,
                 keywords: '',
@@ -304,8 +340,8 @@
                 }
               )
             },
-            getPercentage(nub){
-              return  Math.floor(nub/this.maxCites * 10000) / 100
+            getPercentage(nub, max){
+              return  Math.floor(nub/max * 10000) / 100
             },
             t(){
                 let that = this
@@ -351,10 +387,12 @@
                   res =>{
                     // console.log(res.data.hits.hits)
                     let row = []
-                    let j = 0
+                    // let j = 0
                     let papers = res.data.hits.hits
                     for (let i=0; i<papers.length; i++) {
                       let item = papers[i]._source
+                      if (i === 0)
+                        this.maxAuthorCites = item.n_citation
                       //console.log(item)
                       let temp = {}
                       temp['name'] = item.name
@@ -362,19 +400,20 @@
                       temp['id'] = item.id
                       temp['pic'] = that.getName(item.name, item.id)
 
-                      Api.getRealPic(item.id).then(
+                      /*Api.getRealPic(item.id).then(
                       res => {
                         const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
                         this.pic.push(imgUrl)
                       }
-                    )
-                      row.push(temp)
-                      j++
-                      if (j === this.rowPic){
+                    )*/
+                      //row.push(temp)
+                      that.authors.push(temp)
+                      //j++
+                      /*if (j === this.rowPic){
                         that.authors.push(row)
                         row = []
                         j = 0
-                      }
+                      }*/
                       //that.authors.push(temp)
                     }
                     console.log('authorlist', this.authors)
