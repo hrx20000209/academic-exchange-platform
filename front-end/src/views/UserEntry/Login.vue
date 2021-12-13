@@ -29,7 +29,7 @@
 
 <script>
 import Nav_with_searchBox from '../../components/nav_with_searchBox'
-import { register, userLogin } from "../../request/api"
+import { userLogin } from "../../request/api"
 
 export default {
   name: "Login",

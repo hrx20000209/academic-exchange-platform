@@ -93,9 +93,9 @@ export default {
   },
   methods: {
     checkInput() {
-      if (this.info.name !== '' && this.info.institution !== '' && this.info.email !== '') {
+      if (this.step === 0 && this.info.name !== '' && this.info.institution !== '' && this.info.email !== '') {
         this.step = 1
-      } else {
+      } else if (this.step === 1) {
         this.step = 0
       }
     },
