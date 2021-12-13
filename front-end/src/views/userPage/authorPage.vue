@@ -13,7 +13,7 @@
           <div id="editInfoRow">
             <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
           </div>
-          <div id="acountInfo">该门户已被用户
+          <div id="acountInfo" v-if="ifHaveAccount == true">该门户已被用户
             <div id="account" @click="toAccountPage">@{{ this.usrName }}</div>
             认领
             <div id="editYourInfo">点此申诉</div>
