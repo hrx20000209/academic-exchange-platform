@@ -4,7 +4,9 @@
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/authorSearchResult.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/authorSearchResult.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/UserEntry/Register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/identification.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/identification.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +92,7 @@
       <workItem from="1638748914441" duration="25385000" />
       <workItem from="1638838482149" duration="95000" />
       <workItem from="1639125956880" duration="168000" />
-      <workItem from="1639375939035" duration="4173000" />
+      <workItem from="1639375939035" duration="7402000" />
     </task>
     <servers />
   </component>

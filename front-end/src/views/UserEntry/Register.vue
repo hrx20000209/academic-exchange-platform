@@ -76,35 +76,52 @@ export default {
   },
   methods: {
     register() {
-      if (this.user.password === this.user.checkPass) {
-        register({
-          name: this.user.name,
-          password: this.user.password,
-          mailbox: this.user.email
-        }).then(res=>{
-          if (res.message === '注册成功') {
-            this.$message({
-              type: 'success',
-              message: '注册成功'
-            })
-          } else if (res.message === '用户名已存在') {
-            this.$message({
-              type: 'warning',
-              message: '用户名已存在'
-            })
-          } else {
-            this.$message({
-              type: 'warning',
-              message: '邮箱已被注册'
-            })
-          }
-        })
-      }
-      else {
+      if (this.user.name === '') {
         this.$message({
           type: 'warning',
-          message: '两次输入的密码不一致'
+          message: '用户名不能为空'
         })
+      } else if (this.user.email === '') {
+        this.$message({
+          type: 'warning',
+          message: '邮箱不能为空'
+        })
+      } else if (this.user.password === '') {
+        this.$message({
+          type: 'warning',
+          message: '密码不能为空'
+        })
+      } else {
+        if (this.user.password === this.user.checkPass) {
+          register({
+            name: this.user.name,
+            password: this.user.password,
+            mailbox: this.user.email
+          }).then(res=>{
+            if (res.message === '注册成功') {
+              this.$message({
+                type: 'success',
+                message: '注册成功'
+              })
+            } else if (res.message === '用户名已存在') {
+              this.$message({
+                type: 'warning',
+                message: '用户名已存在'
+              })
+            } else {
+              this.$message({
+                type: 'warning',
+                message: '邮箱已被注册'
+              })
+            }
+          })
+        }
+        else {
+          this.$message({
+            type: 'warning',
+            message: '两次输入的密码不一致'
+          })
+        }
       }
     }
   }

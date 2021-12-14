@@ -72,7 +72,7 @@ export default {
   components: {AuthorSearchResult, Nav_with_searchBox },
   data() {
     return {
-      user_id:localStorage.getItem('user_id'),
+      user_id: '',
       step: 1,
       success: false,
       info: {
@@ -90,6 +90,9 @@ export default {
       },
       authorList: []
     }
+  },
+  mounted() {
+    this.user_id = localStorage.getItem('user_id')
   },
   methods: {
     checkInput() {
