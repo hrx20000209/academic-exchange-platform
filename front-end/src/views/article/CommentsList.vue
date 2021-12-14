@@ -6,7 +6,7 @@
         <div class="upFrameContent">评论</div>
       </div>
       <div class="downFrame">
-        <div class="downFrameContent" v-if="this.items.length !== 0">
+        <div class="downFrameContent" v-if="this.commentsList.length !== 0">
           <div v-for="item in items" :key="item.id">
             <div>
               <el-card class="card">
@@ -53,7 +53,18 @@
             </div>
           </div>
         </div>
-        <div class="downFrameContent" v-else></div>
+        <div class="downFrameContent" v-else>
+          <div class="notAbstract" style="border: lightgrey solid 1px">
+            <div style="height:30px"></div>
+            <div style="text-align:center">
+              <img src="@/assets/无评论.png">
+            </div>
+            <div style="text-align:center">
+              无评论
+            </div>
+            <div style="height:30px"></div>
+          </div>
+        </div>
         <el-divider></el-divider>
         <div class="input-box">
           <div class="top">
@@ -151,7 +162,8 @@ export default {
           done: false
         }
       ],
-      data:''
+      data:'',
+      commentsList:[]
     }
   },
   methods: {
@@ -174,8 +186,13 @@ export default {
         .then(response=>{
           console.log('获取评论信息')
           console.log(response.data)
-
+          console.log(this.commentsList)
           //这里再赋值
+          this.commentsList = []
+          for(var i = 0; i < response.data.list; i++){
+            this.commentsList.push(response.data.list[i])
+          }
+          console.log(this.commentsList)
         })
     },
     addComment(){
