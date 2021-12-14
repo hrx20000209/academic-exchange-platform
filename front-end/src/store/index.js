@@ -24,6 +24,9 @@ export default new Vuex.Store({
     },
     setCitation(state,citation_by_year){
       this.state.citation_by_year.push(citation_by_year)
+    },
+    setSearchInput(state, input){
+      this.state.searchInput = input;
     }
   },
   actions: {
