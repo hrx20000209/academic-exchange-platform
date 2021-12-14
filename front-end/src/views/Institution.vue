@@ -183,6 +183,7 @@
       components: {Nav_with_searchBox},
       data(){
           return {
+            maxSize: 100,
             maxNameLen:10,
             pic:[],
             row_size: 6,
@@ -391,6 +392,16 @@
               that.jump2papers(params.data.id)
             })
           },
+          luanxu(arr) {
+            const len = arr.length;
+            for(let i=0;i<len;i++) {
+                let index = Math.floor(Math.random()*(len-i));
+                let tem = arr[index];
+                arr[index] = arr[len-i-1];
+                arr[len-i-1] = tem;
+            }
+            return arr
+          },
           addColor(list) {
           // console.log(list)
           let res = list
@@ -514,8 +525,11 @@
             }
           },
           fillAuthorCites(info){
-            for (let i=0; i<info.authors.length; i++) {
-              let items = info.authors[i]
+            info.authors.sort(function(a,b){return b.n_citation-a.n_citation})
+            let arr = info.authors.length>=this.maxSize?info.authors.slice(0, this.maxSize):info.authors
+            arr = this.luanxu(arr)
+            for (let i=0; i<arr.length; i++) {
+              let items = arr[i]
               let tmp = {}
               tmp['name'] = items.name
               tmp['value'] = items.n_citation
@@ -524,8 +538,11 @@
             }
           },
           fillAuthorPubs(info){
-            for (let i=0; i<info.authors.length; i++) {
-              let items = info.authors[i]
+            info.authors.sort(function(a,b){return b.n_pubs-a.n_pubs})
+            let arr = info.authors.length>=this.maxSize?info.authors.slice(0, this.maxSize):info.authors
+            arr = this.luanxu(arr)
+            for (let i=0; i<arr.length; i++) {
+              let items = arr[i]
               let tmp = {}
               tmp['name'] = items.name
               tmp['value'] = items.n_pubs
@@ -543,8 +560,11 @@
           },
           fillPaperCites(info){
             // console.log('pubs', info.pubs)
-            for (let i=0; i<info.pubs.length; i++) {
-              let items = info.pubs[i]
+            info.pubs.sort(function(a,b){return b.n_citation-a.n_citation})
+            let arr = info.pubs.length>=this.maxSize?info.pubs.slice(0, this.maxSize):info.pubs
+            arr = this.luanxu(arr)
+            for (let i=0; i<arr.length; i++) {
+              let items = arr[i]
               let tmp = {}
               tmp['name'] = items.title
               tmp['value'] = items.n_citation
