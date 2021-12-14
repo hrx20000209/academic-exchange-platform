@@ -458,7 +458,7 @@
               res=>{
                 // console.log('test id is', id)
                 let info = res.data.hits.hits[0]._source
-                // console.log('info is ', info)
+                console.log('info is ', info)
                 this.fillCites(info)
                 this.fillPaperCites(info)
                 this.fillAuthorCites(info)
