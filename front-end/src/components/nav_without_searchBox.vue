@@ -278,6 +278,7 @@ export default {
 }
 
 #otherWrapper {
+  margin-left: auto;
   width: 400px;
   font-size: 20px;
   margin-top: 18px;
