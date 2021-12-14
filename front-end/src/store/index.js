@@ -9,7 +9,8 @@ export default new Vuex.Store({
     title:'',
     abstract:'',
     references:[],
-    citation_by_year:[]
+    citation_by_year:[],
+    searchInput:'',
   },
   mutations: {
     setTitle(state,title) {
