@@ -10,7 +10,7 @@ export default new Vuex.Store({
     abstract:'',
     references:[],
     citation_by_year:[],
-    paper_id:'',
+    searchInput:'',
   },
   mutations: {
     setTitle(state,title) {
@@ -24,9 +24,6 @@ export default new Vuex.Store({
     },
     setCitation(state,citation_by_year){
       this.state.citation_by_year.push(citation_by_year)
-    },
-    setPaperId(state,paper_id){
-      this.state.paper_id = paper_id
     }
   },
   actions: {
