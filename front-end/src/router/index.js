@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../wyh_home')
+    component: () => import('../views/homepage')
   },
   {
     path: '/homepage',
