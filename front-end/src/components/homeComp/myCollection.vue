@@ -10,7 +10,7 @@
         <el-collapse-item v-for="(item,index) in CollectionList" :key=index :title=item.name :name=index
                           id="collectionTitle">
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
-            <div class="paperName" @click="toPaper(paper.paper_id)">{{ titleCase2(paper.paper_name) }}</div>
+            <div class="paperName" @click="toPaper(paper.paper_id)">{{ paper.paper_name }}</div>
             <div class="threeButton" v-if="editMode == true">
               <button class="delete" @click="deletePaperInFavo(index,i)">移出收藏夹</button>
               <button class="move" @click="movePaper(paper.paper_id,index,i)">移动到</button>
@@ -109,12 +109,12 @@ export default {
     };
   },
   methods: {
-    titleCase2(s) {
-      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
-        //return word.slice(0, 1).toUpperCase() + word.slice(1);
-        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
-      });
-    },
+    // titleCase2(s) {
+    //   return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+    //     //return word.slice(0, 1).toUpperCase() + word.slice(1);
+    //     return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+    //   });
+    // },
     toPaper(id) {
       console.log(id)
       this.$router.push({

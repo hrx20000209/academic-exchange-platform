@@ -236,6 +236,7 @@
 
 <script>
 import QRCode from 'qrcode';
+import _ from 'lodash';
 
 let Clipboard = window.navigator.clipboard;
 
