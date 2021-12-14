@@ -4,54 +4,93 @@
       <div id="leftCharacter">关注列表</div>
     </div>
     <div id="followPane">
-      <div v-for="(item,index) in followList" :key="index">
-        <div class="eachFollowAuthorPane">
-          <div class="leftPic">
-            <el-avatar :size="65" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
-              <!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
-            </el-avatar>
-          </div>
-          <div class="rightPart">
-            <div class="authorName" @click="toPage(index)">{{ item.name }}</div>
-            <div class="authorData">
-              <div class="pub">
-                发表:{{ item.n_pubs }}
-              </div>
-              <div class="citation">被引:{{ item.n_citation }}</div>
+      <div v-if="this.$props.followList.length>0">
+        <div v-for="(item,index) in followList" :key="index">
+          <div class="eachFollowAuthorPane">
+            <div class="leftPic">
+              <el-avatar :size="65" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
+                <!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
+              </el-avatar>
             </div>
-            <div class="intro">简介:{{ item.summary }}</div>
-          </div>
-          <div class="rightButton">
-            <button class="cancelFollow" @click="cancelFollow(index)">已关注</button>
+            <div class="rightPart">
+              <div class="authorName" @click="toPage(index)">{{ titleCase2(item.name) }}</div>
+              <div class="authorData">
+                <div class="pub">
+                  发表:{{ item.n_pubs }}
+                </div>
+                <div class="citation">被引:{{ item.n_citation }}</div>
+              </div>
+              <div class="intro">简介:{{ item.summary }}</div>
+            </div>
+            <div class="rightButton" v-if="ifVisitor == false">
+              <button class="cancelFollow" @click="cancelFollow(index)" v-if="stateList[index] == 1" :key="update">已关注</button>
+              <button class="cancelFollow" @click="Follow(index)" v-else :key="update">关注</button>
+            </div>
           </div>
         </div>
       </div>
+      <el-empty v-else description="还没有关注学者哦"></el-empty>
     </div>
   </div>
 </template>
 
 <script>
-import {cancelFollow} from "../../request/api";
+import {cancelFollow, followAuthor} from "../../request/api";
 
 export default {
   name: "myLikeAuthor",
-  props: ['user', 'followList'],
+  props: ['user', 'followList','stateList','ifVisitor'],
+  data(){
+    return{
+      update:1,
+    }
+  },
   methods: {
+    titleCase2(s) {
+      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+        //return word.slice(0, 1).toUpperCase() + word.slice(1);
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+      });
+    },
     toPage(index) {
       this.$router.push({
         path: '/authorPage',
         query: {
-          // id:this.followList[index].scholar_id
+          id:this.followList[index].scholar_id
         }
       })
     },
     cancelFollow(index) {
+      this.$props.stateList[index]=0;
+            this.update++;
+      console.log(this.$props.stateList[index] == 1)
       cancelFollow({
-        follow_id: this.user.user_id,
-        follower_id: this.followList[index].scholar_id
-      }).then(res=>{
+        follow_id: this.followList[index].scholar_id,
+        follower_id: localStorage.getItem('user_id')
+      }).then(res => {
+        console.log(this.$props.stateList)
         console.log(res)
+        this.$message({
+              message: '取消关注成功',
+              type: 'success'
+            });
       })
+    },
+    Follow(index){
+      this.$props.stateList[index]=1;
+            this.update++;
+      followAuthor({
+          follow_id: this.followList[index].scholar_id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log(res)
+          if (res.message == 'Follow success') {
+            this.$message({
+              message: '关注成功',
+              type: 'success'
+            });
+          }
+        })
     }
   }
 }
@@ -59,7 +98,7 @@ export default {
 
 <style scoped>
 #myLikeAuthor {
-  margin-top: 20px;
+  margin-top: 30px;
   background-color: white;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding-bottom: 10px;
@@ -106,7 +145,9 @@ export default {
   font-size: 18px;
   color: black;
 }
-
+.authorName:hover{
+  cursor: pointer;
+}
 .authorData {
   display: flex;
   font-family: "Roboto", Arial, sans-serif;
@@ -117,9 +158,10 @@ export default {
 
 .intro {
   font-family: "Roboto", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   color: #343434;
   margin-top: 6px;
+  letter-spacing: 1px;
 }
 
 .citation {
@@ -153,7 +195,7 @@ export default {
 .cancelFollow {
   display: inline;
   background-color: #ffffff;
-  border:1px solid #005abb;
+  border: 1px solid #005abb;
   font-family: "Roboto", Arial, sans-serif;
   color: #0d49dc;
   font-size: 15px;

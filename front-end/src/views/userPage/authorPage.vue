@@ -16,7 +16,7 @@
           <div id="acountInfo" v-if="ifHaveAccount == true">该门户已被用户
             <div id="account" @click="toAccountPage">@{{ this.usrName }}</div>
             认领
-            <div id="editYourInfo">点此申诉</div>
+            <div id="editYourInfo" @click="showAppeal">点此申诉</div>
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
@@ -26,7 +26,7 @@
           </div>
           <div style="margin-top: 5%">
             <el-button type="primary" icon="el-icon-circle-plus" v-if="ifFollow == false" @click="follow">关注</el-button>
-            <el-button type="primary" icon="el-icon-circle-plus" v-else @click="unfollow">已关注</el-button>
+            <el-button type="primary" v-else @click="unfollow" icon="el-icon-remove-outline">取关</el-button>
           </div>
         </div>
       </div>
@@ -82,13 +82,6 @@
           <author-relationship></author-relationship>
 
         </div>
-
-        <!--        <div id="researchPane">-->
-        <!--          <div id="researchItem">-->
-        <!--            <research-detail-item v-for="(item, index) in research" :key='index'-->
-        <!--                                  :research='item'></research-detail-item>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </div>
       <div v-else-if="activeMode == 2" class="mainPane">
         <div id="researchPane">
@@ -113,28 +106,79 @@
 
     </div>
     <div id="footer"></div>
-    <el-dialog title="修改简介" :visible.sync="dialogFormVisible" id="infoDialog">
-      <el-form :model="form">
-        <div id="directionInfo">当前的方向</div>
-        <div id="myInput">
-          <el-input v-model="form.name" autocomplete="off" type="textarea"></el-input>
+    <el-dialog
+      title="门户申诉"
+      id="infoDialog"
+      :visible.sync="appealDialog" :show-close="false">
+      <div class="describe">任何普通用户都可以认领一个未被认领的学者门户。</div>
+      <div class="describe">如果您的门户被人冒领，可以在此上传您的证件信息。</div>
+      <div class="describe">管理员将在三个工作日内对您的申诉进行审核，请耐心等待。</div>
+      <div class="appealInfo">申诉描述</div>
+      <div id="appealDetail">
+        <el-input
+          type="textarea"
+          :rows="3"
+          placeholder="请输入内容"
+          v-model="appealDetail" maxlength="100"
+
+          show-word-limit>
+        </el-input>
+      </div>
+      <div class="appealInfo">上传身份证明</div>
+      <el-upload
+        ref="appealUpload"
+        action="#"
+        list-type="picture-card"
+        :http-request="submitUpload"
+        :auto-upload="false" id="appealUpload"
+      :limit="2"
+        :on-remove="handleRemove"
+        :file-list="this.AppealfileList"
+        :on-change="appealChange"
+      :on-exceed="whenExceed">
+        <i slot="default" class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <img
+            class="el-upload-list__item-thumbnail"
+            :src="file.url" alt=""
+          >
+          <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreview(file)"
+        >
+          <i class="el-icon-zoom-in"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleDownload(file)"
+        >
+          <i class="el-icon-download"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="previewRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
         </div>
-        <div id="degreeInfo">学位</div>
-        <div id="degreeDetail">
-          <el-select v-model="form.region" placeholder="请选择学位">
-            <el-option label="计算机科学与技术 博士" value="master"></el-option>
-            <el-option label="计算机科学与技术 硕士" value="doctor"></el-option>
-            <el-option label="计算机科学与技术 学士" value="bachelor"></el-option>
-          </el-select>
-        </div>
-      </el-form>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible" append-to-body>
+        <img style="justify-content: center" :src="dialogImageUrl" alt="">
+      </el-dialog>
+
       <div slot="footer" class="dialog-footer">
+
         <div id="twoButton">
-          <button @click="dialogFormVisible = false" class="cancel">取 消</button>
-          <button @click="dialogFormVisible = false" class="confirm">确 定</button>
+          <button @click="appealDialog=false" class="cancel">取 消</button>
+          <button @click="submitUpload" class="confirm">确 定</button>
         </div>
       </div>
     </el-dialog>
+
     <!-- 发送私信弹窗 -->
     <el-dialog
       title="私信"
@@ -184,7 +228,15 @@ import InstituteBelongTo_author from "../../components/instituteBelongTo_author"
 import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
 import ESApi from "../../api/elastic search"
-import {checkIfFollow, followAuthor, getdata, getScolarUserInfo, undoFollow} from "../../request/api";
+import {
+  checkIfFollow,
+  followAuthor,
+  getdata,
+  getScolarUserInfo,
+  undoFollow,
+  uploadAppealImage,
+  uploadImage
+} from "../../request/api";
 
 export default {
   name: "authorPage",
@@ -208,7 +260,13 @@ export default {
   },
   data() {
     return {
-      usrName:'',
+      AppealfileList:[],
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+      appealDetail: '',
+      imgRaw: '',
+      usrName: '',
       ifHaveAccount: false,
       ifFollow: false,
       cutTotal: 0,
@@ -219,7 +277,9 @@ export default {
       datas: [],
       linkmes: [],
       ELres: [],
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: "http://139.9.132.83:8000/user/getImage?author_id=" + this.$route.query.id,
+      add_pic_url: 'http://139.9.132.83:8000/user/submitApeal?user_id=',
+      appealDialog: false,
       user: {
         // name: '谭火彬',
         // userDegree: '计算机科学与技术 博士学位',
@@ -242,6 +302,7 @@ export default {
         resource: '',
         desc: ''
       },
+      fileList: [],
       formLabelWidth: '100px',
       activeMode: 1,
       research: [
@@ -301,6 +362,86 @@ export default {
     // this.getdataSource(this.id)
   },
   methods: {
+    appealChange(file,fileList){
+      console.log(file)
+      console.log(fileList)
+      this.AppealfileList = fileList
+    },
+    handleRemove(file,fileList) {
+      console.log(file);
+      console.log(fileList)
+      this.AppealfileList = fileList
+    },
+    previewRemove(file){
+      this.$refs.appealUpload.handleRemove(file)
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 < 500;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 500kB!');
+      }
+      return isJPG && isLt2M;
+    },
+    submitUpload() {
+      let formDatas = new FormData()
+      formDatas.append('user_id', localStorage.getItem('user_id'))
+      formDatas.append('scolar_id', this.$route.query.id)
+      if(this.AppealfileList.length<1){
+        this.$message.error('至少上传一张图片');
+      }else{
+        formDatas.append('pic0', this.AppealfileList[0].raw)
+        if(this.AppealfileList.length>1){
+          formDatas.append('pic1',this.AppealfileList[1].raw)
+        }else{
+          formDatas.append('pic1','kong')
+        }
+        formDatas.append('describe',this.appealDetail)
+        console.log(formDatas)
+        uploadAppealImage(formDatas).then(res => {
+        console.log(res)
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+      })
+      }
+
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    test(file) {
+      console.log(file)
+      this.imgRaw = file.raw
+    },
+    handleSuccess(response, file, fileList) {
+      console.log(response);
+      console.log(this.add_pic_url);
+      // this.success = response.data.message;
+      // this.dialogVisible = true;
+    },
+    showAppeal() {
+      this.appealDialog = true
+    },
+    closeAppeal() {
+      this.appealDialog = false
+    },
+    confirmAppeal() {
+      this.appealDialog = false
+    },
     toAccountPage() {
       this.$router.push({
         path: '/userHome',
@@ -313,6 +454,7 @@ export default {
       getScolarUserInfo({
         author_id: this.$route.query.id,
       }).then(res => {
+        console.log('scolar')
         console.log(res)
         this.ifHaveAccount = res.ifHaveAccount
         this.userInfo = res.user
@@ -327,7 +469,18 @@ export default {
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
           console.log(res)
+          this.checkFollow()
+          if (res.message == 'Follow success') {
+            this.$message({
+              message: '关注成功',
+              type: 'success'
+            });
+          }
         })
+      } else {
+        this.$alert('请先登录', '提示', {
+          confirmButtonText: '确定',
+        });
       }
     },
     checkFollow() {
@@ -336,7 +489,15 @@ export default {
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
+          console.log('check')
           console.log(res)
+          if(res.message == 'false'){
+            this.ifFollow = false
+          }else if(res.message == 'true'){
+            this.ifFollow = true
+          }else {
+            this.ifFollow = false
+          }
         })
       }
     },
@@ -440,6 +601,9 @@ export default {
         })
       }
     },
+    whenExceed(){
+       this.$message.error('最多只能上传两张图片');
+    }
   }
 }
 </script>
@@ -474,6 +638,28 @@ export default {
 
 #leftPicDetail {
   display: inline-flex;
+}
+
+/deep/ .el-upload-dragger {
+  background-color: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 360px;
+  height: 130px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/deep/ .el-upload__tip {
+  font-size: 13px;
+  color: #606266;
+  margin-top: 7px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .confirm {
@@ -574,10 +760,15 @@ export default {
 
 #infoDialog {
   color: #343434;
-  width: 1000px;
   margin-left: auto;
   margin-right: auto;
 
+}
+
+.upload-demo {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #directionInfo {
@@ -798,5 +989,37 @@ export default {
 
 #account:hover {
   cursor: pointer;
+}
+
+#infoDialog {
+  color: #343434;
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.describe {
+  color: #282828;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 25px;
+  font-weight: bold;
+}
+
+.appealInfo {
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 15px;
+  color: black;
+}
+
+#appealDetail {
+  margin-top: 15px;
+}
+
+#appealUpload {
+  margin-top: 15px;
 }
 </style>

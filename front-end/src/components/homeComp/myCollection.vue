@@ -2,8 +2,8 @@
   <div id="myCollection">
     <div id="topHead">
       <div id="leftCharacter">收藏列表</div>
-      <button class="rightButton" v-if="editMode == false" id="beginEdit" @click="toEdit">整理</button>
-      <button class="rightButton" v-else id="endEdit" @click="endEdit">完成</button>
+      <button class="rightButton" v-if="editMode == false&&ifVisitor==false" id="beginEdit" @click="toEdit">整理</button>
+      <button class="rightButton" v-else-if="ifVisitor==false" id="endEdit" @click="endEdit">完成</button>
     </div>
     <div id="mainPane">
       <el-collapse v-model="activeName" accordion>
@@ -19,7 +19,7 @@
         </el-collapse-item>
       </el-collapse>
       <div v-if="CollectionList.length == 0">
-        <el-empty description="你还没有收藏夹噢，新建一个试试吧"></el-empty>
+        <el-empty description="还没有收藏夹噢"></el-empty>
       </div>
       <!--      <div id="empty"></div>-->
       <div id="bottomButton">
@@ -93,7 +93,7 @@ import {deleFavo, delePaperInFavo, moveFavo, uploadNewFavo} from "../../request/
 
 export default {
   name: "myCollection",
-  props: ['user', 'CollectionList'],
+  props: ['user', 'CollectionList','ifVisitor'],
   data() {
     return {
       activeName: '1',

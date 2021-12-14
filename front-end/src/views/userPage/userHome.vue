@@ -72,7 +72,7 @@
         <div id="rightMainPane">
           <div v-if="activeMode === 1">
             <!--            <institute-belong-to></institute-belong-to>-->
-            <follow-same></follow-same>
+            <follow-same :follow-list="someFollows"></follow-same>
           </div>
         </div>
       </div>
@@ -93,10 +93,10 @@
         </div>
       </div>
       <div v-else-if="activeMode ===  6" class="mainPane">
-        <my-like-author :user="user" :follow-list="followList"></my-like-author>
+        <my-like-author :user="user" :follow-list="followList" :state-list="stateList" :if-visitor="ifVisitor"></my-like-author>
       </div>
       <div v-else-if="activeMode ===  7">
-        <my-collection :user="user" :collection-list="collectionList"></my-collection>
+        <my-collection :user="user" :collection-list="collectionList" :if-visitor = "ifVisitor"></my-collection>
         <div style="display: block">
           <div style="height: 300px;width: 800px;display: block"></div>
         </div>
@@ -169,32 +169,32 @@
       </div>
     </el-dialog>
     <!-- 发送私信弹窗 -->
-    <el-dialog
-      title="私信"
-      :visible.sync="dialogLetterVisible"
-      width="35%"
-      :before-close="handleClose">
-      <div class="letter-body">
-        <div>
-          <div class="letter-send-box">发送给：</div>
-          <el-input v-model="user.userName" disabled></el-input>
-          <div class="letter-send-box">私信内容：</div>
-          <el-input
-            type="textarea"
-            placeholder="请输入内容"
-            v-model="text"
-            maxlength="250"
-            rows="10"
-            resize="none"
-            show-word-limit
-          >
-          </el-input>
-        </div>
-        <div class="letter-btn-box">
-          <el-button type="primary" @click="sendLetter">发 送</el-button>
-        </div>
-      </div>
-    </el-dialog>
+<!--    <el-dialog-->
+<!--      title="私信"-->
+<!--      :visible.sync="dialogLetterVisible"-->
+<!--      width="35%"-->
+<!--      :before-close="handleClose">-->
+<!--      <div class="letter-body">-->
+<!--        <div>-->
+<!--          <div class="letter-send-box">发送给：</div>-->
+<!--          <el-input v-model="user.userName" disabled></el-input>-->
+<!--          <div class="letter-send-box">私信内容：</div>-->
+<!--          <el-input-->
+<!--            type="textarea"-->
+<!--            placeholder="请输入内容"-->
+<!--            v-model="text"-->
+<!--            maxlength="250"-->
+<!--            rows="10"-->
+<!--            resize="none"-->
+<!--            show-word-limit-->
+<!--          >-->
+<!--          </el-input>-->
+<!--        </div>-->
+<!--        <div class="letter-btn-box">-->
+<!--          <el-button type="primary" @click="sendLetter">发 送</el-button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
@@ -240,6 +240,8 @@ export default {
   },
   data() {
     return {
+      someFollows:[],
+      stateList:[],
       ifAuthor: false,
       ifVisitor:true,
       ifNUll: false,
@@ -310,7 +312,7 @@ export default {
   mounted() {
     this.checkVisitorMode()
     this.getUserInformation(this.$route.query.id)
-    // this.getFollowList()
+    this.getFollowList()
     this.getFavo()
     console.log(this.ifVisitor == false)
   },
@@ -322,15 +324,19 @@ export default {
     },
     getFollowList() {
       getFollow({
-        user_id: this.user.user_id
+        user_id: this.$route.query.id
       }).then(res => {
-        console.log("getfollow:" + res)
-        this.followList = res.followList
+        console.log("getfollow:")
+        console.log(res)
+        this.followList = res
+        this.someFollows = this.followList.slice(0,5)
+        this.stateList = new Array(this.followList.length).fill(1)
+        console.log(this.stateList)
       })
     },
     getFavo() {
       getFavo({
-        user_id: localStorage.getItem('user_id')
+        user_id: this.$route.query.id
       }).then(res => {
         console.log(1)
         console.log(res)
