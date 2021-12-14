@@ -139,6 +139,12 @@ export default {
                 type: 'success',
                 message: '认证成功'
               })
+              this.$router.push({
+                path: 'userHome',
+                query: {
+                  id: this.user_id
+                }
+              })
             }
             this.dialogVisible = false
           })
