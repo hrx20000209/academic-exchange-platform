@@ -33,7 +33,7 @@
                 {{item.year}}
               </div>
               <div style="margin-bottom: 10px;font-size: 16.5px;overflow: hidden">
-                <div class="author" v-for="(item2) in references[index].authors" :key="item2">{{item2.name}}</div>
+                <div class="author" v-for="(item2) in references[index].authors" :key="item2" @click="toAuthor(item2.id)">{{item2.name}}</div>
               </div>
               <div style="color: dimgrey;font-size: 15px;margin-bottom: 10px">{{item.n_citation}} Citations</div>
               <div style="height: 30px">
@@ -140,6 +140,15 @@ export default {
           console.log(this.references.length)
         })
       }
+    },
+    toAuthor(id){
+      this.$router.push({
+          path: '/authorPage',
+          query: {
+            id: id
+          }
+        }
+      )
     },
   }
 }

@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/homepage')
+    component: () => import('../wyh_home')
   },
   {
     path: '/homepage',
@@ -106,7 +106,7 @@ const routes = [
     component: () => import('../views/userPage/userHome')
   },
   {
-    path:'/Institution',
+    path:'/Institution/:id',
     name: 'Institution',
     component: () => import('../views/Institution')
   },
@@ -145,16 +145,15 @@ const router = new VueRouter({
 
 export default router
 router.beforeEach((to, from, next) => {
-  // if (to.path === '/userHome') {
-  //   const state = localStorage.getItem('ifLogin')
-  //   if(state == 1){
-  //     next()
-  //   }else {
-  //     next('/login')
-  //     this.$message.error('请先登录！');
-  //   }
-  // }else {
-  //   next()
-  // }
-  next()
+  if (to.path === '/userHome') {
+    const state = localStorage.getItem('ifLogin')
+    if(state == 1){
+      next()
+    }else {
+      next('/login')
+      this.$message.error('请先登录！');
+    }
+  }else {
+    next()
+  }
 })
