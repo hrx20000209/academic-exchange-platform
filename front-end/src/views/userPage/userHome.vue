@@ -240,6 +240,7 @@ export default {
   },
   data() {
     return {
+      IMGSrc:[],
       someFollows:[],
       stateList:[],
       ifAuthor: false,
@@ -265,6 +266,7 @@ export default {
         degree: ''
       },
       add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=' + this.$route.query.id,
+      oriSrc:'http://139.9.132.83:8000/user/postImage?user_id=',
       get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id=' + this.$route.query.id,
       formLabelWidth: '100px',
       activeMode: 1,
@@ -331,6 +333,9 @@ export default {
         this.followList = res
         this.someFollows = this.followList.slice(0,5)
         this.stateList = new Array(this.followList.length).fill(1)
+        for(let i=0;i<this.followList.length;i++){
+          this.IMGSrc.push(this.oriSrc+this.followList[i].id)
+        }
         console.log(this.stateList)
       })
     },

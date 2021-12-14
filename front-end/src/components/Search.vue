@@ -1,6 +1,6 @@
 <template>
-  <div class="search" @keyup="keyboardEvent" tabindex="-1">
-    <nav_with_search-box></nav_with_search-box>
+  <div id="search" @keyup="keyboardEvent" tabindex="-1">
+    <nav_without_search-box></nav_without_search-box>
     <!--    <div class="searchbar">-->
     <!--      <el-autocomplete class="searchInput" v-model="searchInput" placeholder="请输入搜索关键词"-->
     <!--                       :fetch-suggestions="querySearch" @select="search" @keyup.enter="search"></el-autocomplete>-->
@@ -238,7 +238,7 @@
 <script>
 import QRCode from 'qrcode';
 import _ from 'lodash';
-import Nav_with_searchBox from "./nav_with_searchBox";
+import Nav_without_searchBox from "./nav_without_searchBox";
 
 let Clipboard = window.navigator.clipboard;
 
