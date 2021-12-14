@@ -46,7 +46,7 @@ export default {
       rank: ['本科生', '研究生', '学士', '硕士', '博士', '博士后'],
       value: '',
       subNum: this.$props.subindex,
-      rankNum: this.$props.rankindex
+      rankNum: this.$props.rankindex,
     }
   },
   mounted() {

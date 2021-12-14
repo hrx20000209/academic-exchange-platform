@@ -7,8 +7,10 @@
     </div>
     <div id="mainPane">
       <el-collapse v-model="activeName" accordion>
-        <el-collapse-item v-for="(item,index) in CollectionList" :key=index :title=item.name :name=index
+        <el-collapse-item v-for="(item,index) in CollectionList" :key=index :name=index
                           id="collectionTitle">
+          <template slot="title">
+            <i class="el-icon-s-order" style="margin-right: 10px"></i><div>{{ item.name }}</div></template>
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
             <div class="paperName" @click="toPaper(paper.paper_id)">{{ titleCase2(paper.paper_name) }}</div>
             <div class="threeButton" v-if="editMode == true">
@@ -93,7 +95,7 @@ import {deleFavo, delePaperInFavo, moveFavo, uploadNewFavo} from "../../request/
 
 export default {
   name: "myCollection",
-  props: ['user', 'CollectionList','ifVisitor'],
+  props: ['user', 'CollectionList','ifVisitor','imgSrcList'],
   data() {
     return {
       activeName: '1',

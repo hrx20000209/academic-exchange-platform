@@ -5,7 +5,7 @@
     </div>
     <div id="mainPane">
       <div class="onePossible" v-for="(item,index) in followList" :key="index">
-        <el-avatar :size="40" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+        <el-avatar :size="40" :src=oriSrc+item.scholar_id></el-avatar>
         <div class="idAndNumber">
           <div class="idName">{{ titleCase2(item.name) }}</div>
           <div class="NumberInfor">发表: {{ item.n_pubs }} 被引: {{ item.n_citation }}</div>
@@ -27,7 +27,8 @@ export default {
   props: ['followList'],
   data() {
     return {
-      follows: []
+      follows: [],
+      oriSrc:'http://139.9.132.83:8000/user/getImage?author_id=',
     }
   },
   methods: {
