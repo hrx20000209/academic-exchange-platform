@@ -28,6 +28,9 @@ Vue.use(echarts)
 Vue.use(BubbleChat)
 Vue.config.productionTip = false
 
+require('es6-promise').polyfill()
+require('es6-promise/auto')
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
