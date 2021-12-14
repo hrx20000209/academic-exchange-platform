@@ -20,7 +20,7 @@
     <div id="searchWrapper">
       <div id="searchBar">
         <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-button slot="append" icon="el-icon-search" @click="toSearch" @keyup.enter="toSearch"></el-button>
         </el-input>
       </div>
     </div>
@@ -127,6 +127,10 @@ export default {
     };
   },
   methods: {
+    toSearch(){
+      this.$store.commit('setSearchInput',this.input2)
+      this.$router.push('/search')
+    },
     changePassword() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
