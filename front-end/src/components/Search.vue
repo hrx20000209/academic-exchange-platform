@@ -244,7 +244,7 @@ let Clipboard = window.navigator.clipboard;
 
 export default {
   name: "search",
-  components: {Nav_with_searchBox},
+  components: {Nav_without_searchBox},
   data() {
     return {
       BOOLS: {
