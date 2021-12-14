@@ -84,7 +84,7 @@
                             </div>
                             <div style="display: flex; justify-content: center; flex-wrap:wrap;width: 100px">
                               <div style="font-family: Gabriola; font-size: 16px;">
-                                {{item2.name}}
+                                {{shortName(item2.name)}}
                               </div>
                             </div>
                           </div>
@@ -183,6 +183,7 @@
       components: {Nav_with_searchBox},
       data(){
           return {
+            maxNameLen:10,
             pic:[],
             row_size: 6,
             InstitutionName:'',
@@ -531,6 +532,14 @@
               tmp['id'] = items.id
               this.AuthorPapers.push(tmp)
             }
+          },
+          shortName(name) {
+            let res
+            if (name.length>this.maxNameLen)
+              res = name.slice(0, this.maxNameLen) + '...'
+            else
+              res = name
+            return res
           },
           fillPaperCites(info){
             // console.log('pubs', info.pubs)

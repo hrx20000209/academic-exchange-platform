@@ -131,6 +131,7 @@
                                     </div>
                                   </el-tab-pane>
                                 </el-tabs>
+                                <div v-if="activeName === 'fourth'" style="background-color: #f2f4f7; margin-left: -100px;width: 850px; height: 350px"></div>
                                 </div>
                             </div>
                               </div>
@@ -224,7 +225,7 @@
         },
         methods:{
             handleClick(tab, event) {
-              console.log(tab, event);
+              console.log(this.activeName);
             },
             load3D(){
               const that = this
@@ -474,7 +475,6 @@
 .MainArea{
     background-color: #f2f4f7;
     width: 100%;
-    min-height: 1000px;
 }
 .myStart {
 

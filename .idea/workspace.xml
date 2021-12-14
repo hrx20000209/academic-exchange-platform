@@ -4,6 +4,7 @@
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/Institution.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Institution.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/homepage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/homepage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +95,9 @@
       <workItem from="1639101041542" duration="20268000" />
       <workItem from="1639366657618" duration="244000" />
       <workItem from="1639374938580" duration="4174000" />
+      <workItem from="1639393076130" duration="3850000" />
+      <workItem from="1639447209939" duration="22000" />
+      <workItem from="1639474930193" duration="1221000" />
     </task>
     <servers />
   </component>
@@ -111,5 +115,11 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="368" y="36" key="FileChooserDialogImpl" timestamp="1639447229452">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="368" y="36" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1639447229452" />
   </component>
 </project>
