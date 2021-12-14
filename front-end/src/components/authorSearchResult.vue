@@ -95,12 +95,13 @@ export default {
       checkAuthor({
         author_id: this.author._source.id
       }).then(response => {
+        console.log(this.user_id)
+        console.log(response)
         if (response.ifHaveAccount) {
           this.$message({
             type: 'warning',
             message: '该门户已被认证'
           })
-          console.log(response)
         } else {
           this.dialogVisible = true
         }
@@ -112,6 +113,7 @@ export default {
         user_id: this.user_id,
         author_id: this.author._source.id
       }).then(response => {
+        console.log(response)
         if (response.message == 'Identify success') {
           this.$message({
             type: 'success',
