@@ -19,6 +19,7 @@
     "echarts": "^5.2.2",
     "echarts-gl": "^2.0.8",
     "element-ui": "^2.15.6",
+    "qrcode": "^1.5.0",
     "store": "^2.0.12",
     "v-clipboard": "^2.2.3",
     "vue": "^2.5.2",
