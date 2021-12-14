@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5dc0e3db-36f2-4cc8-86b4-ef2a318bd1c8" name="Default Changelist" comment="">
+    <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/followSame.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/followSame.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myCollection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/homeComp/myLikeAuthor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/homeComp/myLikeAuthor.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/authorPage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/userPage/userHome.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,15 +32,13 @@
   </component>
   <component name="ProjectId" id="20litnh8ArBu26cje5f8gD5eVvK" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="16.13.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="16.11.12" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -63,54 +58,13 @@
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="" />
-      <created>1636625794339</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1636625794339</updated>
-      <workItem from="1636625822404" duration="3835000" />
-      <workItem from="1636714184270" duration="807000" />
-      <workItem from="1636715009488" duration="12160000" />
-      <workItem from="1636801087545" duration="5305000" />
-      <workItem from="1636868245359" duration="12475000" />
-      <workItem from="1636893464720" duration="1128000" />
-      <workItem from="1636934534007" duration="19346000" />
-      <workItem from="1637321615919" duration="1399000" />
-      <workItem from="1637389141725" duration="1401000" />
-      <workItem from="1637539564571" duration="26393000" />
-      <workItem from="1637665331747" duration="1909000" />
-      <workItem from="1637891633267" duration="6949000" />
-      <workItem from="1637913053400" duration="5374000" />
-      <workItem from="1638068763684" duration="15220000" />
-      <workItem from="1638359920351" duration="7918000" />
-      <workItem from="1638426814416" duration="30293000" />
-      <workItem from="1638714085114" duration="609000" />
-      <workItem from="1638748914441" duration="25385000" />
-      <workItem from="1638838482149" duration="95000" />
-      <workItem from="1639125956880" duration="168000" />
-      <workItem from="1639375939035" duration="3574000" />
-    </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

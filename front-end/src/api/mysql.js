@@ -2,7 +2,7 @@ import axios from "axios"
 
 const api = {
   getRealPic: async (id) =>{
-    let url = 'http://139.9.132.83:8000/user/getImage?author_id=' + id
+    let url = 'http://139.9.132.83:8000/user/getImage?user_id=' + id
     const res = await axios({
       url: url,
       responseType: 'arraybuffer',
