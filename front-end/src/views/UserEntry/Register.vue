@@ -128,6 +128,7 @@ export default {
 }
 
 .middle-box {
+  box-shadow: 0 0 30px 10px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;

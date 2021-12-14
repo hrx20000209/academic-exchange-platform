@@ -10,7 +10,7 @@ export default {
   name: "wyh_home",
   components: {Nav_with_searchBox},
   mounted() {
-    localStorage.setItem('ifLogin',0)
+    // localStorage.setItem('ifLogin',0)
   }
 }
 </script>

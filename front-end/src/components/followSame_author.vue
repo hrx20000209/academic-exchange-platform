@@ -52,7 +52,7 @@ export default {
   background-color: white;
   border: 1px solid #dedede;
   border-radius: 2px;
-  margin-top: 20px;
+  margin-top: 30px;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
 }
 
@@ -86,6 +86,10 @@ export default {
   font-weight: bold;
   font-size: 18px;
   color: #343434;
+}
+.rightButton{
+  margin-left: auto;
+  margin-right: 20px;
 }
 .NumberInfor{
   font-family: "Microsoft YaHei";

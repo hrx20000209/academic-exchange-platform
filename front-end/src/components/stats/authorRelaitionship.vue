@@ -4,30 +4,40 @@
       <div id="leftCharacter">专家关系网络</div>
     </div>
     <div id="mainPane">
-      <div style="width:600px;height:500px" ref="chart"></div>
+      <div style="width:1000px;height:500px" ref="chart"></div>
     </div>
 
   </div>
 </template>
 
 <script>
+import {getdata} from "../../request/api";
+
 export default {
   name: "authorRelationship",
   data() {
     return {
       datas: [{
-        name: '谭火彬',
+        name: "jitendra malik",
         draggable: true,
         category: 0,
         symbolSize: 50,
         label:{
           show:true
-        }
+        },
+        state:0
       },
         {
-          name: '一篇论文',
+          name: 'automatic symbolic traffic scene analysis using belief networks',
           category: 1,
-          symbolSize: 20
+          num: "5EF39403",
+          symbolSize: 20,
+          state:1,
+          // itemStyle: {
+          //         normal: {
+          //           color: '#000000'
+          //         }
+          // }
         },
         {
           name: '潘海霞',
@@ -73,71 +83,95 @@ export default {
       ],
       linkmes: [
         {
-          source: '谭火彬',
-          target: '一篇论文'
+          source: "jitendra malik",
+          target: "automatic symbolic traffic scene analysis using belief networks",
+          state:4
 
         },
         {
           source: '谭火彬',
           target: '另一篇论文',
+          state:4
         },
         {
           source: '一篇论文',
           target: '潘海霞',
+          state:4
         },
         {
           source: '一篇论文',
           target: '梁灏然',
+          state:4
         },
         {
           source: '一篇论文',
           target: '黄润希',
+          state:4
         },
         {
           source: '谭火彬',
           target: '另一篇论文',
+          state:4
         },
         {
           source: '另一篇论文',
           target: 'AAAA',
+          state:4
         },
         {
           source: '另一篇论文',
           target: '张洁',
+          state:4
         },
         {
           source: '另一篇论文',
           target: '黄文浩',
           value: 'DNA',
+          state:4
         }, {
           source: '另一篇论文',
-          target: '想名字好难'
+          target: '想名字好难',
+          state:4
 
         }, {
           source: '另一篇论文',
     target:'黄润希',
+          state:4
   }
       ]
     }
   },
   methods: {
+    getdataSource() {
+      getdata({
+        author_id: this.$route.query.id
+      }).then(res => {
+        console.log(res)
+        this.datas = res.datas
+        this.linkmes = res.linkmes
+        this.initCharts();
+      })
+    },
     initCharts() {
       // 基于准备好的dom，初始化echarts实例
       let relaChart = this.$echarts.init(this.$refs.chart);
+      // console.log(this.$props.data)
+      // console.log(this.$props.linkm)
       // 绘制图表
       relaChart.setOption({
         backgroundColor: 'transparent',
         tooltip: {},
-        animationDurationUpdate: 1500,
+        animationDurationUpdate: 15000,
         animationEasingUpdate: 'quinticInOut',
         series: [
           {
-            symbolSize:10,
+            symbolSize:20,
             type: 'graph',
             layout: 'force',
             force: {
-              repulsion: 1000,
-              edgeLength: 100
+                // gravity: 0  //引力
+                edgeLength: 100, //默认距离
+                repulsion: 200 //斥力
             },
             focusNodeAdjacency: true,
             roam: true,
@@ -146,15 +180,16 @@ export default {
             },
             data: this.datas,
             links: this.linkmes,
+            // data:this.$props.data,
+            // links: this.$props.linkm,
             lineStyle: {
               color: "source",
                 width: 1,
-                curveness: 0.3
             },
             categories: [
-              {name: '0'},
-              {name: '1'},
-              {name: '2'}
+              // {name: '0'},
+              // {name: '1'},
+              // {name: '2'}
             ],
             itemStyle: {
               borderColor: 'black',
@@ -162,6 +197,10 @@ export default {
                 shadowBlur: 10,
                 shadowColor: 'rgba(1,1,1,0.5)',
               color: 'rgb(37,86,165)'
+              //               borderColor: "#fff",
+              // borderWidth: 1,
+              // shadowBlur: 10,
+              // shadowColor: "rgba(0, 0, 0, 0.3)",
             },
             emphasis: {
               lineStyle:{
@@ -173,20 +212,34 @@ export default {
       })
 
       relaChart.on('click', (param) => {
-        this.$router.push({
-            path: '/wyhTest',
+        console.log(param)
+        let state = param.data.state
+        let id = param.data.num
+        if(state == 2){
+          this.$router.push({
+            path: '/authorPage',
             query: {
-              name: param.name
+             id: id
             }
           }
         )
+        this.$router.go(0)
+        }
+        // this.$router.push({
+        //     path: '/wyhTest',
+        //     query: {
+        //       name: param.name
+        //     }
+        //   }
+        // )
       })
 
     },
   },
   //一加载页面就调用
   mounted() {
-    this.initCharts();
+    this.getdataSource()
+
   }
 }
 </script>
@@ -196,18 +249,18 @@ export default {
   background-color: white;
 box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 #leftCharacter {
   width: 400px;
   padding: 10px;
-  font-family: "Microsoft YaHe";
+  font-family: "Roboto", Arial, sans-serif;
   margin-left: 20px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
-  color: #8e8e8e;
+  color: #525252;
 }
 
 #topHead {

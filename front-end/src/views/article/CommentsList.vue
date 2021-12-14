@@ -58,14 +58,14 @@
         <div class="input-box">
           <div class="top">
             <div>
-              <el-avatar shape="circle" :size="50" :src="user.head"></el-avatar>
+              <el-avatar shape="circle" :size="50" :src="head"></el-avatar>
             </div>
             <div style="width: 100%">
               <div class="author-name">
-                {{ user.name }}
+                {{ name }}
               </div>
               <div class="description-box">
-                {{ user.description }}
+                {{ description }}
 
               </div>
             </div>
@@ -115,12 +115,10 @@ export default {
       editor: null,
       editorData: '',
       cnt: 3,
-      user: {
-        user_id:'',
-        name: 'HRX',
-        head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-        description: '一个苦逼的前端'
-      },
+      user_id:'',
+      name: 'HRX',
+      head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      description: '一个苦逼的前端',
       items: [
         {
           author: '作者1',
@@ -158,17 +156,18 @@ export default {
   },
   methods: {
     getCommentsList(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log(this.user_id)
       console.log('进入获取评论');
       console.log(this.$route.params.paper_id)
       this.axios({
         method: "get",
         // url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$store.state.paper_id,
         url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$route.params.paper_id,
-        // url:"http://192.168.206.1:8000/user/GetFavorite",
         data:{
           // commented_id: this.$store.state.paper_id
           commented_id:this.$route.params.paper_id,
-          like_id:'1',
+          like_id:this.user_id,
         },
         // timeout:1000,
       })
@@ -180,6 +179,8 @@ export default {
         })
     },
     addComment(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log(this.user_id)
       const data = this.editor.txt.html()
       console.log(data)
       this.axios({
@@ -187,7 +188,7 @@ export default {
         url:"http://139.9.132.83:8000/communicate/comment_add",
         data:{
           commented_id: '7C4C2B3B', //论文id
-          commentator_id: '1',      //评论人id
+          commentator_id: this.user_id,      //评论人id
           comment_content: data,    //评论内容
         },
         // timeout:1000,
@@ -198,6 +199,8 @@ export default {
         })
     },
     addLike(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log(this.user_id)
       this.axios({
         method: "post",
         url: "http://139.9.132.83:8000/communicate/like",
@@ -211,6 +214,8 @@ export default {
         })
     },
     cancelLike(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log(this.user_id)
       this.axios({
         method: "post",
         url: "http://139.9.132.83:8000/communicate/cancellike",

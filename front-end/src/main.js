@@ -14,8 +14,9 @@ import VueAxios from "vue-axios"
 import store from './store'
 import BubbleChat from "vue-bubble-chat"
 
+import Clipboard from 'v-clipboard'
 
-
+Vue.use(Clipboard)
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 

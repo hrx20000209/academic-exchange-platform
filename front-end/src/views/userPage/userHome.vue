@@ -26,7 +26,8 @@
           <!--            <el-button type="primary" icon="el-icon-circle-plus">进入认证门户</el-button>-->
           <!--          </div>-->
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage">进入认证门户</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">进入认证门户</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else>申请认证</el-button>
           </div>
         </div>
       </div>
@@ -34,12 +35,12 @@
         <div id="centerSomeTabs">
           <div class="usrTabsChosen" v-if="activeMode === 1">概述</div>
           <div class="usrTabsUnChosen" v-else @click="selectActiveMode(1)">概述</div>
-          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
-          <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>
+<!--          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>-->
+<!--          &lt;!&ndash;          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>&ndash;&gt;-->
+<!--          &lt;!&ndash;          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>&ndash;&gt;-->
+<!--          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>-->
+<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
           <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
@@ -55,17 +56,17 @@
           <div id="editUsrInfoPane">
             <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum" :rankindex="rankNum"></edit-usr-info>
             <about-me :user="this.user"></about-me>
-            <stats-overview :user="user"></stats-overview>
-            <div id="researchLine">
-              <div id="researchInfo">研究项目</div>
-              <el-divider></el-divider>
-            </div>
-            <research-overview></research-overview>
+<!--            <stats-overview :user="user"></stats-overview>-->
+<!--            <div id="researchLine">-->
+<!--              <div id="researchInfo">研究项目</div>-->
+<!--              <el-divider></el-divider>-->
+<!--            </div>-->
+<!--            <research-overview></research-overview>-->
           </div>
         </div>
         <div id="rightMainPane">
           <div v-if="activeMode === 1">
-            <institute-belong-to></institute-belong-to>
+<!--            <institute-belong-to></institute-belong-to>-->
             <follow-same></follow-same>
           </div>
         </div>
@@ -205,7 +206,7 @@ import StatsDigitTotal from "../../components/statsDigitTotal";
 import CiteAndPublish from "../../components/stats/citeAndPublish";
 import AuthorRelationship from "../../components/stats/authorRelaitionship";
 import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
-import {getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
+import {getFavo, getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
 import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 import MyCollection from "../../components/homeComp/myCollection";
 import axios from "axios";
@@ -226,10 +227,12 @@ export default {
     StatsOverview,
     AboutMe,
     editUsrInfo,
-    Nav_with_searchBox
+    Nav_with_searchBox,
+    favo_empty:false
   },
   data() {
     return {
+      ifAuthor:false,
       ifNUll: false,
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {},
@@ -310,7 +313,7 @@ export default {
         degree: ''
       },
       add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id='+localStorage.getItem('user_id'),
-      get_pic_url: 'http://139.9.132.83:8000/user/getImage?user_id='+localStorage.getItem('user_id'),
+      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id='+localStorage.getItem('user_id'),
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
@@ -402,6 +405,7 @@ export default {
   mounted() {
     this.getUserInformation(localStorage.getItem('user_id'))
     // this.getFollowList()
+    this.getFavo()
   },
   methods: {
     getFollowList() {
@@ -410,6 +414,14 @@ export default {
       }).then(res => {
         console.log("getfollow:" + res)
         this.followList = res.followList
+      })
+    },
+    getFavo() {
+      getFavo({
+        user_id: localStorage.getItem('user_id')
+      }).then(res => {
+        console.log(res)
+        this.collectionList = res.favorites
       })
     },
     updateInfor() {
@@ -513,6 +525,11 @@ export default {
         this.activeMode = 7;
       }
     },
+    toApply(){
+      this.$router.push({
+        path:'/identification'
+      })
+    },
     submitUpload() {
       this.loading = true
       console.log(this.user.user_id)
@@ -526,7 +543,6 @@ export default {
         console.log(res)
         this.needUpdate++
         this.loading =false
-        this.ifImageUploadVisible = false
          this.$message({
           message: '上传成功',
           type: 'success'
@@ -539,7 +555,8 @@ export default {
         user_id: localStorage.getItem('user_id')
       }).then(res => {
         console.log(res)
-        this.user = res.user
+        this.user = res.data
+        this.ifAuthor = res.ifAuthor
         // this.add_pic_url = this.add_pic_url + this.user.user_id
         // this.get_pic_url = this.get_pic_url + this.user.user_id
         this.str = this.user.degree.split(' ')
@@ -553,7 +570,7 @@ export default {
       this.$router.push({
         path: '/authorPage',
         query: {
-          // id:this.user.scholarID
+          id:'7F5944CA'
         }
       })
     },
@@ -570,7 +587,10 @@ export default {
 
 #usrHomePane {
   background-color: whitesmoke;
-
+  /*background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");*/
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
 }
 /deep/ .el-select > .el-input {
   width: 250px;
@@ -599,9 +619,7 @@ export default {
 }
 
 .confirm {
-  font-family: "Microsoft YaHei UI";
   display: inline;
-  background-color: transparent;
   background-color: #0080ff;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
@@ -620,7 +638,6 @@ export default {
 }
 
 .cancel {
-  font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
   color: #0080ff;
@@ -654,7 +671,7 @@ export default {
 
 #usrName {
   font-size: 24px;
-  font-family: "siyuan";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   letter-spacing: 3px;
   color: #343434;
@@ -664,7 +681,7 @@ export default {
     margin-top: 10px;
     font-size: 15px;
     border-bottom: 1px transparent;
-    font-family: "Microsoft YaHei";
+    font-family: "Roboto", Arial, sans-serif;
     letter-spacing: 1px;
     color: #606266;
 }
@@ -673,17 +690,17 @@ export default {
 }
 
 #usrAbility {
-  margin-top: 2px;
-  font-size: 17px;
-  font-family: "Microsoft YaHei";
-  letter-spacing: 2px;
+  margin-top: 5px;
+  font-size: 16px;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 1px;
   color: #343434;
 }
 
 #editYourInfo{
     margin-top: 11px;
     font-size: 13px;
-    font-family: "Microsoft YaHei";
+    font-family: "Roboto", Arial, sans-serif;
     letter-spacing: 2px;
     border-bottom: #606266 1px solid;
     color: #606266;
@@ -703,7 +720,7 @@ export default {
 }
 
 #directionInfo {
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 17px;
   margin-top: 10px;
 }
@@ -726,7 +743,7 @@ export default {
   padding: 20px 20px 10px;
   background-color: #00a39e;
   height: 30px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   color: white;
 }
@@ -793,7 +810,7 @@ export default {
 .usrTabsUnChosen {
   border-bottom: transparent 2px solid;
   color: darkgray;
-  font-family: "Microsoft YaHei UI Light";
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
   padding-bottom: 20px;
   margin-left: 15px;
@@ -807,7 +824,7 @@ export default {
   color: #005abb;
   border-bottom: #005abb 2px solid;
   margin-left: 15px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   padding-bottom: 2px;
   font-size: 18px;
   padding-bottom: 20px;
@@ -841,7 +858,7 @@ export default {
 #researchInfo {
   width: 100px;
   padding: 15px;
-  font-family: "Microsoft YaHei";
+  font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
   font-size: 18px;
   letter-spacing: 1px;
@@ -849,7 +866,7 @@ export default {
 }
 
 #footer {
-  background-color: whitesmoke;
+  /*background-color: whitesmoke;*/
   height: 50px;
   width: 100%;
 }
@@ -902,7 +919,7 @@ export default {
 
 #changeImageName {
   justify-content: center;
-  font-family: "Microsoft YaHei UI";
+  font-family: "Roboto", Arial, sans-serif;
   color: #0080ff;
   font-size: 15px;
   margin-top: 10px;

@@ -48,6 +48,9 @@
               <el-menu-item>
                 <el-button type="warning">推荐</el-button>
               </el-menu-item>
+              <el-menu-item>
+                <el-button type="warning" @click="reMessage">获取引用信息</el-button>
+              </el-menu-item>
             </el-menu>
           </div>
         </div>
@@ -91,6 +94,109 @@
         <el-button type="primary" @click="addFavorite">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="导出引用"
+      :visible.sync="isRefer"
+      width="50%"
+    >
+      <span>
+        <div style="margin-top: 3px;overflow: hidden">
+          <div style="float: left;width: 12%;margin-right: 2%">
+            GB
+          </div>
+          <div style="float: left;width: 70%;margin-right: 2%">
+            {{this.referMessages[0]}}
+          </div>
+          <div style="float: left;width: 10%;">
+            <el-button
+              v-clipboard:copy="this.referMessages[0]"
+              style="
+            height: 10px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+          "
+            >复制
+            </el-button
+            >
+          </div>
+        </div>
+        <div style="margin-top: 5px;overflow: hidden">
+          <div style="float: left;width: 12%;margin-right: 2%">
+            MLA
+          </div>
+          <div style="float: left;width: 70%;margin-right: 2%">
+            {{this.referMessages[1]}}
+          </div>
+          <div style="float: left;width: 10%;">
+            <el-button
+              v-clipboard:copy="this.referMessages[1]"
+              style="
+            height: 10px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+          "
+            >复制
+            </el-button
+            >
+          </div>
+        </div>
+        <div style="margin-top: 5px;overflow: hidden">
+          <div style="float: left;width: 12%;margin-right: 2%">
+            APA
+          </div>
+          <div style="float: left;width: 70%;margin-right: 2%">
+            {{this.referMessages[2]}}
+          </div>
+          <div style="float: left;width: 10%;">
+            <el-button
+              v-clipboard:copy="this.referMessages[2]"
+              style="
+            height: 10px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+          "
+            >复制
+            </el-button
+            >
+          </div>
+        </div>
+        <div style="margin-top: 5px;overflow: hidden">
+          <div style="float: left;width: 12%;margin-right: 2%">
+            BibTex
+          </div>
+          <div style="float: left;width: 70%;margin-right: 2%">
+            {{this.referMessages[3]}}
+          </div>
+          <div style="float: left;width: 10%;">
+            <el-button
+              v-clipboard:copy="this.referMessages[3]"
+              style="
+            height: 10px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+          "
+            >复制
+            </el-button
+            >
+          </div>
+        </div>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="isRefer = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -115,25 +221,25 @@ export default {
       flagShoucang: false,
       flagQingDan: true,
       flagLoad: true,
-
+      isRefer: false,
       title: "",
       authors: [],
       author:'',
       abstracts: "",
       year: "",
       reference:[],
-      venue: {},
       urlArticle: "",
       citation_by_year:{},
       flag:'',
       length:'',
-      user_id:'1',
+      user_id:'',
       favorite_name:'',
-      favorite_names:[
-
-      ],
+      favorite_names:[],
       favorite_name_add:'',
       isFavorite:'',
+      referMessages:[],
+      referMessage:'',
+      venue:''
     }
   },
   mounted() {
@@ -164,7 +270,97 @@ export default {
     get(){
       console.log('11111')
     },
+    reMessage(){
+      // console.log(this.$store.state.refer)
+      // this.referMessages = []
+      // for(var i = 0; i < this.$store.state.refer.length; i++){
+      //   this.referMessage = ''
+      //   this.referMessage = '['+ (i+1) + ']'
+      //   for(var j = 0; j < this.$store.state.refer[i].authors.length - 1; j++){
+      //     this.referMessage += this.$store.state.refer[i].authors[j].name
+      //     this.referMessage += ','
+      //   }
+      //   this.referMessage += this.$store.state.refer[i].authors[j].name
+      //   this.referMessage += '.'
+      //   this.referMessage += this.$store.state.refer[i].title
+      //   this.referMessage += '[J]'
+      //   this.referMessage += this.$store.state.refer[i].venue.raw
+      //   this.referMessage += '].cs:['
+      //   this.referMessage += this.$store.state.refer[i].year
+      //   this.referMessage += '].http://localhost:8081/article/'//这里回头要改前端服务器地址
+      //   this.referMessage += this.paper_id
+      //   this.referMessage += '/overviews'
+      //   this.referMessages.push(this.referMessage)
+      // }
+      // console.log(this.referMessages)
+      this.referMessages = []
+      // GB
+      this.referMessage = ''
+      for(var j = 0; j < this.authors.length - 1; j++){
+        this.referMessage += this.authors[j].name
+        this.referMessage += ','
+      }
+      this.referMessage += this.authors[j].name
+      this.referMessage += '.'
+      this.referMessage += this.title
+      this.referMessage += '.'
+      this.referMessage += this.venue
+      this.referMessage += ','
+      this.referMessage += this.year
+      this.referMessage += '.'
+      this.referMessages.push(this.referMessage)
+      // MLA
+      this.referMessage = ''
+      for(var i = 0; i < this.authors.length - 1; i++){
+        this.referMessage += this.authors[i].name
+        this.referMessage += ','
+      }
+      this.referMessage += this.authors[i].name
+      this.referMessage += '."'
+      this.referMessage += this.title
+      this.referMessage += '"'
+      this.referMessage += this.venue
+      this.referMessage += ',vol,'
+      this.referMessage += this.year
+      this.referMessage += '.'
+      this.referMessages.push(this.referMessage)
+      // APA
+      this.referMessage = ''
+      for(var l = 0; k < this.authors.length - 1; l++){
+        this.referMessage += this.authors[l].name
+        this.referMessage += ','
+      }
+      this.referMessage += this.authors[l].name
+      this.referMessage += ',('
+      this.referMessage += this.year
+      this.referMessage += ').'
+      this.referMessage += this.title
+      this.referMessage += '.'
+      this.referMessage += this.venue
+      this.referMessage += '.'
+      this.referMessages.push(this.referMessage)
+      // BibTex
+      this.referMessage = ''
+      this.referMessage = '@inproceedings{Scholar'
+      // this.referMessage += this.$router.params.paper_id
+      this.referMessage += ',title="'
+      this.referMessage += this.title
+      this.referMessage += '",author="'
+      for(var k = 0; k < this.authors.length - 1; k++){
+        this.referMessage += this.authors[k].name
+        this.referMessage += ','
+      }
+      this.referMessage += this.authors[k].name
+      this.referMessage += '.",journal="'
+      this.referMessage += this.venue
+      this.referMessage += '",volume="'
+      this.referMessage += this.year
+      this.referMessage += '".'
+      this.referMessages.push(this.referMessage)
+      this.isRefer = true
+    },
     getFavoriteBag(){
+      this.user_id = localStorage.getItem('user_id')
       this.dialogVisible = true
       console.log('进入获取收藏夹信息');
       this.axios({
@@ -190,6 +386,7 @@ export default {
         })
     },
     addFavoriteBag(){
+      this.user_id = localStorage.getItem('user_id')
       console.log('关闭')
       this.innerVisible = false;
       this.favorite_names.push(this.favorite_name_add)
@@ -209,6 +406,7 @@ export default {
         })
     },
     addFavorite(){
+      this.user_id = localStorage.getItem('user_id')
       this.isFavorite = true;
       this.dialogVisible = false;
       this.favorite_name = this.favorite_names[this.ra-1];
@@ -232,6 +430,7 @@ export default {
         })
     },
     deleteFavorite(){
+      this.user_id = localStorage.getItem('user_id')
       console.log('进入删除')
       this.isFavorite = false;
       this.axios({
@@ -249,6 +448,7 @@ export default {
         })
     },
     getIsFavorite(){
+      this.user_id = localStorage.getItem('user_id')
       console.log('获取是否收藏')
       this.axios({
         method:"get",
@@ -284,6 +484,7 @@ export default {
             let article = response.data.hits.hits[i]
             this.title = article._source.title
             console.log(this.title)
+            this.venue = article._source.venue.raw
             // this.abstracts = article._source.abstract
             this.$store.commit('setTitle',article._source.title)
             console.log(this.$store.state.title)
@@ -308,11 +509,11 @@ export default {
               this.$store.commit('setCitation',article._source.citation_by_year[k])
               console.log(this.$store.state.citation_by_year[k])
             }
-            for(var l = 0; l <article._source.reference.length; l++){
-              console.log(article._source.reference[l])
-              this.$store.commit('setReferences',article._source.reference[l])
-              console.log(this.$store.state.references[l])
-            }
+            // for(var l = 0; l <article._source.reference.length; l++){
+            //   console.log(article._source.reference[l])
+            //   this.$store.commit('setReferences',article._source.reference[l])
+            //   console.log(this.$store.state.references[l])
+            // }
             for(var j = 0; j < article._source.authors.length;j++){
               // this.authors[j] = article._source.authors[j]
               this.authors.push(article._source.authors[j])

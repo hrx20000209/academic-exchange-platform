@@ -135,6 +135,7 @@ export default {
       citation_by_year: {},
       flag: 1,
       relatedArticle: [],
+      references:[],
     }
   },
   mounted() {
@@ -151,6 +152,7 @@ export default {
         console.log(this.length)
         this.$store.state.abstract = ''
         this.$store.state.references = []
+        this.reference = []
         for (var i = 0; i < this.length; i++) {
           if (response.data.hits.hits[i]._source.id === paper_id) {
             let article = response.data.hits.hits[i]
@@ -183,6 +185,7 @@ export default {
 
             for (var l = 0; l < article._source.reference.length; l++) {
               console.log(article._source.reference[l])
+              this.reference.push(article._source.reference[l])
               this.$store.commit('setReferences', article._source.reference[l])
               console.log(this.$store.state.references[l])
             }
@@ -192,12 +195,32 @@ export default {
             }
             console.log(this.authors)
             this.searchRelated();
-            this.buildPie();
+            // this.buildPie();
+            this.searchRe();
+            // this.letRe()
           }
         }
         // }
-
       })
+    },
+    searchRe(){
+      this.$store.state.refer = []
+      console.log('进入')
+      for(var j = 0; j < this.reference.length;j++){
+        console.log('1.1')
+        console.log(this.reference[j])
+        ESApi.getRe(this.reference[j]).then(response =>{
+          console.log('进入es搜索')
+          console.log(response.data.hits.hits[0])
+          console.log(response.data.hits.total.value)
+          console.log('1.2')
+          let article = response.data.hits.hits[0]
+          this.references.push(article._source)
+          this.$store.commit('setRefer',article._source)
+          console.log(this.$store.state.refer)
+          console.log(this.$store.state.refer.length)
+        })
+      }
     },
     searchRelated() {
       console.log('related');
@@ -214,9 +237,7 @@ export default {
         }
       })
       setTimeout(() => {
-
         this.buildPie()//娃娃消失
-
       }, 100);
 
     },

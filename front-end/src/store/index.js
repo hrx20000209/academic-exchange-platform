@@ -11,6 +11,7 @@ export default new Vuex.Store({
     references:[],
     citation_by_year:[],
     paper_id:'',
+    refer:[]
   },
   mutations: {
     setTitle(state,title) {
@@ -27,7 +28,10 @@ export default new Vuex.Store({
     },
     setPaperId(state,paper_id){
       this.state.paper_id = paper_id
-    }
+    },
+    setRefer(state,refer){
+      this.state.refer.push(refer)
+    },
   },
   actions: {
   },

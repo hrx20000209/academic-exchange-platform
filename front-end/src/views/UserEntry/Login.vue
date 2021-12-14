@@ -53,11 +53,13 @@ export default {
           })
         } else {
           localStorage.setItem('user_id',response.user_id)
+          localStorage.setItem('user_name', this.account)
+          localStorage.setItem('ifLogin', 1)
           this.$message({
             type: 'success',
             message: '登陆成功！'
           })
-          this.$router.push('/')
+          this.$router.push('/homepage')
         }
       })
     },
@@ -85,6 +87,7 @@ export default {
 }
 
 .middle-box {
+  box-shadow: 0 0 30px 10px lightgrey;
   background-color: white;
   width: 30%;
   padding: 2%;

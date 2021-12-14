@@ -71,7 +71,8 @@
       title="私信"
       :visible.sync="replyLetterVisible"
       width="35%"
-      :before-close="handleClose">
+      :before-close="handleClose"
+      append-to-body>
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
@@ -97,7 +98,8 @@
       title="私信"
       :visible.sync="newLetterVisible"
       width="35%"
-      :before-close="handleClose">
+      :before-close="handleClose"
+      append-to-body>
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
@@ -149,7 +151,8 @@ export default {
       items: [{
         unread: '',
         user_id: '',
-        user_name: ''
+        user_name: '',
+        head:'',
       }],
       messages: [{
         receiver_id: '',
@@ -161,7 +164,8 @@ export default {
     }
   },
   mounted() {
-    this.userId = localStorage.getItem('userId')
+    this.userId = localStorage.getItem('user_id')
+    this.userName = localStorage.getItem('user_name')
     this.load = false
     this.LoadMessageList(this.currentPage)
   },
@@ -173,6 +177,9 @@ export default {
       }).then(response => {
         this.items = response.list
         this.totalPage = response.total_page
+        for (let i = 0; i < this.items.length; i++) {
+          this.items[i].head = 'http://139.9.132.83:8000/user/getUserImage?user_id=' + this.items[i].user_id
+        }
       })
     },
     read(id) {
@@ -186,18 +193,14 @@ export default {
           if (this.messages[i].sender_id == this.userId) {
             this.messages[i].sender_name = '你'
             this.userName = this.messages[i].sender_name
-          }
-          if (this.messages[i].sender_id !== this.userId) {
-            this.receiver.user_id = this.messages[i].sender_id
+          } else {
             this.receiver.name = this.messages[i].sender_name
           }
-          if (this.messages[i].receiver_id !== this.userId) {
-            this.receiver.user_id = this.messages[i].receiver_id
+          if (this.messages[i].receiver_name != this.userName) {
             this.receiver.name = this.messages[i].receiver_name
           }
-          if (this.userName === ''
-            && this.messages[i].receiver_id === this.userId) {
-            this.userName = this.messages[i].receiver_name
+          if (this.messages[i].sender_name != this.userName) {
+            this.receiver.name = this.messages[i].sender_name
           }
         }
       })
@@ -218,10 +221,6 @@ export default {
           receiver_name: this.receiver.name,
           text: this.text
         }).then(response => {
-          console.log(response)
-
-          console.log(this.userName)
-          console.log(this.receiver.name)
           if (this.userName == this.receiver.name) {
             this.$message({
               type: 'warning',
@@ -238,12 +237,10 @@ export default {
               type: 'success',
               message: '发送成功'
             })
-            if (this.replyLetterVisible) {
-              this.read(this.receiver.user_id)
-            }
             this.newLetterVisible = false
             this.replyLetterVisible = false
             this.LoadMessageList(this.currentPage)
+            this.read(this.receiver.user_id)
             this.text = ''
           }
         })
