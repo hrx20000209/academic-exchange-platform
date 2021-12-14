@@ -12,7 +12,11 @@
           <div id="usrName">{{ titleCase2(this.user.name) }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
-            <!--            <div id="editYourInfo" @click="editSympleInfo">编辑信息</div>-->
+          </div>
+          <div id="acountInfo" v-if="ifHaveAccount == true">该门户已被用户
+            <div id="account" @click="toAccountPage">@{{ this.usrName }}</div>
+            认领
+            <div id="editYourInfo" @click="showAppeal">点此申诉</div>
           </div>
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
@@ -22,7 +26,7 @@
           </div>
           <div style="margin-top: 5%">
             <el-button type="primary" icon="el-icon-circle-plus" v-if="ifFollow == false" @click="follow">关注</el-button>
-            <el-button type="primary" icon="el-icon-circle-plus" v-else @click="unfollow">已关注</el-button>
+            <el-button type="primary" v-else @click="unfollow" icon="el-icon-remove-outline">取关</el-button>
           </div>
         </div>
       </div>
@@ -50,8 +54,7 @@
         <div id="topOnePane">
           <div id="leftMainPane">
             <div id="editusrInfoPane">
-              <!--            <author-card :user="user"></author-card>-->
-              <!--            <about-me_author :user="user"></about-me_author>-->
+              <author-card v-if="ifHaveAccount == true" :user="userInfo"></author-card>
               <stats-overview :user="user"></stats-overview>
               <!--              <div id="researchLine">-->
               <!--                <div id="researchInfo">研究项目</div>-->
@@ -62,6 +65,7 @@
           </div>
           <div id="rightMainPane">
             <div v-if="activeMode ==1">
+              <about-me_author v-if="ifHaveAccount == true" :user="userInfo"></about-me_author>
               <institute-belong-to_author :user="user"></institute-belong-to_author>
               <!--              <follow-same-author></follow-same-author>-->
             </div>
@@ -78,13 +82,6 @@
           <author-relationship></author-relationship>
 
         </div>
-
-        <!--        <div id="researchPane">-->
-        <!--          <div id="researchItem">-->
-        <!--            <research-detail-item v-for="(item, index) in research" :key='index'-->
-        <!--                                  :research='item'></research-detail-item>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </div>
       <div v-else-if="activeMode == 2" class="mainPane">
         <div id="researchPane">
@@ -109,28 +106,79 @@
 
     </div>
     <div id="footer"></div>
-    <el-dialog title="修改简介" :visible.sync="dialogFormVisible" id="infoDialog">
-      <el-form :model="form">
-        <div id="directionInfo">当前的方向</div>
-        <div id="myInput">
-          <el-input v-model="form.name" autocomplete="off" type="textarea"></el-input>
+    <el-dialog
+      title="门户申诉"
+      id="infoDialog"
+      :visible.sync="appealDialog" :show-close="false">
+      <div class="describe">任何普通用户都可以认领一个未被认领的学者门户。</div>
+      <div class="describe">如果您的门户被人冒领，可以在此上传您的证件信息。</div>
+      <div class="describe">管理员将在三个工作日内对您的申诉进行审核，请耐心等待。</div>
+      <div class="appealInfo">申诉描述</div>
+      <div id="appealDetail">
+        <el-input
+          type="textarea"
+          :rows="3"
+          placeholder="请输入内容"
+          v-model="appealDetail" maxlength="100"
+
+          show-word-limit>
+        </el-input>
+      </div>
+      <div class="appealInfo">上传身份证明</div>
+      <el-upload
+        ref="appealUpload"
+        action="#"
+        list-type="picture-card"
+        :http-request="submitUpload"
+        :auto-upload="false" id="appealUpload"
+      :limit="2"
+        :on-remove="handleRemove"
+        :file-list="this.AppealfileList"
+        :on-change="appealChange"
+      :on-exceed="whenExceed">
+        <i slot="default" class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <img
+            class="el-upload-list__item-thumbnail"
+            :src="file.url" alt=""
+          >
+          <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreview(file)"
+        >
+          <i class="el-icon-zoom-in"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleDownload(file)"
+        >
+          <i class="el-icon-download"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="previewRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
         </div>
-        <div id="degreeInfo">学位</div>
-        <div id="degreeDetail">
-          <el-select v-model="form.region" placeholder="请选择学位">
-            <el-option label="计算机科学与技术 博士" value="master"></el-option>
-            <el-option label="计算机科学与技术 硕士" value="doctor"></el-option>
-            <el-option label="计算机科学与技术 学士" value="bachelor"></el-option>
-          </el-select>
-        </div>
-      </el-form>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible" append-to-body>
+        <img style="justify-content: center" :src="dialogImageUrl" alt="">
+      </el-dialog>
+
       <div slot="footer" class="dialog-footer">
+
         <div id="twoButton">
-          <button @click="dialogFormVisible = false" class="cancel">取 消</button>
-          <button @click="dialogFormVisible = false" class="confirm">确 定</button>
+          <button @click="appealDialog=false" class="cancel">取 消</button>
+          <button @click="submitUpload" class="confirm">确 定</button>
         </div>
       </div>
     </el-dialog>
+
     <!-- 发送私信弹窗 -->
     <el-dialog
       title="私信"
@@ -180,7 +228,15 @@ import InstituteBelongTo_author from "../../components/instituteBelongTo_author"
 import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
 import ESApi from "../../api/elastic search"
-import {checkIfFollow, followAuthor, getdata, undoFollow} from "../../request/api";
+import {
+  checkIfFollow,
+  followAuthor,
+  getdata,
+  getScolarUserInfo,
+  undoFollow,
+  uploadAppealImage,
+  uploadImage
+} from "../../request/api";
 
 export default {
   name: "authorPage",
@@ -204,15 +260,26 @@ export default {
   },
   data() {
     return {
-      ifFollow:false,
+      AppealfileList:[],
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+      appealDetail: '',
+      imgRaw: '',
+      usrName: '',
+      ifHaveAccount: false,
+      ifFollow: false,
       cutTotal: 0,
       currentPage3: 1,
       oriResearch: [],
       id: "7F5944CA",
+      userInfo: [],
       datas: [],
       linkmes: [],
       ELres: [],
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: "http://139.9.132.83:8000/user/getImage?author_id=" + this.$route.query.id,
+      add_pic_url: 'http://139.9.132.83:8000/user/submitApeal?user_id=',
+      appealDialog: false,
       user: {
         // name: '谭火彬',
         // userDegree: '计算机科学与技术 博士学位',
@@ -235,6 +302,7 @@ export default {
         resource: '',
         desc: ''
       },
+      fileList: [],
       formLabelWidth: '100px',
       activeMode: 1,
       research: [
@@ -290,36 +358,156 @@ export default {
     this.getAuthorInfo(this.id)
     this.getAuthorsPaper(this.id)
     this.checkFollow()
+    this.getAccountInfo()
     // this.getdataSource(this.id)
   },
   methods: {
-    follow(){
-      if(localStorage.getItem('user_id')){
+    appealChange(file,fileList){
+      console.log(file)
+      console.log(fileList)
+      this.AppealfileList = fileList
+    },
+    handleRemove(file,fileList) {
+      console.log(file);
+      console.log(fileList)
+      this.AppealfileList = fileList
+    },
+    previewRemove(file){
+      this.$refs.appealUpload.handleRemove(file)
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 < 500;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 500kB!');
+      }
+      return isJPG && isLt2M;
+    },
+    submitUpload() {
+      let formDatas = new FormData()
+      formDatas.append('user_id', localStorage.getItem('user_id'))
+      formDatas.append('scolar_id', this.$route.query.id)
+      if(this.AppealfileList.length<1){
+        this.$message.error('至少上传一张图片');
+      }else{
+        formDatas.append('pic0', this.AppealfileList[0].raw)
+        if(this.AppealfileList.length>1){
+          formDatas.append('pic1',this.AppealfileList[1].raw)
+        }else{
+          formDatas.append('pic1','kong')
+        }
+        formDatas.append('describe',this.appealDetail)
+        console.log(formDatas)
+        uploadAppealImage(formDatas).then(res => {
+        console.log(res)
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+      })
+      }
+
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    test(file) {
+      console.log(file)
+      this.imgRaw = file.raw
+    },
+    handleSuccess(response, file, fileList) {
+      console.log(response);
+      console.log(this.add_pic_url);
+      // this.success = response.data.message;
+      // this.dialogVisible = true;
+    },
+    showAppeal() {
+      this.appealDialog = true
+    },
+    closeAppeal() {
+      this.appealDialog = false
+    },
+    confirmAppeal() {
+      this.appealDialog = false
+    },
+    toAccountPage() {
+      this.$router.push({
+        path: '/userHome',
+        query: {
+          id: this.userInfo.user_id
+        }
+      })
+    },
+    getAccountInfo() {
+      getScolarUserInfo({
+        author_id: this.$route.query.id,
+      }).then(res => {
+        console.log('scolar')
+        console.log(res)
+        this.ifHaveAccount = res.ifHaveAccount
+        this.userInfo = res.user
+        this.usrName = this.userInfo.name
+        this.userInfo.name = this.user.name
+      })
+    },
+    follow() {
+      if (localStorage.getItem('user_id')) {
         followAuthor({
-        follow_id:this.$route.query.id,
-          follower_id:localStorage.getItem('user_id')
-      }).then(res=>{
-        console.log(res)
+          follow_id: this.$route.query.id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log(res)
+          this.checkFollow()
+          if (res.message == 'Follow success') {
+            this.$message({
+              message: '关注成功',
+              type: 'success'
+            });
+          }
         })
+      } else {
+        this.$alert('请先登录', '提示', {
+          confirmButtonText: '确定',
+        });
       }
     },
-    checkFollow(){
-      if(localStorage.getItem('user_id')){
+    checkFollow() {
+      if (localStorage.getItem('user_id')) {
         checkIfFollow({
-        follow_id:this.$route.query.id,
-          follower_id:localStorage.getItem('user_id')
-      }).then(res=>{
-        console.log(res)
+          follow_id: this.$route.query.id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log('check')
+          console.log(res)
+          if(res.message == 'false'){
+            this.ifFollow = false
+          }else if(res.message == 'true'){
+            this.ifFollow = true
+          }else {
+            this.ifFollow = false
+          }
         })
       }
     },
-    unfollow(){
-      if(localStorage.getItem('user_id')){
+    unfollow() {
+      if (localStorage.getItem('user_id')) {
         undoFollow({
-        follow_id:this.$route.query.id,
-          follower_id:localStorage.getItem('user_id')
-      }).then(res=>{
-        console.log(res)
+          follow_id: this.$route.query.id,
+          follower_id: localStorage.getItem('user_id')
+        }).then(res => {
+          console.log(res)
         })
       }
     },
@@ -347,11 +535,11 @@ export default {
         console.log('ssss')
         console.log(res)
         this.oriResearch = res.data.hits.hits
-        for(var i=0;i<this.oriResearch.length;i++){
+        for (var i = 0; i < this.oriResearch.length; i++) {
           // console.log(this.research[i]._source.authors)
-          if(this.oriResearch[i]._source.authors.length>4){
+          if (this.oriResearch[i]._source.authors.length > 4) {
             console.log('22323')
-            this.oriResearch[i]._source.authors = this.oriResearch[i]._source.authors.slice(0,4)
+            this.oriResearch[i]._source.authors = this.oriResearch[i]._source.authors.slice(0, 4)
           }
         }
         this.research = this.oriResearch.slice(0, 10);
@@ -413,6 +601,9 @@ export default {
         })
       }
     },
+    whenExceed(){
+       this.$message.error('最多只能上传两张图片');
+    }
   }
 }
 </script>
@@ -424,8 +615,8 @@ export default {
 }
 
 #authorPage {
-  /*background-color: #f1f2f6;*/
-  background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");
+  background-color: #f1f2f6;
+  /*background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");*/
   width: 100%;
   height: 100vh;
   overflow-y: auto;
@@ -447,6 +638,28 @@ export default {
 
 #leftPicDetail {
   display: inline-flex;
+}
+
+/deep/ .el-upload-dragger {
+  background-color: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 360px;
+  height: 130px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/deep/ .el-upload__tip {
+  font-size: 13px;
+  color: #606266;
+  margin-top: 7px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .confirm {
@@ -531,13 +744,14 @@ export default {
 }
 
 #editYourInfo {
-  margin-top: 10px;
+  margin-top: 1px;
   font-size: 14px;
   font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 2px;
   border-bottom: #606266 1px solid;
   color: #606266;
   margin-left: 10px;
+  width: fit-content;
 }
 
 #editYourInfo {
@@ -546,10 +760,15 @@ export default {
 
 #infoDialog {
   color: #343434;
-  width: 1000px;
   margin-left: auto;
   margin-right: auto;
 
+}
+
+.upload-demo {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #directionInfo {
@@ -653,7 +872,7 @@ export default {
 
 #editusrInfoPane {
   width: 600px;
-  margin-top: 30px;
+  /*margin-top: 30px;*/
 }
 
 .mainPane {
@@ -676,7 +895,7 @@ export default {
 #rightMainPane {
   margin-left: 40px;
   width: 400px;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 
 #researchLine {
@@ -750,5 +969,57 @@ export default {
   font-weight: 700;
   margin-right: auto;
   margin-left: auto;
+}
+
+#acountInfo {
+  display: flex;
+  margin-top: 10px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+#account {
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 2px;
+  font-style: italic;
+  color: #005abb;
+}
+
+#account:hover {
+  cursor: pointer;
+}
+
+#infoDialog {
+  color: #343434;
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.describe {
+  color: #282828;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 25px;
+  font-weight: bold;
+}
+
+.appealInfo {
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 15px;
+  color: black;
+}
+
+#appealDetail {
+  margin-top: 15px;
+}
+
+#appealUpload {
+  margin-top: 15px;
 }
 </style>

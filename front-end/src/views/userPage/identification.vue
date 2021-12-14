@@ -35,6 +35,7 @@
           <div v-for="item in authorList" :key="item.id">
             <author-search-result
               :author="item"
+              :user_id="user_id"
             />
           </div>
         </div>
@@ -92,37 +93,31 @@ export default {
   },
   methods: {
     checkInput() {
-      if (this.info.name !== '' && this.info.institution !== '' && this.info.email !== '') {
+      if (this.step === 0 && this.info.name !== '' && this.info.institution !== '' && this.info.email !== '') {
         this.step = 1
-      } else {
+      } else if (this.step === 1) {
         this.step = 0
       }
     },
     search() {
-      this.$confirm('请您确认所有信息是否都已经正确填写。是否确认提交认证申请？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (this.info.name === '') {
-          this.$message({
-            type: 'warning',
-            message: '姓名不能为空'
-          });
-        }
-        else if (this.info.institution === '') {
-          this.$message({
-            type: 'warning',
-            message: '机构不能为空'
-          });
-        } else {
-          ESApi.getAuthor(this.info.name, this.info.institution).then(response => {
-            this.authorList = response.data.hits.hits
-          })
-          this.success = true
-          this.step = 2
-        }
-      })
+      if (this.info.name === '') {
+        this.$message({
+          type: 'warning',
+          message: '姓名不能为空'
+        });
+      }
+      else if (this.info.institution === '') {
+        this.$message({
+          type: 'warning',
+          message: '机构不能为空'
+        });
+      } else {
+        ESApi.getAuthor(this.info.name, this.info.institution).then(response => {
+          this.authorList = response.data.hits.hits
+        })
+        this.success = true
+        this.step = 2
+      }
     }
   }
 }

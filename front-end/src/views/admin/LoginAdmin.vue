@@ -44,8 +44,13 @@ export default {
             type: 'warning',
             message: '用户名或密码错误'
           })
+        } else if (response.message === 'admin not exist') {
+          this.$message({
+            type: 'warning',
+            message: '用户名或密码错误'
+          })
         } else {
-          localStorage.setItem('ifLogin', 1)
+          localStorage.setItem('admin_id', response.admin_id)
           this.$message({
             type: 'success',
             message: '登陆成功！'
