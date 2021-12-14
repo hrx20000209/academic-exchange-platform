@@ -13,9 +13,10 @@ import axios from 'axios'
 import VueAxios from "vue-axios"
 import store from './store'
 import BubbleChat from "vue-bubble-chat"
+import * as echartsGL from 'echarts-gl'
 
 
-
+Vue.prototype.$echartsGL = echartsGL
 Vue.component('mycloud', myCloud)
 Vue.component('myHeader', myHeader)
 

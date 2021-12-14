@@ -80,11 +80,11 @@
                           <div slot="content">姓名：{{item2.name}}<br/>被引次数：{{item2.cite}}<br/>发表文章数：{{item2.pubs}}</div>
                           <div style="display: flex; flex-direction: column;cursor: pointer" @click="jump2authors(item2.id)">
                             <div style="display: flex; justify-content: center">
-                              <el-avatar :src="pic[index1*row_size+index2]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+                              <el-avatar :src="pic[index1*row_size+index2-(currentPage_author-1)*pagesize_author*row_size]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
                             </div>
                             <div style="display: flex; justify-content: center; flex-wrap:wrap;width: 100px">
                               <div style="font-family: Gabriola; font-size: 16px;">
-                                {{item2.name}}
+                                {{shortName(item2.name)}}
                               </div>
                             </div>
                           </div>
@@ -168,7 +168,7 @@
         </el-col>
       </el-main>
     </el-container>
-    <el-button @click="test">test</el-button>
+    <el-button @click="handleCurrentChange_author(1)">test</el-button>
   </div>
 </template>
 
@@ -183,6 +183,7 @@
       components: {Nav_with_searchBox},
       data(){
           return {
+            maxNameLen:10,
             pic:[],
             row_size: 6,
             InstitutionName:'',
@@ -204,8 +205,10 @@
           }
         },
         mounted() {
-          let id = this.$route.params.id
+          let id = this.$route.query.id
+          console.log('id is', id)
           this.test(id)
+
           // console.log('mounted:',this.years)
           // this.buildPie1()
         },
@@ -385,7 +388,7 @@
               that.jump2authors(params.data.id)
             })
             pie4.on('click', function(params) {
-              console.log(params.data.id, params.data.name)
+              that.jump2papers(params.data.id)
             })
           },
           addColor(list) {
@@ -411,13 +414,30 @@
           },
           handleCurrentChange_author(val) {
             this.currentPage_author = val;
+            const pageAuthor = this.authors.slice((this.currentPage_author - 1) * this.pagesize_author, this.currentPage_author * this.pagesize_author)
+            console.log('pageAuthor is', pageAuthor)
+            for (let i = 0; i<pageAuthor.length; i++) {
+              const row = pageAuthor[i]
+              for (let j = 0; j< row.length; j++) {
+                const author = row[j]
+                Api.getRealPic(author.id).then(
+                  res => {
+                    if (this.pic.length === this.row_size * this.pagesize_author)
+                      this.pic = []
+                    const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+                    this.pic.push(imgUrl)
+                  }
+                )
+              }
+            }
           },
           test(id) {
             let that=this
             ESApi.getInstitutionMsg(id).then(
               res=>{
+                // console.log('test id is', id)
                 let info = res.data.hits.hits[0]._source
-                console.log('info is ', info)
+                // console.log('info is ', info)
                 this.fillCites(info)
                 this.fillPaperCites(info)
                 this.fillAuthorCites(info)
@@ -426,11 +446,12 @@
                 this.fillPapers(info)
                 this.fillAttribute(info)
                 this.buildPie1(that)
+                this.handleCurrentChange_author(1)
               }
             )
           },
           jump2authors(id){
-            console.log('author id is', id)
+            // console.log('author id is', id)
             this.$router.push({
               path: '/authorPage',
               query: {
@@ -439,7 +460,8 @@
             })
           },
           jump2papers(id) {
-            console.log('paper id is', id)
+            let router = '/article/'+ id + '/overviews'
+            this.$router.push(router)
           },
           getPic(name, id) {
             //TODO: input id output pic or bool
@@ -473,12 +495,12 @@
               tmp['id'] = item.id
               tmp['pubs'] = item.n_pubs
               tmp['cite'] = item.n_citation
-              Api.getRealPic('1').then(
+              /*Api.getRealPic(item.id).then(
                 res => {
                   const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
                   this.pic.push(imgUrl)
                 }
-              )
+              )*/
               row.push(tmp)
               j++
               if (j === this.row_size){
@@ -510,6 +532,14 @@
               tmp['id'] = items.id
               this.AuthorPapers.push(tmp)
             }
+          },
+          shortName(name) {
+            let res
+            if (name.length>this.maxNameLen)
+              res = name.slice(0, this.maxNameLen) + '...'
+            else
+              res = name
+            return res
           },
           fillPaperCites(info){
             // console.log('pubs', info.pubs)
@@ -566,9 +596,6 @@
             // console.log(this.y_pub)
 
           },
-          authorClick() {
-            console.log('author click!')
-          }
       }
     }
 </script>
