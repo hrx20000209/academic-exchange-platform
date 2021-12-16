@@ -37,7 +37,7 @@
               <!--              <el-menu-item index="/article/references">References</el-menu-item>-->
               <el-menu-item :index="referenceIndex">References</el-menu-item>
               <el-menu-item>
-                <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">查看全文</a></el-button>
+                <el-button type="primary" v-if="this.flagLoad === true" @click="toWebsite">查看全文</el-button>
                 <el-button type="primary"  disabled v-else>查看全文</el-button>
               </el-menu-item>
 
@@ -519,7 +519,7 @@ export default {
         })
     },
     toWebsite(){
-      return this.urlArticle
+      window.open(this.urlArticle,"_blank");
     },
     // search1(){
     //   this.$store.commit('setTitle','._source.title')
