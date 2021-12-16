@@ -5,8 +5,8 @@
       <div id="topPicAndAddButton">
         <div id="leftPic">
           <div id="leftPicDetail">
-            <el-avatar :size="85" :src=this.get_pic_url v-if="needUpdate" >
-<!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
+            <el-avatar :size="85" :src=this.get_pic_url v-if="needUpdate">
+              <!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
             </el-avatar>
           </div>
         </div>
@@ -14,7 +14,7 @@
           <div id="usrName">{{ this.user.name }}</div>
           <div id="editInfoRow">
             <div id="usrDegree">{{ this.user.degree }}</div>
-            <div id="editYourInfo" @click="editSimpleInfo">编辑信息</div>
+            <div id="editYourInfo" @click="editSimpleInfo" v-if="ifVisitor == false">编辑信息</div>
           </div>
           <div id="usrAbility">{{ this.user.field }}</div>
         </div>
@@ -26,8 +26,10 @@
           <!--            <el-button type="primary" icon="el-icon-circle-plus">进入认证门户</el-button>-->
           <!--          </div>-->
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">进入认证门户</el-button>
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else>申请认证</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">
+              进入认证门户
+            </el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else-if="ifVisitor == false">申请认证</el-button>
           </div>
         </div>
       </div>
@@ -35,18 +37,18 @@
         <div id="centerSomeTabs">
           <div class="usrTabsChosen" v-if="activeMode === 1">概述</div>
           <div class="usrTabsUnChosen" v-else @click="selectActiveMode(1)">概述</div>
-<!--          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>-->
-<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>-->
-<!--          &lt;!&ndash;          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>&ndash;&gt;-->
-<!--          &lt;!&ndash;          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>&ndash;&gt;-->
-<!--          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>-->
-<!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode === 2">研究</div>-->
+          <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(2)">研究</div>-->
+          <!--          &lt;!&ndash;          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>&ndash;&gt;-->
+          <!--          &lt;!&ndash;          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(3)">学术经历</div>&ndash;&gt;-->
+          <!--          <div class="usrTabsChosen" v-if="activeMode === 4">统计数据</div>-->
+          <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
           <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
           <!--          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
-          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">你的关注</div>
-          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>
-          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">你的收藏</div>
+          <div class="usrTabsChosen" v-if="activeMode ==6">关注</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(6)">关注</div>
+          <div class="usrTabsChosen" v-if="activeMode ==7">收藏</div>
+          <div class="usrTabsUnChosen" v-else @click="selectActiveMode(7)">收藏</div>
         </div>
       </div>
     </div>
@@ -54,20 +56,23 @@
       <div v-if="activeMode === 1" class="mainPane">
         <div id="leftMainPane">
           <div id="editUsrInfoPane">
-            <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum" :rankindex="rankNum"></edit-usr-info>
-            <about-me :user="this.user"></about-me>
-<!--            <stats-overview :user="user"></stats-overview>-->
-<!--            <div id="researchLine">-->
-<!--              <div id="researchInfo">研究项目</div>-->
-<!--              <el-divider></el-divider>-->
-<!--            </div>-->
-<!--            <research-overview></research-overview>-->
+            <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum"
+                           :rankindex="rankNum" v-if="ifVisitor == false"></edit-usr-info>
+             <author-card v-else :user="user"></author-card>
+            <about-me :user="this.user" v-if="ifVisitor == false"></about-me>
+            <about-me_author v-else :user="this.user"></about-me_author>
+            <!--            <stats-overview :user="user"></stats-overview>-->
+            <!--            <div id="researchLine">-->
+            <!--              <div id="researchInfo">研究项目</div>-->
+            <!--              <el-divider></el-divider>-->
+            <!--            </div>-->
+            <!--            <research-overview></research-overview>-->
           </div>
         </div>
         <div id="rightMainPane">
           <div v-if="activeMode === 1">
-<!--            <institute-belong-to></institute-belong-to>-->
-            <follow-same></follow-same>
+            <!--            <institute-belong-to></institute-belong-to>-->
+            <follow-same :follow-list="someFollows"></follow-same>
           </div>
         </div>
       </div>
@@ -88,10 +93,10 @@
         </div>
       </div>
       <div v-else-if="activeMode ===  6" class="mainPane">
-        <my-like-author :user="user" :follow-list="followList"></my-like-author>
+        <my-like-author :user="user" :follow-list="followList" :state-list="stateList" :if-visitor="ifVisitor"></my-like-author>
       </div>
       <div v-else-if="activeMode ===  7">
-        <my-collection :user="user" :collection-list="collectionList"></my-collection>
+        <my-collection :user="user" :collection-list="collectionList" :if-visitor = "ifVisitor"></my-collection>
         <div style="display: block">
           <div style="height: 300px;width: 800px;display: block"></div>
         </div>
@@ -122,7 +127,7 @@
                 :on-change="test"
                 :before-upload="beforeAvatarUpload"
                 :http-request="submitUpload"
-                 :show-file-list="false"
+                :show-file-list="false"
               >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -143,12 +148,12 @@
           <div id="degreeInfo">学位</div>
           <div id="degreeDetail">
             <div id="selectfirst">
-              <el-select  placeholder="请选择学科" v-model="subNum">
+              <el-select placeholder="请选择学科" v-model="subNum">
                 <el-option v-for="(item,index) in subject" :label=item :value="index" :key="index"></el-option>
               </el-select>
             </div>
             <div id="selectsecond">
-              <el-select  placeholder="请选择学历" v-model="rankNum">
+              <el-select placeholder="请选择学历" v-model="rankNum">
                 <el-option v-for="(item,index) in rank" :label=item :value="index" :key="index"></el-option>
               </el-select>
             </div>
@@ -164,32 +169,32 @@
       </div>
     </el-dialog>
     <!-- 发送私信弹窗 -->
-    <el-dialog
-      title="私信"
-      :visible.sync="dialogLetterVisible"
-      width="35%"
-      :before-close="handleClose">
-      <div class="letter-body">
-        <div>
-          <div class="letter-send-box">发送给：</div>
-          <el-input v-model="user.userName" disabled></el-input>
-          <div class="letter-send-box">私信内容：</div>
-          <el-input
-            type="textarea"
-            placeholder="请输入内容"
-            v-model="text"
-            maxlength="250"
-            rows="10"
-            resize="none"
-            show-word-limit
-          >
-          </el-input>
-        </div>
-        <div class="letter-btn-box">
-          <el-button type="primary" @click="sendLetter">发 送</el-button>
-        </div>
-      </div>
-    </el-dialog>
+<!--    <el-dialog-->
+<!--      title="私信"-->
+<!--      :visible.sync="dialogLetterVisible"-->
+<!--      width="35%"-->
+<!--      :before-close="handleClose">-->
+<!--      <div class="letter-body">-->
+<!--        <div>-->
+<!--          <div class="letter-send-box">发送给：</div>-->
+<!--          <el-input v-model="user.userName" disabled></el-input>-->
+<!--          <div class="letter-send-box">私信内容：</div>-->
+<!--          <el-input-->
+<!--            type="textarea"-->
+<!--            placeholder="请输入内容"-->
+<!--            v-model="text"-->
+<!--            maxlength="250"-->
+<!--            rows="10"-->
+<!--            resize="none"-->
+<!--            show-word-limit-->
+<!--          >-->
+<!--          </el-input>-->
+<!--        </div>-->
+<!--        <div class="letter-btn-box">-->
+<!--          <el-button type="primary" @click="sendLetter">发 送</el-button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
@@ -209,11 +214,14 @@ import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
 import {getFavo, getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
 import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 import MyCollection from "../../components/homeComp/myCollection";
+import AboutMe_author from "../../components/stats/aboutMe_author";
+import AuthorCard from "../../components/AuthorCard";
 import axios from "axios";
-
 export default {
   name: "userHome",
   components: {
+    AboutMe_author,
+    AuthorCard,
     MyCollection,
     MyLikeAuthor,
     CooperatorPieChart,
@@ -228,142 +236,41 @@ export default {
     AboutMe,
     editUsrInfo,
     Nav_with_searchBox,
-    favo_empty:false
+    favo_empty: false
   },
   data() {
     return {
-      ifAuthor:false,
+      someFollows:[],
+      stateList:[],
+      ifAuthor: false,
+      ifVisitor:true,
       ifNUll: false,
+      scolarId:'',
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       user: {},
       needUpdate: 1,
       subject: ['哲学', '经济学', '法学', '教育学', '文学', '历史学', '理学', '工学', '农学', '医学', '军事学', '管理学', '艺术学'],
       rank: ['本科生', '研究生', '学士', '硕士', '博士', '博士后'],
-      subNum:'',
-      rankNum:'',
+      subNum: '',
+      rankNum: '',
       previewsrc: '',
       imgRaw: '',
       dialogFormVisible: false,
       dialogLetterVisible: false,
       haveUpload: false,
-      loading:false,
-      collectionList: [{
-        name: '默认收藏夹',
-        detail: [
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中的聚类算法综述'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中聚类算法研究进展'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '大数据时代下数据挖掘技术的应用'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '研究'
-          }
-        ]
-      }, {
-        name: '数据挖掘',
-        detail: [
-          {
-            paper_id: 12345,
-            paper_name: '可靠性研究'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '可靠研究'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '可靠性'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '研究'
-          }
-        ]
-      }, {
-        name: '毕业课题',
-        detail: [
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中的聚类算法综述'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '数据挖掘中聚类算法研究进展'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '大数据时代下数据挖掘技术的应用'
-          },
-          {
-            paper_id: 12345,
-            paper_name: '研究'
-          }
-        ]
-      }],
+      loading: false,
+      collectionList: [],
       form: {
         field: '',
         degree: ''
       },
-      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id='+localStorage.getItem('user_id'),
-      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id='+localStorage.getItem('user_id'),
+      add_pic_url: 'http://139.9.132.83:8000/user/postImage?user_id=' + this.$route.query.id,
+      get_pic_url: 'http://139.9.132.83:8000/user/getUserImage?user_id=' + this.$route.query.id,
       formLabelWidth: '100px',
       activeMode: 1,
       text: '',
-      research: [
-        {
-          title: '数据挖掘中的聚类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: false,
-          abstract: '聚类分析是数据挖掘中重要的研究内容之一,对聚类准则进行了总结,对五类传统的聚类算法的研究现状和进展进行了较为全面的总结,就一些新的聚类算法进行了梳理,根据样本归属关系、样本数据预处理、样本的相似性度量、样本的更新策略、样本的高维性和与其他学科的融合等六个方面对聚类中近20多个新算法,如粒度聚类、不确定聚类、量子聚类、核聚类、谱聚类、聚类集成、概念聚类、球壳聚类、仿射聚类、数据流聚类等,分别进行了详细的概括。这对聚类是一个很好的总结,对聚类的发展具有积极意义。 '
-        }, {
-          title: '数据挖掘中的分类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: true,
-          abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        },
-        {
-          title: '数据挖掘中的分类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: true,
-          abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        },
-        {
-          title: '数据挖掘中的分类算法综述',
-          type: '会议文献',
-          publishDate: 'Oct 2021',
-          Author: [
-            {name: 'whdwywd'},
-            {name: 'whdjwdjw'}
-          ],
-          hasFull: true,
-          abstract: '分类是数据挖掘、机器学习和模式识别中一个重要的研究领域。通过对当前数据挖掘中具有代表性的优秀分类算法进行分析和比较,总结出了各种算法的特性,为使用者选择算法或研究者改进算法提供了依据。此外,提出了评价分类器的5条标准,以便于研究者提出新的有效算法。 '
-        }
-      ],
-      // id:this.localStorage.getItem('token'),
-      id: '',
+      research: [],
+      id:localStorage.getItem('user_id'),
       ifImageUploadVisible: false,
       dialogImageUrl: '',
       dialogVisible: false,
@@ -399,34 +306,46 @@ export default {
         n_pubs: 80,
         n_citation: 980
       }],
-      str:[]
+      str: []
     }
   },
   mounted() {
-    this.getUserInformation(localStorage.getItem('user_id'))
-    // this.getFollowList()
+    this.checkVisitorMode()
+    this.getUserInformation(this.$route.query.id)
+    this.getFollowList()
     this.getFavo()
+    console.log(this.ifVisitor == false)
   },
   methods: {
+    checkVisitorMode(){
+      if(this.$route.query.id == localStorage.getItem('user_id')){
+        this.ifVisitor =false
+      }
+    },
     getFollowList() {
       getFollow({
-        user_id: this.user.user_id
+        user_id: this.$route.query.id
       }).then(res => {
-        console.log("getfollow:" + res)
-        this.followList = res.followList
+        console.log("getfollow:")
+        console.log(res)
+        this.followList = res
+        this.someFollows = this.followList.slice(0,5)
+        this.stateList = new Array(this.followList.length).fill(1)
+        console.log(this.stateList)
       })
     },
     getFavo() {
       getFavo({
-        user_id: localStorage.getItem('user_id')
+        user_id: this.$route.query.id
       }).then(res => {
+        console.log(1)
         console.log(res)
         this.collectionList = res.favorites
       })
     },
     updateInfor() {
-      // console.log(1)
-      // console.log(this.user)
+      console.log(1)
+      console.log(this.user)
       updateInfo({
         user_id: this.user.user_id,
         field: this.user.field,
@@ -442,7 +361,7 @@ export default {
       this.dialogFormVisible = false;
       this.ifImageUploadVisible = false;
       this.user.field = this.form.field
-      this.user.degree = this.subject[this.subNum]+' '+this.rank[this.rankNum]
+      this.user.degree = this.subject[this.subNum] + ' ' + this.rank[this.rankNum]
       this.updateInfor()
     },
     handleSuccess(response, file, fileList) {
@@ -473,19 +392,19 @@ export default {
     openLetter() {
       this.dialogLetterVisible = true
     },
-          beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isLt2M = file.size  / 1024 < 500;
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 < 500;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 500kB!');
-        }
-        return isJPG && isLt2M;
-      },
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG或 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 500kB!');
+      }
+      return isJPG && isLt2M;
+    },
     sendLetter() {
       if (this.text === '') {
         this.$message({
@@ -525,9 +444,9 @@ export default {
         this.activeMode = 7;
       }
     },
-    toApply(){
+    toApply() {
       this.$router.push({
-        path:'/identification'
+        path: '/identification'
       })
     },
     submitUpload() {
@@ -542,8 +461,8 @@ export default {
       uploadImage(formDatas).then(res => {
         console.log(res)
         this.needUpdate++
-        this.loading =false
-         this.$message({
+        this.loading = false
+        this.$message({
           message: '上传成功',
           type: 'success'
         });
@@ -552,11 +471,13 @@ export default {
     },
     getUserInformation(id) {
       getUsrInfo({
-        user_id: localStorage.getItem('user_id')
+        user_id: id
       }).then(res => {
         console.log(res)
         this.user = res.data
+        console.log(this.user)
         this.ifAuthor = res.ifAuthor
+        this.scolarId = res.scolarId
         // this.add_pic_url = this.add_pic_url + this.user.user_id
         // this.get_pic_url = this.get_pic_url + this.user.user_id
         this.str = this.user.degree.split(' ')
@@ -567,10 +488,11 @@ export default {
       })
     },
     toAuthorPage() {
+      console.log(this.scolarId)
       this.$router.push({
         path: '/authorPage',
         query: {
-          id:'7F5944CA'
+          id: this.scolarId
         }
       })
     },
@@ -592,10 +514,12 @@ export default {
   height: 100vh;
   overflow-y: auto;
 }
+
 /deep/ .el-select > .el-input {
   width: 250px;
   display: block;
 }
+
 #uploadButton {
   justify-content: center;
 }
@@ -678,13 +602,14 @@ export default {
 }
 
 #usrDegree {
-    margin-top: 10px;
-    font-size: 15px;
-    border-bottom: 1px transparent;
-    font-family: "Roboto", Arial, sans-serif;
-    letter-spacing: 1px;
-    color: #606266;
+  margin-top: 10px;
+  font-size: 15px;
+  border-bottom: 1px transparent;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #606266;
 }
+
 #editInfoRow {
   display: inline-flex;
 }
@@ -697,14 +622,14 @@ export default {
   color: #343434;
 }
 
-#editYourInfo{
-    margin-top: 11px;
-    font-size: 13px;
-    font-family: "Roboto", Arial, sans-serif;
-    letter-spacing: 2px;
-    border-bottom: #606266 1px solid;
-    color: #606266;
-    margin-left: 6px;
+#editYourInfo {
+  margin-top: 11px;
+  font-size: 13px;
+  font-family: "Roboto", Arial, sans-serif;
+  letter-spacing: 2px;
+  border-bottom: #606266 1px solid;
+  color: #606266;
+  margin-left: 6px;
 }
 
 #editYourInfo {
@@ -764,18 +689,20 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 /deep/ .el-upload-dragger {
-    background-color: #fff;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 360px;
-    height: 130px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  background-color: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 360px;
+  height: 130px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
+
 .dialog-footer {
   border-top: gainsboro 1px solid;
   background-color: #f5f5f5;
@@ -833,7 +760,7 @@ export default {
 
 #editUsrInfoPane {
   width: 625px;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .mainPane {
@@ -953,7 +880,8 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-#selectsecond{
+
+#selectsecond {
   margin-top: 20px;
 }
 </style>

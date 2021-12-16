@@ -168,11 +168,12 @@ export default {
     TechDialogConfirm() {
       this.TechDialog = false;
       this.user.field = this.fieldContent
+      console.log(this.user.field)
       this.updateInfor()
     },
     updateInfor() {
       // console.log(1)
-      // console.log(this.user)
+      console.log(this.user)
       updateInfo({
         user_id: this.user.user_id,
         field: this.user.field,

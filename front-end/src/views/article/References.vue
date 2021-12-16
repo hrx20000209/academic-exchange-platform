@@ -118,6 +118,7 @@ export default {
       this.$route.params.paper_id = id
       console.log(this.$route.params.paper_id)
       this.$router.push(router)
+      this.$router.go(0);
     },
     bianli(){
       this.reference = []

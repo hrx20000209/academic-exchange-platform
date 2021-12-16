@@ -46,24 +46,25 @@
                                 浏览最新，最热的文章和最受欢迎的作者
                               </div>
                             </div>
-                            <div style="display: flex; justify-content: center">
-                              <div style="display:flex; justify-content:center;background-color: #FFF; width: 1000px; margin-top: 20px;">
-                                <div style="background-color: #FFF; width: 900px; margin-top: 15px">
+                            <div style="display: flex; justify-content: space-around">
+                              <div style="margin-right: -40px;;display: flex; justify-content: center">
+                                <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px;">
+                                <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
                                   <el-tab-pane label="最热文章" name="first">
                                     <div style="margin-left: -20px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
                                       <div v-for="(item, index) in this.engine_popular" :key="index"
-                                         style="width:850px;display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                         style="display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
                                       <div style="
                                         width: 20px;
                                         display: flex;
                                         justify-content: center;margin-right: 10px">
                                           <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                       </div>
-                                      <div style="flex-direction: column; width:800px">
-                                        <div style="width: 800px; display: flex; justify-content: space-between">
-                                          <div style="width: 700px">
-                                            <el-link style="font-family: Georgia; font-size: 16px" :underline="false">
+                                      <div style="flex-direction: column; width:620px">
+                                        <div style="display: flex; justify-content: space-between">
+                                          <div>
+                                            <el-link @click="toOtherPaper(item['id'])" style="font-family: Georgia; font-size: 16px" :underline="false">
                                               {{item['title']}}
                                             </el-link>
                                           </div>
@@ -74,7 +75,7 @@
                                         </div>
                                         </div>
                                         <div style="display: flex; flex-direction: column; justify-content: center">
-                                          <el-progress :show-text="false" :percentage="getPercentage(item['cites'])"></el-progress>
+                                          <el-progress :show-text="false" :percentage="getPercentage(item['cites'], maxCites)"></el-progress>
                                         </div>
                                       </div>
                                     </div>
@@ -84,15 +85,15 @@
                                     <div style="margin-left: -10px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
                                       <div v-for="(item, index) in this.engine_latest" :key="index"
                                          style="display: flex; justify-content: space-between; margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                      <div style="width:780px; display: flex; ">
+                                      <div style="width:580px; display: flex; ">
                                         <div style="
                                         width: 20px;
                                         display: flex;
                                         justify-content: center;margin-right: 10px">
                                           <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
                                         </div>
-                                        <div style="width: 700px">
-                                          <el-link :underline="false">
+                                        <div style="width: 500px">
+                                          <el-link @click="toOtherPaper(item['id'])" :underline="false">
                                             {{item['title']}}
                                           </el-link>
                                         </div>
@@ -105,7 +106,7 @@
                                     </div>
                                     </div>
                                   </el-tab-pane>
-                                  <el-tab-pane label="最受欢迎作者" name="third">
+                                  <!--<el-tab-pane label="最受欢迎作者" name="third">
                                     <div style="margin-top: 15px">
                                       <div style="margin-bottom:10px;display: flex; justify-content: space-around" v-for="(row, index0) in this.authors" :key="index0">
                                       <el-tooltip v-for="(item, index) in row" :key="index"
@@ -123,85 +124,50 @@
                                     </el-tooltip>
                                     </div>
                                     </div>
+                                  </el-tab-pane>-->
+                                  <el-tab-pane label="最强机构" name="fourth">
+                                    <div style="display: flex; justify-content: center; height: 650px">
+                                      <div style="margin-top: -50px;width: 800px; height: 600px" id="chart"></div>
+                                    </div>
                                   </el-tab-pane>
                                 </el-tabs>
+                                <div v-if="activeName === 'fourth'" style="background-color: #f2f4f7; margin-left: -100px;width: 850px; height: 350px"></div>
                                 </div>
-                                    <!--<div style="margin-top: 30px; display: flex;justify-content: space-around">
-                                        <div style="width: 150px; display: flex; flex-direction: column">
-                                            <div class="titleFont">最受欢迎作者</div>
-                                            <div v-for="(item, index) in this.authors" :key="index"
-                                                 @click="jump2authors(item.id)"
-                                                 style="
-                                                 display: flex;
-                                                 margin-bottom: 20px;
-                                                 align-items: center;
-                                                 flex-direction: column;
-                                                 cursor:pointer;
-                                                 box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <el-avatar v-if="true" :src="pic[index]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
-                                              <el-avatar v-if="false" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5">
-                                                {{item.pic}}
-                                              </el-avatar>
-                                              <div style="text-align: center; margin-top: 5px; margin-bottom: 5px; color: #A4A4A4">
-                                                {{item.name}}
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div style="width: 350px; display: flex; flex-direction: column;">
-                                            <div class="titleFont">最热文章</div>
-                                            <div v-for="(item, index) in this.engine_popular" :key="index"
-                                                 style="display: flex; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <div style="
-                                                width: 20px;
-                                                display: flex;
-                                                justify-content: center;margin-right: 10px">
-                                                  <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
-                                              </div>
-                                              <div style="flex-direction: column; width:300px">
-                                                <div style="width: 300px; display: flex; justify-content: space-between">
-                                                  <div style="width: 200px">
-                                                    <el-link :underline="false">
-                                                      {{item['title']}}
-                                                    </el-link>
-                                                  </div>
-                                                  <div style="display: flex; justify-content: end">
-                                                  <div style="font-size: 10px">
-                                                    <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
-                                                  </div>
-                                                </div>
-                                                </div>
-                                                <div style="display: flex; flex-direction: column; justify-content: center">
-                                                  <el-progress :show-text="false" :percentage="getPercentage(item['cites'])"></el-progress>
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div style="width: 350px; display: flex; flex-direction: column;">
-                                            <div class="titleFont">最新文章</div>
-                                            <div v-for="(item, index) in this.engine_latest" :key="index"
-                                                 style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                              <div style="width:300px; display: flex; ">
-                                                <div style="
-                                                width: 20px;
-                                                display: flex;
-                                                justify-content: center;margin-right: 10px">
-                                                  <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
-                                                </div>
-                                                <div style="width: 200px">
-                                                  <el-link :underline="false">
-                                                    {{item['title']}}
-                                                  </el-link>
-                                                </div>
-                                              </div>
-                                              <div style="display: flex; flex-direction: column; justify-content: center">
-                                                <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
-                                                  {{item['year']}}年
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
                             </div>
+                              </div>
+                              <div style="margin-top: 15px;display: flex; border-radius: 20px;height: 1050px;background-color: #FFF;align-items: center;width: 270px;flex-direction: column; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2) inset">
+                                <div style="border-radius: 20px;height: 35px;width: 150px;box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);display: flex;margin-top: 25px;margin-bottom: 10px;justify-content: center;align-items: center">
+                                  <div>
+                                    最受欢迎作者
+                                  </div>
+                                </div>
+                                <div v-for="(item, index) in this.authors" :key="index"
+                                 style="display: flex;margin-left: -5px;;margin-bottom: 5px; padding: 10px">
+                                  <div style="
+                                    width: 20px;
+                                    display: flex;
+                                    justify-content: center;margin-right: 10px">
+                                      <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
+                                  </div>
+                                  <div style="flex-direction: column; width:190px">
+                                    <div style="display: flex; justify-content: space-between">
+                                      <div>
+                                        <el-link @click="jump2authors(item['id'])" style="font-family: Georgia; font-size: 16px" :underline="false">
+                                          {{shortName(item['name'])}}
+                                        </el-link>
+                                      </div>
+                                      <div style="display: flex; justify-content: end">
+                                      <div style="font-size: 10px">
+                                        <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
+                                      </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; justify-content: center">
+                                      <el-progress color="#01cbc4" :show-text="false" :percentage="getPercentage(item['cites'], maxAuthorCites)"></el-progress>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -218,6 +184,8 @@
   import ESApi from '../api/elastic search'
   import Nav_with_searchBox_transparent from "../components/nav_with_searchBox_transparent";
   import Api from '../api/mysql'
+  const echarts = require('echarts/lib/echarts')
+  import 'echarts-gl'
 
     export default {
         name: "homepage",
@@ -225,15 +193,18 @@
         data(){
             return {
                 activeName: 'first',
+                Indata:[],
                 pic:[],
                 rowPic: 5,
                 maxCites:0,
-                maxLen:100,
+                maxAuthorCites:0,
+                maxLen:70,
                 maxNameLen:10,
                 active:0,
                 keywords: '',
                 author: '',
                 book: '',
+                Iname: [],
                 // imgUrl:'',
                 fixed: false,
                 beforeFixed:false,
@@ -246,6 +217,7 @@
         },
         mounted() {
             this.t()
+            this.load3D()
             // this.testImage('1')
         },
         destroyed(){
@@ -253,7 +225,125 @@
         },
         methods:{
             handleClick(tab, event) {
-              console.log(tab, event);
+              console.log(this.activeName);
+            },
+            load3D(){
+              const that = this
+              ESApi.getPopularInstitution().then(
+                res => {
+                  const Idata = res.data.hits.hits
+                  this.getIname(Idata)
+                  for (let i=0; i < Idata.length; i++) {
+                    const Ins = Idata[i]._source.year_pubs
+                    for (let y=0; y<Ins.length; y++){
+                      let temp = []
+                      let dic = {}
+                      temp.push(Ins[y].year)
+                      temp.push(Idata[i]._source.name)
+                      temp.push(Ins[y].cnt)
+                      dic['value'] = temp
+                      dic['id'] = Idata[i]._source.id
+                      this.Indata.push(dic)
+                    }
+                  }
+                  this.build3D(that)
+                }
+              )
+            },
+            toOtherPaper(id){
+              let router = '/article/' + id + '/overviews'
+              this.$router.push(router)
+            },
+            getIname(data){
+              for (let i=0; i<data.length; i++){
+                this.Iname.push(data[i]._source.name)
+              }
+            },
+            build3D(that){
+              let pie = echarts.init(document.getElementById('chart'))
+              let option = {
+                  tooltip: {},
+                  visualMap: {
+                    max: 250,
+                    inRange: {
+                      color: [
+                        '#313695',
+                        '#4575b4',
+                        '#74add1',
+                        '#abd9e9',
+                        '#e0f3f8',
+                        '#ffffbf',
+                        '#fee090',
+                        '#fdae61',
+                        '#f46d43',
+                        '#d73027',
+                        '#a50026'
+                      ]
+                    }
+                  },
+                  xAxis3D: {
+                    type: 'category',
+
+                  },
+                  yAxis3D: {
+                    type: 'category',
+                    data: this.name
+                  },
+                  zAxis3D: {
+                    type: 'value'
+                  },
+                  grid3D: {
+                    boxWidth: 200,
+                    boxDepth: 80,
+                    viewControl:{
+                      "distance": 250,
+                      // "alpha": 3.069606211544383,
+                      // "beta": 45.74964692390633,
+                    },
+                    light: {
+                      main: {
+                        intensity: 1.2
+                      },
+                      ambient: {
+                        intensity: 0.3
+                      }
+                    }
+                  },
+                  series: [
+                    {
+                      name:'Institution',
+                      type: 'bar3D',
+                      data: this.Indata,/*.map(function (item) {
+                        return {
+                          value: [item[1], item[0], item[2]]
+                        };
+                      }),*/
+                      shading: 'color',
+                      label: {
+                        show: false,
+                        fontSize: 16,
+                        borderWidth: 1
+                      },
+                      itemStyle: {
+                        opacity: 0.8
+                      },
+                      emphasis: {
+                        label: {
+                          fontSize: 20,
+                          color: '#900'
+                        },
+                        itemStyle: {
+                          color: '#900'
+                        }
+                      }
+                    }
+                  ]
+                };
+                pie.setOption(option)
+                pie.on('click', function(params) {
+                  console.log(params.data.id)
+                  that.jump2Institution(params.data.id)
+                })
             },
             test(){
               Api.getUsrId('05B090CE').then(
@@ -264,8 +354,8 @@
                 }
               )
             },
-            getPercentage(nub){
-              return  Math.floor(nub/this.maxCites * 10000) / 100
+            getPercentage(nub, max){
+              return  Math.floor(nub/max * 10000) / 100
             },
             t(){
                 let that = this
@@ -311,10 +401,12 @@
                   res =>{
                     // console.log(res.data.hits.hits)
                     let row = []
-                    let j = 0
+                    // let j = 0
                     let papers = res.data.hits.hits
                     for (let i=0; i<papers.length; i++) {
                       let item = papers[i]._source
+                      if (i === 0)
+                        this.maxAuthorCites = item.n_citation
                       //console.log(item)
                       let temp = {}
                       temp['name'] = item.name
@@ -322,25 +414,44 @@
                       temp['id'] = item.id
                       temp['pic'] = that.getName(item.name, item.id)
 
-                      Api.getRealPic(item.id).then(
+                      /*Api.getRealPic(item.id).then(
                       res => {
                         const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
                         this.pic.push(imgUrl)
                       }
-                    )
-                      row.push(temp)
-                      j++
-                      if (j === this.rowPic){
+                    )*/
+                      //row.push(temp)
+                      that.authors.push(temp)
+                      //j++
+                      /*if (j === this.rowPic){
                         that.authors.push(row)
                         row = []
                         j = 0
-                      }
+                      }*/
                       //that.authors.push(temp)
                     }
                     console.log('authorlist', this.authors)
 
                   }
                 )
+            },
+            jump2authors(id){
+              console.log('author id is', id)
+              this.$router.push({
+                path: '/authorPage',
+                query: {
+                  id: id
+                }
+              })
+            },
+            jump2Institution(id){
+              console.log('author id is', id)
+              this.$router.push({
+                path: '/Institution',
+                query: {
+                  id: id
+                }
+              })
             },
             shortName(name) {
               let res
@@ -356,15 +467,6 @@
               let lastname = name.split(' ')
               return lastname[lastname.length-1]
             },
-            jump2authors(id){
-              console.log('author id is', id)
-              this.$router.push({
-                path: '/authorPage',
-                query: {
-                  id: id
-                }
-              })
-            },
         }
     }
 </script>
@@ -373,7 +475,6 @@
 .MainArea{
     background-color: #f2f4f7;
     width: 100%;
-    min-height: 1000px;
 }
 .myStart {
 
@@ -389,7 +490,7 @@
 }
 .sky {
     background-image: url(../assets/background.png);
-    height: 600px;
+    height: 100vh;
     width: 100%;
     background-repeat: no-repeat;
     background-size: cover;

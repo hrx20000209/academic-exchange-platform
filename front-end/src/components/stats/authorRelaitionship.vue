@@ -224,6 +224,10 @@ export default {
           }
         )
         this.$router.go(0)
+        }else if(state == 1){
+      this.$router.push({
+        path:'/article/'+id+'/overviews'
+      })
         }
         // this.$router.push({
         //     path: '/wyhTest',

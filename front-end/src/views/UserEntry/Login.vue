@@ -29,7 +29,7 @@
 
 <script>
 import Nav_with_searchBox from '../../components/nav_with_searchBox'
-import { register, userLogin } from "../../request/api"
+import { userLogin } from "../../request/api"
 
 export default {
   name: "Login",
@@ -42,26 +42,38 @@ export default {
   },
   methods: {
     login() {
-      userLogin({
-        name: this.account,
-        password: this.password,
-      }).then(response => {
-        if (response.message === '用户名或密码错误') {
-          this.$message({
-            type: 'warning',
-            message: '用户名或密码错误'
-          })
-        } else {
-          localStorage.setItem('user_id',response.user_id)
-          localStorage.setItem('user_name', this.account)
-          localStorage.setItem('ifLogin', 1)
-          this.$message({
-            type: 'success',
-            message: '登陆成功！'
-          })
-          this.$router.push('/homepage')
-        }
-      })
+      if (this.account === '') {
+        this.$message({
+          type: 'warning',
+          message: '请输入用户名'
+        })
+      } else if (this.password === '') {
+        this.$message({
+          type: 'warning',
+          message: '请输入密码'
+        })
+      } else {
+        userLogin({
+          name: this.account,
+          password: this.password,
+        }).then(response => {
+          if (response.message === '用户名或密码错误') {
+            this.$message({
+              type: 'warning',
+              message: '用户名或密码错误'
+            })
+          } else {
+            localStorage.setItem('user_id',response.user_id)
+            localStorage.setItem('user_name', this.account)
+            localStorage.setItem('ifLogin', 1)
+            this.$message({
+              type: 'success',
+              message: '登陆成功！'
+            })
+            this.$router.push('/homepage')
+          }
+        })
+      }
     },
     register() {
       this.$router.push('/register')

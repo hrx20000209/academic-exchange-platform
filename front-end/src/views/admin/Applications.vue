@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card style="height: 747px;">
-      <h1>认证申请列表</h1>
+      <h1>诉求列表</h1>
       <el-divider></el-divider>
       <div class="list-box">
         <el-table

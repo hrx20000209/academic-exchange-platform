@@ -63,9 +63,10 @@
 </template>
 
 <script>
+import { identify, checkAuthor } from "../request/api";
 export default {
   name: "authorSearchResult",
-  props: ['author'],
+  props: ['author', 'user_id'],
   data() {
     return {
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -91,10 +92,35 @@ export default {
       window.open(route.href, '_blank')
     },
     openDialog() {
-      this.dialogVisible = true
+      checkAuthor({
+        author_id: this.author._source.id
+      }).then(response => {
+        console.log(this.user_id)
+        console.log(response)
+        if (response.ifHaveAccount) {
+          this.$message({
+            type: 'warning',
+            message: '该门户已被认证'
+          })
+        } else {
+          this.dialogVisible = true
+        }
+      })
     },
     confirm() {
       this.dialogVisible = false
+      identify({
+        user_id: this.user_id,
+        author_id: this.author._source.id
+      }).then(response => {
+        console.log(response)
+        if (response.message == 'Identify success') {
+          this.$message({
+            type: 'success',
+            message: '认证成功'
+          })
+        }
+      })
     }
   },
 }

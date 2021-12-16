@@ -1,25 +1,25 @@
 <template>
   <div id="myCollection">
     <div id="topHead">
-      <div id="leftCharacter">我的收藏</div>
-      <button class="rightButton" v-if="editMode == false" id="beginEdit" @click="toEdit">整理</button>
-      <button class="rightButton" v-else id="endEdit" @click="endEdit">完成</button>
+      <div id="leftCharacter">收藏列表</div>
+      <button class="rightButton" v-if="editMode == false&&ifVisitor==false" id="beginEdit" @click="toEdit">整理</button>
+      <button class="rightButton" v-else-if="ifVisitor==false" id="endEdit" @click="endEdit">完成</button>
     </div>
     <div id="mainPane">
       <el-collapse v-model="activeName" accordion>
         <el-collapse-item v-for="(item,index) in CollectionList" :key=index :title=item.name :name=index
                           id="collectionTitle">
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
-            <div class="paperName" @click="toPaper(paper.id)">{{ paper.paper_name }}</div>
+            <div class="paperName" @click="toPaper(paper.paper_id)">{{ titleCase2(paper.paper_name) }}</div>
             <div class="threeButton" v-if="editMode == true">
-              <button class="delete">移出收藏夹</button>
+              <button class="delete" @click="deletePaperInFavo(index,i)">移出收藏夹</button>
               <button class="move" @click="movePaper(paper.paper_id,index,i)">移动到</button>
             </div>
           </div>
         </el-collapse-item>
       </el-collapse>
       <div v-if="CollectionList.length == 0">
-        <el-empty description="你还没有收藏夹噢，新建一个试试吧"></el-empty>
+        <el-empty description="还没有收藏夹噢"></el-empty>
       </div>
       <!--      <div id="empty"></div>-->
       <div id="bottomButton">
@@ -89,11 +89,11 @@
 </template>
 
 <script>
-import {deleFavo, moveFavo, uploadNewFavo} from "../../request/api";
+import {deleFavo, delePaperInFavo, moveFavo, uploadNewFavo} from "../../request/api";
 
 export default {
   name: "myCollection",
-  props: ['user', 'CollectionList'],
+  props: ['user', 'CollectionList','ifVisitor'],
   data() {
     return {
       activeName: '1',
@@ -101,36 +101,63 @@ export default {
       deleteCollection: false,
       checkList: [],
       move: false,
-      curMovePaperId: '',
       radio: '',
       newName: '',
-      editMode:false
+      editMode: false,
+      curpreFavoIdx: '',
+      curpreInFavoIdx: '',
     };
   },
   methods: {
-    toPaper(id){},
+    titleCase2(s) {
+      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+        //return word.slice(0, 1).toUpperCase() + word.slice(1);
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+      });
+    },
+    toPaper(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/article/' + id + '/overviews'
+      })
+    },
+    deletePaperInFavo(favo, idx) {
+      console.log(this.$props.CollectionList[favo].name)
+      this.$confirm('此操作将永久删除该收藏项, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delePaperInFavo({
+          user_id: localStorage.getItem('user_id'),
+          favorite_name: this.$props.CollectionList[favo].name,
+          paper_id: this.$props.CollectionList[favo].detail[idx].paper_id,
+        }).then(res => {
+          this.$props.CollectionList[favo].detail.splice(idx, 1)
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+          console.log(res)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
     createCollection() {
       this.create = true;
     },
     deletefav() {
       this.deleteCollection = true;
-      for(var i=0;i<this.checkList.length;i++){
-        deleFavo({
-          user_id:localStorage.getItem('user_id'),
-          favorite_name:this.checkList[i].toString()
-      }).then(res=>{
-        console.log(res)
-          this.deleteCollection = false;
-        })
-      }
-
     },
-    movePaper(id,pre,pos) {
+    movePaper(id, pre, pos) {
       this.move = true;
-      this.curMovePaperId = id
-      moveFavo({
-
-      })
+      this.curpreFavoIdx = pre;
+      this.curpreInFavoIdx = pos;
     },
     createCancel() {
       this.create = false;
@@ -143,25 +170,79 @@ export default {
       }).then(res => {
         console.log(res)
         // this.$router.go(0)
+        var obj={name: this.newName,detail:[]}
+        var tmp = Object.create(obj)
+        this.$props.CollectionList.push(tmp)
+        console.log(this.CollectionList)
         this.create = false;
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
       })
     },
     deleteColCancel() {
       this.deleteCollection = false;
     },
     deleteColConfirm() {
-      this.deletefav()
+      this.$confirm('此操作将永久删除选中的收藏夹, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(this.checkList)
+        console.log(this.$props.CollectionList)
+        for (var i = 0; i < this.checkList.length; i++) {
+          console.log(this.$props.CollectionList[this.checkList[i]])
+          deleFavo({
+            user_id: localStorage.getItem('user_id'),
+            favorite_name: this.$props.CollectionList[this.checkList[i]].name
+          }).then(res => {
+            console.log(res)
+            this.deleteCollection = false;
+          })
+          this.$props.CollectionList.splice(this.checkList[i], 1);
+        }
+        this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+      this.deleteCollection = false
     },
     moveCancel() {
       this.move = false;
     },
     moveConfirm() {
+      console.log(this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx].paper_name)
+      console.log(this.$props.CollectionList[this.radio].name)
+      console.log(this.$props.CollectionList[this.curpreFavoIdx].name)
+      moveFavo({
+        user_id: localStorage.getItem('user_id'),
+        paper_id: this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx].paper_id,
+        paper_name: this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx].paper_name,
+        favoName: this.$props.CollectionList[this.radio].name,
+        preName: this.$props.CollectionList[this.curpreFavoIdx].name,
+      }).then(res => {
+        this.$props.CollectionList[this.radio].detail.push(this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx])
+        this.$props.CollectionList[this.curpreFavoIdx].detail.splice(this.curpreInFavoIdx, 1)
+        this.$message({
+          message: '移动成功',
+          type: 'success'
+        });
+      })
+
       this.move = false;
     },
-    toEdit(){
+    toEdit() {
       this.editMode = true
     },
-    endEdit(){
+    endEdit() {
       this.editMode = false
     }
   }
@@ -170,7 +251,7 @@ export default {
 
 <style scoped>
 #myCollection {
-  margin-top: 20px;
+  margin-top: 30px;
   background-color: white;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   padding-bottom: 10px;
@@ -199,28 +280,30 @@ export default {
   justify-content: flex-start;
   /*border-bottom: 1px solid #dedede;*/
 }
-/deep/[data-v-d25ff02a] .el-collapse-item__header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    height: 48px;
-    line-height: 48px;
-    background-color: #FFF;
-    color: black;
-    cursor: pointer;
-    border-bottom: 1px solid #EBEEF5;
-    font-size: 16px;
-    font-weight: bold;
-    /* font-weight: 500; */
-    font-family: "Roboto", Arial, sans-serif;
-    padding-left: 20px;
-    -webkit-transition: border-bottom-color .3s;
-    transition: border-bottom-color .3s;
-    outline: 0;
+
+/deep/ [data-v-d25ff02a] .el-collapse-item__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 48px;
+  line-height: 48px;
+  background-color: #FFF;
+  color: black;
+  cursor: pointer;
+  border-bottom: 1px solid #EBEEF5;
+  font-size: 16px;
+  font-weight: bold;
+  /* font-weight: 500; */
+  font-family: "Roboto", Arial, sans-serif;
+  padding-left: 20px;
+  -webkit-transition: border-bottom-color .3s;
+  transition: border-bottom-color .3s;
+  outline: 0;
 }
+
 #collectionTitle {
   font-family: "Roboto", Arial, sans-serif;
   color: black;
@@ -234,16 +317,18 @@ export default {
 }
 
 .paperName {
-    margin-left: 10px;
-    color: #010101;
-    font-family: "Roboto", Arial, sans-serif;
-    font-size: 16px;
-    font-weight: normal;
+  margin-left: 10px;
+  color: #2a2a2a;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
 }
-.paperName:hover{
+
+.paperName:hover {
   cursor: pointer;
   color: #005abb;
 }
+
 .threeButton {
   margin-left: auto;
   margin-right: 20px;
@@ -278,30 +363,30 @@ export default {
 }
 
 .eachPaper {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    padding: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-bottom: 1px #e8e8e8 solid;
-    height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-bottom: 1px #e8e8e8 solid;
+  height: 30px;
 }
 
 .threeButton button {
-    font-family: "Roboto", Arial, sans-serif;
-    display: inline;
-    /* background-color: transparent; */
-    /* background-color: #1f86fd; */
-    font-weight: 600;
-    /* color: #ffffff; */
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 3px;
-    text-align: center;
-    margin-left: 15px;
-    /* padding: 3px 10px 3px 10px; */
-    border: none;
+  font-family: "Roboto", Arial, sans-serif;
+  display: inline;
+  /* background-color: transparent; */
+  /* background-color: #1f86fd; */
+  font-weight: 600;
+  /* color: #ffffff; */
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  text-align: center;
+  margin-left: 15px;
+  /* padding: 3px 10px 3px 10px; */
+  border: none;
 }
 
 .threeButton button:hover {
@@ -458,8 +543,9 @@ export default {
   display: block;
   margin-top: 5px;
 }
-.rightButton{
-    font-family: "Roboto", Arial, sans-serif;
+
+.rightButton {
+  font-family: "Roboto", Arial, sans-serif;
   display: inline;
   color: #525252;
   border: none;
@@ -475,7 +561,8 @@ export default {
   background-color: transparent;
 
 }
-.rightButton:hover{
+
+.rightButton:hover {
   color: black;
 }
 </style>
