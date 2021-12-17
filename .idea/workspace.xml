@@ -6,6 +6,8 @@
       <change beforePath="$PROJECT_DIR$/front-end/src/components/Search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Search.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_with_searchBox.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/nav_without_searchBox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/nav_without_searchBox.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/request/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/request/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/admin/Applications.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/admin/Applications.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +78,7 @@
       <option name="presentableId" value="Default" />
       <updated>1639492326419</updated>
       <workItem from="1639492330622" duration="2742000" />
+      <workItem from="1639739020379" duration="821000" />
     </task>
     <servers />
   </component>
