@@ -48,7 +48,7 @@
                             </div>
                             <div style="display: flex; justify-content: space-around">
                               <div style="margin-right: -40px;;display: flex; justify-content: center">
-                                <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px;">
+                                <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25)SRCNN">
                                 <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
                                   <el-tab-pane label="最热文章" name="first">
@@ -75,7 +75,7 @@
                                         </div>
                                         </div>
                                         <div style="display: flex; flex-direction: column; justify-content: center">
-                                          <el-progress :show-text="false" :percentage="getPercentage(item['cites'], maxCites)"></el-progress>
+                                          <el-progress color="rgb(24 174 187)" :show-text="false" :percentage="getPercentage(item['cites'], maxCites)"></el-progress>
                                         </div>
                                       </div>
                                     </div>
@@ -99,7 +99,7 @@
                                         </div>
                                       </div>
                                       <div style="display: flex; flex-direction: column; justify-content: center">
-                                        <div style="font-size: 10px; color: white; background-color: #01DFD7;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
+                                        <div style="font-size: 10px; color: white; background-color: #BDBDBD;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
                                           {{item['year']}}年
                                         </div>
                                       </div>
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
                               </div>
-                              <div style="margin-top: 15px;display: flex; border-radius: 20px;height: 1050px;background-color: #FFF;align-items: center;width: 270px;flex-direction: column; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2) inset">
+                              <div style="margin-top: 20px;display: flex;height: 1050px;background-color: #FFF;align-items: center;width: 270px;flex-direction: column; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2)">
                                 <div style="border-radius: 20px;height: 35px;width: 150px;box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);display: flex;margin-top: 25px;margin-bottom: 10px;justify-content: center;align-items: center">
                                   <div>
                                     最受欢迎作者
@@ -163,7 +163,7 @@
                                     </div>
                                     </div>
                                     <div style="display: flex; flex-direction: column; justify-content: center">
-                                      <el-progress color="#01cbc4" :show-text="false" :percentage="getPercentage(item['cites'], maxAuthorCites)"></el-progress>
+                                      <el-progress :color="'rgb(24 174 187)'" :show-text="false" :percentage="getPercentage(item['cites'], maxAuthorCites)"></el-progress>
                                     </div>
                                   </div>
                                 </div>
@@ -495,7 +495,7 @@
     border-radius: 0;
 }
 .sky {
-    background-image: url(../assets/background.png);
+    background-image: url(../assets/background_bigger.png);
     height: 100vh;
     width: 100%;
     background-repeat: no-repeat;
@@ -524,7 +524,7 @@
   padding: 0 25px 0 20px;
   font-size: 17px;
   letter-spacing:5px;
-  background-color:royalblue;
+  background-color:#565656;
   height: 45px;
   border-left: none;
 
@@ -547,7 +547,7 @@
   width:20px;
   height: 20px;
   color: #FFF;
-  background-color: #01cbc4;
+  background-color: #D8D8D8;
 }
 .index_0 {
   font-size: 10px;

@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="41459dc9-facf-4e56-bc74-ae02c861ad6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/Institution.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Institution.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/homepage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/homepage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +42,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="16.13.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="16.11.12" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-end/src/assets" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -51,15 +53,16 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
-      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/front-end/src/views" />
       <recent name="$PROJECT_DIR$/front-end/src/views/messages" />
       <recent name="$PROJECT_DIR$/front-end/src/views/admin" />
       <recent name="$PROJECT_DIR$/front-end/src/views/article" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\86189\Desktop\software\front-end\src\assets" />
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components" />
+      <recent name="D:\大三上\软件设计\academic-exchange-platform\front-end\src\components\stats" />
     </key>
   </component>
   <component name="SvnConfiguration">
