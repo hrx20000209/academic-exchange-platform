@@ -37,13 +37,13 @@
                            v-if="!item.isLike"
                            @click="addLike(item.comment_id,item.likes_num);item.isLike =!item.isLike;item.likes_num = item.likes_num +1">
 <!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
-                        <img src="@/assets/点赞.png" width="10%"/>
+                        <img src="@/assets/点赞.png" width="6%"/>
                         点赞&emsp;&emsp;已有{{ item.likes_num }}点赞
                       </div>
                       <div class="bottom-btn"
                            v-else
                            @click="cancelLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num -1">
-                        <img src="@/assets/已点赞.png" width="10%"/>
+                        <img src="@/assets/已点赞.png" width="6%"/>
                         点赞&emsp;&emsp;
                         已有{{ item.likes_num }}点赞
                       </div>
@@ -238,6 +238,7 @@ export default {
         .then(response=>{
           console.log('成功？')
           console.log(response.data)
+          this.getCommentsList()
         })
     },
     addLike(comment_id){
