@@ -39,7 +39,7 @@
               <div style="height: 30px">
                 <div style="float: left">
                   <el-button plain v-if="item.url === undefined" disabled>访问全文</el-button>
-                  <el-button plain v-else>访问全文</el-button>
+                  <el-button plain v-else @click="toWebsite(item.url)">访问全文</el-button>
                 </div>
                 <div style="float: right;margin-top: 12px;text-align: right">
                   Share
@@ -113,11 +113,15 @@ export default {
     this.bianli();
   },
   methods:{
+    toWebsite(url){
+      window.open(url,"_blank")
+    },
     toOtherPaper(id){
       let router = '/article/'+ id + '/overviews'
       this.$route.params.paper_id = id
       console.log(this.$route.params.paper_id)
       this.$router.push(router)
+      this.$router.go(0);
     },
     bianli(){
       this.reference = []

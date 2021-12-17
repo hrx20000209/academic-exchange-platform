@@ -37,7 +37,7 @@
               <!--              <el-menu-item index="/article/references">References</el-menu-item>-->
               <el-menu-item :index="referenceIndex">References</el-menu-item>
               <el-menu-item>
-                <el-button type="primary" v-if="this.flagLoad === true"><a :href="toWebsite(this.urlArticle)">查看全文</a></el-button>
+                <el-button type="primary" v-if="this.flagLoad === true" @click="toWebsite">查看全文</el-button>
                 <el-button type="primary"  disabled v-else>查看全文</el-button>
               </el-menu-item>
 
@@ -46,7 +46,8 @@
                 <el-button type="warning" plain v-else @click="deleteFavorite">取消收藏</el-button>
               </el-menu-item>
               <el-menu-item>
-                <el-button type="warning">推荐</el-button>
+                <el-button type="warning" v-if="!this.isRecommend" @click="recommend">推荐文献</el-button>
+                <el-button type="warning" plain v-else @click="cancelRecommend">取消推荐</el-button>
               </el-menu-item>
               <el-menu-item>
                 <el-button type="warning" @click="reMessage">获取引用信息</el-button>
@@ -123,7 +124,7 @@
             >
           </div>
         </div>
-        <div style="margin-top: 5px;overflow: hidden">
+        <div style="margin-top: 12px;overflow: hidden">
           <div style="float: left;width: 12%;margin-right: 2%">
             MLA
           </div>
@@ -146,7 +147,7 @@
             >
           </div>
         </div>
-        <div style="margin-top: 5px;overflow: hidden">
+        <div style="margin-top: 12px;overflow: hidden">
           <div style="float: left;width: 12%;margin-right: 2%">
             APA
           </div>
@@ -169,7 +170,7 @@
             >
           </div>
         </div>
-        <div style="margin-top: 5px;overflow: hidden">
+        <div style="margin-top: 12px;overflow: hidden">
           <div style="float: left;width: 12%;margin-right: 2%">
             BibTex
           </div>
@@ -239,7 +240,9 @@ export default {
       isFavorite:'',
       referMessages:[],
       referMessage:'',
-      venue:''
+      venue:'',
+      isRecommend:'',
+
     }
   },
   mounted() {
@@ -255,6 +258,7 @@ export default {
     console.log('333');
     this.getIsFavorite();
     // this.searchRelated();
+    this.isRecommends();
   },
   methods: {
     toAuthor(id){
@@ -266,9 +270,57 @@ export default {
         }
       )
     },
-    //获取收藏夹信息
-    get(){
-      console.log('11111')
+    //获取是否收藏
+    isRecommends(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log('获取是否推荐')
+      this.axios({
+        method:"get",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/search/IsRecommend?paper_id="+ this.paper_id + "&user_id="+this.user_id,
+        data:{
+          user_id: this.user_id,
+          paper_id: this.paper_id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+          this.isRecommend = response.data.isRecommend
+        })
+    },
+    recommend(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log('推荐')
+      this.axios({
+        method:"post",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/search/Recommend",
+        data:{
+          user_id: this.user_id,
+          paper_id: this.paper_id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+          this.isRecommend = true
+        })
+    },
+    cancelRecommend(){
+      this.user_id = localStorage.getItem('user_id')
+      console.log('取消推荐')
+      this.axios({
+        method:"post",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/search/CancelRecommend",
+        data:{
+          user_id: this.user_id,
+          paper_id: this.paper_id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+          this.isRecommend = false
+        })
     },
     reMessage(){
       // console.log(this.$store.state.refer)
@@ -359,6 +411,7 @@ export default {
       this.referMessages.push(this.referMessage)
       this.isRefer = true
     },
+    //获取收藏夹信息
     getFavoriteBag(){
       this.user_id = localStorage.getItem('user_id')
       this.dialogVisible = true
@@ -421,6 +474,7 @@ export default {
           user_id:this.user_id, //这里是user的id 但我这里没有
           paper_id: this.paper_id,    //文章id
           favorite_name: this.favorite_name,
+          paper_name: this.title
         },
         // timeout:1000,
       })
@@ -465,7 +519,7 @@ export default {
         })
     },
     toWebsite(){
-      return this.urlArticle
+      window.open(this.urlArticle,"_blank");
     },
     // search1(){
     //   this.$store.commit('setTitle','._source.title')
