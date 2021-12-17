@@ -151,6 +151,7 @@
 </template>
 
 <script>
+import { getAppealList, getUsrInfo } from "../../request/api"
 import ESApi from "../../api/elastic search";
 export default {
   name: "Applications",
@@ -178,38 +179,22 @@ export default {
         fields: '软件工程 计算机科学',
         background: '博士',
         institution: '北京航空航天大学软件学院'
-      }, {
-        date: '2016-05-04',
-        name: '👓🐸',
-        user_id: 2,
-        userName: '谭火彬',
-        phone: '12345678910',
-        fields: '软件工程 计算机科学',
-        background: '博士',
-        institution: '上海交通大学'
-      }, {
-        date: '2016-05-01',
-        name: '勒布朗·詹姆斯',
-        user_id: 3,
-        userName: '谭火彬',
-        phone: '12345678910',
-        fields: '软件工程 计算机科学',
-        background: '博士',
-        institution: '洛杉矶湖人队'
-      }, {
-        date: '2016-05-03',
-        name: '随便起一个名字',
-        user_id: 4,
-        userName: '谭火彬',
-        phone: '12345678910',
-        fields: '软件工程 计算机科学',
-        background: '博士',
-        institution: '没有机构能通过认证吗'
       }],
       authors: []
     }
   },
+  mounted() {
+    this.getList({}).then(response => {
+      r
+    })
+  },
   methods: {
+    getList() {
+      getAppealList({
+      }).then(response => {
+        console.log(response)
+      })
+    },
     tableRowClassName({row, rowIndex}) {
       if (rowIndex % 2 == 1) {
         return 'row-one';

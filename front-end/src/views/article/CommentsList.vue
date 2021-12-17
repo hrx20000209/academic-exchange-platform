@@ -7,44 +7,45 @@
       </div>
       <div class="downFrame">
         <div class="downFrameContent" v-if="this.commentsList.length !== 0">
-          <div v-for="item in items" :key="item.id">
+          <div v-for="(item,index) in commentsList" :key="item.id">
             <div>
               <el-card class="card">
                 <div class="top" slot="header">
                   <div>
-                    <el-avatar shape="circle" :size="size" :src="head"></el-avatar>
+                    <el-avatar shape="circle" :size="50" :src="otherHead[index]"></el-avatar>
                   </div>
                   <div style="width: 100%">
                     <div class="author-name">
-                      {{ item.author }}
+                      {{ item.user_name }}
                     </div>
                     <div class="description-box">
-                      {{ item.description }}
+                      {{ item.summary }}
                     </div>
                   </div>
                   <div class="time-box">
-                    {{ item.time }}
+                    {{ item.comment_time }}
                   </div>
                 </div>
                 <div>
                   <div class="body">
-                    <div>
-                      {{ item.text }}
+                    <div v-html="item.comment_content">
+<!--                      {{ item.comment_content }}-->
                     </div>
                     <el-divider></el-divider>
                     <div class="bottom">
                       <div class="bottom-btn"
-                           v-if="!item.done"
-                           @click="addLike(item.comment_id);item.done =!item.done">
+                           v-if="!item.isLike"
+                           @click="addLike(item.comment_id,item.likes_num);item.isLike =!item.isLike;item.likes_num = item.likes_num +1">
 <!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
                         <img src="@/assets/点赞.png" width="10%"/>
-                        点赞
+                        点赞&emsp;&emsp;已有{{ item.likes_num }}点赞
                       </div>
-                      <div class="bottom-btn-mouse-on"
+                      <div class="bottom-btn"
                            v-else
-                           @click="cancelLike(item.comment_id);item.done =!item.done">
+                           @click="cancelLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num -1">
                         <img src="@/assets/已点赞.png" width="10%"/>
-                        点赞
+                        点赞&emsp;&emsp;
+                        已有{{ item.likes_num }}点赞
                       </div>
                     </div>
                   </div>
@@ -77,7 +78,6 @@
               </div>
               <div class="description-box">
                 {{ description }}
-
               </div>
             </div>
           </div>
@@ -116,6 +116,8 @@ export default {
   },
   created() {
     this.getCommentsList()
+    this.getUserInfor()
+    this.getUserTou()
   },
   beforeDestroy() {
     this.editor.destroyed()
@@ -127,9 +129,9 @@ export default {
       editorData: '',
       cnt: 3,
       user_id:'',
-      name: 'HRX',
-      head: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-      description: '一个苦逼的前端',
+      name: '',
+      head: '',
+      description: '',
       items: [
         {
           author: '作者1',
@@ -163,10 +165,30 @@ export default {
         }
       ],
       data:'',
-      commentsList:[]
+      commentsList:[],
+      otherHead:[]
     }
   },
   methods: {
+    getUserInfor(){
+      this.user_id = localStorage.getItem('user_id')
+      this.axios({
+        method: "get",
+        url:'http://139.9.132.83:8000/user/GetUserInfo?user_id=' + this.user_id,
+        data:{
+          user_id:this.user_id
+        }
+      })
+      .then(response=>{
+        console.log(response.data)
+        this.name = response.data.data.name
+        this.description = response.data.data.summary
+      })
+    },
+    getUserTou(){
+      this.user_id = localStorage.getItem('user_id')
+      this.head = 'http://139.9.132.83:8000/user/getUserImage?user_id=' + this.user_id
+    },
     getCommentsList(){
       this.user_id = localStorage.getItem('user_id')
       console.log(this.user_id)
@@ -189,8 +211,11 @@ export default {
           console.log(this.commentsList)
           //这里再赋值
           this.commentsList = []
-          for(var i = 0; i < response.data.list; i++){
+          this.otherHead = []
+          for(var i = 0; i < response.data.list.length; i++){
             this.commentsList.push(response.data.list[i])
+            var h = 'http://139.9.132.83:8000/user/getUserImage?user_id=' + response.data.list[i].commentator_id
+            this.otherHead.push(h)
           }
           console.log(this.commentsList)
         })
@@ -204,7 +229,7 @@ export default {
         method: "post",
         url:"http://139.9.132.83:8000/communicate/comment_add",
         data:{
-          commented_id: '7C4C2B3B', //论文id
+          commented_id: this.$route.params.paper_id, //论文id
           commentator_id: this.user_id,      //评论人id
           comment_content: data,    //评论内容
         },
@@ -215,7 +240,8 @@ export default {
           console.log(response.data)
         })
     },
-    addLike(){
+    addLike(comment_id){
+      console.log(comment_id)
       this.user_id = localStorage.getItem('user_id')
       console.log(this.user_id)
       this.axios({
@@ -223,22 +249,25 @@ export default {
         url: "http://139.9.132.83:8000/communicate/like",
         data:{
           user_id:this.user_id,
-          post_id: this.comment_id
+          post_id: this.$route.params.paper_id,   //文献id
+          comment_id: comment_id
         }
       })
         .then(response=>{
           console.log('点赞成功')
         })
     },
-    cancelLike(){
+    cancelLike(comment_id){
+      console.log(comment_id)
       this.user_id = localStorage.getItem('user_id')
       console.log(this.user_id)
       this.axios({
         method: "post",
-        url: "http://139.9.132.83:8000/communicate/cancellike",
+        url: "http://139.9.132.83:8000/communicate/Cancellike",
         data:{
           user_id:this.user_id,
-          comment_id: this.comment_id
+          post_id: this.$route.params.paper_id,
+          comment_id: comment_id
         }
       })
         .then(response => {
@@ -323,7 +352,7 @@ export default {
 
 .time-box {
   font-size: small;
-  width: 10%;
+  width: 20%;
   color: #cecece;
   margin-top: 3%;
 }
