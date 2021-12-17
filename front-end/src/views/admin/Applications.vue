@@ -14,18 +14,13 @@
             :index="indexMethod">
           </el-table-column>
           <el-table-column
-            prop="date"
-            label="日期"
-            width="180">
-          </el-table-column>
-          <el-table-column
             prop="userName"
             label="用户名"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="institution"
-            label="机构">
+            prop="author_name"
+            label="申诉门户">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -37,12 +32,7 @@
               <el-button
                 size="small"
                 type="success"
-                @click="confirm(scope.row.name)">认证
-              </el-button>
-              <el-button
-                size="small"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">拒绝
+                @click="confirm(scope.row.name)">处理
               </el-button>
             </template>
           </el-table-column>
@@ -171,21 +161,15 @@ export default {
         institution: ''
       }],
       tableData: [{
-        date: '2016-05-02',
         name: 'Tom',
         user_id: 1,
-        userName: '谭火彬',
-        phone: '12345678910',
-        fields: '软件工程 计算机科学',
-        background: '博士',
-        institution: '北京航空航天大学软件学院'
       }],
       authors: []
     }
   },
   mounted() {
     this.getList({}).then(response => {
-      r
+
     })
   },
   methods: {
