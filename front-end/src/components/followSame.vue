@@ -3,7 +3,7 @@
     <div id="topHead">
       <div id="leftCharacter">关注概览</div>
     </div>
-    <div id="mainPane">
+    <div class="mainPane" v-if="followList.length>0">
       <div class="onePossible" v-for="(item,index) in followList" :key="index">
         <el-avatar :size="40" :src=oriSrc+item.scholar_id></el-avatar>
         <div class="idAndNumber">
@@ -14,6 +14,9 @@
           <button class="followButton" @click="toPaper(index)">查看门户</button>
         </div>
       </div>
+    </div>
+    <div v-else class="mainPane">
+      <el-empty description="暂时没有关注噢"></el-empty>
     </div>
     <div id="footer">
       <div id="footerCharacter">更多信息请查看关注列表</div>
@@ -80,7 +83,7 @@ export default {
   color: #8e8e8e;
 }
 
-#mainPane {
+.mainPane {
   border-top: 1px solid #dedede;
   padding: 10px 20px 15px 20px;
 }
