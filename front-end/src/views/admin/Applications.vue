@@ -5,7 +5,7 @@
       <el-divider></el-divider>
       <div class="list-box">
         <el-table
-          :data="tableData"
+          :data="AppealList"
           stripe
           style="width: 100%"
           :row-class-name="tableRowClassName">
@@ -25,12 +25,12 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
-                size="small"
+                size="large"
                 type="primary"
                 @click="openDetails(scope.row)">查看详情
               </el-button>
               <el-button
-                size="small"
+                size="large"
                 type="success"
                 @click="confirm(scope.row.name)">处理
               </el-button>
@@ -151,14 +151,10 @@ export default {
       relatedVisible: false,
       currentPage: 0,
       totalPage: 5,
-      userDetail: [{
-        name: '',
-        user_id: '',
+      appealList: [{
         userName: '',
-        phone: '',
-        fields: '',
-        background: '',
-        institution: ''
+        author_id: '',
+        author_name: '',
       }],
       tableData: [{
         name: 'Tom',
@@ -168,15 +164,13 @@ export default {
     }
   },
   mounted() {
-    this.getList({}).then(response => {
-
-    })
+    this.getList()
   },
   methods: {
     getList() {
       getAppealList({
       }).then(response => {
-        console.log(response)
+        this.appealList = response.favorites
       })
     },
     tableRowClassName({row, rowIndex}) {
