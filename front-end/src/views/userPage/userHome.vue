@@ -1,7 +1,8 @@
 <template>
   <div id="usrHomePane">
     <nav_with_search-box></nav_with_search-box>
-    <div id="topPane">
+    <div style="background-color: white">
+          <div id="topPane">
       <div id="topPicAndAddButton">
         <div id="leftPic">
           <div id="leftPicDetail">
@@ -52,6 +53,8 @@
         </div>
       </div>
     </div>
+    </div>
+
     <div class="mainPane">
       <div v-if="activeMode === 1" class="mainPane">
         <div id="leftMainPane">
@@ -510,11 +513,14 @@ export default {
 
 <style scoped>
 #topPane {
+    background: url("../../assets/home-promo-bg.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 #usrHomePane {
   background-color: whitesmoke;
-  /*background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");*/
+
   width: 100%;
   height: 100vh;
   overflow-y: auto;
@@ -530,7 +536,7 @@ export default {
 }
 
 #topPicAndAddButton {
-  background: #ffffff;
+  /*background: #ffffff;*/
   display: flex;
   justify-content: center;
   padding-top: 30px;
@@ -725,7 +731,7 @@ export default {
 }
 
 #bottomTab {
-  background-color: white;
+  /*background-color: white;*/
   display: flex;
   justify-content: center;
   flex-direction: row;
