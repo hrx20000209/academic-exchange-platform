@@ -30,7 +30,7 @@
                                        <div style="width: 650px">
                                         <!--<input type="text" class="search-left" placeholder="请输入要搜索的内容"><input type="button" class="search-right" value="搜 索" icon="el-icon-search">-->
                                          <el-input placeholder="搜索你想了解的论文" v-model="keywords" class="SearchInput">
-                                           <el-button slot="append" class="searchButton">搜索</el-button>
+                                           <el-button @click="SearchInfo" slot="append" class="searchButton">搜索</el-button>
                                          </el-input>
                                        </div>
                                      </div>
@@ -127,7 +127,7 @@
                                   </el-tab-pane>-->
                                   <el-tab-pane label="最强机构" name="fourth">
                                     <div style="display: flex; justify-content: center; height: 650px">
-                                      <div style="margin-top: -50px;width: 800px; height: 600px" id="chart"></div>
+                                      <div style="margin-top: -50px;width: 700px; height: 600px" id="chart"></div>
                                     </div>
                                   </el-tab-pane>
                                 </el-tabs>
@@ -192,6 +192,7 @@
         components: {Nav_with_searchBox_transparent},
         data(){
             return {
+                searchInput:'',
                 activeName: 'first',
                 Indata:[],
                 pic:[],
@@ -353,6 +354,11 @@
                   console.log('usr id is', res)
                 }
               )
+            },
+            SearchInfo(){
+              this.$store.state.searchInput = this.keywords
+              console.log('search info:', this.keywords)
+              this.$router.push('/search')
             },
             getPercentage(nub, max){
               return  Math.floor(nub/max * 10000) / 100
@@ -531,22 +537,17 @@
     margin-bottom: 10px;
 }
 
-.titleFont{
-    background-image:-webkit-linear-gradient(#2E9AFE,#01DFA5);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    margin-bottom: 10px;
-    text-align: left
-}
 .normal_index {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 10px;
   border-radius: 10px;
   margin-top: 5px;
   width:20px;
   height: 20px;
   color: #FFF;
-  background-color: #81BEF7;
-  text-align: center
+  background-color: #01cbc4;
 }
 .index_0 {
   font-size: 10px;

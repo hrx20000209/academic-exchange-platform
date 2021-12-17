@@ -216,7 +216,7 @@ export default {
       indexActive:1,
       paper_id: '',
       overviewIndex:'',
-      ra:'3',
+      ra:'',
       dialogVisible: false,
       innerVisible: false,
       flagShoucang: false,

@@ -65,7 +65,7 @@ export default {
   background-color: white;
 box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   border-radius: 2px;
-  /*margin-top: 30px;*/
+  margin-top: 30px;
   width: auto;
 }
 

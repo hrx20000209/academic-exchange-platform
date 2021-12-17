@@ -54,7 +54,7 @@
         <div id="topOnePane">
           <div id="leftMainPane">
             <div id="editusrInfoPane">
-              <author-card v-if="ifHaveAccount == true" :user="userInfo"></author-card>
+              <author-card v-if="ifHaveAccount == true" :user="userInfo" :imgsrc="circleUrl"></author-card>
               <stats-overview :user="user"></stats-overview>
               <!--              <div id="researchLine">-->
               <!--                <div id="researchInfo">研究项目</div>-->
@@ -188,7 +188,7 @@
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
-          <el-input v-model="user.userName" disabled></el-input>
+          <el-input v-model="usrName" disabled></el-input>
           <div class="letter-send-box">私信内容：</div>
           <el-input
             type="textarea"
@@ -232,10 +232,10 @@ import {
   checkIfFollow,
   followAuthor,
   getdata,
-  getScolarUserInfo,
+  getScolarUserInfo, sendMessage,
   undoFollow,
   uploadAppealImage,
-  uploadImage
+  uploadImage,
 } from "../../request/api";
 
 export default {
@@ -260,6 +260,8 @@ export default {
   },
   data() {
     return {
+      user_id: '',
+      text: '',
       AppealfileList:[],
       dialogImageUrl: '',
       dialogVisible: false,
@@ -354,6 +356,7 @@ export default {
   },
   mounted() {
     // this.id=this.$route.query.id
+    this.user_id = localStorage.getItem("user_id")
     this.id = this.$route.query.id
     this.getAuthorInfo(this.id)
     this.getAuthorsPaper(this.id)
@@ -594,16 +597,35 @@ export default {
           message: '私信内容不能为空'
         })
       } else {
-        this.dialogLetterVisible = false
-        this.$message({
-          type: 'success',
-          message: '发送成功'
+        sendMessage({
+          sender_id: this.user_id,
+          receiver_name: this.usrName,
+          text: this.text
+        }).then(response => {
+          this.$message({
+            type: 'success',
+            message: '发送成功'
+          })
+          this.dialogLetterVisible = false
+          this.text = ''
         })
       }
     },
     whenExceed(){
        this.$message.error('最多只能上传两张图片');
-    }
+    },
+    handleClose(done) {
+      if (this.text !== '') {
+        this.$confirm('确认关闭？正在编辑的私信不会保存哦！')
+          .then(_ => {
+            done();
+            this.text = ''
+          })
+          .catch(_ => {});
+      } else {
+        done()
+      }
+    },
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
-  <div class="search" @keyup="keyboardEvent" tabindex="-1">
+  <div id="search" @keyup="keyboardEvent" tabindex="-1">
+    <nav_without_search-box></nav_without_search-box>
     <!--    <div class="searchbar">-->
     <!--      <el-autocomplete class="searchInput" v-model="searchInput" placeholder="请输入搜索关键词"-->
     <!--                       :fetch-suggestions="querySearch" @select="search" @keyup.enter="search"></el-autocomplete>-->
@@ -12,42 +13,92 @@
                 @blur="searchInputHasFocus = false">
         <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
       </el-input>
+      <el-collapse v-model="activeSearchTabs" class="advancedSearch">
+        <el-collapse-item title="高级搜索" name="1">
+          <el-form class="rules">
+            <el-form-item
+              class="rule"
+              v-for="(rule, index) in advancedSearchInput"
+              :key="`规则${index}`">
+              <el-select v-model="rule.bool" placeholder="布尔">
+                <el-option v-for="bool in BOOLS" :key="bool" :label="bool"
+                           :value="bool"></el-option>
+              </el-select>
+              <el-select v-model="rule.field" placeholder="字段">
+                <el-option v-for="field in Object.keys(FIELD_TYPE)"
+                           :key="field"
+                           :label="field"
+                           :value="field"
+                >
+                  <!--                           TODO @change: check if type still fits-->
+
+                </el-option>
+              </el-select>
+              <el-select v-model="rule.type" placeholder="规则种类" no-data-text="请先选字段">
+                <el-option v-for="type in FIELD_TYPE[rule.field]" :key="type" :label="type"
+                           :value="type"></el-option>
+              </el-select>
+              <el-input v-model="rule.match" v-if="rule.type === 'MATCH'" placeholder="匹配文字"></el-input>
+              <div v-if="rule.type === 'RANGE'">
+                <el-select v-model="rule.range.op">
+                  <el-option v-for="op in Object.keys(OPS)" :key="op" :label="op"
+                             :value="op"></el-option>
+                </el-select>
+                <el-input-number v-model="rule.range.value"></el-input-number>
+              </div>
+              <el-button @click="delRule(rule)">删除</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="advancedSearch">提交</el-button>
+              <el-button @click="addRule">新增规则</el-button>
+            </el-form-item>
+          </el-form>
+        </el-collapse-item>
+      </el-collapse>
       <!--      <el-switch v-model="searching_paper" class="searchSwitch"-->
       <!--                 active-text="文献"-->
       <!--                 inactive-text="作者">-->
       <!--      </el-switch>-->
     </div>
     <div class="below-searchbar">
-<!--      TODO 改用做好的tab -->
+      <!--      TODO 改用做好的tab -->
       <el-tabs v-model="activeTab" @tab-click="search">
         <el-tab-pane label="文 献" name="article">
           <div class="tab">
             <div class="filterAndSort">
-              <div>
-                <span class="filterAndSortTitle">排序方式</span>
-                <el-radio-group class="sort" v-model="sort">
-                  <el-radio label="relevance">相关性</el-radio>
-                  <el-radio label="time">发表时间</el-radio>
-                  <el-radio label="citation">引用量</el-radio>
-                  <el-radio label="citation">浏览量</el-radio>
-                  <!--            TODO 新增排序属性-->
-                  <!--            TODO 改蓝色字体样式-->
-                </el-radio-group>
-              </div>
-              <div >
-                <span class="filterAndSortTitle" >按年份筛选</span>
-                <div class="filter">
-                  <el-checkbox v-for="year in years" :key="year.value" v-model="year.isSelected"
-                               :label="year.value"></el-checkbox>
-                </div>
-              </div>
-              <div >
-                <span class="filterAndSortTitle" >按期刊筛选</span>
-                <div class="filter">
-                  <el-checkbox v-for="venue in venues" :key="venue.value" v-model="venue.isSelected"
-                               :label="venue.value"></el-checkbox>
-                </div>
-              </div>
+              <el-collapse>
+                <el-collapse-item title="排序方式">
+                  <div>
+                    <!--                    <span class="filterAndSortTitle">排序方式</span>-->
+                    <el-radio-group class="sort" v-model="sort">
+                      <el-radio label="relevance">相关性</el-radio>
+                      <el-radio label="time">发表时间</el-radio>
+                      <el-radio label="citation">引用量</el-radio>
+                      <el-radio label="citation">浏览量</el-radio>
+                      <!--            TODO 新增排序属性-->
+                      <!--            TODO 改蓝色字体样式-->
+                    </el-radio-group>
+                  </div>
+                </el-collapse-item>
+                <el-collapse-item title="按年份筛选">
+                  <div>
+                    <!--                    <span class="filterAndSortTitle">按年份筛选</span>-->
+                    <div class="filter">
+                      <el-checkbox v-for="year in years" :key="year.value" v-model="year.isSelected"
+                                   :label="year.value"></el-checkbox>
+                    </div>
+                  </div>
+                </el-collapse-item>
+                <el-collapse-item title="按期刊筛选">
+                  <div>
+                    <!--                    <span class="filterAndSortTitle">按期刊筛选</span>-->
+                    <div class="filter">
+                      <el-checkbox v-for="venue in venues" :key="venue.value" v-model="venue.isSelected"
+                                   :label="venue.value"></el-checkbox>
+                    </div>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
             </div>
             <div class="result">
               <template v-for="result in article_results_to_show">
@@ -64,6 +115,7 @@
                   {{ author.name }}
                   <span v-if="result.authors.indexOf(author) !== result.authors.length-1"> · </span>
                 </span>
+                      <!--                      TODO citation_by_year map-->
                     </div>
                     <div class="abstract" style="margin-bottom: 10px;font-size: 16px">
                       {{ result.abstract }}
@@ -134,7 +186,7 @@
           <div class="tab">
             <div class="filterAndSort">
               <div>
-                <span class="filterAndSortTitle" >排序方式</span>
+                <span class="filterAndSortTitle">排序方式</span>
                 <el-radio-group class="sort" v-model="sort">
                   <el-radio label="relevance">相关性</el-radio>
                   <el-radio label="pub">发表量</el-radio>
@@ -161,7 +213,7 @@
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
                     <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>
-<!--                    TODO 跳转 学者主页和论文主页-->
+                    <!--                    TODO 跳转 学者主页和论文主页-->
                     <div style="margin-bottom: 10px">
                       <span v-for="org in result.orgs" :key="org.id">
                         {{ org.name }}
@@ -178,7 +230,7 @@
                       <div style="float: left">
                         <el-button plain>关注</el-button>
                         <el-button plain>私信</el-button>
-<!--                        TODO author 其他字段-->
+                        <!--                        TODO author 其他字段-->
                       </div>
                     </div>
                   </div>
@@ -193,16 +245,34 @@
 </template>
 
 <script>
-import QRCode from 'qrcode'
+import QRCode from 'qrcode';
+import _ from 'lodash';
+import Nav_without_searchBox from "./nav_without_searchBox";
 
-let Clipboard = window.navigator.clipboard
+let Clipboard = window.navigator.clipboard;
 
 export default {
   name: "search",
+  components: {Nav_without_searchBox},
   data() {
     return {
-      searchInput: "tom",
-      activeTab: "author",
+      activeSearchTabs: ['1'],
+      BOOLS: ['MUST', 'MUST_NOT', 'SHOULD'],
+      FIELD_TYPE: {
+        'title': ['MATCH', 'EXISTS'],
+        'authors': ['MATCH', 'EXISTS'], // FIXME ARRAY
+        'abstract': ['MATCH', 'EXISTS'],
+        'venue': ['MATCH', 'EXISTS'],
+        'url': ['EXISTS'], // FIXME TERM query?
+        'n_citation': ['RANGE', 'EXISTS'],
+        'year': ['RANGE', 'EXISTS'],
+      },
+      OPS: {
+        GTE: 1,
+        LTE: 2,
+      },
+      searchInput: "machine",
+      activeTab: "article",
       articles: [],
       hotArticles: [
         {
@@ -222,6 +292,16 @@ export default {
       years: [],
       venues: [],
       orgs: [],
+      advancedSearchInput: [{
+        bool: 'MUST', // MUST MUST_NOT SHOULD
+        type: 'MATCH', // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
+        field: 'venue', // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
+        match: 'AAAI', // string
+        range: {
+          op: null, // >= <=
+          value: null, // number
+        }, //
+      }],
       sort: "relevance",
       formatTitle: title => {
         const words = title.trim().toLowerCase().split(' ');
@@ -229,10 +309,11 @@ export default {
           "and", "or", "the", "a"];
         for (let i = 0; i < words.length; i++) {
           if (ignore_words.indexOf(words[i]) > -1) {
-            continue
+            continue;
           }
           words[i] = words[i].charAt(0).toUpperCase() + words[i].substring(1);
         }
+        words[0] = words[0].charAt(0).toUpperCase() + words[0].substring(1);
         return words.join(' ');
       },
       formatAuthor: title => {
@@ -240,50 +321,53 @@ export default {
         for (let i = 0; i < words.length; i++) {
           words[i] = words[i].charAt(0).toUpperCase() + words[i].substring(1);
         }
-        return words.join(' ')
+        return words.join(' ');
       },
       // cmp func for this.article_results_to_show
       cmpCitation: (a, b) => {
-        return b.n_citation - a.n_citation
+        return b.n_citation - a.n_citation;
       },
       cmpRelevance: (a, b) => {
-        return b._score - a._score
+        return b._score - a._score;
       },
       cmpTime: (a, b) => {
-        return b.year - a.year
+        return b.year - a.year;
       },
       cmpPub: (a, b) => {
-        return b.n_pubs - a.n_pubs
+        return b.n_pubs - a.n_pubs;
       }
     };
   },
   computed: {
+    isAdvancedSearch: function () {
+      return this.activeSearchTabs.indexOf("1") > -1;
+    },
     article_results_to_show: function () {
-      let hits = this.articleHits
-      let ret = []
+      let hits = this.articleHits;
+      let ret = [];
       if (this.activeTab !== "article")
-        return ret
+        return ret;
 
       // filter
       for (const hit of hits) {
-        let y = hit._source.year
-        let v = hit._source.venue.raw
-        let match_year = false
-        let match_venue = false
+        let y = hit._source.year;
+        let v = hit._source.venue.raw;
+        let match_year = false;
+        let match_venue = false;
         for (const year of this.years) {
           if (year.isSelected && (year.value === y)) {
-            match_year = true
+            match_year = true;
           }
         }
         for (const venue of this.venues) {
           if (venue.isSelected && (venue.value === v)) {
-            match_venue = true
+            match_venue = true;
           }
         }
         if (match_venue && match_year) {
-          hit._source._score = hit._score
-          hit._source.hasLoadedQRCode = false // url + hasLoadedQRCode = popover.id
-          ret.push(hit._source)
+          hit._source._score = hit._score;
+          hit._source.hasLoadedQRCode = false; // url + hasLoadedQRCode = popover.id
+          ret.push(hit._source);
         }
       }
 
@@ -296,43 +380,43 @@ export default {
           ret.sort(this.cmpTime);
           break;
         default:
-          ret.sort(this.cmpCitation)
+          ret.sort(this.cmpCitation);
       }
-      return ret
+      return ret;
     },
     author_results_to_show: function () {
-      let that = this
-      let hits = this.authorHits
-      let ret = []
+      let that = this;
+      let hits = this.authorHits;
+      let ret = [];
       if (this.activeTab !== "author") {
-        console.log("author_results_to_show NOT COMPUTED")
-        return ret
+        console.log("author_results_to_show NOT COMPUTED");
+        return ret;
       }
 
       // filter
-      let orgsMustHave = []
-      console.log(this.orgs)
+      let orgsMustHave = [];
+      console.log(this.orgs);
       for (const org of this.orgs) {
-        orgsMustHave.push(org.value)
+        orgsMustHave.push(org.value);
       }
       for (const hit of hits) {
-        let authorOrgs = []
+        let authorOrgs = [];
         for (const authorOrgObj of hit._source.orgs) {
-          authorOrgs.push(authorOrgObj.name)
+          authorOrgs.push(authorOrgObj.name);
         }
         let intersection = authorOrgs.filter(function (o) {
-          console.log("INDEX OF: " + orgsMustHave.indexOf(o))
-          return orgsMustHave.indexOf(o) > -1
+          console.log("INDEX OF: " + orgsMustHave.indexOf(o));
+          return orgsMustHave.indexOf(o) > -1;
         });
         // TODO some has no org
-        console.log(authorOrgs)
-        console.log(orgsMustHave)
-        console.log(intersection)
+        console.log(authorOrgs);
+        console.log(orgsMustHave);
+        console.log(intersection);
         if (intersection.length > 0) {
-          hit._source._score = hit._score
-          ret.push(hit._source)
-          console.log("RET:")
-          console.log(ret)
+          hit._source._score = hit._score;
+          ret.push(hit._source);
+          console.log("RET:");
+          console.log(ret);
         }
       }
 
@@ -345,102 +429,98 @@ export default {
           ret.sort(this.cmpPub);
           break;
         default:
-          ret.sort(this.cmpCitation)
+          ret.sort(this.cmpCitation);
       }
-      console.log(ret)
-      return ret
+      console.log(ret);
+      return ret;
     },
   },
   watch: {
     articleHits: function () {
       if (this.activeTab !== "article")
-        return
+        return;
 
       // update this.years
-      let ys = new Set()
+      let ys = new Set();
       for (const hit of this.articleHits) {
-        ys.add(hit._source.year)
+        ys.add(hit._source.year);
       }
-      let years = []
+      let years = [];
       for (const y of ys) {
         years.push({
           value: y,
           isSelected: true,
-        })
+        });
       }
       this.years = years.sort((a, b) => {
-        return b.value - a.value
-      })
+        return b.value - a.value;
+      });
 
       // update this.venues
-      let vs = new Set()
+      let vs = new Set();
       for (const hit of this.articleHits) {
-        vs.add(hit._source.venue.raw)
+        vs.add(hit._source.venue.raw);
       }
-      let venues = []
+      let venues = [];
       for (const v of vs) {
         venues.push({
           value: v,
           isSelected: true,
-        })
+        });
       }
       this.venues = venues.sort((a, b) => {
-        return b.value < a.value ? 1 : -1
-      })
+        return b.value < a.value ? 1 : -1;
+      });
     },
     authorHits: function () {
       if (this.activeTab !== "author")
-        return
+        return;
 
       // update this.orgs
-      let os = new Set()
+      let os = new Set();
       for (const hit of this.authorHits) {
         for (const org of hit._source.orgs) {
-          os.add(org.name)
+          os.add(org.name);
         }
       }
-      let orgs = []
+      let orgs = [];
       for (const o of os) {
         orgs.push({
           value: o,
           isSelected: true,
-        })
+        });
       }
       this.orgs = orgs.sort((a, b) => {
-        return b.value - a.value
-      })
+        return b.value - a.value;
+      });
     },
   },
   methods: {
-    getShortString(str, len) {
-      return str.slice(0, len) + '...'
-    },
     copyUrl(url) {
-      let that = this
+      let that = this;
       Clipboard.writeText(url).then(function () {
-        console.log(this)
-        that.notifyInfo("已复制原文链接")
+        console.log(this);
+        that.notifyInfo("已复制原文链接");
       }, function () {
-        that.notifyInfo("复制链接失败，请手动复制：\n" + url)
-      })
+        that.notifyInfo("复制链接失败，请手动复制：\n" + url);
+      });
     },
     goToUrl(url) {
-      window.open(url, "_blank")
+      window.open(url, "_blank");
     },
     notifySlashWithThrottle: _.throttle(function () {
-      console.log("NOTIFYING SLASH SHORTCUT")
-      this.notifyInfo("按”/“即可跳到搜索框")
+      console.log("NOTIFYING SLASH SHORTCUT");
+      this.notifyInfo("按”/“即可跳到搜索框");
     }, 30000, {
       trailing: false
     }),
     keyboardEvent(e) {
-      // console.log(e.code)
-      if (e.location !== 0 || e.ctrlKey || e.altKey) return // 屏蔽非 DOM_KEY_LOCATION_STANDARD 键盘事件
+      if (e.location !== 0 || e.ctrlKey || e.altKey) return; // 屏蔽非 DOM_KEY_LOCATION_STANDARD 键盘事件
       if (e.code === "Slash") {
-        this.$refs.searchInput.focus()
-        console.log('FOCUS')
+        this.$refs.searchInput.focus();
+        console.log('FOCUS');
       } else if (!this.searchInputHasFocus) {
-        this.notifySlashWithThrottle()
+        this.notifySlashWithThrottle();
       }
     },
     notifyInfo(str) {
@@ -448,7 +528,7 @@ export default {
         title: "提示",
         message: str,
         duration: 3000,
-      })
+      });
     },
     querySearch(queryString, cb) {
       let articles = this.articles;
@@ -462,16 +542,16 @@ export default {
     },
     search() {
       if (this.searchInput.length === 0) {
-        this.notifyInfo("关键词不能为空")
-        return
+        this.notifyInfo("关键词不能为空");
+        return;
       }
       console.log("searching: \n\t" + this.searchInput);
       if (this.activeTab === "article") {
-        console.log("SEARCHING FOR ARTICLES")
-        this.searchArticle()
+        console.log("SEARCHING FOR ARTICLES");
+        this.searchArticle();
       } else if (this.activeTab === "author") {
-        console.log("SEARCHING FOR AUTHORS")
-        this.searchAuthor()
+        console.log("SEARCHING FOR AUTHORS");
+        this.searchAuthor();
       }
     },
     searchAuthor() {
@@ -485,75 +565,153 @@ export default {
           }
         }
       ).then(response => {
-        this.authorHits = []
+        this.authorHits = [];
         for (const hit of response.data.hits.hits) {
           for (const org of hit._source.orgs) {
-            org.name = this.formatAuthor(org.name)
+            org.name = this.formatAuthor(org.name);
           }
-          hit._source.name = this.formatTitle(hit._source.name)
-          this.authorHits.push(hit)
+          hit._source.name = this.formatTitle(hit._source.name);
+          this.authorHits.push(hit);
         }
-        this.search_response_data = response.data
+        this.search_response_data = response.data;
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
-        console.log("AUTHORS FETCHED")
-      })
+        console.log("AUTHORS FETCHED");
+      });
     },
     searchArticle() {
       // TODO 高级搜索
       // TODO 分页
+      // TODO 未搜索到结果页面
       this.$http.post(
         'http://119.3.223.135:9200/cspaper/_search',
         {
           "query": {
-            // "match": {
-            //   "title": this.searchInput
-            // }
-            "exists": {
-              "field": "url"
+            "match": {
+              "title": this.searchInput
             }
+            // "exists": {
+            //   "field": "url"
+            // }
           }
         }
       ).then(response => {
-        this.articleHits = []
+        this.articleHits = [];
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
-            author.name = this.formatAuthor(author.name)
+            author.name = this.formatAuthor(author.name);
           }
-          hit._source.title = this.formatTitle(hit._source.title)
-          this.articleHits.push(hit)
+          hit._source.title = this.formatTitle(hit._source.title);
+          this.articleHits.push(hit);
         }
-        this.search_response_data = response.data
+        this.search_response_data = response.data;
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
-        console.log("ARTICLES FETCHED")
-      })
+        console.log("ARTICLES FETCHED");
+      });
+    },
+    advancedSearch() {
+      let bools = {
+        must: [],
+        must_not: [],
+        should: [], // TODO implement OR
+      };
+      for (const rule of this.advancedSearchInput) {
+        if (this.hasNull([rule.type, rule.bool, rule.field])) continue;
+        const bool = rule.bool.toLowerCase();
+        const type = rule.type.toLowerCase();
+        let toPush = {[type]: {}};
+        // types: match, range, exists
+        if (type === 'match') {
+          if (this.hasNull([rule.match]) || rule.match.length === 0) continue;
+          if (rule.field === 'venue') {
+            // rule.field = 'venue.raw'
+          }
+          toPush[type][rule.field] = rule.match;
+        } else if (type === 'range') {
+          if (this.hasNull([rule.range, rule.range.op, rule.range.value]) || rule.range.value === undefined) continue;
+          toPush[type][rule.field] = {};
+          toPush[type][rule.field][rule.range.op.toLowerCase()] = rule.range.value;
+        } else if (type === 'exists') {
+          toPush[type]['field'] = rule.field;
+        } else {
+          console.warn('unexpected rule type!'.toUpperCase());
+        }
+        console.log(toPush);
+        bools[bool].push(toPush);
+      }
+      console.log(bools);
+      this.$http.post(
+        'http://119.3.223.135:9200/cspaper/_search',
+        {
+          "query": {
+            'bool': bools
+          }
+        }
+      ).then(response => {
+        this.articleHits = [];
+        for (const hit of response.data.hits.hits) {
+          for (const author of hit._source.authors) {
+            author.name = this.formatAuthor(author.name);
+          }
+          hit._source.title = this.formatTitle(hit._source.title);
+          this.articleHits.push(hit);
+        }
+        this.search_response_data = response.data;
+        console.log("ARTICLES FETCHED");
+      });
+    },
+    addRule() {
+      this.advancedSearchInput.push({
+        bool: null, // MUST MUST_NOT SHOULD
+        type: null, // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
+        field: null, // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
+        match: null, // string
+        range: {
+          op: null, // >= <=
+          value: null, // number
+        }
+      });
+    },
+    delRule(rule) {
+      let index = this.advancedSearchInput.indexOf(rule);
+      if (index !== -1) {
+        this.advancedSearchInput.splice(index, 1);
+      }
+    },
+    hasNull(list) {
+      for (const listElement of list) {
+        if (listElement === null) {
+          return true;
+        }
+      }
+      return false;
     },
     loadQRCode(result) {
-      console.log(result.url)
-      let elem = document.getElementById(result.url)
-      console.log(elem)
+      console.log(result.url);
+      let elem = document.getElementById(result.url);
+      console.log(elem);
       try {
         QRCode.toCanvas(elem, result.url, {
           margin: 0,
         }, function (error) {
-          if (error) console.error(error)
-        })
+          if (error) console.error(error);
+        });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-      result.hasLoadedQRCode = true
-      console.log("LOAD END")
+      result.hasLoadedQRCode = true;
+      console.log("LOAD END");
     }
   },
   mounted() {
-    this.search()
+    this.search();
   },
   created() {
     const component = this;
     this.handler = function (e) {
       component.$emit('keyup', e);
-    }
+    };
     window.addEventListener('keyup', this.handler);
   },
   beforeDestroy() {
@@ -563,6 +721,49 @@ export default {
 </script>
 
 <style scoped>
+
+.rule {
+  padding: 10px;
+  /*border-bottom: 1px solid #EBEEF5;*/
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
+}
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 15px;
+}
+
+/deep/ .rules .el-select {
+  width: 100px;
+}
+
+/deep/ .rules .el-input {
+  /*width: 150px;*/
+}
+
+/deep/ .advancedSearch.el-collapse {
+  border: none;
+}
+
+/deep/ .advancedSearch .el-collapse-item__header {
+  border: none;
+  padding: 0 15px;
+  justify-content: left;
+}
+
+/deep/ .advancedSearch .el-collapse-item__arrow {
+  margin-left: 5px;
+}
+
+
+/deep/ .advancedSearch .el-collapse-item__wrap {
+  border: none;
+}
+
+.advancedSearch {
+  width: 700px;
+}
 
 /deep/ .el-tabs__item {
   /*width: ;*/
@@ -627,6 +828,7 @@ export default {
 .searchBar {
   display: flex;
   padding: 50px 20% 30px;
+  flex-direction: column;
   justify-content: center;
   /*border-bottom: 1px solid #ddd;*/
 }
@@ -673,15 +875,19 @@ export default {
 .filter {
   display: flex;
   flex-direction: column;
-  padding-bottom: 10px;
-  border-bottom: lightgrey solid 1px;
+  /*padding-bottom: 10px;*/
+  /*border-bottom: lightgrey solid 1px;*/
 }
 
 .sort {
   display: flex;
   flex-wrap: wrap;
-  padding-bottom: 10px;
-  border-bottom: lightgrey solid 1px;
+  /*padding-bottom: 10px;*/
+  /*border-bottom: lightgrey solid 1px;*/
+}
+
+/deep/ .el-collapse-item__header {
+  font-size: 16px;
 }
 
 .clearfix:before,
@@ -730,7 +936,7 @@ export default {
   text-align: center;
 }
 
-/deep/ .el-input__inner {
+/deep/ .searchInput .el-input__inner {
   height: 50px;
   font-size: 16px;
 }

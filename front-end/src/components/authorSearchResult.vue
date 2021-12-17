@@ -35,6 +35,7 @@
       title="邮箱认证"
       :visible.sync="dialogVisible"
       width="35%"
+      @close="close"
       append-to-body>
       <div class="letter-body">
         <div class="letter-title">
@@ -46,7 +47,7 @@
           <div style="width: 50%;">
             <el-input v-model="email" size="medium"></el-input>
           </div>
-          <el-button type="primary" class="send-code-btn">发送验证码</el-button>
+          <el-button type="primary" class="send-code-btn" @click="sendCode">发送验证码</el-button>
         </div>
         <div class="email-box">
           <a style="margin-top: 1%; width: 18%">验证码：</a>
@@ -63,7 +64,7 @@
 </template>
 
 <script>
-import { identify, checkAuthor } from "../request/api";
+import { identify, checkAuthor, emailIdentify, emailConfirm } from "../request/api";
 export default {
   name: "authorSearchResult",
   props: ['author', 'user_id'],
@@ -107,17 +108,50 @@ export default {
         }
       })
     },
-    confirm() {
-      this.dialogVisible = false
-      identify({
-        user_id: this.user_id,
-        author_id: this.author._source.id
+    sendCode() {
+      emailIdentify({
+        to_email: this.email
       }).then(response => {
-        console.log(response)
-        if (response.message == 'Identify success') {
+        if (response.message == 'success') {
           this.$message({
             type: 'success',
-            message: '认证成功'
+            message: '验证码已发送'
+          })
+        }
+      })
+    },
+    close() {
+      this.email = ''
+      this.text = ''
+    },
+    confirm() {
+      emailConfirm({
+        to_email: this.email,
+        re_yzm: this.code
+      }).then(response => {
+        if (response.message == 'success') {
+          identify({
+            user_id: this.user_id,
+            author_id: this.author._source.id
+          }).then(response => {
+            if (response.message == 'Identify success') {
+              this.$message({
+                type: 'success',
+                message: '认证成功'
+              })
+              this.$router.push({
+                path: 'userHome',
+                query: {
+                  id: this.user_id
+                }
+              })
+            }
+            this.dialogVisible = false
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '验证码错误'
           })
         }
       })
