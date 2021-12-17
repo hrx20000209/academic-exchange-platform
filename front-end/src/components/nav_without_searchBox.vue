@@ -17,13 +17,13 @@
         广场
       </div>
     </div>
-    <div id="searchWrapper">
-      <div id="searchBar">
-        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput">
-          <el-button slot="append" icon="el-icon-search" @click="toSearch" @keyup.enter="toSearch"></el-button>
-        </el-input>
-      </div>
-    </div>
+<!--    <div id="searchWrapper">-->
+<!--      <div id="searchBar">-->
+<!--        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput">-->
+<!--          <el-button slot="append" icon="el-icon-search"></el-button>-->
+<!--        </el-input>-->
+<!--      </div>-->
+<!--    </div>-->
     <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
         <div class="infoBox">
@@ -85,7 +85,7 @@
 import {changeUserPassword} from "../request/api";
 
 export default {
-  name: "nav_with_searchBox",
+  name: "nav_without_searchBox",
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -127,10 +127,6 @@ export default {
     };
   },
   methods: {
-    toSearch(){
-      this.$store.commit('setSearchInput',this.input2)
-      this.$router.push('/search')
-    },
     changePassword() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -282,6 +278,7 @@ export default {
 }
 
 #otherWrapper {
+  margin-left: auto;
   width: 400px;
   font-size: 20px;
   margin-top: 18px;

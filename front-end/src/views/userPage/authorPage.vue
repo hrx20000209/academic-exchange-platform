@@ -54,7 +54,7 @@
         <div id="topOnePane">
           <div id="leftMainPane">
             <div id="editusrInfoPane">
-              <author-card v-if="ifHaveAccount == true" :user="userInfo"></author-card>
+              <author-card v-if="ifHaveAccount == true" :user="userInfo" :imgsrc="circleUrl"></author-card>
               <stats-overview :user="user"></stats-overview>
               <!--              <div id="researchLine">-->
               <!--                <div id="researchInfo">研究项目</div>-->
