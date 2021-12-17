@@ -511,6 +511,11 @@ export default {
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
           console.log(res)
+          this.$message({
+              message: '取消关注成功',
+              type: 'success'
+            });
+          this.ifFollow = false
         })
       }
     },
