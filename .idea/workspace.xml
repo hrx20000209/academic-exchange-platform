@@ -63,6 +63,16 @@
     <configuration />
   </component>
   <component name="TaskManager">
+<<<<<<< Updated upstream
+=======
+    <task active="true" id="Default" summary="Default task">
+      <created>1639565037713</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1639565037713</updated>
+      <workItem from="1639565040060" duration="1217000" />
+    </task>
+>>>>>>> Stashed changes
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
