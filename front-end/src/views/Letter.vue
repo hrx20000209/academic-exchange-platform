@@ -64,6 +64,7 @@
               <el-button type="primary" @click="openLetter">回 复</el-button>
             </div>
           </div>
+          <div class="message-details" v-else></div>
         </div>
       </div>
     </div>

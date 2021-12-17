@@ -8,7 +8,7 @@
         <div v-for="(item,index) in followList" :key="index">
           <div class="eachFollowAuthorPane">
             <div class="leftPic">
-              <el-avatar :size="65" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
+              <el-avatar :size="65" :src="oriSrc+item.scholar_id">
                 <!--              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>-->
               </el-avatar>
             </div>
@@ -43,6 +43,7 @@ export default {
   data(){
     return{
       update:1,
+      oriSrc:"http://139.9.132.83:8000/user/getImage?author_id=",
     }
   },
   methods: {

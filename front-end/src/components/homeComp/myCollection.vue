@@ -7,10 +7,12 @@
     </div>
     <div id="mainPane">
       <el-collapse v-model="activeName" accordion>
-        <el-collapse-item v-for="(item,index) in CollectionList" :key=index :title=item.name :name=index
+        <el-collapse-item v-for="(item,index) in CollectionList" :key=index :name=index
                           id="collectionTitle">
+          <template slot="title">
+            <i class="el-icon-s-order" style="margin-right: 10px"></i><div>{{ item.name }}</div></template>
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
-            <div class="paperName" @click="toPaper(paper.paper_id)">{{ titleCase2(paper.paper_name) }}</div>
+            <div class="paperName" @click="toPaper(paper.paper_id)">{{ paper.paper_name }}</div>
             <div class="threeButton" v-if="editMode == true">
               <button class="delete" @click="deletePaperInFavo(index,i)">移出收藏夹</button>
               <button class="move" @click="movePaper(paper.paper_id,index,i)">移动到</button>
@@ -93,7 +95,7 @@ import {deleFavo, delePaperInFavo, moveFavo, uploadNewFavo} from "../../request/
 
 export default {
   name: "myCollection",
-  props: ['user', 'CollectionList','ifVisitor'],
+  props: ['user', 'CollectionList','ifVisitor','imgSrcList'],
   data() {
     return {
       activeName: '1',
@@ -109,12 +111,12 @@ export default {
     };
   },
   methods: {
-    titleCase2(s) {
-      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
-        //return word.slice(0, 1).toUpperCase() + word.slice(1);
-        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
-      });
-    },
+    // titleCase2(s) {
+    //   return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+    //     //return word.slice(0, 1).toUpperCase() + word.slice(1);
+    //     return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+    //   });
+    // },
     toPaper(id) {
       console.log(id)
       this.$router.push({

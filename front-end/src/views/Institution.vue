@@ -72,7 +72,7 @@
                 <a style="font-family: Georgia; font-size: 20px; color:#2E9AFE">{{this.members}}</a> <a style="font-family: siyuan; font-size: 13px; color:#848484;margin-left: 5px;">名成员</a>
               </div>
               <div style="display: flex; flex-direction: column">
-                <div style="display: flex; justify-content: center">
+                <div v-if="modalShow" style="display: flex; justify-content: center">
                   <div style="display: flex; flex-direction: column; width: 800px;">
                     <div v-for="(item1, index1) in authors.slice((currentPage_author - 1) * pagesize_author, currentPage_author * pagesize_author)" :key="index1" style="margin-top: 10px">
                       <div style="display: flex; justify-content: space-around">
@@ -80,7 +80,7 @@
                           <div slot="content">姓名：{{item2.name}}<br/>被引次数：{{item2.cite}}<br/>发表文章数：{{item2.pubs}}</div>
                           <div style="display: flex; flex-direction: column;cursor: pointer" @click="jump2authors(item2.id)">
                             <div style="display: flex; justify-content: center">
-                              <el-avatar :src="pic[index1*row_size+index2-(currentPage_author-1)*pagesize_author*row_size]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+                              <el-avatar :src="pic[currentPage_author][index1*row_size+index2]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
                             </div>
                             <div style="display: flex; justify-content: center; flex-wrap:wrap;width: 100px">
                               <div style="font-family: Gabriola; font-size: 16px;">
@@ -168,7 +168,7 @@
         </el-col>
       </el-main>
     </el-container>
-    <el-button @click="handleCurrentChange_author(1)">test</el-button>
+    <el-button @click="rerender">test</el-button>
   </div>
 </template>
 
@@ -183,8 +183,10 @@
       components: {Nav_with_searchBox},
       data(){
           return {
+            redraw:1,
+            maxSize: 100,
             maxNameLen:10,
-            pic:[],
+            pic: {},
             row_size: 6,
             InstitutionName:'',
             members:0,
@@ -202,13 +204,14 @@
             years:[],
             y_cites:[],
             y_pub:[],
+            modalShow:true,
           }
         },
         mounted() {
           let id = this.$route.query.id
           console.log('id is', id)
           this.test(id)
-
+          // this.handleCurrentChange_author(1)
           // console.log('mounted:',this.years)
           // this.buildPie1()
         },
@@ -391,6 +394,16 @@
               that.jump2papers(params.data.id)
             })
           },
+          luanxu(arr) {
+            const len = arr.length;
+            for(let i=0;i<len;i++) {
+                let index = Math.floor(Math.random()*(len-i));
+                let tem = arr[index];
+                arr[index] = arr[len-i-1];
+                arr[len-i-1] = tem;
+            }
+            return arr
+          },
           addColor(list) {
           // console.log(list)
           let res = list
@@ -416,20 +429,28 @@
             this.currentPage_author = val;
             const pageAuthor = this.authors.slice((this.currentPage_author - 1) * this.pagesize_author, this.currentPage_author * this.pagesize_author)
             console.log('pageAuthor is', pageAuthor)
+            if (!this.pic.hasOwnProperty(this.currentPage_author))
+              this.pic[this.currentPage_author] = []
             for (let i = 0; i<pageAuthor.length; i++) {
               const row = pageAuthor[i]
               for (let j = 0; j< row.length; j++) {
                 const author = row[j]
                 Api.getRealPic(author.id).then(
                   res => {
-                    if (this.pic.length === this.row_size * this.pagesize_author)
-                      this.pic = []
                     const imgUrl='data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
-                    this.pic.push(imgUrl)
+                    this.pic[this.currentPage_author].push(imgUrl)
+                    this.rerender()
+                    // this.pic.push(imgUrl)
                   }
                 )
               }
             }
+            // this.redraw = this.currentPage_author
+            // console.log('picarr', this.pic)
+          },
+          rerender: function(){
+              this.modalShow = false;
+              this.modalShow = true;
           },
           test(id) {
             let that=this
@@ -437,7 +458,7 @@
               res=>{
                 // console.log('test id is', id)
                 let info = res.data.hits.hits[0]._source
-                // console.log('info is ', info)
+                console.log('info is ', info)
                 this.fillCites(info)
                 this.fillPaperCites(info)
                 this.fillAuthorCites(info)
@@ -465,8 +486,8 @@
           },
           getPic(name, id) {
             //TODO: input id output pic or bool
-            let lastname = name.split(' ')
-            return lastname[lastname.length-1]
+            console.log('pic is',this.pic[id])
+            return this.pic[id]
           },
           fillAttribute(info){
             this.members = info.authors.length
@@ -514,8 +535,11 @@
             }
           },
           fillAuthorCites(info){
-            for (let i=0; i<info.authors.length; i++) {
-              let items = info.authors[i]
+            info.authors.sort(function(a,b){return b.n_citation-a.n_citation})
+            let arr = info.authors.length>=this.maxSize?info.authors.slice(0, this.maxSize):info.authors
+            arr = this.luanxu(arr)
+            for (let i=0; i<arr.length; i++) {
+              let items = arr[i]
               let tmp = {}
               tmp['name'] = items.name
               tmp['value'] = items.n_citation
@@ -524,8 +548,11 @@
             }
           },
           fillAuthorPubs(info){
-            for (let i=0; i<info.authors.length; i++) {
-              let items = info.authors[i]
+            info.authors.sort(function(a,b){return b.n_pubs-a.n_pubs})
+            let arr = info.authors.length>=this.maxSize?info.authors.slice(0, this.maxSize):info.authors
+            arr = this.luanxu(arr)
+            for (let i=0; i<arr.length; i++) {
+              let items = arr[i]
               let tmp = {}
               tmp['name'] = items.name
               tmp['value'] = items.n_pubs
@@ -543,8 +570,11 @@
           },
           fillPaperCites(info){
             // console.log('pubs', info.pubs)
-            for (let i=0; i<info.pubs.length; i++) {
-              let items = info.pubs[i]
+            info.pubs.sort(function(a,b){return b.n_citation-a.n_citation})
+            let arr = info.pubs.length>=this.maxSize?info.pubs.slice(0, this.maxSize):info.pubs
+            arr = this.luanxu(arr)
+            for (let i=0; i<arr.length; i++) {
+              let items = arr[i]
               let tmp = {}
               tmp['name'] = items.title
               tmp['value'] = items.n_citation

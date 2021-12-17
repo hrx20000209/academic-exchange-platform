@@ -103,6 +103,7 @@ export default {
                 type: 'success',
                 message: '注册成功'
               })
+              this.$router.push('/login')
             } else if (res.message === '用户名已存在') {
               this.$message({
                 type: 'warning',
