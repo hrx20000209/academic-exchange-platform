@@ -23,8 +23,7 @@
               <div v-else class="userInDetail">待完善</div>
             </div>
             <div id="cardrightPic">
-              <el-avatar :size="75" :src=imgsrc @error="errorHandler">
-                <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
+              <el-avatar :size="75" :src=imgsrc>
               </el-avatar>
             </div>
           </div>
