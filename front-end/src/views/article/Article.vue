@@ -29,13 +29,13 @@
           <div>
             <el-menu class="el-menu-demo" mode="horizontal" router >
 <!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
-              <el-menu-item :index="overviewIndex">Overviews</el-menu-item>
+              <el-menu-item :index="overviewIndex">概述</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
               <!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
-              <el-menu-item :index="commentIndex">Comments</el-menu-item>
+              <el-menu-item :index="commentIndex">评论</el-menu-item>
               <!--              <el-menu-item index="/article/citations">Citations</el-menu-item>-->
               <!--              <el-menu-item index="/article/references">References</el-menu-item>-->
-              <el-menu-item :index="referenceIndex">References</el-menu-item>
+              <el-menu-item :index="referenceIndex">参考文献</el-menu-item>
               <el-menu-item>
                 <el-button type="primary" v-if="this.flagLoad === true" @click="toWebsite">查看全文</el-button>
                 <el-button type="primary"  disabled v-else>查看全文</el-button>
@@ -216,7 +216,7 @@ export default {
       indexActive:1,
       paper_id: '',
       overviewIndex:'',
-      ra:'3',
+      ra:'',
       dialogVisible: false,
       innerVisible: false,
       flagShoucang: false,
