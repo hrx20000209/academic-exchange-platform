@@ -43,9 +43,9 @@
           <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>
         </div>
       </div>
-      <div v-else id="LoginPane" style="margin-left: 150px;">
+      <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
         <div style="display: flex; ">
-          <div style="color:#848484;font-size: 10px;margin-right: 10px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
+          <div style="color:#FAFAFA;font-weight: bold;font-size: 10px;margin-right: 20px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
           <div style="cursor:pointer;" @click="toLogin">
             <el-avatar :size="'large'" :src="circleUrl"></el-avatar>
           </div>
@@ -226,14 +226,14 @@ export default {
 
 .jumpRouterDetail:hover {
   font-size: 14px;
-  color: lightskyblue;
+  color: #424242;
   letter-spacing: 3px;
   margin-right: 30px;
   cursor: pointer;
 }
 
 .myActiveClass {
-  color: #6E6E6E;
+  color: #FFFFFF;
   font-weight: bold;
 }
 
@@ -282,7 +282,7 @@ export default {
 }
 
 .infoBox:hover {
-  color: lightskyblue;
+  color: #424242;
   cursor: pointer;
 }
 
@@ -312,7 +312,7 @@ export default {
 }
 
 #createNew:hover {
-  background-color: #005abb;
+  background-color: #424242;
 }
 
 /deep/ .el-input__inner {

@@ -17,7 +17,7 @@
                                       font-weight: bold;
                                       color: #585858;
                                       font-size: 40px;
-                                      margin-top: 45px;
+                                      margin-top: 60px;
                                       margin-bottom: 20px;
                                       font-family: siyuan;">
                                       专业的学术成果分享平台
@@ -495,7 +495,7 @@
     border-radius: 0;
 }
 .sky {
-    background-image: url(../assets/background_bigger.png);
+    background-image: url(../assets/background2.png);
     height: 100vh;
     width: 100%;
     background-repeat: no-repeat;
