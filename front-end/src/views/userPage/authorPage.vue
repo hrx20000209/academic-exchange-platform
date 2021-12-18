@@ -21,7 +21,7 @@
           <div id="usrAbility">{{ this.user.ability }}</div>
         </div>
         <div id="rightButton" style="display: block;">
-          <div style="margin-top: 5%">
+          <div style="margin-top: 5%" v-if="canSendMessage">
             <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
           </div>
           <div style="margin-top: 5%">
@@ -229,6 +229,7 @@ import FollowSameAuthor from "../../components/followSame_author";
 import axios from "axios";
 import ESApi from "../../api/elastic search"
 import {
+  checkAuthor,
   checkIfFollow,
   followAuthor,
   getdata,
@@ -307,6 +308,7 @@ export default {
       fileList: [],
       formLabelWidth: '100px',
       activeMode: 1,
+      canSendMessage: false,
       research: [
         // {
         //   title: '数据挖掘中的聚类算法综述',
@@ -362,9 +364,21 @@ export default {
     this.getAuthorsPaper(this.id)
     this.checkFollow()
     this.getAccountInfo()
+    this.checkMessage()
     // this.getdataSource(this.id)
   },
   methods: {
+    checkMessage() {
+      checkAuthor({
+        author_id: this.author._source.id
+      }).then(response => {
+        if (response.ifHaveAccount) {
+          this.canSendMessage = true
+        } else {
+          this.canSendMessage = false
+        }
+      })
+    },
     appealChange(file,fileList){
       console.log(file)
       console.log(fileList)
@@ -511,6 +525,11 @@ export default {
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
           console.log(res)
+          this.$message({
+              message: '取消关注成功',
+              type: 'success'
+            });
+          this.ifFollow = false
         })
       }
     },

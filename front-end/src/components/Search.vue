@@ -705,6 +705,7 @@ export default {
     }
   },
   mounted() {
+    this.searchInput = this.$store.state.searchInput
     this.search();
   },
   created() {

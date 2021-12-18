@@ -764,7 +764,7 @@
   color: #FFF;
 }
 .cites{
-  background-color: #01DF74;
+  background-color: #BDBDBD;
   text-align: center;
   border-radius: 30px;
   font-family: Gadugi;

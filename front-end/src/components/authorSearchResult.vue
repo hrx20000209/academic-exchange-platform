@@ -51,7 +51,7 @@
         </div>
         <div class="email-box">
           <a style="margin-top: 1%; width: 18%">验证码：</a>
-          <div style="width: 45%;">
+          <div style="width: 75%;">
             <el-input v-model="code" size="medium" ></el-input>
           </div>
         </div>
@@ -96,8 +96,6 @@ export default {
       checkAuthor({
         author_id: this.author._source.id
       }).then(response => {
-        console.log(this.user_id)
-        console.log(response)
         if (response.ifHaveAccount) {
           this.$message({
             type: 'warning',
