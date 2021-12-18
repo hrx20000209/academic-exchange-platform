@@ -13,48 +13,65 @@
                 @blur="searchInputHasFocus = false">
         <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
       </el-input>
-      <el-collapse v-model="activeSearchTabs" class="advancedSearch">
-        <el-collapse-item title="高级搜索" name="1">
-          <el-form class="rules">
-            <el-form-item
-              class="rule"
-              v-for="(rule, index) in advancedSearchInput"
-              :key="`规则${index}`">
-              <el-select v-model="rule.bool" placeholder="布尔">
-                <el-option v-for="bool in BOOLS" :key="bool" :label="bool"
-                           :value="bool"></el-option>
-              </el-select>
-              <el-select v-model="rule.field" placeholder="字段">
-                <el-option v-for="field in Object.keys(FIELD_TYPE)"
-                           :key="field"
-                           :label="field"
-                           :value="field"
-                >
-                  <!--                           TODO @change: check if type still fits-->
-
-                </el-option>
-              </el-select>
-              <el-select v-model="rule.type" placeholder="规则种类" no-data-text="请先选字段">
-                <el-option v-for="type in FIELD_TYPE[rule.field]" :key="type" :label="type"
-                           :value="type"></el-option>
-              </el-select>
-              <el-input v-model="rule.match" v-if="rule.type === 'MATCH'" placeholder="匹配文字"></el-input>
-              <div v-if="rule.type === 'RANGE'">
-                <el-select v-model="rule.range.op">
-                  <el-option v-for="op in Object.keys(OPS)" :key="op" :label="op"
-                             :value="op"></el-option>
+      <div class="advancedSearch">
+        <el-collapse v-model="activeSearchTabs" class="advancedSearchForm">
+          <el-collapse-item title="高级搜索" name="1">
+            <!--          TODO 高级搜索使用说明-->
+            <el-form class="rules">
+              <el-form-item
+                class="rule"
+                v-for="(rule, index) in advancedSearchInput"
+                :key="`规则${index}`">
+                <el-select v-model="rule.bool" placeholder="布尔">
+                  <el-option v-for="bool in BOOLS" :key="bool" :label="bool"
+                             :value="bool"></el-option>
                 </el-select>
-                <el-input-number v-model="rule.range.value"></el-input-number>
-              </div>
-              <el-button @click="delRule(rule)">删除</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button @click="advancedSearch">提交</el-button>
-              <el-button @click="addRule">新增规则</el-button>
-            </el-form-item>
-          </el-form>
-        </el-collapse-item>
-      </el-collapse>
+                <el-select v-model="rule.field" placeholder="字段">
+                  <el-option v-for="field in Object.keys(FIELD_TYPE)"
+                             :key="field"
+                             :label="field"
+                             :value="field"
+                  >
+                    <!--                           TODO @change: check if type still fits-->
+
+                  </el-option>
+                </el-select>
+                <el-select v-model="rule.type" placeholder="规则种类" no-data-text="请先选字段">
+                  <el-option v-for="type in FIELD_TYPE[rule.field]" :key="type" :label="type"
+                             :value="type"></el-option>
+                </el-select>
+                <el-input v-model="rule.match" v-if="rule.type === TYPES.MATCH" placeholder="匹配文字"></el-input>
+                <div v-if="rule.type === TYPES.RANGE">
+                  <el-select v-model="rule.range.op">
+                    <el-option v-for="op in OPS" :key="op" :label="op"
+                               :value="op"></el-option>
+                  </el-select>
+                  <el-input-number v-model="rule.range.value"></el-input-number>
+                </div>
+                <el-button @click="delRule(rule)">删除</el-button>
+              </el-form-item>
+              <el-form-item class="rule">
+                <el-button @click="advancedSearch">提交</el-button>
+                <el-button @click="addRule">新增规则</el-button>
+              </el-form-item>
+            </el-form>
+          </el-collapse-item>
+        </el-collapse>
+        <el-popover
+          placement="right"
+          title="标题"
+          width="300px"
+          trigger="manual"
+          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+          v-model="showAdvancedSearchInfo"
+          v-if="isAdvancedSearch"
+        >
+          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">
+            <i class="el-icon-info" style="margin: auto"
+               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>
+          </div>
+        </el-popover>
+      </div>
       <!--      <el-switch v-model="searching_paper" class="searchSwitch"-->
       <!--                 active-text="文献"-->
       <!--                 inactive-text="作者">-->
@@ -66,13 +83,13 @@
         <el-tab-pane label="文 献" name="article">
           <div class="tab">
             <div class="filterAndSort">
-              <el-collapse>
-                <el-collapse-item title="排序方式">
+              <el-collapse v-model="activeFilterAndSortTabsInArticle">
+                <el-collapse-item title="排序方式" name="sort">
                   <div>
                     <!--                    <span class="filterAndSortTitle">排序方式</span>-->
                     <el-radio-group class="sort" v-model="sort">
                       <el-radio label="relevance">相关性</el-radio>
-                      <el-radio label="time">发表时间</el-radio>
+                      <el-radio label="time">年份</el-radio>
                       <el-radio label="citation">引用量</el-radio>
                       <el-radio label="citation">浏览量</el-radio>
                       <!--            TODO 新增排序属性-->
@@ -80,7 +97,7 @@
                     </el-radio-group>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="按年份筛选">
+                <el-collapse-item title="按年份筛选" name="filterByYears">
                   <div>
                     <!--                    <span class="filterAndSortTitle">按年份筛选</span>-->
                     <div class="filter">
@@ -89,7 +106,7 @@
                     </div>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="按期刊筛选">
+                <el-collapse-item title="按期刊筛选" name="filterByVenues">
                   <div>
                     <!--                    <span class="filterAndSortTitle">按期刊筛选</span>-->
                     <div class="filter">
@@ -104,7 +121,10 @@
               <template v-for="result in article_results_to_show">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
-                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.title }}</div>
+                    <div style="margin-bottom: 10px;font-size: 18px" @click="goToArticlePage(result.id)">
+                      {{ result.title }}
+                      <!--                      TODO <a> tag?-->
+                    </div>
                     <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
                       <span class="articleType">Article</span>
                       <span class="articleYear">{{ result.year }}</span>
@@ -148,6 +168,7 @@
                           trigger="click"
                           :key="result.url+result.hasLoadedQRCode"
                           @show="loadQRCode(result)">
+                          <!--                          TODO result.url => article page url-->
                           <el-link
                             class="textInQRCodePopover"
                             @click="copyUrl(result.url)"
@@ -187,6 +208,7 @@
             <div class="filterAndSort">
               <div>
                 <span class="filterAndSortTitle">排序方式</span>
+                <!--                TODO change style to article's-->
                 <el-radio-group class="sort" v-model="sort">
                   <el-radio label="relevance">相关性</el-radio>
                   <el-radio label="pub">发表量</el-radio>
@@ -250,29 +272,61 @@ import _ from 'lodash';
 import Nav_without_searchBox from "./nav_without_searchBox";
 
 let Clipboard = window.navigator.clipboard;
+const TYPES = {
+  MATCH: '匹配',
+  RANGE: '范围',
+  EXISTS: '存在',
+};
+const BOOLS = {
+  MUST: 'AND',
+  MUST_NOT: 'NOT',
+  SHOULD: 'OR'
+};
+const FIELDS = {
+  TITLE: '标题',
+  AUTHORS: '作者',
+  ABSTRACT: '摘要',
+  VENUE: '期刊',
+  URL: '原文链接',
+  N_CITATION: '引用量',
+  YEAR: '年份',
+};
+const OPS = {
+  GTE: '≥',
+  LTE: '≤'
+};
+
+// return string used directly in POST
+const getKeyNameByKeyValue = (obj, keyValue) => {
+  for (const objKey in obj) {
+    if (obj[objKey] === keyValue) return objKey.toLowerCase();
+  }
+  return null;
+};
 
 export default {
   name: "search",
   components: {Nav_without_searchBox},
   data() {
     return {
-      activeSearchTabs: ['1'],
-      BOOLS: ['MUST', 'MUST_NOT', 'SHOULD'],
+      showAdvancedSearchInfo: false,
+      TYPES: TYPES,
+      // BOOLS: BOOLS,
+      activeSearchTabs: [],
+      BOOLS: BOOLS,
       FIELD_TYPE: {
-        'title': ['MATCH', 'EXISTS'],
-        'authors': ['MATCH', 'EXISTS'], // FIXME ARRAY
-        'abstract': ['MATCH', 'EXISTS'],
-        'venue': ['MATCH', 'EXISTS'],
-        'url': ['EXISTS'], // FIXME TERM query?
-        'n_citation': ['RANGE', 'EXISTS'],
-        'year': ['RANGE', 'EXISTS'],
+        [FIELDS.TITLE]: [TYPES.MATCH, TYPES.EXISTS],
+        [FIELDS.AUTHORS]: [TYPES.MATCH, TYPES.EXISTS], // FIXME ARRAY
+        [FIELDS.ABSTRACT]: [TYPES.MATCH, TYPES.EXISTS],
+        [FIELDS.VENUE]: [TYPES.MATCH, TYPES.EXISTS],
+        [FIELDS.URL]: [TYPES.EXISTS], // FIXME TERM query?
+        [FIELDS.N_CITATION]: [TYPES.RANGE, TYPES.EXISTS],
+        [FIELDS.YEAR]: [TYPES.RANGE, TYPES.EXISTS],
       },
-      OPS: {
-        GTE: 1,
-        LTE: 2,
-      },
-      searchInput: "machine",
+      OPS: OPS,
+      searchInput: "",
       activeTab: "article",
+      activeFilterAndSortTabsInArticle: ['sort', 'filterByYears', 'filterByVenues'],
       articles: [],
       hotArticles: [
         {
@@ -284,7 +338,6 @@ export default {
       ],
       search_response_data: null,
       searchInputHasFocus: false,
-      searching_paper: true,
       articleHits: [],
       authorHits: [],
       // years and venues are watching articleHits
@@ -293,9 +346,9 @@ export default {
       venues: [],
       orgs: [],
       advancedSearchInput: [{
-        bool: 'MUST', // MUST MUST_NOT SHOULD
-        type: 'MATCH', // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
-        field: 'venue', // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
+        bool: BOOLS.MUST, // MUST MUST_NOT SHOULD
+        type: TYPES.MATCH, // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
+        field: FIELDS.VENUE, // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
         match: 'AAAI', // string
         range: {
           op: null, // >= <=
@@ -494,8 +547,17 @@ export default {
         return b.value - a.value;
       });
     },
+    isAdvancedSearch: function () {
+      if (!this.isAdvancedSearch) {
+        this.showAdvancedSearchInfo = false
+      }
+    }
   },
   methods: {
+    goToArticlePage(id) {
+      let router = '/article/' + id + '/overviews';
+      this.$router.push(router);
+    },
     copyUrl(url) {
       let that = this;
       Clipboard.writeText(url).then(function () {
@@ -580,7 +642,6 @@ export default {
       });
     },
     searchArticle() {
-      // TODO 高级搜索
       // TODO 分页
       // TODO 未搜索到结果页面
       this.$http.post(
@@ -590,9 +651,6 @@ export default {
             "match": {
               "title": this.searchInput
             }
-            // "exists": {
-            //   "field": "url"
-            // }
           }
         }
       ).then(response => {
@@ -618,27 +676,32 @@ export default {
       };
       for (const rule of this.advancedSearchInput) {
         if (this.hasNull([rule.type, rule.bool, rule.field])) continue;
-        const bool = rule.bool.toLowerCase();
-        const type = rule.type.toLowerCase();
-        let toPush = {[type]: {}};
+        const bool = rule.bool;
+        const boolKey = getKeyNameByKeyValue(BOOLS, bool);
+        const type = rule.type;
+        const typeKey = getKeyNameByKeyValue(TYPES, type);
+        const fieldKey = getKeyNameByKeyValue(FIELDS, rule.field);
+        let toPush = {[typeKey]: {}};
+        let typeObj = toPush[typeKey];
         // types: match, range, exists
-        if (type === 'match') {
+        if (type === TYPES.MATCH) {
           if (this.hasNull([rule.match]) || rule.match.length === 0) continue;
-          if (rule.field === 'venue') {
-            // rule.field = 'venue.raw'
+          if (rule.field === FIELDS.VENUE) {
+            // TODO rule.field = ....raw?
           }
-          toPush[type][rule.field] = rule.match;
-        } else if (type === 'range') {
+          typeObj[fieldKey] = rule.match;
+        } else if (type === TYPES.RANGE) {
           if (this.hasNull([rule.range, rule.range.op, rule.range.value]) || rule.range.value === undefined) continue;
-          toPush[type][rule.field] = {};
-          toPush[type][rule.field][rule.range.op.toLowerCase()] = rule.range.value;
-        } else if (type === 'exists') {
-          toPush[type]['field'] = rule.field;
+          const opKey = getKeyNameByKeyValue(OPS, rule.range.op);
+          typeObj[fieldKey] = {};
+          typeObj[fieldKey][opKey] = rule.range.value;
+        } else if (type === TYPES.EXISTS) {
+          typeObj['field'] = fieldKey;
         } else {
           console.warn('unexpected rule type!'.toUpperCase());
         }
         console.log(toPush);
-        bools[bool].push(toPush);
+        bools[boolKey].push(toPush);
       }
       console.log(bools);
       this.$http.post(
@@ -705,7 +768,10 @@ export default {
     }
   },
   mounted() {
-    this.searchInput = this.$store.state.searchInput
+    let storedSearchInput = this.$store.state.searchInput;
+    if (storedSearchInput.length !== 0) {
+      this.searchInput = storedSearchInput;
+    }
     this.search();
   },
   created() {
@@ -723,16 +789,30 @@ export default {
 
 <style scoped>
 
+.advancedSearchInfo {
+  display: flex;
+  height: 47px;
+  font-size: 20px;
+}
+
+.advancedSearch {
+  display: flex;
+}
+
+#search {
+  background-color: #f4f4f4;
+}
+
 .rule {
+  margin: 10px 20px;
   padding: 10px;
-  /*border-bottom: 1px solid #EBEEF5;*/
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
+  background-color: white;
 }
 
 .rules {
   display: flex;
   flex-direction: column;
-  padding: 5px 15px;
 }
 
 /deep/ .rules .el-select {
@@ -743,27 +823,34 @@ export default {
   /*width: 150px;*/
 }
 
-/deep/ .advancedSearch.el-collapse {
+/deep/ .advancedSearchForm.el-collapse {
   border: none;
 }
 
-/deep/ .advancedSearch .el-collapse-item__header {
+/deep/ .advancedSearchForm .el-collapse-item__header {
   border: none;
-  padding: 0 15px;
+  margin: 0 20px;
   justify-content: left;
+  background-color: #f4f4f4;
 }
 
-/deep/ .advancedSearch .el-collapse-item__arrow {
+/deep/ .advancedSearchForm .el-collapse-item__arrow {
   margin-left: 5px;
 }
 
 
-/deep/ .advancedSearch .el-collapse-item__wrap {
+/deep/ .advancedSearchForm .el-collapse-item__wrap {
   border: none;
+  background-color: #f4f4f4;
 }
 
-.advancedSearch {
-  width: 700px;
+.advancedSearchForm {
+  width: 740px;
+  /*box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);*/
+  /*margin: 20px 20px 0;*/
+}
+
+/deep/ .advancedSearchForm .el-collapse-item__wrap {
 }
 
 /deep/ .el-tabs__item {
@@ -828,15 +915,20 @@ export default {
 
 .searchBar {
   display: flex;
-  padding: 50px 20% 30px;
+  padding: 50px 10% 30px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   /*border-bottom: 1px solid #ddd;*/
 }
 
 .searchInput {
   box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
   width: 700px;
+  margin: 10px 20px;
+}
+
+/deep/ .advancedSearchForm .el-collapse-item__content {
+  padding: unset;
 }
 
 .searchSwitch {
@@ -855,7 +947,6 @@ export default {
   flex-direction: row;
   justify-content: center;
   padding-top: 10px;
-  /*background-color: #f4f4f4;*/
 }
 
 .filterAndSort {
