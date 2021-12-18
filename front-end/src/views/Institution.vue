@@ -5,8 +5,8 @@
         <Nav_with_searchBox></Nav_with_searchBox>
       </div>
       <el-main>
-        <el-col>
-          <el-row class="IName">
+        <div style="display: flex; flex-direction: column; align-items: center">
+          <div class="IName">
             <el-col>
               <el-row class="Iname_font">
                 {{this.InstitutionName}}
@@ -25,8 +25,8 @@
                 </el-row>
               </el-row>
             </el-col>
-          </el-row>
-          <el-row class="statistics">
+          </div>
+          <div class="statistics">
             <el-row>
               <div style="
               font-family: siyuan;
@@ -39,24 +39,24 @@
                 数据统计
               </div>
             </el-row>
-            <el-row>
-              <el-col :span="10" :offset="2">
+            <div style="width: 1000px; display: flex; justify-content: center">
+              <div style="width: 475px;display: flex; justify-content: center">
                 <div id="chart1"></div>
-              </el-col>
-              <el-col :span="10" :offset="1">
+              </div>
+              <div style="width: 475px;display: flex; justify-content: center">
                 <div id="chart2"></div>
-              </el-col>
-            </el-row>
-            <el-row style="margin-top: 25px; margin-bottom: 40px">
-              <el-col :span="10" :offset="2">
+              </div>
+            </div>
+            <div style="width:1000px;margin-top: 40px; margin-bottom: 60px;display: flex; justify-content: center">
+              <div style="width: 475px;display: flex; justify-content: center">
                 <div id="chart3"></div>
-              </el-col>
-              <el-col :span="10" :offset="1">
+              </div>
+              <div style="width: 475px;display: flex; justify-content: center">
                 <div id="chart4"></div>
-              </el-col>
-            </el-row>
-          </el-row>
-          <el-row class="authors">
+              </div>
+            </div>
+          </div>
+          <div class="authors">
             <div style="display: flex; flex-direction: column">
               <div style="
               font-family: siyuan;
@@ -107,9 +107,9 @@
                 </div>
               </div>
             </div>
-          </el-row>
-          <el-row class="papers">
-            <el-row>
+          </div>
+          <div class="papers">
+            <div>
               <div style="
               font-family: siyuan;
               font-weight: bold;
@@ -120,11 +120,11 @@
               ">
                 论文概览
               </div>
-            </el-row>
-            <el-row class="paperFather">
+            </div>
+            <div class="paperFather">
               <div v-for="(item, index) in papers.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
                    :key="index"
-                    style="font-family: Georgia;margin-top: 25px; margin-left: 20px;"
+                    style="font-family: Georgia;margin-top: 25px;"
               >
                 <div style="background-color: #FFF;
                             box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
@@ -163,12 +163,11 @@
                 align="center"
                 style="margin-top: 30px; margin-bottom: 20px"
               />
-            </el-row>
-          </el-row>
-        </el-col>
+            </div>
+          </div>
+        </div>
       </el-main>
     </el-container>
-    <el-button @click="rerender">test</el-button>
   </div>
 </template>
 
@@ -418,6 +417,11 @@
           let r = Math.floor(Math.random() * 256);
           let g = Math.floor(Math.random() * 256);
           let b = Math.floor(Math.random() * 256);
+          while (r*0.299 + g*0.578 + b*0.114 >= 140) {
+            r = Math.floor(Math.random() * 256);
+            g = Math.floor(Math.random() * 256);
+            b = Math.floor(Math.random() * 256);
+          }
           let color = `rgb(${r},${g},${b})`
           // let color= '#' + r.toString(16) + g.toString(16) + b.toString(16);
           return color;
@@ -633,8 +637,8 @@
 <style scoped>
 .IName {
   background-color: #FAFAFA;
-  min-height: 120px;
-  max-width: 1050px;
+  height: 120px;
+  width: 1050px;
   margin-top: 15px;
   margin-left: 20px;
   border-radius: 25px;
@@ -650,9 +654,12 @@
 }
 .statistics {
   background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: 600px;
   margin-top: 30px;
-  max-width: 1050px;
+  width: 1050px;
   margin-left: 20px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04)
 
@@ -662,8 +669,8 @@
   border:5px white;
   border-radius: 30px;
   padding: 15px;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 380px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 #chart2 {
@@ -671,8 +678,8 @@
   border:5px white;
   border-radius: 30px;
   padding: 15px;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 380px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 #chart3 {
@@ -680,8 +687,8 @@
   border:5px white;
   border-radius: 30px;
   padding: 15px;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 380px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 #chart4 {
@@ -689,14 +696,17 @@
   border:5px white;
   border-radius: 30px;
   padding: 15px;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 380px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
 }
 .papers {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   background-color: #FAFAFA;
   height: auto;
-  max-width: 1050px;
+  width: 1050px;
   margin-left: 20px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
   margin-top:35px;
@@ -704,7 +714,6 @@
 }
 .paperFather{
   width: 900px;
-  margin-left: 80px;
   margin-bottom: 40px;
 }
 .paper_content {
@@ -736,7 +745,7 @@
 .authors {
   background-color: #FAFAFA;
   height: auto;
-  max-width: 1050px;
+  width: 1050px;
   margin-left: 20px;
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04);
   margin-top:35px;
