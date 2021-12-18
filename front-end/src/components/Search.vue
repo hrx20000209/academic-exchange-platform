@@ -121,10 +121,10 @@
               <template v-for="result in article_results_to_show">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
-                    <div style="margin-bottom: 10px;font-size: 18px" @click="goToArticlePage(result.id)">
-                      {{ result.title }}
-                      <!--                      TODO <a> tag?-->
+                    <div @click="goToArticlePage(result.id)">
+                      <el-link class="resultTitle">{{ result.title }}</el-link>
                     </div>
+
                     <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
                       <span class="articleType">Article</span>
                       <span class="articleYear">{{ result.year }}</span>
@@ -144,39 +144,25 @@
                       {{ result.n_citation }} citations
                     </div>
                     <div style="height: 30px">
-                      <div style="float: left">
+                      <div style="float: left" v-if="result.url !== undefined">
                         <el-button plain @click="goToUrl(result.url)">访问全文</el-button>
                       </div>
                       <div style="float: right;text-align: right">
                         <el-button>推荐</el-button>
-                        <!--                  <el-tooltip-->
-                        <!--                    placement="bottom-end"-->
-                        <!--                    effect="light"-->
-                        <!--                  >-->
-                        <!--                    <div slot="content">-->
-                        <!--                      &lt;!&ndash;                      <button id="test" @click="loadQRCode(result.url)">123123123</button>&ndash;&gt;-->
-                        <!--                      <canvas :id="result.url"></canvas>-->
-                        <!--                    </div>-->
-                        <!--                    <el-button-->
-                        <!--                      @mouseover="loadQRCode(result.url)"-->
-                        <!--                    >分享-->
-                        <!--                    </el-button>-->
-                        <!--                  </el-tooltip>-->
                         <el-popover
                           popper-class="qrcodePopover"
                           placement="top-start"
                           trigger="click"
-                          :key="result.url+result.hasLoadedQRCode"
+                          :key="result.articlePageUrl+result.hasLoadedQRCode"
                           @show="loadQRCode(result)">
-                          <!--                          TODO result.url => article page url-->
                           <el-link
                             class="textInQRCodePopover"
-                            @click="copyUrl(result.url)"
+                            @click="copyUrl(result.articlePageUrl)"
                             :underline="false">点击此处复制链接
                           </el-link>
                           <!-- TODO 保存图片按钮-->
                           <h4 class="textInQRCodePopover">或分享二维码</h4>
-                          <canvas :id="result.url"></canvas>
+                          <canvas :id="result.articlePageUrl"></canvas>
                           <el-button
                             slot="reference"
                             class="shareBtn">
@@ -419,7 +405,8 @@ export default {
         }
         if (match_venue && match_year) {
           hit._source._score = hit._score;
-          hit._source.hasLoadedQRCode = false; // url + hasLoadedQRCode = popover.id
+          hit._source.hasLoadedQRCode = false;
+          hit._source.articlePageUrl = `http://139.9.132.83/article/${hit._source.id}`;
           ret.push(hit._source);
         }
       }
@@ -549,7 +536,7 @@ export default {
     },
     isAdvancedSearch: function () {
       if (!this.isAdvancedSearch) {
-        this.showAdvancedSearchInfo = false
+        this.showAdvancedSearchInfo = false;
       }
     }
   },
@@ -751,11 +738,11 @@ export default {
       return false;
     },
     loadQRCode(result) {
-      console.log(result.url);
-      let elem = document.getElementById(result.url);
+      console.log(result.articlePageUrl);
+      let elem = document.getElementById(result.articlePageUrl);
       console.log(elem);
       try {
-        QRCode.toCanvas(elem, result.url, {
+        QRCode.toCanvas(elem, result.articlePageUrl, {
           margin: 0,
         }, function (error) {
           if (error) console.error(error);
@@ -788,6 +775,11 @@ export default {
 </script>
 
 <style scoped>
+.resultTitle {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: black;
+}
 
 .advancedSearchInfo {
   display: flex;
