@@ -53,23 +53,103 @@
         <!--<button id="Login" @click="toLogin">登录</button>
         <button id="register" @click="toRegister">注册</button>-->
       </div>
-
+      <el-dialog
+        title="修改密码"
+        :visible.sync="changePWVisible"
+        width="30%" :show-close="false">
+        <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                 class="demo-ruleForm" id="myForm">
+          <el-form-item label="密码:" prop="pass" class="info">
+            <el-input type="password" v-model="ruleForm.pass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码:" prop="checkPass" class="info">
+            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <div id="twoButton">
+            <el-button @click="changePWVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changePassword">确 定</el-button>
+          </div>
+        </div>
+      </el-dialog>
     </div>
   </div>
 
 </template>
 
 <script>
+import {changeUserPassword} from "../request/api";
+
 export default {
   name: "nav_with_searchBox_transparent",
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入密码不一致!'));
+        console.log(value)
+        console.log(this.ruleForm.pass)
+      } else {
+        callback();
+      }
+    };
     return {
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       ifLogin: '',
-      input2: ''
+      input2: '',
+      changePWVisible: false,
+      ruleForm: {
+        pass: '',
+        checkPass: ''
+      },
+      rules: {
+        pass: [
+          {required: true, validator: validatePass, trigger: 'blur'}
+        ],
+        checkPass: [
+          {required: true, validator: validatePass2, trigger: 'blur'}
+        ],
+      }
     }
   },
   methods: {
+    toSearch(){
+      this.$store.commit('setSearchInput',this.input2)
+      this.$router.push('/search')
+    },
+    changePassword() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          changeUserPassword({
+            user_id: localStorage.getItem('user_id'),
+            password: this.ruleForm.pass
+          }).then(res => {
+            if(res.message == 'success'){
+              this.changePWVisible = false
+              this.$message('修改成功')
+            }else{
+              this.$message('修改失败')
+            }
+          })
+
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
     createNew() {
     },
     toRegister() {
@@ -77,15 +157,19 @@ export default {
     },
     toLogin() {
       this.$router.push('/login')
-      localStorage.setItem('ifLogin', 1)
+      // localStorage.setItem('ifLogin', 1)
       this.ifLogin = localStorage.getItem('ifLogin')
     },
     handleDropDown(command) {
       if (command == "exit") {
+        localStorage.setItem('user_id', '-1')
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
         console.log(localStorage.getItem('ifLogin'))
         console.log(this.ifLogin)
+        this.$router.go(0)
+      } else if (command == "changePW") {
+        this.changePWVisible = true
       }
     },
     toUsrHome() {
@@ -95,6 +179,9 @@ export default {
           id: localStorage.getItem('user_id')
         }
       })
+    },
+    toLetter() {
+      this.$router.push('/letter')
     }
   },
   mounted() {
