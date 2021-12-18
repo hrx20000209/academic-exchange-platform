@@ -32,7 +32,10 @@
           为您检索到以下结果：
         </div>
         <div class="search-result">
-          <div v-for="item in authorList" :key="item.id">
+          <div v-if="authorList.length===0">
+            <el-empty description="对不起，没有找到相关学者"></el-empty>
+          </div>
+          <div v-for="item in authorList" :key="item.id" v-else>
             <author-search-result
               :author="item"
               :user_id="user_id"

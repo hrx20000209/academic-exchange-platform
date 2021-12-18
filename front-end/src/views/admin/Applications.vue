@@ -5,7 +5,7 @@
       <el-divider></el-divider>
       <div class="list-box">
         <el-table
-          :data="tableData"
+          :data="appealList"
           stripe
           style="width: 100%"
           :row-class-name="tableRowClassName">
@@ -14,35 +14,24 @@
             :index="indexMethod">
           </el-table-column>
           <el-table-column
-            prop="date"
-            label="日期"
-            width="180">
-          </el-table-column>
-          <el-table-column
             prop="userName"
             label="用户名"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="institution"
-            label="机构">
+            prop="author_name"
+            label="申诉门户">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
-                size="small"
+                size="large"
                 type="primary"
                 @click="openDetails(scope.row)">查看详情
               </el-button>
               <el-button
-                size="small"
-                type="success"
-                @click="confirm(scope.row.name)">认证
-              </el-button>
-              <el-button
-                size="small"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">拒绝
+                size="large"
+                type="success">处理
               </el-button>
             </template>
           </el-table-column>
@@ -57,101 +46,23 @@
       </div>
     </el-card>
     <el-dialog title="详细信息" :visible.sync="detailsVisible" width="50%" append-to-body>
-      <el-descriptions class="margin-top" :title="userDetail.userName" :column="2" border>
-        <template slot="extra">
-          <el-button type="primary" @click="visitUser" plain>查看用户主页</el-button>
-        </template>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-user"></i>
-            姓名
-          </template>
-          {{ userDetail.name }}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-mobile-phone"></i>
-            手机号
-          </template>
-          {{ userDetail.phone }}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-reading"></i>
-            学历
-          </template>
-          {{ userDetail.background }}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-office-building"></i>
-            机构
-          </template>
-          {{ userDetail.institution }}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-view"></i>
-            研究领域
-          </template>
-          {{ userDetail.fields }}
+      <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border>
+        <el-descriptions-item label="描述" :span="4"> {{ appealDetail.describe }} </el-descriptions-item>
+        <el-descriptions-item label="图片">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="appealDetail.pic0"></el-image>
         </el-descriptions-item>
       </el-descriptions>
       <div class="btn-box">
         <el-button type="primary" @click="closeDetail">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="认证" :visible.sync="relatedVisible" width="80%" append-to-body>
-      <h2>系统中存在以下相关学者</h2>
-      <div class="text-box">请对该用户的身份进行匹配并完成认证，完成认证后用户即可关联该学者门户</div>
-      <el-table
-        :data="authors"
-        style="width: 100%"
-        border
-        :default-sort = "{prop: 'name', order: 'ascending'}">
-        <el-table-column
-          prop="name"
-          label="姓名"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="n_pubs"
-          label="发表数量"
-          sortable
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="pub"
-          label="代表文献">
-        </el-table-column>
-        <el-table-column
-          prop="n_citation"
-          label="被引用量"
-          sortable
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="organization_1"
-          label="机构">
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          width="100">
-          <template slot-scope="scope">
-            <el-button type="success" plain @click="associate(scope.row.id)" size="small">关联</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="btn-box">
-        <el-button type="primary" @click="confirmApplication">确定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAppealList, getUsrInfo } from "../../request/api"
+import { getAppealList, getUsrInfo, getAppealPic } from "../../request/api"
 import ESApi from "../../api/elastic search";
 export default {
   name: "Applications",
@@ -161,39 +72,66 @@ export default {
       relatedVisible: false,
       currentPage: 0,
       totalPage: 5,
-      userDetail: [{
-        name: '',
-        user_id: '',
-        userName: '',
-        phone: '',
-        fields: '',
-        background: '',
-        institution: ''
+      appealList: [{
+        issue_id: 0,
+        user_id: 0,
+        scolar_id: '',
+        describe: '',
       }],
-      tableData: [{
-        date: '2016-05-02',
-        name: 'Tom',
-        user_id: 1,
-        userName: '谭火彬',
-        phone: '12345678910',
-        fields: '软件工程 计算机科学',
-        background: '博士',
-        institution: '北京航空航天大学软件学院'
+      appealDetail: [{
+        author_name: '',
+        describe: '',
+        issue_id: '',
+        pic0: '',
+        scolar_id: '',
+        userName: '',
+        user_id: ''
       }],
       authors: []
     }
   },
   mounted() {
-    this.getList({}).then(response => {
-      r
-    })
+    this.getList()
   },
   methods: {
     getList() {
       getAppealList({
       }).then(response => {
-        console.log(response)
+        this.appealList = response.favorites
+        this.getListUserName()
+        this.getListAuthorNameAndPic()
       })
+    },
+    getListUserName() {
+      for (let i = 0; i < this.appealList.length; i++) {
+        getUsrInfo({
+          user_id: this.appealList[i].user_id
+        }).then(response => {
+          this.appealList[i].userName = response.data.name
+        })
+      }
+    },
+    getListAuthorNameAndPic() {
+      for (let i = 0; i < this.appealList.length; i++) {
+        ESApi.getAuthorInfo(this.appealList[i].scolar_id).then(response => {
+          this.appealList[i].author_name = response.data.hits.hits[0]._source.name
+        })
+        if (this.appealList[i].picNum === 1) {
+          getAppealPic({
+            issue_id: this.appealList[i].issue_id,
+            number: 1
+          }).then(response => {
+            console.log(response)
+          })
+        } else {
+          getAppealPic({
+            issue_id: this.appealList[i].issue_id,
+            number: 1
+          }).then(response => {
+            console.log(response)
+          })
+        }
+      }
     },
     tableRowClassName({row, rowIndex}) {
       if (rowIndex % 2 == 1) {
@@ -207,57 +145,14 @@ export default {
     },
     confirm(name){
       this.relatedVisible = true
-      this.SearchAuthorByName(name)
-    },
-    SearchAuthorByName(name) {
-      ESApi.getAuthor(name).then(response => {
-        const length = response.data.hits.hits.length
-        for (let i = 0; i < length; i++) {
-          const data = response.data.hits.hits[i]
-          let obj = this.default()
-          obj.id = data._id
-          obj.name = data._source.name
-          obj.n_pubs = data._source.n_pubs
-          obj.n_citation = data._source.n_citation
-          obj.pubs = data._source.pubs
-          if (data._source.orgs.length === 0) {
-            obj.organization_1 = 'None'
-          } else if (data._source.orgs.length === 1) {
-            obj.organization_1 = data._source.orgs[0].name
-          } else {
-            obj.organization_1 = data._source.orgs[0].name
-            obj.organization_2 = data._source.orgs[1].name
-          }
-          if (obj.n_pubs === 0) {
-            obj.pub = 'None'
-          } else {
-            obj.pub = obj.pubs[0].title
-          }
-          this.authors.push(obj)
-        }
-      })
-    },
-    default() {
-      return {
-        id: '',
-        name: '',
-        n_pubs: 0,
-        n_citation: 0,
-        organization_1: '',
-        organization_2: '',
-        pubs:[],
-        pub: ''
-      }
     },
     confirmApplication() {
       this.relatedVisible = false
     },
     openDetails(user) {
+      this.appealDetail = user
       this.detailsVisible = true
-      this.userDetail = user
-    },
-    associate(id) {
-      console.log(id)
+      console.log(this.appealDetail)
     },
     visitUser() {
       const route = this.$router.resolve({

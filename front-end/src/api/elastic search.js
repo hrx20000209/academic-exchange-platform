@@ -36,10 +36,18 @@ const ESApi = {
     return res
   },
   getAuthorInfo: async (id) => {
-    let url = 'http://119.3.223.135:9200/csauthor/_search?q='+id
-    const res = await axios({
-      url: url
-    })
+    const res = await axios.post(
+      'http://119.3.223.135:9200/csauthor/_search',
+      {
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "id":  id }},
+            ]
+          }
+        }
+      }
+    )
     return res
   },
   getInstitutionMsg: async (id) => {
