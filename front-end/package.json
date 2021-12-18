@@ -22,7 +22,7 @@
     "es6-promise": "^4.2.8",
     "lodash": "^4.17.21",
     "qrcode": "^1.5.0",
-    "qrcodejs2": "^0.0.2",
+    "qrcodejs2": "0.0.2",
     "store": "^2.0.12",
     "v-clipboard": "^2.2.3",
     "vue": "^2.5.2",
