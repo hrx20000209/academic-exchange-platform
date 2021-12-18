@@ -58,7 +58,7 @@
       <div class="stats">
         <div class="statsFrame">
           <div class="upFrame">
-            <div class="upFrameContent">Stats overview</div>
+            <div class="upFrameContent">引 用 量</div>
           </div>
           <div class="downFrame">
             <div class="statsFrameContent">
@@ -70,7 +70,7 @@
         <div style="width:4%;float:left;height:10px"></div>
         <div class="statsFrame">
           <div class="upFrame">
-            <div class="upFrameContent">Stats overview</div>
+            <div class="upFrameContent">相 关 文 献</div>
           </div>
           <div class="downFrame">
             <div class="statsFrameContent">
@@ -136,6 +136,7 @@ export default {
       flag: 1,
       relatedArticle: [],
       references:[],
+      da:{}
     }
   },
   mounted() {
@@ -217,6 +218,7 @@ export default {
           let article = response.data.hits.hits[0]
           this.references.push(article._source)
           this.$store.commit('setRefer',article._source)
+          da.push({children:[]},{name:this.title})
           console.log(this.$store.state.refer)
           console.log(this.$store.state.refer.length)
         })
@@ -238,7 +240,9 @@ export default {
       })
       setTimeout(() => {
         this.buildPie()//娃娃消失
-      }, 100);
+      }, 200);
+    },
+    searchRefer(){
 
     },
     buildPie() {

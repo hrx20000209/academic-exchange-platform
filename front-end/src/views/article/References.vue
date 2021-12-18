@@ -25,7 +25,7 @@
         <div v-else>
           <div class="downFrame" v-for="(item,index) in references" :key="item">
             <div class="downFrameContent">
-              <div style="margin-bottom: 10px;font-size: 18px" @click="toOtherPaper(item.id)">
+              <div class="title" style="margin-bottom: 10px;font-size: 18px" @click="toOtherPaper(item.id)">
                 {{item.title}}
               </div>
               <div style="margin-bottom: 10px;font-size: 15px;color: dimgrey">
@@ -42,7 +42,28 @@
                   <el-button plain v-else @click="toWebsite(item.url)">访问全文</el-button>
                 </div>
                 <div style="float: right;margin-top: 12px;text-align: right">
-                  Share
+                  <el-popover
+                    popper-class="qrcodePopover"
+                    placement="top-start"
+                    trigger="click"
+                    :key="item.url"
+                    @show="loadQRCode(item)">
+                    <el-link
+                      class="textInQRCodePopover"
+                      @click="copyUrl(item.id)"
+                      :underline="false">点击此处复制链接
+                    </el-link>
+                    <!-- TODO 保存图片按钮-->
+                    <h4 class="textInQRCodePopover">或分享二维码</h4>
+                    <div id="qrcode" ref="qrcode"></div>
+<!--                    <canvas :id="item.url"></canvas>-->
+                    <el-button
+                      slot="reference"
+                      class="shareBtn"
+                      @click="getQrcode(item.id)">
+                      分享
+                    </el-button>
+                  </el-popover>
                 </div>
               </div>
             </div>
@@ -51,32 +72,6 @@
 
 
       </div>
-
-      <!--      <div class="rightFrame">-->
-      <!--        <div class="upFrame">-->
-      <!--          &lt;!&ndash;          <div style="height: 15px"></div>&ndash;&gt;-->
-      <!--          <div class="upFrameContent">Top referenced researchers</div>-->
-      <!--        </div>-->
-      <!--        <div class="downFrame">-->
-      <!--          <div class="downFrameContent">-->
-      <!--            <div style="font-size: 18px;margin-bottom: 5px">作者名</div>-->
-      <!--            <div style="margin-bottom: 5px">-->
-      <!--              领域<br>-->
-      <!--              bbb<br>-->
-      <!--              bbb<br>-->
-      <!--              bbb<br>-->
-      <!--            </div>-->
-      <!--            <div style="margin-bottom: 10px">-->
-      <!--              介绍<br>-->
-      <!--              bbb<br>-->
-      <!--              bbb<br>-->
-      <!--            </div>-->
-      <!--            <div>-->
-      <!--              <el-button plain>去查看</el-button> &emsp;-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
     </div>
     <div style="height: 20px"></div>
   </div>
@@ -85,6 +80,9 @@
 <script>
 import ESApi from "../../api/elastic search";
 import AC from '../article/Article.vue'
+// import QRCode from "qrcode";
+let Clipboard = window.navigator.clipboard;
+import QRCode from 'qrcodejs2'
 export default {
   name: "References",
   data(){
@@ -105,16 +103,35 @@ export default {
       references:[],
       references_year:[],
       reference:[],
-      length:''
+      length:'',
+      url:'',
     }
   },
   mounted(){
     // this.searchRe();
     this.bianli();
+    this.getQrcode();
   },
   methods:{
     toWebsite(url){
       window.open(url,"_blank")
+    },
+    qrcode (id) {
+      console.log(id)
+      var url1 = 'http://localhost/article/'+ id + '/overviews';
+      this.url = 'http://localhost/article/'+ id + '/overviews';
+      console.log(this.url)
+      let qrcode = new QRCode('qrcode',{
+        width: 120, // 设置宽度，单位像素
+        height: 120, // 设置高度，单位像素
+        text: url1 // 设置二维码内容或跳转地址
+      })
+    },
+    getQrcode(id){
+      document.getElementById("qrcode").innerHTML=''  //先清空之前生成的二维码
+      this.$nextTick(()=>{
+        this.qrcode(id)
+      })
     },
     toOtherPaper(id){
       let router = '/article/'+ id + '/overviews'
@@ -154,11 +171,50 @@ export default {
         }
       )
     },
+    copyUrl(id){
+      let url1 = 'http://localhost/article/'+ id + '/overviews';
+      Clipboard.writeText(url1).then(function () {
+        console.log(url1)
+      }, function () {
+
+      });
+    },
+    // copyUrl(url) {
+    //   let that = this;
+    //   Clipboard.writeText(url).then(function () {
+    //     console.log(this);
+    //     that.notifyInfo("已复制原文链接");
+    //   }, function () {
+    //     that.notifyInfo("复制链接失败，请手动复制：\n" + url);
+    //   });
+    // },
+    loadQRCode(result) {
+      console.log(result.url);
+      // let elem = document.getElementById(result.url);
+      // console.log(elem);
+      // try {
+      //   QRCode.toCanvas(elem, result.url, {
+      //     margin: 0,
+      //   }, function (error) {
+      //     if (error) console.error(error);
+      //   });
+      // } catch (e) {
+      //   console.log(e);
+      // }
+      // result.hasLoadedQRCode = true;
+      console.log("LOAD END");
+    }
   }
 }
 </script>
 
 <style scoped>
+.title{
+
+}
+.title:hover{
+  cursor: pointer;
+}
 .author{
   text-align: center;
   padding: 4px;
@@ -166,6 +222,9 @@ export default {
   float: left;
   margin-right: 8px;
   border-radius: 6px;
+}
+.author:hover{
+  cursor: pointer;
 }
 .articleType{
   width: 60px;

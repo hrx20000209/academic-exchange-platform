@@ -1,7 +1,9 @@
 <template>
   <div id="navBar">
     <div id="navLogoPlace">
-      <div id="navLogo"></div>
+
+    <img style="width: 60px" src="../assets/logo.png">
+
     </div>
     <div id="jumpRouterPlace">
       <div class="myBox">

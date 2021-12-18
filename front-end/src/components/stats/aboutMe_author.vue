@@ -1,21 +1,38 @@
 <template>
   <div id="aboutMe">
     <div id="topHead">
-      <div id="leftCharacter">关于学者</div>
-<!--      <div id="rightButton">-->
-<!--        <el-dropdown @command="handleDropDown">-->
-<!--  <span class="el-dropdown-link" style="color: #8e8e8e">-->
-<!--    编辑-->
-<!--    <i class="el-icon-edit"></i>-->
-<!--  </span>-->
-<!--          <el-dropdown-menu slot="dropdown">-->
-<!--            <el-dropdown-item class="myDropdown" command="editIntro">编辑介绍</el-dropdown-item>-->
-<!--            <el-dropdown-item class="myDropdown" command="editLanguage">编辑技能</el-dropdown-item>-->
-<!--            &lt;!&ndash;            <el-dropdown-item class="myDropdown" command="editSub">编辑学科</el-dropdown-item>&ndash;&gt;-->
-<!--            <el-dropdown-item class="myDropdown" command="editTech">编辑领域</el-dropdown-item>-->
-<!--          </el-dropdown-menu>-->
-<!--        </el-dropdown>-->
-<!--      </div>-->
+      <div id="leftCharacter" style="display: flex">
+        <div style="margin-top: 1px">
+          <svg style="margin-right: 5px" t="1639835709729" class="icon" viewBox="0 0 1024 1024" version="1.1"
+               xmlns="http://www.w3.org/2000/svg" p-id="2960" width="20" height="20">
+            <path
+              d="M503.466667 682.666667c-8.533333 0-17.066667-8.533333-17.066667-17.066667v-221.866667c0-8.533333 8.533333-17.066667 17.066667-17.066666s17.066667 8.533333 17.066666 17.066666v221.866667c0 12.8-8.533333 17.066667-17.066666 17.066667z"
+              fill="" p-id="2961"></path>
+            <path d="M503.466667 349.866667m-38.4 0a38.4 38.4 0 1 0 76.8 0 38.4 38.4 0 1 0-76.8 0Z" fill=""
+                  p-id="2962"></path>
+            <path d="M576 584.533333m-268.8 0a268.8 268.8 0 1 0 537.6 0 268.8 268.8 0 1 0-537.6 0Z" fill="#FFDD48"
+                  p-id="2963"></path>
+            <path
+              d="M503.466667 819.2c-179.2 0-324.266667-145.066667-324.266667-324.266667S324.266667 170.666667 503.466667 170.666667s324.266667 145.066667 324.266666 324.266666-145.066667 324.266667-324.266666 324.266667z m0-614.4C341.333333 204.8 213.333333 332.8 213.333333 494.933333s132.266667 290.133333 290.133334 290.133334 290.133333-132.266667 290.133333-290.133334-128-290.133333-290.133333-290.133333z"
+              fill="" p-id="2964"></path>
+          </svg>
+        </div>
+        关于学者
+      </div>
+      <!--      <div id="rightButton">-->
+      <!--        <el-dropdown @command="handleDropDown">-->
+      <!--  <span class="el-dropdown-link" style="color: #8e8e8e">-->
+      <!--    编辑-->
+      <!--    <i class="el-icon-edit"></i>-->
+      <!--  </span>-->
+      <!--          <el-dropdown-menu slot="dropdown">-->
+      <!--            <el-dropdown-item class="myDropdown" command="editIntro">编辑介绍</el-dropdown-item>-->
+      <!--            <el-dropdown-item class="myDropdown" command="editLanguage">编辑技能</el-dropdown-item>-->
+      <!--            &lt;!&ndash;            <el-dropdown-item class="myDropdown" command="editSub">编辑学科</el-dropdown-item>&ndash;&gt;-->
+      <!--            <el-dropdown-item class="myDropdown" command="editTech">编辑领域</el-dropdown-item>-->
+      <!--          </el-dropdown-menu>-->
+      <!--        </el-dropdown>-->
+      <!--      </div>-->
     </div>
     <div id="mainAboutMePane">
       <div class="AboutMeInfo">介绍</div>
@@ -31,51 +48,51 @@
       <div class="AboutMeDetail" v-if="this.user.field!=null">{{ this.user.field }}</div>
       <div class="AboutMeDetail" v-else>待完善</div>
     </div>
-<!--    <el-dialog title="更新你的介绍" :visible.sync="IntroDialog" class="infoDialog">-->
-<!--      <div class="dialogMainPane">-->
-<!--        <div class="dialogInfo">使您的介绍保持最新是帮助他人快速了解您的工作的好方法。</div>-->
-<!--        <div class="dialogInfo">以下是其他研究人员补充的内容：</div>-->
-<!--        <div id="otherChoose">-->
-<!--          <div class="oneOther">-->
-<!--            <i class="el-icon-success"></i>-->
-<!--            <div class="otherDetail">目前的研究兴趣</div>-->
-<!--          </div>-->
-<!--          <div class="oneOther">-->
-<!--            <i class="el-icon-success"></i>-->
-<!--            <div class="otherDetail">他们使用的方法和技术</div>-->
-<!--          </div>-->
-<!--          <div class="oneOther">-->
-<!--            <i class="el-icon-success"></i>-->
-<!--            <div class="otherDetail">他们现在在做什么</div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="introInfo">介绍</div>-->
-<!--        <div class="myInput">-->
-<!--          <el-input autocomplete="off" type="textarea" rows="4" v-model="intro"></el-input>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div slot="footer" class="dialog-footer">-->
-<!--        <div class="twoButton">-->
-<!--          <el-button @click="introDialogCancel" class="cancel">取 消</el-button>-->
-<!--          <el-button type="primary" @click="introDialogConfirm" class="confirm">确 定</el-button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </el-dialog>-->
-<!--    <el-dialog title="编辑技能" :visible.sync="LanDialog" class="infoDialog">-->
-<!--      <div class="dialogMainPane">-->
-<!--        <div class="DetailInfo">编辑您的技能以将它们添加到您的个人资料中。</div>-->
-<!--        <div class="introInfo">技能</div>-->
-<!--        <div class="myInput">-->
-<!--          <el-input autocomplete="off" type="textarea" rows="2" v-model="skillContent"></el-input>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div slot="footer" class="dialog-footer">-->
-<!--        <div class="twoButton">-->
-<!--          <el-button @click="lanDialogCancel" class="cancel">取 消</el-button>-->
-<!--          <el-button type="primary" @click="lanDialogConfirm" class="confirm">确 定</el-button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </el-dialog>-->
+    <!--    <el-dialog title="更新你的介绍" :visible.sync="IntroDialog" class="infoDialog">-->
+    <!--      <div class="dialogMainPane">-->
+    <!--        <div class="dialogInfo">使您的介绍保持最新是帮助他人快速了解您的工作的好方法。</div>-->
+    <!--        <div class="dialogInfo">以下是其他研究人员补充的内容：</div>-->
+    <!--        <div id="otherChoose">-->
+    <!--          <div class="oneOther">-->
+    <!--            <i class="el-icon-success"></i>-->
+    <!--            <div class="otherDetail">目前的研究兴趣</div>-->
+    <!--          </div>-->
+    <!--          <div class="oneOther">-->
+    <!--            <i class="el-icon-success"></i>-->
+    <!--            <div class="otherDetail">他们使用的方法和技术</div>-->
+    <!--          </div>-->
+    <!--          <div class="oneOther">-->
+    <!--            <i class="el-icon-success"></i>-->
+    <!--            <div class="otherDetail">他们现在在做什么</div>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--        <div class="introInfo">介绍</div>-->
+    <!--        <div class="myInput">-->
+    <!--          <el-input autocomplete="off" type="textarea" rows="4" v-model="intro"></el-input>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div slot="footer" class="dialog-footer">-->
+    <!--        <div class="twoButton">-->
+    <!--          <el-button @click="introDialogCancel" class="cancel">取 消</el-button>-->
+    <!--          <el-button type="primary" @click="introDialogConfirm" class="confirm">确 定</el-button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
+    <!--    <el-dialog title="编辑技能" :visible.sync="LanDialog" class="infoDialog">-->
+    <!--      <div class="dialogMainPane">-->
+    <!--        <div class="DetailInfo">编辑您的技能以将它们添加到您的个人资料中。</div>-->
+    <!--        <div class="introInfo">技能</div>-->
+    <!--        <div class="myInput">-->
+    <!--          <el-input autocomplete="off" type="textarea" rows="2" v-model="skillContent"></el-input>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div slot="footer" class="dialog-footer">-->
+    <!--        <div class="twoButton">-->
+    <!--          <el-button @click="lanDialogCancel" class="cancel">取 消</el-button>-->
+    <!--          <el-button type="primary" @click="lanDialogConfirm" class="confirm">确 定</el-button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
     <!--    <el-dialog title="编辑学科" :visible.sync="SubDialog" class="infoDialog">-->
     <!--      <div class="dialogMainPane">-->
     <!--        <div class="DetailInfo">添加最能描述您的研究的学科。最符合你研究领域的学科有助于其他用户迅速了解你。</div>-->
@@ -91,20 +108,20 @@
     <!--        </div>-->
     <!--      </div>-->
     <!--    </el-dialog>-->
-<!--    <el-dialog title="更新您的领域和专业知识" :visible.sync="TechDialog" class="infoDialog">-->
-<!--      <div class="dialogMainPane">-->
-<!--        <div class="DetailInfo">我们利用您的领域和专业知识向您展示您所在领域的最新研究。</div>-->
-<!--        <div class="myInput">-->
-<!--          <el-input autocomplete="off" type="textarea" rows="3" v-model="fieldContent"></el-input>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div slot="footer" class="dialog-footer">-->
-<!--        <div class="twoButton">-->
-<!--          <el-button @click="TechDialogCancel" class="cancel">取 消</el-button>-->
-<!--          <el-button type="primary" @click="TechDialogConfirm" class="confirm">确 定</el-button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </el-dialog>-->
+    <!--    <el-dialog title="更新您的领域和专业知识" :visible.sync="TechDialog" class="infoDialog">-->
+    <!--      <div class="dialogMainPane">-->
+    <!--        <div class="DetailInfo">我们利用您的领域和专业知识向您展示您所在领域的最新研究。</div>-->
+    <!--        <div class="myInput">-->
+    <!--          <el-input autocomplete="off" type="textarea" rows="3" v-model="fieldContent"></el-input>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div slot="footer" class="dialog-footer">-->
+    <!--        <div class="twoButton">-->
+    <!--          <el-button @click="TechDialogCancel" class="cancel">取 消</el-button>-->
+    <!--          <el-button type="primary" @click="TechDialogConfirm" class="confirm">确 定</el-button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
   </div>
 </template>
 
@@ -200,7 +217,7 @@ export default {
   border-radius: 2px;
   margin-top: 30px;
   box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
-  height: 353px;
+  height: 325px;
 }
 
 #editButton {
@@ -219,11 +236,9 @@ export default {
 
 #leftCharacter {
   width: 250px;
-  padding: 10px;
+  padding: 8px;
   font-family: "Microsoft YaHe";
   font-weight: bold;
-  font-size: 16px;
-  margin-left: 10px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }

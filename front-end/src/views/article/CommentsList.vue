@@ -7,12 +7,12 @@
       </div>
       <div class="downFrame">
         <div class="downFrameContent" v-if="this.commentsList.length !== 0">
-          <div v-for="(item,index) in commentsList" :key="item.id">
+          <div v-for="(item) in commentsList" :key="item.id">
             <div>
               <el-card class="card">
                 <div class="top" slot="header">
                   <div>
-                    <el-avatar shape="circle" :size="50" :src="otherHead[index]"></el-avatar>
+                    <el-avatar shape="circle" :size="50" :src=urlTouXiang+item.commentator_id></el-avatar>
                   </div>
                   <div style="width: 100%">
                     <div class="author-name">
@@ -35,7 +35,7 @@
                     <div class="bottom">
                       <div class="bottom-btn"
                            v-if="!item.isLike"
-                           @click="addLike(item.comment_id,item.likes_num);item.isLike =!item.isLike;item.likes_num = item.likes_num +1">
+                           @click="addLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num +1">
 <!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
                         <img src="@/assets/点赞.png" width="6%"/>
                         点赞&emsp;&emsp;已有{{ item.likes_num }}点赞
@@ -166,7 +166,9 @@ export default {
       ],
       data:'',
       commentsList:[],
-      otherHead:[]
+      otherHead:[],
+      heads:'',
+      urlTouXiang:'http://139.9.132.83:8000/user/getUserImage?user_id=',
     }
   },
   methods: {
@@ -216,7 +218,9 @@ export default {
             this.commentsList.push(response.data.list[i])
             var h = 'http://139.9.132.83:8000/user/getUserImage?user_id=' + response.data.list[i].commentator_id
             this.otherHead.push(h)
+
           }
+          console.log(this.otherHead[0])
           console.log(this.commentsList)
         })
     },
@@ -257,6 +261,7 @@ export default {
         .then(response=>{
           console.log('点赞成功')
         })
+      // this.getCommentsList()
     },
     cancelLike(comment_id){
       console.log(comment_id)

@@ -1,7 +1,10 @@
 <template>
   <div id="statsOverivew">
     <div id="topHead">
-      <div id="leftCharacter">数据概览</div>
+      <div id="leftCharacter" style="display: flex">
+                <div style="margin-top: 1px">
+        <svg style="margin-right: 5px" t="1639837302976" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12447" width="20" height="20"><path d="M709.1 728.2H154.4V197.7h554.7v530.5z m-513.8-40.9h473V238.6h-473v448.7z" fill="#515151" p-id="12448"></path><path d="M507.7 483.6H355.8v-40.9l20.4-0.4h131.5z" fill="#515151" p-id="12449"></path><path d="M818.9 852H405.3v-40.8l20.4-0.4h413.7v40.9z" fill="#F74F4F" p-id="12450"></path><path d="M839.4 852h-40.9l-0.4-20.4V417.9H839l0.4 20.5z" fill="#F74F4F" p-id="12451"></path></svg></div>
+        数据概览</div>
 <!--      <div id="rightButton">-->
 <!--        <div>查看详细</div>-->
 <!--        <i class="el-icon-s-order"></i>-->
@@ -73,7 +76,6 @@ box-shadow: 0 3px 7px rgb(0 0 0 / 19%), 0 0 12px rgb(0 0 0 / 6%);
   width: 250px;
   padding: 10px;
   font-family: "Roboto", Arial, sans-serif;
-  margin-left: 15px;
   font-weight: bold;
   font-size: 16px;
   letter-spacing: 1px;
