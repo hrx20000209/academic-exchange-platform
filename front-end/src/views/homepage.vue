@@ -48,7 +48,7 @@
                             </div>
                             <div style="display: flex; justify-content: space-around">
                               <div style="margin-right: -40px;;display: flex; justify-content: center">
-                                <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25)SRCNN">
+                                <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25)">
                                 <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
                                   <el-tab-pane label="最热文章" name="first">
