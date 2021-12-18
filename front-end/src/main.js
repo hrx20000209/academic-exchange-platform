@@ -13,6 +13,7 @@ import axios from 'axios'
 import VueAxios from "vue-axios"
 import store from './store'
 import BubbleChat from "vue-bubble-chat"
+import QRCode from 'qrcodejs2'
 
 import Clipboard from 'v-clipboard'
 
