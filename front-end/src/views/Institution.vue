@@ -80,7 +80,7 @@
                           <div slot="content">姓名：{{item2.name}}<br/>被引次数：{{item2.cite}}<br/>发表文章数：{{item2.pubs}}</div>
                           <div style="display: flex; flex-direction: column;cursor: pointer" @click="jump2authors(item2.id)">
                             <div style="display: flex; justify-content: center">
-                              <el-avatar :src="pic[currentPage_author][index1*row_size+index2]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
+                              <el-avatar :size="50" :src="pic[currentPage_author][index1*row_size+index2]" style="margin-left: 10px;margin-top: 10px; background-color: #81DAF5"/>
                             </div>
                             <div style="display: flex; justify-content: center; flex-wrap:wrap;width: 100px">
                               <div style="font-family: Gabriola; font-size: 16px;">
@@ -183,7 +183,7 @@
       data(){
           return {
             redraw:1,
-            maxSize: 100,
+            maxSize: 50,
             maxNameLen:10,
             pic: {},
             row_size: 6,
@@ -310,9 +310,10 @@
                       // length: 1,
                       // length2: 1,
                   },
-                  minShowLabelAngle:4,
+                  minShowLabelAngle:7,
                   type: 'pie',
                   data: this.addColor(this.AuthorPapers),
+                  // data: this.paperCitation
                 }
               ]
             }
@@ -340,9 +341,10 @@
                       // length: 1,
                       // length2: 1,
                   },
-                  minShowLabelAngle:4,
+                  minShowLabelAngle:7,
                   type: 'pie',
                   data: this.addColor(this.AuthorCitation),
+                  // data: this.paperCitation
                 }
               ]
             }
@@ -370,9 +372,10 @@
                       // length: 1,
                       // length2: 1,
                   },
-                  minShowLabelAngle:4,
+                  minShowLabelAngle:7,
                   type: 'pie',
                   data: this.addColor(this.paperCitation),
+                  // data: this.paperCitation
                 }
 
               ]
@@ -414,13 +417,15 @@
           return res;
         },
           randomColor() {
-          let r = Math.floor(Math.random() * 256);
+          let r = Math.floor(Math.random() * 180);
           let g = Math.floor(Math.random() * 256);
-          let b = Math.floor(Math.random() * 256);
-          while (r*0.299 + g*0.578 + b*0.114 >= 140) {
-            r = Math.floor(Math.random() * 256);
+          let b = Math.floor(Math.random() * 200);
+          // let b = Math.max(r, g) + 100
+          while (r*0.299 + g*0.578 + b*0.114 >= 130) {
+            r = Math.floor(Math.random() * 180);
             g = Math.floor(Math.random() * 256);
-            b = Math.floor(Math.random() * 256);
+            b = Math.floor(Math.random() * 200);
+            // b = Math.max(r, g) + 100
           }
           let color = `rgb(${r},${g},${b})`
           // let color= '#' + r.toString(16) + g.toString(16) + b.toString(16);
