@@ -46,7 +46,9 @@
           </div>
           <div class="message-details" v-if="load">
             <div class="details-top-box">
-              <h3>{{ receiver.name }}</h3>
+              <el-button type="text" @click="visitUser">
+                <h3>{{ receiver.name }}</h3>
+              </el-button>
             </div>
             <el-scrollbar style="height: 85%;">
               <div v-for="item in messages" :key="item.id">
@@ -190,6 +192,7 @@ export default {
         the_other_id: id
       }).then(response => {
         this.messages = response.list
+        this.receiver.user_id = id
         for(let i = 0; i < response.list.length; i++) {
           if (this.messages[i].sender_id == this.userId) {
             this.messages[i].sender_name = '你'
@@ -272,7 +275,16 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.LoadMessageList(this.currentPage)
-    }
+    },
+    visitUser() {
+      const route = this.$router.resolve({
+        name: 'userHome',
+        query: {
+          id: this.receiver.user_id
+        }
+      })
+      window.open(route.href, '_blank')
+    },
   }
 }
 </script>
@@ -282,7 +294,7 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: #ededed;
+  background-image: url(../assets/background2.png);
 }
 
 .body {
@@ -307,10 +319,10 @@ export default {
 }
 
 .message-details {
-  padding: 1% 2% 2% 2%;
+  padding: 0 2% 3% 2%;
   box-shadow: 0 0 10px 10px #f6f3f3;
   width: 65%;
-  height: 550px;
+  height: 560px;
   margin-left: 5%;
 }
 
@@ -420,5 +432,6 @@ export default {
 
 .details-top-box {
   display: flex;
+  margin: 0;
 }
 </style>

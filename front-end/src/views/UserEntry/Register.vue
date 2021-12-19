@@ -4,7 +4,7 @@
     <div class="body">
       <div class="middle-box">
         <h1 class="title-box">新用户注册</h1>
-        <el-divider>学术交流平台</el-divider>
+        <el-divider>学术成果分享平台</el-divider>
         <el-form :model="user" status-icon :rules="rules" ref="user" class="demo-ruleForm">
           <el-form-item class="account-box">
             <h3 class="text-box">用户名</h3>
@@ -134,7 +134,7 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: #ededed;
+  background-image: url(../../assets/background2.png);
 }
 
 .body {

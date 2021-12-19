@@ -4,7 +4,7 @@
     <div class="body">
       <div class="middle-box">
         <h1 class="title-box">用户登陆</h1>
-        <el-divider>学术交流平台</el-divider>
+        <el-divider>学术成果分享平台</el-divider>
         <div class="account-box">
           <h3 class="text-box">账号</h3>
           <el-input v-model="account" placeholder="请输入账号"></el-input>
@@ -87,7 +87,7 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: #ededed;
+  background-image: url(../../assets/background2.png);
 }
 
 .body {
