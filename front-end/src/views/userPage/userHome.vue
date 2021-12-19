@@ -27,7 +27,7 @@
           <!--            <el-button type="primary" icon="el-icon-circle-plus">进入认证门户</el-button>-->
           <!--          </div>-->
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.scolarId == true">
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">
               进入认证门户
             </el-button>
             <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else-if="ifVisitor == false">申请认证</el-button>
@@ -61,7 +61,7 @@
           <div id="editUsrInfoPane">
             <edit-usr-info :user="user" :imgsrc="this.get_pic_url" :subindex="subNum"
                            :rankindex="rankNum" v-if="ifVisitor == false"></edit-usr-info>
-             <author-card v-else :user="user"></author-card>
+             <author-card v-else :user="user" :imgsrc="this.get_pic_url"></author-card>
             <about-me :user="this.user" v-if="ifVisitor == false"></about-me>
             <about-me_author v-else :user="this.user"></about-me_author>
             <!--            <stats-overview :user="user"></stats-overview>-->
