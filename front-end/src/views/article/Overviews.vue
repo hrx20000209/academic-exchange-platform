@@ -25,31 +25,6 @@
           </div>
         </div>
       </div>
-      <!--      <div class="rightFrame">-->
-      <!--        <div class="upFrame">-->
-      <!--          <div class="upFrameContent">Related research</div>-->
-      <!--        </div>-->
-      <!--        <div class="downFrame">-->
-      <!--          <div class="downFrameContent">-->
-      <!--            <div style="font-size: 18px;margin-bottom: 5px">Big Data Big Data and the Attention Economy</div>-->
-      <!--            <div style="margin-bottom: 5px">-->
-      <!--              <a class="articleType">Article</a>-->
-      <!--              Full-text available-->
-      <!--              <div style="color: darkgrey">-->
-      <!--                December 2017-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--            <div style="font-size: 16px;color: blue">-->
-      <!--              Download-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="upFrame" style="background: rgba(221,221,221,0.2);">-->
-      <!--          <div style="text-align: center;line-height:50px">-->
-      <!--            view more-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
     </div>
     <div style="height: 20px">
     </div>
@@ -80,38 +55,18 @@
           </div>
         </div>
       </div>
-
+      <div class="tree" style="height: 600px;width: 70%">
+        <div class="upFrame">
+          <div class="upFrameContent">引用文献</div>
+        </div>
+        <div class="downFrame">
+          <div class="statsFrameContent">
+            <!-- 这里放表格 -->
+            <div id="chart4" style="height: 500px"></div>
+          </div>
+        </div>
+      </div>
       <div style="height: 20px"></div>
-      <!--      <el-tabs type="border-card">-->
-      <!--        <el-tab-pane label="全文">-->
-      <!--          <div class="textFrameContent">-->
-      <!--            &lt;!&ndash;一部分信息&ndash;&gt;-->
-      <!--            <div class="textFrameContentMain">-->
-      <!--              Content uploaded by Frederike Zufall<br>-->
-      <!--              Author content<br>-->
-      <!--              Content may be subject to copyright.<br>-->
-      <!--            </div>-->
-      <!--            &lt;!&ndash;全文&ndash;&gt;-->
-      <!--            <div class="textFrameContentMessage">-->
-      <!--              <div class="textBigFrame">-->
-      <!--                <div class="textUpFrameContent">-->
-      <!--                  &lt;!&ndash;          <div style="height: 15px"></div>&ndash;&gt;-->
-      <!--                  <div class="upFrameContent">PAGE1</div>-->
-      <!--                </div>-->
-      <!--                <div class="downFrame">-->
-      <!--                  <div class="downFrameContent">-->
-      <!--                    The primary scope of application of the General Data Protection Regulation—Regulation (UE) 2016/679 (GDPR)—is ‘personal data’; ‘data’ that is not personal data can be freely processed within the legal framework of the Regulation (UE) 2018/1807. Although the European data protection framework recognises these two categories of data—‘personal data’ and ‘non-personal data’—reality reveals ‘a lot in between’ the opposite endpoints. There are accordingly considerable complications in drawing the boundaries between personal and non-personal data. In this article, we will review some of the main issues related to the usual classification of data as personal, anonymous, pseudonymous, de-identified data, and suggest that the most realistic way to approach the different problems is to recognise the dynamic nature of the data.-->
-      <!--                  </div>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--            &lt;!&ndash;按钮&ndash;&gt;-->
-      <!--            <div class="textFrameContentButton">-->
-      <!--              <el-button type="primary">访问全文</el-button>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </el-tab-pane>-->
-      <!--      </el-tabs>-->
     </div>
   </div>
 </template>
@@ -136,13 +91,41 @@ export default {
       flag: 1,
       relatedArticle: [],
       references:[],
-      da:{}
+      oneData: {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "name": "低压车间表计82"
+                  }
+                ],
+                "name": "低压关口表计1"
+              }
+            ],
+            "name": "高压子表计122"
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "name": "低压关口表计101"
+              }
+            ],
+            "name": "高压子表计141"
+          }
+        ],
+        "name": "高压总表计102"
+      }
     }
   },
   mounted() {
     console.log('333')
     this.search(this.id)
     console.log(this.title)
+    this.buildPie2()
   },
   methods: {
     search(paper_id) {
@@ -242,8 +225,55 @@ export default {
         this.buildPie()//娃娃消失
       }, 200);
     },
-    searchRefer(){
+    getReRe(){
 
+    },
+    buildPie2(){
+      let pie = echarts.init(document.getElementById('chart4'))
+      let option={
+        tooltip: {    //提示框组件
+          trigger: 'item',    //触发类型，默认：item（数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用）。可选：'axis'：坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用。'none':什么都不触发。
+          triggerOn: 'mousemove'    //提示框触发的条件，默认mousemove|click（鼠标点击和移动时触发）。可选mousemove：鼠标移动时，click：鼠标点击时，none：
+        },
+        series: [    //系列列表
+          {
+            type: 'tree',    //树形结构
+
+            data: [this.oneData],    //上面从flare.json中得到的数据
+
+            top: '1%',       //距离上
+            left: '7%',      //左
+            bottom: '1%',    //下
+            right: '20%',    //右的距离
+
+            symbolSize: 7,   //标记的大小，就是那个小圆圈，默认7
+
+            label: {         //每个节点所对应的标签的样式
+              normal: {
+                position: 'left',       //标签的位置
+                verticalAlign: 'middle',//文字垂直对齐方式，默认自动。可选：top，middle，bottom
+                align: 'right',         //文字水平对齐方式，默认自动。可选：top，center，bottom
+                fontSize: 9             //标签文字大小
+              }
+            },
+
+            leaves: {    //叶子节点的特殊配置，如上面的树图示例中，叶子节点和非叶子节点的标签位置不同
+              label: {
+                normal: {
+                  position: 'right',
+                  verticalAlign: 'middle',
+                  align: 'left'
+                }
+              }
+            },
+
+            expandAndCollapse: true,    //子树折叠和展开的交互，默认打开
+            animationDuration: 550,     //初始动画的时长，支持回调函数,默认1000
+            animationDurationUpdate: 750//数据更新动画的时长，默认300
+          }
+        ]
+      }
+      pie.setOption(option)
     },
     buildPie() {
       console.log('build')
@@ -378,7 +408,12 @@ export default {
   height: 500px;
 
 }
-
+.tree{
+  margin-top: 20px;
+  background: white;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
 .articleType {
   width: 60px;
   background: lightblue;

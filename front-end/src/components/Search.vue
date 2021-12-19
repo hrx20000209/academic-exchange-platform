@@ -543,7 +543,22 @@ export default {
   methods: {
     goToArticlePage(id) {
       let router = '/article/' + id + '/overviews';
+      this.getVisit(id)
       this.$router.push(router);
+    },
+    getVisit(id){
+      console.log('获取')
+      this.axios({
+        method:"post",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/search/visitpaper",
+        data:{
+          paper_id: id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+        })
     },
     copyUrl(url) {
       let that = this;

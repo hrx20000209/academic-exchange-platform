@@ -118,8 +118,8 @@ export default {
     },
     qrcode (id) {
       console.log(id)
-      var url1 = 'http://localhost/article/'+ id + '/overviews';
-      this.url = 'http://localhost/article/'+ id + '/overviews';
+      var url1 = 'http://139.9.132.83//article/'+ id + '/overviews';
+      this.url = 'http://139.9.132.83//article/'+ id + '/overviews';
       console.log(this.url)
       let qrcode = new QRCode('qrcode',{
         width: 120, // 设置宽度，单位像素
@@ -136,9 +136,24 @@ export default {
     toOtherPaper(id){
       let router = '/article/'+ id + '/overviews'
       this.$route.params.paper_id = id
+      this.getVisit(id)
       console.log(this.$route.params.paper_id)
       this.$router.push(router)
       this.$router.go(0);
+    },
+    getVisit(id){
+      console.log('获取')
+      this.axios({
+        method:"post",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/search/visitpaper",
+        data:{
+          paper_id: id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+        })
     },
     bianli(){
       this.reference = []
@@ -172,7 +187,7 @@ export default {
       )
     },
     copyUrl(id){
-      let url1 = 'http://localhost/article/'+ id + '/overviews';
+      let url1 = 'http://139.9.132.83//article/'+ id + '/overviews';
       Clipboard.writeText(url1).then(function () {
         console.log(url1)
       }, function () {
