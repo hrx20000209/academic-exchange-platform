@@ -451,7 +451,7 @@
               })
             },
             jump2Institution(id){
-              console.log('author id is', id)
+              // console.log('author id is', id)
               this.$router.push({
                 path: '/Institution',
                 query: {

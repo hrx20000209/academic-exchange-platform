@@ -206,7 +206,10 @@
             modalShow:true,
           }
         },
-        mounted() {
+      created(){
+
+      },
+      mounted() {
           let id = this.$route.query.id
           console.log('id is', id)
           this.test(id)
