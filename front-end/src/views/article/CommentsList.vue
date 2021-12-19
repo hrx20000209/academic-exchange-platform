@@ -228,7 +228,7 @@ export default {
       this.axios({
         method: "get",
         // url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$store.state.paper_id,
-        url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$route.params.paper_id,
+        url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$route.params.paper_id + '&&like_id='+ this.user_id,
         data:{
           // commented_id: this.$store.state.paper_id
           commented_id:this.$route.params.paper_id,
