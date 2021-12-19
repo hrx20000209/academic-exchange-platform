@@ -1,51 +1,54 @@
 <template>
   <div id="authorPage">
     <nav_with_search-box></nav_with_search-box>
-    <div id="topPane">
-      <div id="topPicAndAddButton">
-        <div id="leftPic">
-          <div id="leftPicDetail">
-            <el-avatar :size="85" :src="circleUrl"></el-avatar>
+    <div style="background: white">
+      <div id="topPane">
+        <div id="topPicAndAddButton">
+          <div id="leftPic">
+            <div id="leftPicDetail">
+              <el-avatar :size="85" :src="circleUrl"></el-avatar>
+            </div>
           </div>
-        </div>
-        <div id="middleDetail">
-          <div id="usrName">{{ titleCase2(this.user.name) }}</div>
-          <div id="editInfoRow">
-            <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
+          <div id="middleDetail">
+            <div id="usrName">{{ titleCase2(this.user.name) }}</div>
+            <div id="editInfoRow">
+              <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
+            </div>
+            <div id="acountInfo" v-if="ifHaveAccount == true">该门户已被用户
+              <div id="account" @click="toAccountPage">@{{ this.usrName }}</div>
+              认领
+              <div id="editYourInfo" @click="showAppeal">点此申诉</div>
+            </div>
+            <div id="usrAbility">{{ this.user.ability }}</div>
           </div>
-          <div id="acountInfo" v-if="ifHaveAccount == true">该门户已被用户
-            <div id="account" @click="toAccountPage">@{{ this.usrName }}</div>
-            认领
-            <div id="editYourInfo" @click="showAppeal">点此申诉</div>
-          </div>
-          <div id="usrAbility">{{ this.user.ability }}</div>
-        </div>
-        <div id="rightButton" style="display: block;">
-          <div style="margin-top: 5%" v-if="canSendMessage">
+          <div id="rightButton" style="display: block;">
+            <div style="margin-top: 5%" v-if="canSendMessage">
             <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
-          </div>
-          <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus" v-if="ifFollow == false" @click="follow">关注</el-button>
-            <el-button type="primary" v-else @click="unfollow" icon="el-icon-remove-outline">取关</el-button>
+            </div>
+            <div style="margin-top: 5%">
+              <el-button type="primary" icon="el-icon-circle-plus" v-if="ifFollow == false" @click="follow">关注
+              </el-button>
+              <el-button type="primary" v-else @click="unfollow" icon="el-icon-remove-outline">取关</el-button>
+            </div>
           </div>
         </div>
-      </div>
-      <div id="bottomTab">
-        <div id="centerSomeTabs">
-          <div class="usrTabsChosen" v-if="activeMode ==1">概述</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(1)">概述</div>
-          <div class="usrTabsChosen" v-if="activeMode ==2">研究</div>
-          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
-          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>-->
-          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
-          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
-          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
-          <!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
-          <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
+        <div id="bottomTab">
+          <div id="centerSomeTabs">
+            <div class="usrTabsChosen" v-if="activeMode ==1">概述</div>
+            <div class="usrTabsUnchosen" v-else @click="selectActiveMode(1)">概述</div>
+            <div class="usrTabsChosen" v-if="activeMode ==2">研究</div>
+            <div class="usrTabsUnchosen" v-else @click="selectActiveMode(2)">研究</div>
+            <!--          <div class="usrTabsChosen" v-if="activeMode ==3">学术经历</div>-->
+            <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(3)">学术经历</div>-->
+            <!--          <div class="usrTabsChosen" v-if="activeMode ==4">统计数据</div>-->
+            <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(4)">统计数据</div>-->
+            <!--          <div class="usrTabsChosen" v-if="activeMode ==5">学术指数</div>-->
+            <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(5)">学术指数</div>-->
+            <!--          <div class="usrTabsChosen" v-if="activeMode ==6">你的关注</div>-->
+            <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(6)">你的关注</div>-->
+            <!--          <div class="usrTabsChosen" v-if="activeMode ==7">你的收藏</div>-->
+            <!--          <div class="usrTabsUnchosen" v-else @click="selectActiveMode(7)">你的收藏</div>-->
+          </div>
         </div>
       </div>
     </div>
@@ -131,11 +134,11 @@
         list-type="picture-card"
         :http-request="submitUpload"
         :auto-upload="false" id="appealUpload"
-      :limit="2"
+        :limit="2"
         :on-remove="handleRemove"
         :file-list="this.AppealfileList"
         :on-change="appealChange"
-      :on-exceed="whenExceed">
+        :on-exceed="whenExceed">
         <i slot="default" class="el-icon-plus"></i>
         <div slot="file" slot-scope="{file}">
           <img
@@ -263,7 +266,7 @@ export default {
     return {
       user_id: '',
       text: '',
-      AppealfileList:[],
+      AppealfileList: [],
       dialogImageUrl: '',
       dialogVisible: false,
       disabled: false,
@@ -384,12 +387,12 @@ export default {
       console.log(fileList)
       this.AppealfileList = fileList
     },
-    handleRemove(file,fileList) {
+    handleRemove(file, fileList) {
       console.log(file);
       console.log(fileList)
       this.AppealfileList = fileList
     },
-    previewRemove(file){
+    previewRemove(file) {
       this.$refs.appealUpload.handleRemove(file)
     },
     handlePictureCardPreview(file) {
@@ -416,24 +419,24 @@ export default {
       let formDatas = new FormData()
       formDatas.append('user_id', localStorage.getItem('user_id'))
       formDatas.append('scolar_id', this.$route.query.id)
-      if(this.AppealfileList.length<1){
+      if (this.AppealfileList.length < 1) {
         this.$message.error('至少上传一张图片');
-      }else{
+      } else {
         formDatas.append('pic0', this.AppealfileList[0].raw)
-        if(this.AppealfileList.length>1){
-          formDatas.append('pic1',this.AppealfileList[1].raw)
-        }else{
-          formDatas.append('pic1','kong')
+        if (this.AppealfileList.length > 1) {
+          formDatas.append('pic1', this.AppealfileList[1].raw)
+        } else {
+          formDatas.append('pic1', 'kong')
         }
-        formDatas.append('describe',this.appealDetail)
+        formDatas.append('describe', this.appealDetail)
         console.log(formDatas)
         uploadAppealImage(formDatas).then(res => {
-        console.log(res)
-        this.$message({
-          message: '上传成功',
-          type: 'success'
-        });
-      })
+          console.log(res)
+          this.$message({
+            message: '上传成功',
+            type: 'success'
+          });
+        })
       }
 
     },
@@ -451,7 +454,15 @@ export default {
       // this.dialogVisible = true;
     },
     showAppeal() {
-      this.appealDialog = true
+      if (localStorage.getItem('user_id') && localStorage.getItem('user_id') != -1) {
+        this.appealDialog = true
+      } else {
+        this.$message({
+          message: '请先登录！',
+          type: 'warning'
+        });
+      }
+
     },
     closeAppeal() {
       this.appealDialog = false
@@ -508,11 +519,11 @@ export default {
         }).then(res => {
           console.log('check')
           console.log(res)
-          if(res.message == 'false'){
+          if (res.message == 'false') {
             this.ifFollow = false
-          }else if(res.message == 'true'){
+          } else if (res.message == 'true') {
             this.ifFollow = true
-          }else {
+          } else {
             this.ifFollow = false
           }
         })
@@ -526,9 +537,9 @@ export default {
         }).then(res => {
           console.log(res)
           this.$message({
-              message: '取消关注成功',
-              type: 'success'
-            });
+            message: '取消关注成功',
+            type: 'success'
+          });
           this.ifFollow = false
         })
       }
@@ -630,8 +641,8 @@ export default {
         })
       }
     },
-    whenExceed(){
-       this.$message.error('最多只能上传两张图片');
+    whenExceed() {
+      this.$message.error('最多只能上传两张图片');
     },
     handleClose(done) {
       if (this.text !== '') {
@@ -640,7 +651,8 @@ export default {
             done();
             this.text = ''
           })
-          .catch(_ => {});
+          .catch(_ => {
+          });
       } else {
         done()
       }
@@ -653,10 +665,14 @@ export default {
 #topPane {
   /*background-size: contain;*/
   /*background: url("../../assets/bg.png");*/
+  background: url("../../assets/home-promo-bg.png");
+  background-repeat: no-repeat;
+  width: 100%;
+  /*height: 100%;*/
 }
 
 #authorPage {
-  background-color: #f1f2f6;
+  background-color: whitesmoke;
   /*background: url("../../assets/v2-bbe20658413deace374c6222356637a8_r.jpg");*/
   width: 100%;
   height: 100vh;
@@ -664,7 +680,7 @@ export default {
 }
 
 #topPicAndAddButton {
-  background: #ffffff;
+  /*background: #ffffff;*/
   display: flex;
   justify-content: center;
   padding-top: 30px;
@@ -873,7 +889,7 @@ export default {
 }
 
 #bottomTab {
-  background-color: white;
+  /*background-color: white;*/
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -1062,5 +1078,23 @@ export default {
 
 #appealUpload {
   margin-top: 15px;
+}
+
+/deep/ .el-button--primary {
+  color: #FFF;
+  background-color: #409EFF;
+  border-color: #409EFF;
+  padding: 12px 30px;
+  margin-top: 5px;
+}
+
+/deep/ .el-dialog__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  margin: 0;
 }
 </style>

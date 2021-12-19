@@ -33,19 +33,35 @@
                     </div>
                     <el-divider></el-divider>
                     <div class="bottom">
-                      <div class="bottom-btn"
-                           v-if="!item.isLike"
-                           @click="addLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num +1">
-<!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
-                        <img src="@/assets/点赞.png" width="6%"/>
-                        点赞&emsp;&emsp;已有{{ item.likes_num }}点赞
+                      <div v-if="isLogin === null">
+                        <el-popover
+                          placement="bottom"
+                          width="200"
+                          trigger="click"
+                          content="请先登录">
+<!--                          <el-button type="warning" slot="reference">收藏文献</el-button>-->
+                          <div class="bottom-btn"
+                               slot="reference">
+                            <img src="@/assets/点赞.png" width="6%"/>
+                            点赞&emsp;&emsp;已有{{ item.likes_num }}点赞
+                          </div>
+                        </el-popover>
                       </div>
-                      <div class="bottom-btn"
-                           v-else
-                           @click="cancelLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num -1">
-                        <img src="@/assets/已点赞.png" width="6%"/>
-                        点赞&emsp;&emsp;
-                        已有{{ item.likes_num }}点赞
+                      <div v-else>
+                        <div class="bottom-btn"
+                             v-if="!item.isLike"
+                             @click="addLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num +1">
+                          <!--                        评论的id addlike要知道 评论id 文献id 点赞人id 然后在前端把item.done 设置成true-->
+                          <img src="@/assets/点赞.png" width="6%"/>
+                          点赞&emsp;&emsp;已有{{ item.likes_num }}点赞
+                        </div>
+                        <div class="bottom-btn"
+                             v-else
+                             @click="cancelLike(item.comment_id);item.isLike =!item.isLike;item.likes_num = item.likes_num -1">
+                          <img src="@/assets/已点赞.png" width="6%"/>
+                          点赞&emsp;&emsp;
+                          已有{{ item.likes_num }}点赞
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -84,7 +100,18 @@
           <div class="input-box">
             <div id="div1"></div>
             <div class="btn-box">
-              <el-button type="primary" @click="addComment">提交</el-button>
+              <div v-if="isLogin === null">
+                <el-popover
+                  placement="bottom"
+                  width="200"
+                  trigger="click"
+                  content="请先登录">
+                  <el-button type="primary" slot="reference">提交</el-button>
+                </el-popover>
+              </div>
+              <div v-else>
+                <el-button type="primary" @click="addComment">提交</el-button>
+              </div>
             </div>
           </div>
         </div>
@@ -115,6 +142,7 @@ export default {
     this.editor = editor
   },
   created() {
+    this.isLogin = localStorage.getItem('user_id')
     this.getCommentsList()
     this.getUserInfor()
     this.getUserTou()
@@ -132,6 +160,7 @@ export default {
       name: '',
       head: '',
       description: '',
+      isLogin:'',
       items: [
         {
           author: '作者1',
@@ -253,9 +282,9 @@ export default {
         method: "post",
         url: "http://139.9.132.83:8000/communicate/like",
         data:{
-          user_id:this.user_id,
+          user_id:this.user_id,                   //用户id
           post_id: this.$route.params.paper_id,   //文献id
-          comment_id: comment_id
+          comment_id: comment_id                  //评论id
         }
       })
         .then(response=>{

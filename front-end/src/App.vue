@@ -7,7 +7,14 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  watch: {
+   '$route':function(to,from){
+      window.scrollTo(0,0)
+
+   }
+  }
+
 }
 </script>
 

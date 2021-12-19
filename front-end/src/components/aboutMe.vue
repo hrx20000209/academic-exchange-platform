@@ -1,7 +1,11 @@
 <template>
   <div id="aboutMe">
     <div id="topHead">
-      <div id="leftCharacter">关于我</div>
+      <div id="leftCharacter" style="display: flex">
+        <div style="margin-top: 1px">
+        <svg style="margin-right: 5px" t="1639835709729" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2960" width="20" height="20"><path d="M503.466667 682.666667c-8.533333 0-17.066667-8.533333-17.066667-17.066667v-221.866667c0-8.533333 8.533333-17.066667 17.066667-17.066666s17.066667 8.533333 17.066666 17.066666v221.866667c0 12.8-8.533333 17.066667-17.066666 17.066667z" fill="" p-id="2961"></path><path d="M503.466667 349.866667m-38.4 0a38.4 38.4 0 1 0 76.8 0 38.4 38.4 0 1 0-76.8 0Z" fill="" p-id="2962"></path><path d="M576 584.533333m-268.8 0a268.8 268.8 0 1 0 537.6 0 268.8 268.8 0 1 0-537.6 0Z" fill="#FFDD48" p-id="2963"></path><path d="M503.466667 819.2c-179.2 0-324.266667-145.066667-324.266667-324.266667S324.266667 170.666667 503.466667 170.666667s324.266667 145.066667 324.266666 324.266666-145.066667 324.266667-324.266666 324.266667z m0-614.4C341.333333 204.8 213.333333 332.8 213.333333 494.933333s132.266667 290.133333 290.133334 290.133334 290.133333-132.266667 290.133333-290.133334-128-290.133333-290.133333-290.133333z" fill="" p-id="2964"></path></svg>
+        </div>
+        关于我</div>
       <div id="rightButton">
         <el-dropdown @command="handleDropDown">
   <span class="el-dropdown-link" style="color: #8e8e8e">
@@ -223,7 +227,6 @@ export default {
   font-family: "Microsoft YaHe";
   font-weight: bold;
   font-size: 16px;
-  margin-left: 10px;
   letter-spacing: 1px;
   color: #8e8e8e;
 }
