@@ -27,7 +27,7 @@
           <!--            <el-button type="primary" icon="el-icon-circle-plus">进入认证门户</el-button>-->
           <!--          </div>-->
           <div style="margin-top: 5%">
-            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.ifAuthor == true">
+            <el-button type="primary" icon="el-icon-circle-plus" @click="toAuthorPage" v-if="this.scolarId == true">
               进入认证门户
             </el-button>
             <el-button type="primary" icon="el-icon-circle-plus" @click="toApply" v-else-if="ifVisitor == false">申请认证</el-button>

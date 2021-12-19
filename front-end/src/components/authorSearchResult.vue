@@ -137,6 +137,7 @@ export default {
             user_id: this.user_id,
             author_id: this.author._source.id
           }).then(response => {
+            console.log(response)
             if (response.message == 'Identify success') {
               this.$message({
                 type: 'success',

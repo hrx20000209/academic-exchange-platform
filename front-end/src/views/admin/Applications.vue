@@ -103,7 +103,7 @@
         >
         </el-input>
         <div class="confirm-btn-box">
-          <el-button type="primary" @click="confirmHandle">确定</el-button>
+          <el-button type="primary" @click="handleConfirm">确定</el-button>
         </div>
       </div>
     </el-dialog>
@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { getAppealList, getUsrInfo, handleAppeal } from "../../request/api"
+import {getAppealList, getScolarUserInfo, getUsrInfo, handleAppeal, sendMessage} from "../../request/api"
 import ESApi from "../../api/elastic search";
 export default {
   name: "Applications",
@@ -138,6 +138,10 @@ export default {
         userName: '',
         user_id: ''
       },
+      scholar: {
+        userName: '',
+        user_id: ''
+      },
       authors: [],
       picID: 1,
     }
@@ -152,6 +156,14 @@ export default {
         this.appealList = response.favorites
         this.getListUserName()
         this.getListAuthorNameAndPic()
+      })
+    },
+    getAnotherUser() {
+      getScolarUserInfo({
+        author_id: this.appealDetail.scolar_id,
+      }).then(response => {
+        this.scholar.userName = response.user.name
+        this.scholar.user_id = response.user.user_id
       })
     },
     getListUserName() {
@@ -182,6 +194,7 @@ export default {
     },
     openDetails(user) {
       this.appealDetail = user
+      this.getAnotherUser()
       this.appealDetail.pic0 = 'http://139.9.132.83:8000/user/getAppealPic?issue_id='
                                 + this.appealDetail.issue_id + '&number=1'
       if (this.appealDetail.picNum === 2) {
@@ -211,9 +224,41 @@ export default {
         issue_id: this.appealDetail.issue_id,
         handle: this.handleMethod
       }).then(response => {
-        
+        if (response.message == 'handle success: not remove bounding') {
+          this.$message({
+            type: 'success',
+            message: '处理成功，申诉被驳回'
+          })
+          if (this.text.length === 0) {
+            this.text = '您的申诉已被驳回，请修改后重新提交！'
+          }
+          sendMessage({
+            sender_id: 16,
+            receiver_name: this.appealDetail.userName,
+            text: this.text
+          }).then()
+        } else {
+          this.$message({
+            type: 'success',
+            message: '处理成功，已解除该门户的绑定'
+          })
+          if (this.text.length === 0) {
+            this.text = '您的申诉成功了，该门户的认证已被撤销！'
+          }
+          sendMessage({
+            sender_id: 16,
+            receiver_name: this.appealDetail.userName,
+            text: this.text
+          }).then()
+          sendMessage({
+            sender_id: 16,
+            receiver_name: this.scholar.userName,
+            text: '非常抱歉的通知您，您的认证门户被其他用户申诉成功，该门户已经与您解除绑定。'
+          }).then()
+        }
       })
       this.handleVisible = false
+      this.getList()
     }
   }
 }
