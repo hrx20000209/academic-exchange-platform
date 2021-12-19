@@ -81,7 +81,7 @@
               </el-menu-item>
               <el-menu-item>
 <!--                {{localStorage.getItem('user_id')}}-->
-                <div v-if="isLogin === null">
+                <div v-if="isLogin === null || isLogin === -1 || isLogin === (-1+'')">
 <!--                  <el-button type="warning" v-if="!this.isFavorite" @click="getFavoriteBag">收藏文献</el-button>-->
                   <el-popover
                     placement="bottom"
@@ -97,7 +97,7 @@
                 </div>
               </el-menu-item>
               <el-menu-item>
-                <div v-if="isLogin === null">
+                <div v-if="isLogin === null || isLogin === -1 || isLogin === (-1+'')">
                   <el-popover
                   placement="bottom"
                   width="200"
@@ -309,6 +309,7 @@ export default {
       isLogin:'',
       recommends:'',
       visNumber:'',
+
     }
   },
   mounted() {
@@ -414,28 +415,6 @@ export default {
         })
     },
     reMessage(){
-      // console.log(this.$store.state.refer)
-      // this.referMessages = []
-      // for(var i = 0; i < this.$store.state.refer.length; i++){
-      //   this.referMessage = ''
-      //   this.referMessage = '['+ (i+1) + ']'
-      //   for(var j = 0; j < this.$store.state.refer[i].authors.length - 1; j++){
-      //     this.referMessage += this.$store.state.refer[i].authors[j].name
-      //     this.referMessage += ','
-      //   }
-      //   this.referMessage += this.$store.state.refer[i].authors[j].name
-      //   this.referMessage += '.'
-      //   this.referMessage += this.$store.state.refer[i].title
-      //   this.referMessage += '[J]'
-      //   this.referMessage += this.$store.state.refer[i].venue.raw
-      //   this.referMessage += '].cs:['
-      //   this.referMessage += this.$store.state.refer[i].year
-      //   this.referMessage += '].http://localhost:8081/article/'//这里回头要改前端服务器地址
-      //   this.referMessage += this.paper_id
-      //   this.referMessage += '/overviews'
-      //   this.referMessages.push(this.referMessage)
-      // }
-      // console.log(this.referMessages)
       this.referMessages = []
       // GB
       this.referMessage = ''

@@ -15,7 +15,7 @@
                     <el-avatar shape="circle" :size="50" :src=urlTouXiang+item.commentator_id></el-avatar>
                   </div>
                   <div style="width: 100%">
-                    <div class="author-name">
+                    <div class="author-name" @click="toUser(item.commentator_id)">
                       {{ item.user_name }}
                     </div>
                     <div class="description-box">
@@ -33,7 +33,7 @@
                     </div>
                     <el-divider></el-divider>
                     <div class="bottom">
-                      <div v-if="isLogin === null">
+                      <div v-if="isLogin === null || isLogin === -1 || isLogin === (-1+'')">
                         <el-popover
                           placement="bottom"
                           width="200"
@@ -100,7 +100,7 @@
           <div class="input-box">
             <div id="div1"></div>
             <div class="btn-box">
-              <div v-if="isLogin === null">
+              <div v-if="isLogin === null || isLogin === -1 || isLogin === (-1+'')">
                 <el-popover
                   placement="bottom"
                   width="200"
@@ -201,6 +201,13 @@ export default {
     }
   },
   methods: {
+    toUser(id){
+      this.$router.push({
+        path: '/userHome',
+        query: {
+          id: id  }
+      })
+    },
     getUserInfor(){
       this.user_id = localStorage.getItem('user_id')
       this.axios({
@@ -408,5 +415,9 @@ export default {
 .bottom-btn-mouse-on {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.author-name:hover{
+  cursor: pointer;
 }
 </style>
