@@ -23,7 +23,7 @@
           <i class="el-icon-s-promotion"></i>
         </div>
         <div class="infoBox">
-          <i class="el-icon-chat-round"></i>
+          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
         </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
@@ -181,6 +181,9 @@ export default {
       })
     },
     toLetter() {
+      this.$router.push('/letter')
+    },
+    jumpToMessage() {
       this.$router.push('/letter')
     }
   },

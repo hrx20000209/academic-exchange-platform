@@ -14,13 +14,13 @@
             :index="indexMethod">
           </el-table-column>
           <el-table-column
-            prop="userName"
-            label="用户名"
+            prop="user_id"
+            label="用户ID"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="author_name"
-            label="申诉门户">
+            prop="scolar_id"
+            label="申诉门户ID">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -45,17 +45,27 @@
         </div>
       </div>
     </el-card>
-    <el-dialog title="详细信息" :visible.sync="detailsVisible" width="50%" append-to-body>
-      <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border>
-        <el-descriptions-item label="描述" :span="4"> {{ appealDetail.describe }} </el-descriptions-item>
-        <el-descriptions-item label="图片">
-          <el-image
-            style="width: 100px; height: 100px"
-            :src="appealDetail.pic0"></el-image>
-        </el-descriptions-item>
-      </el-descriptions>
-      <div class="btn-box">
-        <el-button type="primary" @click="closeDetail">确定</el-button>
+    <el-dialog title="详细信息"  :visible.sync="detailsVisible" width="50%" append-to-body>
+      <div style="height: 550px">
+        <el-descriptions direction="horizontal" :column="8" border>
+          <el-descriptions-item label="用户名" :span="4"> {{ appealDetail.userName }} </el-descriptions-item>
+          <el-descriptions-item label="申诉门户" :span="4"> {{ appealDetail.author_name }} </el-descriptions-item>
+          <el-descriptions-item label="描述" :span="8"> {{ appealDetail.describe }} </el-descriptions-item>
+        </el-descriptions>
+        <div class="pic-box">
+          <el-radio-group v-model="picID">
+            <el-radio-button label="1">图片一</el-radio-button>
+            <el-radio-button label="2">图片二</el-radio-button>
+          </el-radio-group>
+        </div>
+        <el-image :src=this.appealDetail.pic0 v-if="picID=='1'"></el-image>
+        <div v-else-if="picID=='2'">
+          <el-image :src=this.appealDetail.pic1 v-if="appealDetail.picNum===2"></el-image>
+          <el-empty v-else></el-empty>
+        </div>
+        <div class="btn-box">
+          <el-button type="primary" @click="closeDetail">确定</el-button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -78,7 +88,7 @@ export default {
         scolar_id: '',
         describe: '',
       }],
-      appealDetail: [{
+      appealDetail: {
         author_name: '',
         describe: '',
         issue_id: '',
@@ -86,8 +96,9 @@ export default {
         scolar_id: '',
         userName: '',
         user_id: ''
-      }],
-      authors: []
+      },
+      authors: [],
+      picID: 1,
     }
   },
   mounted() {
@@ -116,21 +127,6 @@ export default {
         ESApi.getAuthorInfo(this.appealList[i].scolar_id).then(response => {
           this.appealList[i].author_name = response.data.hits.hits[0]._source.name
         })
-        if (this.appealList[i].picNum === 1) {
-          getAppealPic({
-            issue_id: this.appealList[i].issue_id,
-            number: 1
-          }).then(response => {
-            console.log(response)
-          })
-        } else {
-          getAppealPic({
-            issue_id: this.appealList[i].issue_id,
-            number: 1
-          }).then(response => {
-            console.log(response)
-          })
-        }
       }
     },
     tableRowClassName({row, rowIndex}) {
@@ -151,8 +147,13 @@ export default {
     },
     openDetails(user) {
       this.appealDetail = user
+      this.appealDetail.pic0 = 'http://139.9.132.83:8000/user/getAppealPic?issue_id='
+                                + this.appealDetail.issue_id + '&number=1'
+      if (this.appealDetail.picNum === 2) {
+        this.appealDetail.pic1 = 'http://139.9.132.83:8000/user/getAppealPic?issue_id='
+          + this.appealDetail.issue_id + '&number=2'
+      }
       this.detailsVisible = true
-      console.log(this.appealDetail)
     },
     visitUser() {
       const route = this.$router.resolve({
@@ -216,4 +217,7 @@ export default {
   height: 580px;
 }
 
+.pic-box {
+  margin-top: 2%;
+}
 </style>
