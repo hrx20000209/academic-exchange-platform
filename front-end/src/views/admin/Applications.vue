@@ -31,7 +31,8 @@
               </el-button>
               <el-button
                 size="large"
-                type="success">处理
+                type="success"
+                @click="handle(scope.row)">处理
               </el-button>
             </template>
           </el-table-column>
@@ -48,8 +49,13 @@
     <el-dialog title="详细信息"  :visible.sync="detailsVisible" width="50%" append-to-body>
       <div style="height: 550px">
         <el-descriptions direction="horizontal" :column="8" border>
-          <el-descriptions-item label="用户名" :span="4"> {{ appealDetail.userName }} </el-descriptions-item>
-          <el-descriptions-item label="申诉门户" :span="4"> {{ appealDetail.author_name }} </el-descriptions-item>
+          <el-descriptions-item label="用户名" :span="4">
+            {{ appealDetail.userName }}
+          </el-descriptions-item>
+          <el-descriptions-item label="申诉门户" :span="4">
+            {{ appealDetail.author_name }}
+            <el-button type="primary" plain @click="visitAuthor" class="check-btn">查看门户</el-button>
+          </el-descriptions-item>
           <el-descriptions-item label="描述" :span="8"> {{ appealDetail.describe }} </el-descriptions-item>
         </el-descriptions>
         <div class="pic-box">
@@ -70,6 +76,37 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog title="处理申诉"  :visible.sync="handleVisible" width="40%" append-to-body>
+      <div class="handle-body">
+        <div class="handle-text">请选择处理方式：</div>
+        <el-radio-group v-model="handleMethod">
+          <div class="choice-box">
+            <div class="choice-item">
+              <el-radio :label="1" border>申诉通过（被申诉的门户将被解除认证）</el-radio>
+            </div>
+            <div class="choice-item">
+              <el-radio :label="0" border>驳回申诉</el-radio>
+            </div>
+          </div>
+        </el-radio-group>
+        <div class="input-box">
+          附加信息：
+        </div>
+        <el-input
+          type="textarea"
+          placeholder="选填，会以私信的形式通知用户"
+          v-model="text"
+          maxlength="250"
+          rows="8"
+          resize="none"
+          show-word-limit
+        >
+        </el-input>
+        <div class="confirm-btn-box">
+          <el-button type="primary" @click="confirmHandle">确定</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -81,9 +118,11 @@ export default {
   data() {
     return {
       detailsVisible: false,
-      relatedVisible: false,
+      handleVisible: false,
+      handleMethod: 0,
       currentPage: 0,
       totalPage: 5,
+      text: '',
       appealList: [{
         issue_id: 0,
         user_id: 0,
@@ -141,12 +180,6 @@ export default {
     indexMethod(index) {
       return index + 1
     },
-    confirm(name){
-      this.relatedVisible = true
-    },
-    confirmApplication() {
-      this.relatedVisible = false
-    },
     openDetails(user) {
       this.appealDetail = user
       this.appealDetail.pic0 = 'http://139.9.132.83:8000/user/getAppealPic?issue_id='
@@ -157,17 +190,30 @@ export default {
       }
       this.detailsVisible = true
     },
-    visitUser() {
+    visitAuthor() {
       const route = this.$router.resolve({
         name: 'authorPage',
         query: {
-          id: this.userDetail.user_id
+          id: this.appealDetail.scolar_id
         }
       })
       window.open(route.href, '_blank')
     },
     closeDetail() {
       this.detailsVisible = false
+    },
+    handle(user) {
+      this.appealDetail = user
+      this.handleVisible = true
+    },
+    handleConfirm() {
+      handleAppeal({
+        issue_id: this.appealDetail.issue_id,
+        handle: this.handleMethod
+      }).then(response => {
+        
+      })
+      this.handleVisible = false
     }
   }
 }
@@ -225,5 +271,38 @@ export default {
 
 .picture {
   margin: 2%;
+}
+
+.check-btn {
+  margin-left: 30%;
+  border-radius: 10px;
+}
+
+.handle-text {
+  font-size: larger;
+}
+
+.choice-box {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.choice-item {
+  margin-top: 3%;
+}
+
+.input-box {
+  margin-top: 5%;
+  font-size: larger;
+}
+
+.handle-body {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.confirm-btn-box {
+  text-align: center;
+  margin-top: 3%;
 }
 </style>
