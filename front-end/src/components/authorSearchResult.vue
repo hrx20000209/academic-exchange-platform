@@ -39,21 +39,19 @@
       append-to-body>
       <div class="letter-body">
         <div class="letter-title">
-          <p>您是 {{ author._source.name }} ?  </p>
+          <p>您是 <a class="author-name">{{ author._source.name }}</a>  ?  </p>
           <p>我们将通过邮箱验证的方式确认您的身份。</p>
         </div>
         <div class="email-box">
-          <a style="margin-top: 1%">邮箱：</a>
-          <div style="width: 50%;">
-            <el-input v-model="email" size="medium"></el-input>
+          <div style="width: 100%;">
+            <el-input v-model="email" size="medium" placeholder="请输入邮箱"></el-input>
           </div>
-          <el-button type="primary" class="send-code-btn" @click="sendCode">发送验证码</el-button>
         </div>
         <div class="email-box">
-          <a style="margin-top: 1%; width: 18%">验证码：</a>
           <div style="width: 75%;">
-            <el-input v-model="code" size="medium" ></el-input>
+            <el-input v-model="code" size="medium" placeholder="请输入验证码"></el-input>
           </div>
+          <el-button type="primary" class="send-code-btn" @click="sendCode">发送验证码</el-button>
         </div>
         <div class="letter-btn-box">
           <el-button type="primary" @click="confirm">确定</el-button>
@@ -107,16 +105,23 @@ export default {
       })
     },
     sendCode() {
-      emailIdentify({
-        to_email: this.email
-      }).then(response => {
-        if (response.message == 'success') {
-          this.$message({
-            type: 'success',
-            message: '验证码已发送'
-          })
-        }
-      })
+      if (this.email.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '邮箱不能为空'
+        })
+      } else {
+        emailIdentify({
+          to_email: this.email
+        }).then(response => {
+          if (response.message == 'success') {
+            this.$message({
+              type: 'success',
+              message: '验证码已发送'
+            })
+          }
+        })
+      }
     },
     close() {
       this.email = ''
@@ -237,7 +242,13 @@ export default {
 }
 
 .email-box {
+  margin-bottom: 3%;
   display: flex;
   font-size: larger;
+}
+
+.author-name {
+  color: #00BFFF;
+  font-weight: bolder;
 }
 </style>

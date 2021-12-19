@@ -66,7 +66,7 @@ export default {
   position: fixed;
   height: 100vh;
   width: 100%;
-  background-color: #ededed;
+  background-image: url(../../assets/background2.png);
 }
 
 .body {

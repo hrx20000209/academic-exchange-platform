@@ -58,13 +58,15 @@
             <el-radio-button label="2">图片二</el-radio-button>
           </el-radio-group>
         </div>
-        <el-image :src=this.appealDetail.pic0 v-if="picID=='1'"></el-image>
-        <div v-else-if="picID=='2'">
-          <el-image :src=this.appealDetail.pic1 v-if="appealDetail.picNum===2"></el-image>
-          <el-empty v-else></el-empty>
-        </div>
-        <div class="btn-box">
-          <el-button type="primary" @click="closeDetail">确定</el-button>
+        <div class="picture">
+          <el-image :src=this.appealDetail.pic0 v-if="picID=='1'"></el-image>
+          <div v-else-if="picID=='2'">
+            <el-image :src=this.appealDetail.pic1 v-if="appealDetail.picNum===2"></el-image>
+            <el-empty v-else></el-empty>
+          </div>
+          <div class="btn-box">
+            <el-button type="primary" @click="closeDetail">确定</el-button>
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -72,7 +74,7 @@
 </template>
 
 <script>
-import { getAppealList, getUsrInfo, getAppealPic } from "../../request/api"
+import { getAppealList, getUsrInfo, handleAppeal } from "../../request/api"
 import ESApi from "../../api/elastic search";
 export default {
   name: "Applications",
@@ -219,5 +221,9 @@ export default {
 
 .pic-box {
   margin-top: 2%;
+}
+
+.picture {
+  margin: 2%;
 }
 </style>
