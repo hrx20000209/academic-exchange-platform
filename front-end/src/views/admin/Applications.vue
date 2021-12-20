@@ -350,4 +350,9 @@ export default {
   text-align: center;
   margin-top: 3%;
 }
+
+.el-image {
+  height: 40%;
+  width: 40%;
+}
 </style>
