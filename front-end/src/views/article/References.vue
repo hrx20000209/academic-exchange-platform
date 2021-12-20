@@ -56,7 +56,7 @@
                     <!-- TODO 保存图片按钮-->
                     <h4 class="textInQRCodePopover">或分享二维码</h4>
                     <div id="qrcode" ref="qrcode"></div>
-<!--                    <canvas :id="item.url"></canvas>-->
+                    <!--                    <canvas :id="item.url"></canvas>-->
                     <el-button
                       slot="reference"
                       class="shareBtn"
