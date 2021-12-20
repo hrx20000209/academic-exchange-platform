@@ -14,13 +14,13 @@
               <el-row style="margin-top: 23px; margin-left: 25px;">
                 <el-row>
                   <el-col :span="6">
-                   <i class="el-icon-user" style="color: #6E6E6E">成员总数： <a style="color: #00BFFF"> {{this.members}}</a> 人</i>
+                   <i class="el-icon-user" style="color: #6E6E6E">成员总数： <a style="color: #589ba7"> {{this.members}}</a> 人</i>
                   </el-col>
                   <el-col :span="6">
-                   <i class="el-icon-collection-tag" style="color: #6E6E6E">论文引用总次数： <a style="color: #00BFFF"> {{this.citeTime}}</a> 次</i>
+                   <i class="el-icon-collection-tag" style="color: #6E6E6E">论文引用总次数： <a style="color: #589ba7"> {{this.citeTime}}</a> 次</i>
                   </el-col>
                   <el-col :span="10" :offset="1">
-                    <i class="el-icon-star-on" style="color: #6E6E6E"> 总发布论文数: <a style="color: #00BFFF">{{this.RG_score}}</a> 篇</i>
+                    <i class="el-icon-star-on" style="color: #6E6E6E"> 总发布论文数: <a style="color: #589ba7">{{this.RG_score}}</a> 篇</i>
                   </el-col>
                 </el-row>
               </el-row>
@@ -69,7 +69,7 @@
                 成员列表
               </div>
               <div style="display: flex; justify-content: center;margin-bottom: 10px">
-                <a style="font-family: Georgia; font-size: 20px; color:#2E9AFE">{{this.members}}</a> <a style="font-family: siyuan; font-size: 13px; color:#848484;margin-left: 5px;">名成员</a>
+                <a style="font-family: Georgia; font-size: 20px; color:#04B486">{{this.members}}</a> <a style="font-family: siyuan; font-size: 13px; color:#848484;margin-left: 5px;">名成员</a>
               </div>
               <div style="display: flex; flex-direction: column">
                 <div v-if="modalShow" style="display: flex; justify-content: center">
@@ -653,9 +653,7 @@
   box-shadow: 1px 2px 8px 1px rgba(0, 0, 0, .12), 0 0 12px rgba(0, 0, 0, .04)
 }
 .Iname_font {
-  background-image:  linear-gradient(#e66465,#9198e5,#A9F5BC);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color:#585858;
   font-size: 30px;
   margin-top: 25px;
   margin-left: 25px;
@@ -731,7 +729,7 @@
   display: flex;
 }
 .paper_title:hover{
-  color: 	#d7df07;
+  color: 	#5FB404;
   cursor: pointer;
 }
 .paper_author{
@@ -764,14 +762,27 @@
 .greyPage /deep/ button.btn-prev {
   background-color: #FAFAFA;
 }
+.greyPage /deep/ button.btn-prev:hover {
+  color: #01DFA5;
+}
 .greyPage /deep/ button.btn-next {
   background-color: #FAFAFA;
+}
+.greyPage /deep/ button.btn-next:hover {
+  color: #01DFA5;
 }
 .greyPage /deep/ li.number {
   background-color: #FAFAFA;
 }
+.greyPage /deep/ li:hover {
+  color: #01DFA5;
+}
+.greyPage /deep/ li.active {
+    color: #04B486;
+    cursor: default;
+}
 .xuhao {
-  background-color: cornflowerblue;
+  background-color: #04B486;
   text-align: center;
   border-radius: 30px;
   font-family: Gadugi;
@@ -790,5 +801,12 @@
   margin-left: 40px;
   width: 120px;
   color: #FFF;
+}
+/deep/.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #04B486;
+    color: #fff;
+}
+/deep/.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #01DFA5;
 }
 </style>
