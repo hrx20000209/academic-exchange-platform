@@ -291,6 +291,7 @@
             // const pieColors1 = this.getColorList(this.AuthorPapers)
             let option2={
               // backgroundColor: '#FFF',
+              color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
               title: {
                 text: '成员发表论文量',
                 x: 'center'
@@ -315,8 +316,8 @@
                   },
                   minShowLabelAngle:7,
                   type: 'pie',
-                  data: this.addColor(this.AuthorPapers),
-                  // data: this.paperCitation
+                  // data: this.addColor(this.AuthorPapers),
+                  data: this.paperCitation
                 }
               ]
             }
@@ -333,6 +334,7 @@
               series:[
                 {
                   name:'成员被引次数',
+                  color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
                   radius: ['55%', '70'],
                   label: {
                     alignTo: 'labelLine',
@@ -346,8 +348,8 @@
                   },
                   minShowLabelAngle:7,
                   type: 'pie',
-                  data: this.addColor(this.AuthorCitation),
-                  // data: this.paperCitation
+                  // data: this.addColor(this.AuthorCitation),
+                  data: this.paperCitation
                 }
               ]
             }
@@ -364,6 +366,7 @@
               series: [
                 {
                   name:'论文被引用量',
+                  color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
                   radius: ['55%', '70'],
                   label: {
                     alignTo: 'labelLine',
@@ -377,8 +380,8 @@
                   },
                   minShowLabelAngle:7,
                   type: 'pie',
-                  data: this.addColor(this.paperCitation),
-                  // data: this.paperCitation
+                  // data: this.addColor(this.paperCitation),
+                  data: this.paperCitation
                 }
 
               ]
