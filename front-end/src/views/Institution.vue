@@ -778,11 +778,11 @@
   color: #01DFA5;
 }
 .greyPage /deep/ li.active {
-    color: #04B486;
+    color: #1bafb8;
     cursor: default;
 }
 .xuhao {
-  background-color: #04B486;
+  background-color: #1bafb8;
   text-align: center;
   border-radius: 30px;
   font-family: Gadugi;
@@ -803,7 +803,7 @@
   color: #FFF;
 }
 /deep/.el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #04B486;
+    background-color: #1bafb8;
     color: #fff;
 }
 /deep/.el-pagination.is-background .el-pager li:not(.disabled):hover {
