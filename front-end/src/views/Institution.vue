@@ -69,7 +69,7 @@
                 成员列表
               </div>
               <div style="display: flex; justify-content: center;margin-bottom: 10px">
-                <a style="font-family: Georgia; font-size: 20px; color:#04B486">{{this.members}}</a> <a style="font-family: siyuan; font-size: 13px; color:#848484;margin-left: 5px;">名成员</a>
+                <a style="font-family: Georgia; font-size: 20px; color:#34898f">{{this.members}}</a> <a style="font-family: siyuan; font-size: 13px; color:#848484;margin-left: 5px;">名成员</a>
               </div>
               <div style="display: flex; flex-direction: column">
                 <div v-if="modalShow" style="display: flex; justify-content: center">
@@ -778,11 +778,11 @@
   color: #01DFA5;
 }
 .greyPage /deep/ li.active {
-    color: #1bafb8;
+    color: #34898f;
     cursor: default;
 }
 .xuhao {
-  background-color: #1bafb8;
+  background-color: #34898f;
   text-align: center;
   border-radius: 30px;
   font-family: Gadugi;
@@ -803,7 +803,7 @@
   color: #FFF;
 }
 /deep/.el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #1bafb8;
+    background-color: #34898f;
     color: #fff;
 }
 /deep/.el-pagination.is-background .el-pager li:not(.disabled):hover {
