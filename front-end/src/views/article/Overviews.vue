@@ -87,10 +87,12 @@ export default {
       reference: [],
       venue: {},
       url: "",
-      citation_by_year: {},
+      citation_by_year: [],
       flag: 1,
       relatedArticle: [],
       references:[],
+      year:'',
+      Ydata:[],
       oneData: {
         "children": [
           {
@@ -137,9 +139,10 @@ export default {
         this.$store.state.abstract = ''
         this.$store.state.references = []
         this.reference = []
+        this.citation_by_year = []
         for (var i = 0; i < this.length; i++) {
-          if (response.data.hits.hits[i]._source.id === paper_id) {
-            let article = response.data.hits.hits[i]
+          // if (response.data.hits.hits[i]._source.id === paper_id) {
+            let article = response.data.hits.hits[0]
             this.title = article._source.title
             console.log(this.title)
             // this.abstracts = article._source.abstract
@@ -163,10 +166,13 @@ export default {
             }
             for (var k = 0; k < article._source.citation_by_year.length; k++) {
               // console.log(article._source.citation_by_year[k])
-              this.$store.commit('setCitation', article._source.citation_by_year[k])
+              // this.$store.commit('setCitation', article._source.citation_by_year[k])
+              this.citation_by_year.push(article._source.citation_by_year[k])
               // console.log(this.$store.state.citation_by_year[k])
             }
-
+            console.log('333333333333333333333333333333333333333333333333333333333')
+            console.log(this.citation_by_year)
+            console.log(this.$store.state.citation_by_year)
             for (var l = 0; l < article._source.reference.length; l++) {
               console.log(article._source.reference[l])
               this.reference.push(article._source.reference[l])
@@ -181,8 +187,9 @@ export default {
             this.searchRelated();
             // this.buildPie();
             this.searchRe();
+            this.citation();
             // this.letRe()
-          }
+          // }
         }
         // }
       })
@@ -224,9 +231,6 @@ export default {
       setTimeout(() => {
         this.buildPie()//娃娃消失
       }, 200);
-    },
-    getReRe(){
-
     },
     buildPie2(){
       let pie = echarts.init(document.getElementById('chart4'))
@@ -275,40 +279,53 @@ export default {
       }
       pie.setOption(option)
     },
+    citation(){
+      console.log('111111111')
+      if(this.citation_by_year.length === 0){
+        this.Ydata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        console.log('等于0')
+      }
+      else{
+        this.Ydata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for (var j = 0; j < this.citation_by_year.length; j++) {
+          console.log('sjia')
+          for (var k = 1992; k < 2016; k++) {
+            // console.log(this.$store.state.citation_by_year[0].year)
+            // console.log('awe')
+            // console.log(this.$store.state.citation_by_year[j].year)
+            if (this.citation_by_year[j].year === k + '') {
+              // console.log(this.$store.state.citation_by_year[j].year)
+              // console.log(k+1992)
+              this.Ydata[k - 1992] = this.citation_by_year[j].cnt
+              console.log(this.citation_by_year[j].year+','+this.citation_by_year[j].cnt)
+              console.log(this.Ydata[k-1992])
+              console.log('right')
+            }
+          }
+        }
+      }
+    },
     buildPie() {
       console.log('build')
       console.log(this.relatedArticle)
       let pie1 = echarts.init(document.getElementById('chart1'))
       let pie2 = echarts.init(document.getElementById('chart2'))
       var pieData = [];
-      var Ydata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      // var Ydata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       console.log('re')
+      console.log(this.citation_by_year.length)
       for (var i = 0; i < this.relatedArticle.length - 1; i++) {
         console.log(this.relatedArticle[i]._source.title)
         console.log(this.relatedArticle[i]._score)
         pieData.push({value: this.relatedArticle[i]._score, name: this.relatedArticle[i]._source.title})
       }
-      console.log('jixu')
-      console.log(this.$store.state.citation_by_year.length)
-      console.log(this.$store.state.citation_by_year[0].year)
-      for (var j = 0; j < this.$store.state.citation_by_year.length; j++) {
-        console.log('sjia')
-        for (var k = 1992; k < 2016; k++) {
-          // console.log(this.$store.state.citation_by_year[0].year)
-          // console.log('awe')
-          // console.log(this.$store.state.citation_by_year[j].year)
-          if (this.$store.state.citation_by_year[j].year === k + '') {
-            // console.log(this.$store.state.citation_by_year[j].year)
-            // console.log(k+1992)
-            Ydata[k - 1992] = this.$store.state.citation_by_year[j].cnt
-            console.log(this.$store.state.citation_by_year[j].year+','+this.$store.state.citation_by_year[j].cnt)
-            console.log(Ydata[k-1992])
-            console.log('right')
-          }
-        }
-      }
+      // console.log('jixu')
+      // console.log(this.$store.state.citation_by_year.length)
+      // console.log(this.$store.state.citation_by_year[0].year)
+
+
       console.log('这里是ydata')
-      console.log(Ydata)
+      console.log(this.Ydata)
       const color1 = this.randomColor()
       let option1 = {
         // backgroundColor: '#FFF',
@@ -341,7 +358,7 @@ export default {
           {
             name: 'Citation',
             type: 'bar',
-            data: Ydata,
+            data: this.Ydata,
             itemStyle: {
               color: color1,
             }

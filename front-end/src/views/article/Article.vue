@@ -604,8 +604,8 @@ export default {
         console.log(this.length)
         this.$store.state.abstract = ''
         for(var i = 0; i < this.length; i++){
-          if(response.data.hits.hits[i]._source.id === paper_id){
-            let article = response.data.hits.hits[i]
+          // if(response.data.hits.hits[i]._source.id === paper_id){
+            let article = response.data.hits.hits[0]
             this.title = article._source.title
             this.n_citation = article._source.n_citation
             console.log(this.title)
@@ -651,7 +651,7 @@ export default {
             // this.author += this.authors[j].name
             console.log(this.authors)
           }
-        }
+        // }
         // }
 
       })

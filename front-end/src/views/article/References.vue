@@ -250,6 +250,7 @@ export default {
 }
 .grey{
   background: rgba(221,221,221,0.3);
+  background-size: cover;
   /*height: 400px;*/
   /*height: 1000px;*/
   /*width: 100%;*/
