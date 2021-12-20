@@ -22,13 +22,13 @@
             <div id="usrAbility">{{ this.user.ability }}</div>
           </div>
           <div id="rightButton" style="display: block;">
-            <div style="margin-top: 5%" v-if="canSendMessage">
-            <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
-            </div>
             <div style="margin-top: 5%">
               <el-button type="primary" icon="el-icon-circle-plus" v-if="ifFollow == false" @click="follow">关注
               </el-button>
               <el-button type="primary" v-else @click="unfollow" icon="el-icon-remove-outline">取关</el-button>
+            </div>
+            <div style="margin-top: 5%" v-if="canSendMessage">
+              <el-button type="primary" icon="el-icon-chat-round" @click="openLetter">私信</el-button>
             </div>
           </div>
         </div>
@@ -373,8 +373,9 @@ export default {
   methods: {
     checkMessage() {
       checkAuthor({
-        author_id: this.author._source.id
+        author_id: this.$route.query.id
       }).then(response => {
+        console.log(response)
         if (response.ifHaveAccount) {
           this.canSendMessage = true
         } else {
