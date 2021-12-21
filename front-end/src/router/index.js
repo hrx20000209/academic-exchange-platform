@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import {changeViewTime} from "../request/api";
 
 Vue.use(VueRouter)
 
@@ -145,5 +146,15 @@ const router = new VueRouter({
 
 export default router
 router.beforeEach((to, from, next) => {
+  if(to.path == '/authorPage'){
+    changeViewTime({
+      author_id: to.query.id
+    }).then(res=>{
+      console.log(res)
+    })
     next()
+  }else {
+    next()
+  }
+
 })

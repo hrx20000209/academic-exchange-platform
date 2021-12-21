@@ -58,7 +58,7 @@
           <div id="leftMainPane">
             <div id="editusrInfoPane">
               <author-card v-if="ifHaveAccount == true" :user="userInfo" :imgsrc="circleUrl"></author-card>
-              <stats-overview :user="user"></stats-overview>
+              <stats-overview :user="user" :view="vietime"></stats-overview>
               <!--              <div id="researchLine">-->
               <!--                <div id="researchInfo">研究项目</div>-->
               <!--                <el-divider></el-divider>-->
@@ -236,7 +236,7 @@ import {
   checkIfFollow,
   followAuthor,
   getdata,
-  getScolarUserInfo, sendMessage,
+  getScolarUserInfo, getViewTime, sendMessage,
   undoFollow,
   uploadAppealImage,
   uploadImage,
@@ -264,6 +264,7 @@ export default {
   },
   data() {
     return {
+      vietime:0,
       user_id: '',
       text: '',
       AppealfileList: [],
@@ -368,9 +369,18 @@ export default {
     this.checkFollow()
     this.getAccountInfo()
     this.checkMessage()
+    this.getViewer()
     // this.getdataSource(this.id)
   },
   methods: {
+    getViewer(){
+      getViewTime({
+        author_id:this.$route.query.id
+      }).then(res=>{
+        console.log(res)
+        this.vietime = res.num
+      })
+    },
     checkMessage() {
       checkAuthor({
         author_id: this.$route.query.id

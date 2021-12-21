@@ -18,13 +18,13 @@
             <div class="NumberInfo">发表量</div>
           </div>
           <div class="rightPart">
-            <i class="el-icon-view"></i>
+            <i class="el-icon-edit-outline"></i>
           </div>
         </div>
         <div class="oneNumber">
           <div class="leftPart">
             <div class="Number">{{user.n_citation}}</div>
-            <div class="NumberInfo">被引</div>
+            <div class="NumberInfo">被引量</div>
           </div>
           <div class="rightPart">
             <i class="el-icon-s-order"></i>
@@ -32,11 +32,11 @@
         </div>
         <div class="oneNumber">
           <div class="leftPart">
-            <div class="Number">14</div>
-            <div class="NumberInfo">推荐</div>
+            <div class="Number">{{view}}</div>
+            <div class="NumberInfo">浏览量</div>
           </div>
           <div class="rightPart">
-            <i class="el-icon-caret-top"></i>
+            <i class="el-icon-view"></i>
           </div>
         </div>
         <div class="oneNumber">
@@ -59,7 +59,7 @@
 <script>
 export default {
   name: "statsOverview",
-  props: ['user']
+  props: ['user','view']
 }
 </script>
 

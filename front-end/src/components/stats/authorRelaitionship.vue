@@ -38,11 +38,11 @@ export default {
           num: "5EF39403",
           symbolSize: 20,
           state:1,
-          // itemStyle: {
-          //         normal: {
-          //           color: '#000000'
-          //         }
-          // }
+          itemStyle: {
+                  normal: {
+                    color: '#000000'
+                  }
+          }
         },
         {
           name: '潘海霞',
