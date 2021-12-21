@@ -15,7 +15,7 @@
       </el-input>
       <div class="advancedSearch">
         <el-collapse v-model="activeSearchTabs" class="advancedSearchForm">
-          <el-collapse-item title="高级搜索" name="1">
+          <el-collapse-item title="高级搜索" name="1" class="advancedSearchCollapseItem">
             <el-form class="rules">
               <el-form-item
                 class="rule"
@@ -56,28 +56,36 @@
                 <el-button @click="addRule">新增规则</el-button>
               </el-form-item>
             </el-form>
+            <div style="width: 250px" class="advancedSearchInfo">
+              <span style="font-size: 16px">高级搜索使用方法<br/></span>
+              1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>
+              2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>
+              - 匹配：关键词搜索。<br/>
+              - 范围：针对引用量和年份，可以限定数字范围。<br/>
+              - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>
+            </div>
           </el-collapse-item>
         </el-collapse>
-        <el-popover
-          placement="right"
-          title="高级搜索使用方法"
-          width="300px"
-          trigger="manual"
-          v-model="showAdvancedSearchInfo"
-          v-if="isAdvancedSearch"
-        >
-          <div style="width: 250px">
-            1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>
-            2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>
-            - 匹配：关键词搜索。<br/>
-            - 范围：针对引用量和年份，可以限定数字范围。<br/>
-            - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>
-          </div>
-          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">
-            <i class="el-icon-info" style="margin: auto"
-               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>
-          </div>
-        </el-popover>
+<!--        <el-popover-->
+<!--          placement="right"-->
+<!--          title="高级搜索使用方法"-->
+<!--          width="300px"-->
+<!--          trigger="manual"-->
+<!--          v-model="showAdvancedSearchInfo"-->
+<!--          v-if="isAdvancedSearch"-->
+<!--        >-->
+<!--          <div style="width: 250px">-->
+<!--            1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>-->
+<!--            2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>-->
+<!--            - 匹配：关键词搜索。<br/>-->
+<!--            - 范围：针对引用量和年份，可以限定数字范围。<br/>-->
+<!--            - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>-->
+<!--          </div>-->
+<!--          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">-->
+<!--            <i class="el-icon-info" style="margin: auto"-->
+<!--               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>-->
+<!--          </div>-->
+<!--        </el-popover>-->
       </div>
       <!--      <el-switch v-model="searching_paper" class="searchSwitch"-->
       <!--                 active-text="文献"-->
@@ -232,7 +240,10 @@
               <template v-for="result in author_results_to_show">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
-                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>
+<!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
+                    <el-link class="resultTitle" @click="goToAuthorPage(result.id)" :underline="false">
+                      {{ result.name }}
+                    </el-link>
                     <!--                    TODO 跳转 学者主页和论文主页-->
                     <div style="margin-bottom: 10px">
                       <span v-for="org in result.orgs" :key="org.id">
@@ -950,9 +961,14 @@ export default {
 }
 
 .advancedSearchInfo {
-  display: flex;
-  height: 47px;
-  font-size: 20px;
+  /*display: flex;*/
+  /*height: 47px;*/
+  /*font-size: 20px;*/
+  width: 250px;
+  margin: 10px 20px;
+  padding: 10px;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
+  background-color: white;
 }
 
 .advancedSearch {
@@ -973,6 +989,7 @@ export default {
 .rules {
   display: flex;
   flex-direction: column;
+  width: 740px;
 }
 
 /deep/ .rules .el-select {
@@ -1005,12 +1022,13 @@ export default {
 }
 
 .advancedSearchForm {
-  width: 740px;
+  width: 1100px;
   /*box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);*/
   /*margin: 20px 20px 0;*/
 }
 
-/deep/ .advancedSearchForm .el-collapse-item__wrap {
+/deep/ .advancedSearchForm .el-collapse-item__content {
+  display: flex;
 }
 
 /deep/ .el-tabs__item {
