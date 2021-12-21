@@ -32,9 +32,6 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        <div id="createNewBox">
-          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>
-        </div>
       </div>
       <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
         <div style="display: flex; ">
@@ -373,6 +370,7 @@ export default {
     color: #FFF;
 }
 #alreadyLogin {
+  margin-left: 70px;
   display: inline-flex;
 }
 </style>

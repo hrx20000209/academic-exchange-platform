@@ -86,7 +86,7 @@
                                   </el-tab-pane>
                                   <el-tab-pane label="最热文章" name="second">
                                     <div style="margin-left: -20px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
-                                      <div v-for="(item, index) in this.engine_latest.sort(function(a,b){return b.cnt-a.cnt})" :key="index"
+                                      <div v-for="(item, index) in this.engine_latest.slice().sort(function(a,b){return b.cnt-a.cnt})" :key="index"
                                          style="display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
                                       <div style="
                                         width: 20px;
