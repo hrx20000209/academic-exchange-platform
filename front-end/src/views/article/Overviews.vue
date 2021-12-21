@@ -223,6 +223,7 @@ export default {
           console.log(this.relatedArticle[i]._source.title)
           console.log(this.relatedArticle[i]._score)
         }
+        // this.buildPie();
       })
       setTimeout(() => {
         this.buildPie()//娃娃消失
@@ -249,13 +250,15 @@ export default {
           console.log(this.oneData)
           if(this.da.children.length === 0){
             this.f = 0
+          }else {
+            this.buildPie2();
           }
         })
-      if(this.f === 1){
-        setTimeout(() => {
-          this.buildPie2()//娃娃消失
-        }, 1500);
-      }
+      // if(this.f === 1){
+      //   setTimeout(() => {
+      //     this.buildPie2()//娃娃消失
+      //   }, 2000);
+      // }
 
     },
     buildPie2(){

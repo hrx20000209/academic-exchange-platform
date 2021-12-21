@@ -364,7 +364,7 @@ export default {
               id: id
             }
           })
-          this.$router.go(0)
+          // this.$router.go(0)
         }
       })
     },

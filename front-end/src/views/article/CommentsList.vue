@@ -412,6 +412,10 @@ export default {
   font-weight: bold;
 }
 
+.bottom-btn:hover{
+  cursor: pointer;
+}
+
 .bottom-btn-mouse-on {
   font-weight: bold;
   text-decoration: underline;
