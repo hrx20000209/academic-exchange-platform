@@ -6,10 +6,10 @@
       </div>
       <div class="right-box">
         <div class="name-box">
-          <h2> {{ author._source.name }} </h2>
+          <h2> {{ titleCase2(author._source.name) }} </h2>
         </div>
         <div v-for="org in author._source.orgs" :key="org.id" class="orgs-box">
-          {{ org.name }}
+          {{ titleCase2(org.name) }}
         </div>
         <div class="detail-box">
           <div class="detail-item-box">
@@ -48,7 +48,7 @@
       append-to-body>
       <div class="letter-body">
         <div class="letter-title">
-          <p>您是 <a class="author-name">{{ author._source.name }}</a>  ?  </p>
+          <p>您是 <a class="author-name">{{ titleCase2(author._source.name) }}</a>  ?  </p>
           <p>我们将通过邮箱验证的方式确认您的身份。</p>
         </div>
         <div class="email-box">
@@ -225,7 +225,6 @@ export default {
               author_id: this.author._source.id,
               mail: this.email
             }).then(response => {
-              console.log(response)
               if (response.message == 'Identify success') {
                 this.$message({
                   type: 'success',
@@ -240,6 +239,7 @@ export default {
               }
               this.dialogVisible = false
               this.haveSend = false
+              this.code = ''
             })
           } else {
             this.$message({
@@ -256,6 +256,12 @@ export default {
         if (this.refuseEmailList[i] === str) return false
       }
       return true
+    },
+    titleCase2(s) {
+      return s.toLowerCase().replace(/\b([\w|‘]+)\b/g, function (word) {
+        //return word.slice(0, 1).toUpperCase() + word.slice(1);
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+      });
     }
   },
 }
