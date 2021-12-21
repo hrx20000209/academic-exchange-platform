@@ -47,7 +47,7 @@
                               </div>
                             </div>
                             <div style="display: flex; justify-content: space-around">
-                              <div style="margin-right: -40px;;display: flex; justify-content: center">
+                              <div style="margin-right: -40px;margin-bottom: 100px;display: flex; justify-content: center">
                                 <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25)">
                                 <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -126,12 +126,11 @@
                                     </div>
                                   </el-tab-pane>-->
                                   <el-tab-pane label="最强机构" name="fourth">
-                                    <div style="display: flex; justify-content: center; height: 650px">
-                                      <div style="margin-top: -50px;width: 700px; height: 600px" id="chart"></div>
-                                    </div>
+                                      <div style="display: flex; justify-content: center; height: 850px">
+                                        <div style="margin-top: -50px;width: 700px; height: 800px" id="chart"></div>
+                                      </div>
                                   </el-tab-pane>
                                 </el-tabs>
-                                <div v-if="activeName === 'fourth'" style="background-color: #f2f4f7; margin-left: -100px;width: 850px; height: 350px"></div>
                                 </div>
                             </div>
                               </div>
@@ -278,6 +277,10 @@
             build3D(that){
               let pie = echarts.init(document.getElementById('chart'))
               let option = {
+                  title: {
+                    text: '成员发表论文量',
+                    x: 'center'
+                  },
                   tooltip: {},
                   visualMap: {
                     max: 250,
@@ -309,7 +312,8 @@
                     type: 'value'
                   },
                   grid3D: {
-                    boxWidth: 200,
+                    boxHeight:150,
+                    boxWidth: 150,
                     boxDepth: 80,
                     viewControl:{
                       "distance": 250,
