@@ -1,15 +1,14 @@
 <template>
   <div id="navBar">
-    <div id="navLogoPlace">
+    <div id="navLogoPlace" @click="toHome">
 
     <img style="width: 60px" src="../assets/logo.png">
 
     </div>
     <div id="jumpRouterPlace">
       <div class="myBox">
-        <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
-          <i to="/" class="el-icon-s-home">首页</i>
-        </router-link>
+        <div id="boldTitle">Academic</div>
+        <div id="smallTitle">Scholar</div>
       </div>
 
 <!--      <div class="jumpRouterDetail">-->
@@ -128,6 +127,9 @@ export default {
     };
   },
   methods: {
+    toHome(){
+      this.$router.push('/')
+    },
     toSearch(){
       this.$store.commit('setSearchInput',this.input2)
       this.$router.push('/search')
@@ -214,7 +216,7 @@ export default {
 }
 
 #navLogoPlace {
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 #navLogo {
@@ -222,7 +224,17 @@ export default {
   width: 60px;
   height: 60px;
 }
+.myBox{
+  display: flex;
+  font-family: system-ui;
+  font-size: 18px;
+}
+#boldTitle{
 
+  font-weight: bolder;
+}
+#smallTitle{
+}
 #jumpRouterPlace {
   display: inline-flex;
   margin-top: auto;
