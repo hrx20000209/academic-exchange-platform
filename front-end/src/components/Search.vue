@@ -66,26 +66,26 @@
             </div>
           </el-collapse-item>
         </el-collapse>
-<!--        <el-popover-->
-<!--          placement="right"-->
-<!--          title="高级搜索使用方法"-->
-<!--          width="300px"-->
-<!--          trigger="manual"-->
-<!--          v-model="showAdvancedSearchInfo"-->
-<!--          v-if="isAdvancedSearch"-->
-<!--        >-->
-<!--          <div style="width: 250px">-->
-<!--            1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>-->
-<!--            2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>-->
-<!--            - 匹配：关键词搜索。<br/>-->
-<!--            - 范围：针对引用量和年份，可以限定数字范围。<br/>-->
-<!--            - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>-->
-<!--          </div>-->
-<!--          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">-->
-<!--            <i class="el-icon-info" style="margin: auto"-->
-<!--               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>-->
-<!--          </div>-->
-<!--        </el-popover>-->
+        <!--        <el-popover-->
+        <!--          placement="right"-->
+        <!--          title="高级搜索使用方法"-->
+        <!--          width="300px"-->
+        <!--          trigger="manual"-->
+        <!--          v-model="showAdvancedSearchInfo"-->
+        <!--          v-if="isAdvancedSearch"-->
+        <!--        >-->
+        <!--          <div style="width: 250px">-->
+        <!--            1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>-->
+        <!--            2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>-->
+        <!--            - 匹配：关键词搜索。<br/>-->
+        <!--            - 范围：针对引用量和年份，可以限定数字范围。<br/>-->
+        <!--            - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>-->
+        <!--          </div>-->
+        <!--          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">-->
+        <!--            <i class="el-icon-info" style="margin: auto"-->
+        <!--               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>-->
+        <!--          </div>-->
+        <!--        </el-popover>-->
       </div>
       <!--      <el-switch v-model="searching_paper" class="searchSwitch"-->
       <!--                 active-text="文献"-->
@@ -240,7 +240,7 @@
               <template v-for="result in author_results_to_show">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
-<!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
+                    <!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
                     <el-link class="resultTitle" @click="goToAuthorPage(result.id)" :underline="false">
                       {{ result.name }}
                     </el-link>
@@ -261,7 +261,7 @@
                       <div style="float: left">
                         <el-button>关注</el-button>
                         <el-button>私信</el-button>
-<!--                       TODO 关注、私信按钮？-->
+                        <!--                       TODO 关注、私信按钮？-->
                         <!--                        TODO author 其他字段-->
                       </div>
                     </div>
@@ -585,7 +585,7 @@ export default {
   },
   methods: {
     handleFieldChange(rule) {
-      rule.type = null
+      rule.type = null;
       console.log(rule);
     },
     safeUndefined(obj, key, innerKey) {
@@ -769,6 +769,7 @@ export default {
         this.notifyInfo("关键词不能为空");
         return;
       }
+      this.$store.commit('setSearchInput', this.searchInput);
       console.log("searching: \n\t" + this.searchInput);
       if (this.activeTab === "article") {
         console.log("SEARCHING FOR ARTICLES");
@@ -839,6 +840,7 @@ export default {
         must_not: [],
         should: [], // TODO implement OR
       };
+      this.$store.commit('setAdvancedSearchInput', this.advancedSearchInput);
       for (const rule of this.advancedSearchInput) {
         if (this.hasNull([rule.type, rule.bool, rule.field])) continue;
         const bool = rule.bool;
@@ -935,10 +937,17 @@ export default {
   },
   mounted() {
     let storedSearchInput = this.$store.state.searchInput;
+    let storedAdvancedSearchInput = this.$store.state.advancedSearchInput;
     if (storedSearchInput.length !== 0) {
       this.searchInput = storedSearchInput;
     }
-    this.search();
+    if (storedAdvancedSearchInput.length !== 0) {
+      this.advancedSearchInput = storedAdvancedSearchInput;
+      this.activeSearchTabs = ['1'];
+      this.advancedSearch();
+    } else {
+      this.search();
+    }
   },
   created() {
     const component = this;
@@ -965,6 +974,7 @@ export default {
   /*height: 47px;*/
   /*font-size: 20px;*/
   width: 250px;
+  height: 240px;
   margin: 10px 20px;
   padding: 10px;
   box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
