@@ -17,7 +17,7 @@
           <el-button type="primary" @click="login" style="font-size: large">登陆</el-button>
         </div>
         <div class="user-box">
-          <el-button type="success" plain @click="gotoUserLogin">用户入口</el-button>
+          <el-button type="primary" plain @click="gotoUserLogin">用户入口</el-button>
         </div>
       </div>
     </div>
