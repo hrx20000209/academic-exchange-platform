@@ -15,7 +15,7 @@
       </el-input>
       <div class="advancedSearch">
         <el-collapse v-model="activeSearchTabs" class="advancedSearchForm">
-          <el-collapse-item title="高级搜索" name="1" class="advancedSearchCollapseItem">
+          <el-collapse-item title="高级搜索" name="1">
             <el-form class="rules">
               <el-form-item
                 class="rule"
@@ -132,8 +132,8 @@
                 </el-collapse-item>
               </el-collapse>
             </div>
-            <div class="result">
-              <template v-for="result in article_results_to_show">
+            <div class="results">
+              <template v-for="result in article_results_to_show.slice((currentPage-1)*10,currentPage*10)">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
                     <div>
@@ -206,6 +206,13 @@
                 <!--              {{ result.abstract }}</div>-->
                 <!--          </el-card>-->
               </template>
+              <div class="pagination">
+                <el-pagination @current-change="handleCurrentChange"
+                               :current-page="currentPage"
+                               layout="total, prev, pager, next, jumper"
+                               :total="totalCount">
+                </el-pagination>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -233,11 +240,12 @@
                     v-model="orgs.isSelected"
                     :label="orgs.value">
                   </el-checkbox>
+                  <!--                  TODO 作者机构筛选-->
                 </div>
               </div>
             </div>
-            <div class="result">
-              <template v-for="result in author_results_to_show">
+            <div class="results">
+              <template v-for="result in author_results_to_show.slice((currentPage-1)*10,currentPage*10)">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
                     <!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
@@ -268,6 +276,13 @@
                   </div>
                 </div>
               </template>
+              <div class="pagination">
+                <el-pagination @current-change="handleCurrentChange"
+                               :current-page="currentPage"
+                               layout="total, prev, pager, next, jumper"
+                               :total="totalCount">
+                </el-pagination>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -351,6 +366,8 @@ export default {
       articleHits: [],
       authorHits: [],
       recommendationInfo: {},
+      currentPage: 1,
+      totalCount: 0,
       // years and venues are watching articleHits
       // their value may be changed by checkboxes so they are not declared as computed
       years: [], // TODO 改成范围
@@ -584,6 +601,9 @@ export default {
     }
   },
   methods: {
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
     handleFieldChange(rule) {
       rule.type = null;
       console.log(rule);
@@ -764,13 +784,13 @@ export default {
       };
     },
     search() {
-      // TODO save input to store
+      this.currentPage = 1
       if (this.searchInput.length === 0) {
         this.notifyInfo("关键词不能为空");
         return;
       }
       this.$store.commit('setSearchInput', this.searchInput);
-      localStorage.removeItem('advancedSearchInput')
+      localStorage.removeItem('advancedSearchInput');
       localStorage.searchInput = this.searchInput;
       console.log(`saving searchInput: ${this.searchInput}`);
       console.log("searching: \n\t" + this.searchInput);
@@ -790,10 +810,12 @@ export default {
             "match": {
               "name": this.searchInput
             }
-          }
+          },
+          'size': 100
         }
       ).then(response => {
         this.authorHits = [];
+        this.totalCount = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const org of hit._source.orgs) {
             org.name = this.formatAuthor(org.name);
@@ -818,10 +840,12 @@ export default {
             "match": {
               "title": this.searchInput
             }
-          }
+          },
+          'size': 100
         }
       ).then(response => {
         this.articleHits = [];
+        this.totalCount = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
             author.name = this.formatAuthor(author.name);
@@ -881,10 +905,12 @@ export default {
         {
           "query": {
             'bool': bools
-          }
+          },
+          'size': 100
         }
       ).then(response => {
         this.articleHits = [];
+        this.totalCount = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
             author.name = this.formatAuthor(author.name);
@@ -956,7 +982,7 @@ export default {
         op: null, // >= <=
         value: null, // number
       }
-    }
+    };
     let storedAdvancedSearchInput = (localStorage.advancedSearchInput && this.isArray(JSON.parse(localStorage.advancedSearchInput)))
       ? JSON.parse(localStorage.advancedSearchInput)
       : [defaultRule];
@@ -985,6 +1011,11 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
 .resultTitle {
   margin-bottom: 10px;
   font-size: 18px;
@@ -996,7 +1027,6 @@ export default {
   /*height: 47px;*/
   /*font-size: 20px;*/
   width: 250px;
-  height: 240px;
   margin: 10px 20px;
   padding: 10px;
   box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
@@ -1061,6 +1091,7 @@ export default {
 
 /deep/ .advancedSearchForm .el-collapse-item__content {
   display: flex;
+  align-items: flex-start;
 }
 
 /deep/ .el-tabs__item {
@@ -1220,7 +1251,7 @@ export default {
   padding: 30px;
 }
 
-.result {
+.results {
   /*height: 300px;*/
   width: 65%;
   background: white;
