@@ -411,7 +411,7 @@ export default {
     },
     article_results_to_show: { // TODO 可能慢，转换为watch提速
       get: function () {
-        console.log(`article_results_to_show COMPUTING`);
+        // console.log(`article_results_to_show COMPUTING`);
         let hits = this.articleHits;
         let ret = [];
         if (this.activeTab !== "article")
@@ -439,10 +439,10 @@ export default {
             toPush._score = hit._score;
             toPush.hasLoadedQRCode = false;
             toPush.articlePageUrl = `http://139.9.132.83/article/${toPush.id}`;
-            console.log(this.recommendationInfo);
+            // console.log(this.recommendationInfo);
             toPush.isRecommended = this.safeUndefined(this.recommendationInfo, toPush.id, 'isRecommended');
             toPush.n_recommendation = this.safeUndefined(this.recommendationInfo, toPush.id, 'n_recommendation');
-            console.log(toPush.isRecommended);
+            // console.log(toPush.isRecommended);
             ret.push(toPush);
           }
         }
@@ -458,7 +458,7 @@ export default {
           default:
             ret.sort(this.cmpCitation);
         }
-        console.log(`author_results_to_show COMPUTED`);
+        // console.log(`author_results_to_show COMPUTED`);
         return ret;
       },
       set: function () {
@@ -592,11 +592,11 @@ export default {
       if (typeof obj[key] === 'undefined')
         this.$set(obj, key, {});
       else
-        console.log(obj[key][innerKey]);
-      return obj[key][innerKey];
+        // console.log(obj[key][innerKey]);
+        return obj[key][innerKey];
     },
     refreshRecommendationInfo(paperID) {
-      console.log(`REFRESHING: ${paperID}`);
+      // console.log(`REFRESHING: ${paperID}`);
       this.refreshIfRecommended(paperID);
       this.refreshNRecommendation(paperID);
     },
@@ -770,6 +770,9 @@ export default {
         return;
       }
       this.$store.commit('setSearchInput', this.searchInput);
+      localStorage.removeItem('advancedSearchInput')
+      localStorage.searchInput = this.searchInput;
+      console.log(`saving searchInput: ${this.searchInput}`);
       console.log("searching: \n\t" + this.searchInput);
       if (this.activeTab === "article") {
         console.log("SEARCHING FOR ARTICLES");
@@ -841,6 +844,8 @@ export default {
         should: [], // TODO implement OR
       };
       this.$store.commit('setAdvancedSearchInput', this.advancedSearchInput);
+      localStorage.advancedSearchInput = JSON.stringify(this.advancedSearchInput);
+      console.log(`saving advancedSearchInput: ${this.advancedSearchInput}`);
       for (const rule of this.advancedSearchInput) {
         if (this.hasNull([rule.type, rule.bool, rule.field])) continue;
         const bool = rule.bool;
@@ -933,16 +938,33 @@ export default {
       }
       result.hasLoadedQRCode = true;
       console.log("LOAD END");
-    }
+    },
+    isArray: (something) => {
+      return Object.prototype.toString.call(something) === '[object Array]';
+    },
   },
   mounted() {
-    let storedSearchInput = this.$store.state.searchInput;
-    let storedAdvancedSearchInput = this.$store.state.advancedSearchInput;
-    if (storedSearchInput.length !== 0) {
-      this.searchInput = storedSearchInput;
+    let storedSearchInput = this.$store.state.searchInput.length > 0
+      ? this.$store.state.searchInput
+      : (localStorage.searchInput ? localStorage.searchInput : '');
+    let defaultRule = {
+      bool: null, // MUST MUST_NOT SHOULD
+      type: null, // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
+      field: null, // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
+      match: null, // string
+      range: {
+        op: null, // >= <=
+        value: null, // number
+      }
     }
-    if (storedAdvancedSearchInput.length !== 0) {
-      this.advancedSearchInput = storedAdvancedSearchInput;
+    let storedAdvancedSearchInput = (localStorage.advancedSearchInput && this.isArray(JSON.parse(localStorage.advancedSearchInput)))
+      ? JSON.parse(localStorage.advancedSearchInput)
+      : [defaultRule];
+    console.log(`STORED: ${storedSearchInput}`);
+    console.log(storedAdvancedSearchInput);
+    this.searchInput = storedSearchInput;
+    this.advancedSearchInput = storedAdvancedSearchInput;
+    if (storedAdvancedSearchInput.length !== 0 && JSON.stringify(storedAdvancedSearchInput) !== JSON.stringify([defaultRule])) {
       this.activeSearchTabs = ['1'];
       this.advancedSearch();
     } else {
