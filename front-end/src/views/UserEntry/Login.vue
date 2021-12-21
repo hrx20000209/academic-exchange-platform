@@ -20,7 +20,7 @@
           没有账号？点击此处<el-button type="text" class="register-text" @click="register">注册</el-button>
         </div>
         <div class="manager-box">
-          <el-button type="success" plain @click="gotoManagerLogin">管理员入口</el-button>
+          <el-button type="primary" plain @click="gotoManagerLogin">管理员入口</el-button>
         </div>
       </div>
     </div>
