@@ -214,7 +214,8 @@ export default {
           if (response.message == 'success') {
             identify({
               user_id: this.user_id,
-              author_id: this.author._source.id
+              author_id: this.author._source.id,
+              mail: this.email
             }).then(response => {
               console.log(response)
               if (response.message == 'Identify success') {
