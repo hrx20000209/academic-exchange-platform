@@ -1,6 +1,8 @@
 <template>
   <div class="grey">
-    <div style="height: 20px"></div>
+    <div style="height: 20px">
+      <!--      {{this.id }}-->
+    </div>
     <div style="overflow: hidden;margin-bottom: 5px">
       <div style="float:left;margin-bottom: 20px" class="bigFrame">
         <div class="upFrame">
@@ -89,30 +91,29 @@ export default {
     return{
       index:'',
       key:'',
-      // reference:['808411C2','051EDB3F'],
-      // references:[
-      //   {
-      //     title:'23',
-      //     year:'3234'
-      //   },
-      //   {
-      //     title:'sh',
-      //     year: '1111'
-      //   }
-      // ],
       references:[],
       references_year:[],
       reference:[],
+      re:[],
       length:'',
       url:'',
+      id:this.$route.params.paper_id,
     }
   },
   mounted(){
     // this.searchRe();
-    this.bianli();
+    this.search(this.id);
+    // this.bianli();
     this.getQrcode();
+    // this.a();
+  },
+  created() {
+    // this.a();
   },
   methods:{
+    a(){
+      console.log(this.id)
+    },
     toWebsite(url){
       window.open(url,"_blank")
     },
@@ -155,25 +156,51 @@ export default {
           console.log(response.data)
         })
     },
+    search(paper_id) {
+      // console.log('111')
+      ESApi.getMsg(paper_id).then(response => {
+        console.log(response.data)
+        this.length = response.data.hits.total.value
+        // console.log(this.length)
+        // this.$store.state.abstract = ''
+        this.$store.state.references = []
+        this.re = []
+        // this.citation_by_year = []
+        for (var i = 0; i < this.length; i++) {
+          // if (response.data.hits.hits[i]._source.id === paper_id) {
+          let article = response.data.hits.hits[0]
+
+          for (var l = 0; l < article._source.reference.length; l++) {
+            // console.log(article._source.reference[l])
+            this.re.push(article._source.reference[l])
+            this.$store.commit('setReferences', article._source.reference[l])
+            // console.log(this.$store.state.references[l])
+          }
+          console.log(this.re)
+          console.log(this.$store.state.references)
+          this.bianli();
+        }
+      })
+    },
     bianli(){
       this.reference = []
-      for(var i = 0; i < this.$store.state.references.length;i++) {
+      for(var i = 0; i < this.re.length;i++) {
         // console.log(this.$store.state.references[i])
-        this.reference.push(this.$store.state.references[i])
+        this.reference.push(this.re[i])
       }
       this.references = []
       console.log(this.reference)
       for(var j = 0; j < this.reference.length;j++){
-        console.log('1.1')
-        console.log(this.reference[j])
+        // console.log('1.1')
+        // console.log(this.reference[j])
         ESApi.getRe(this.reference[j]).then(response =>{
-          console.log(response.data.hits.hits[0])
-          console.log(response.data.hits.total.value)
-          console.log('1.2')
+          // console.log(response.data.hits.hits[0])
+          // console.log(response.data.hits.total.value)
+          // console.log('1.2')
           let article = response.data.hits.hits[0]
           this.references.push(article._source)
-          console.log(this.references)
-          console.log(this.references.length)
+          // console.log(this.references)
+          // console.log(this.references.length)
         })
       }
     },
@@ -194,7 +221,7 @@ export default {
     copyUrl(id){
       let url1 = 'http://139.9.132.83//article/'+ id + '/overviews';
       Clipboard.writeText(url1).then(function () {
-        console.log(url1)
+        // console.log(url1)
       }, function () {
 
       });
@@ -209,7 +236,7 @@ export default {
     //   });
     // },
     loadQRCode(result) {
-      console.log(result.url);
+      // console.log(result.url);
       // let elem = document.getElementById(result.url);
       // console.log(elem);
       // try {
@@ -222,7 +249,7 @@ export default {
       //   console.log(e);
       // }
       // result.hasLoadedQRCode = true;
-      console.log("LOAD END");
+      // console.log("LOAD END");
     }
   }
 }
