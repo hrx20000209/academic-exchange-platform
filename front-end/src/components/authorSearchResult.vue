@@ -95,7 +95,8 @@
           </el-popover>
         </div>
         <div class="letter-btn-box">
-          <el-button type="primary" @click="confirm">确定</el-button>
+          <el-button type="primary" @click="confirm" v-if="haveSend">确定</el-button>
+          <el-button type="primary" @click="confirm" v-else disabled>确定</el-button>
         </div>
       </div>
     </el-dialog>
@@ -113,6 +114,7 @@ export default {
       email: '',
       code: '',
       dialogVisible: false,
+      haveSend: false,
       refuseEmailList: [
         "qq.com",
         "163.com",
@@ -182,11 +184,17 @@ export default {
         emailIdentify({
           to_email: this.email
         }).then(response => {
-          if (response.message == 'success') {
+          if (response.message === 'this email has been used for verification') {
+            this.$message({
+              type: 'warning',
+              message: '该邮箱已经被认证过，请使用其他邮箱'
+            })
+          } else if (response.message === 'success') {
             this.$message({
               type: 'success',
               message: '验证码已发送'
             })
+            this.haveSend = true
           }
         })
       }
@@ -231,6 +239,7 @@ export default {
                 })
               }
               this.dialogVisible = false
+              this.haveSend = false
             })
           } else {
             this.$message({
