@@ -11,6 +11,7 @@ export default new Vuex.Store({
     references:[],
     citation_by_year:[],
     searchInput:'',
+    advancedSearchInput:[],
   },
   mutations: {
     setTitle(state,title) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     },
     setSearchInput(state, input){
       this.state.searchInput = input;
+    },
+    setAdvancedSearchInput(state, input) {
+      this.state.advancedSearchInput = input;
     }
   },
   actions: {

@@ -1,7 +1,7 @@
 <template>
   <div id="navBar">
     <div id="navLogoPlace">
-      <div id="navLogo"></div>
+          <img style="width: 60px" src="../assets/logo.png">
     </div>
     <div id="jumpRouterPlace">
       <div class="myBox">
@@ -10,12 +10,12 @@
         </router-link>
       </div>
 
-      <div class="jumpRouterDetail">
-        论坛
-      </div>
-      <div class="jumpRouterDetail">
-        广场
-      </div>
+<!--      <div class="jumpRouterDetail">-->
+<!--        论坛-->
+<!--      </div>-->
+<!--      <div class="jumpRouterDetail">-->
+<!--        广场-->
+<!--      </div>-->
     </div>
 <!--    <div id="searchWrapper">-->
 <!--      <div id="searchBar">-->
@@ -26,12 +26,12 @@
 <!--    </div>-->
     <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
-        <div class="infoBox">
-          <i class="el-icon-message-solid"></i>
-        </div>
-        <div class="infoBox">
-          <i class="el-icon-s-promotion"></i>
-        </div>
+<!--        <div class="infoBox">-->
+<!--          <i class="el-icon-message-solid"></i>-->
+<!--        </div>-->
+<!--        <div class="infoBox">-->
+<!--          <i class="el-icon-s-promotion"></i>-->
+<!--        </div>-->
         <div class="infoBox">
           <i class="el-icon-chat-round" @click="toLetter"></i>
         </div>
@@ -42,16 +42,15 @@
     <i class="el-icon-arrow-down el-icon--right"></i>
   </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item class="myDropdown">个人信息</el-dropdown-item>
-              <el-dropdown-item class="myDropdown">系统设置</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="toHome">个人信息</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        <div id="createNewBox">
-          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>
-        </div>
+<!--        <div id="createNewBox">-->
+<!--          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>-->
+<!--        </div>-->
       </div>
       <div v-else id="LoginPane">
         <button id="Login" @click="toLogin">登录</button>
@@ -168,6 +167,8 @@ export default {
         this.$router.go(0)
       } else if (command == "changePW") {
         this.changePWVisible = true
+      }else if(command == "toHome"){
+        this.toUsrHome()
       }
     },
     toUsrHome() {
@@ -279,7 +280,7 @@ export default {
 
 #otherWrapper {
   margin-left: auto;
-  width: 400px;
+  margin-right: 50px;
   font-size: 20px;
   margin-top: 18px;
   display: inline-flex;
