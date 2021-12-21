@@ -448,6 +448,7 @@ export default {
             type: 'success'
           });
         })
+        this.appealDialog = false
       }
 
     },
@@ -925,6 +926,7 @@ export default {
 
 .usrTabsUnchosen:hover {
   color: #005abb;
+  cursor: pointer;
 }
 
 .usrTabsChosen {

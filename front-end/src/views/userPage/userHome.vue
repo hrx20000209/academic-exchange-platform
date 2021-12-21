@@ -757,6 +757,7 @@ export default {
 
 .usrTabsUnChosen:hover {
   color: #005abb;
+  cursor: pointer;
 }
 
 .usrTabsChosen {
