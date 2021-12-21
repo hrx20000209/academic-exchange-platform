@@ -10,14 +10,17 @@
                               <Nav_with_searchBox_transparent></Nav_with_searchBox_transparent>
                             </div>
                             <div class="myStart">
-                                <el-row style="margin-left: 50px;margin-top: 50px">
-
+                                <el-row style="margin-left: 50px;margin-top: 70px">
+                                  <div>
+                                    <div style="color:#34898f; margin-top: 60px;font-size: 40px; margin-bottom: 10px">
+                                      Academic Scholar
+                                    </div>
+                                  </div>
                                   <el-row style="
                                       letter-spacing: 4px;
                                       font-weight: bold;
                                       color: #585858;
                                       font-size: 40px;
-                                      margin-top: 60px;
                                       margin-bottom: 20px;
                                       font-family: siyuan;">
                                       专业的学术成果分享平台
@@ -51,7 +54,7 @@
                                 <div style="display:flex; justify-content:center;background-color: #FFF; width: 750px; margin-top: 20px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25)">
                                 <div style="background-color: #FFF; width: 700px; margin-top: 15px">
                                 <el-tabs v-model="activeName" @tab-click="handleClick">
-                                  <el-tab-pane label="最热文章" name="first">
+                                  <el-tab-pane label="高被引文章" name="first">
                                     <div style="margin-left: -20px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
                                       <div v-for="(item, index) in this.engine_popular" :key="index"
                                          style="display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
@@ -69,10 +72,10 @@
                                             </el-link>
                                           </div>
                                           <div style="display: flex; justify-content: end">
-                                          <div style="font-size: 10px">
-                                            <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
+                                            <div style="font-size: 10px">
+                                              <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cites']}}</a> 次引用
+                                            </div>
                                           </div>
-                                        </div>
                                         </div>
                                         <div style="display: flex; flex-direction: column; justify-content: center">
                                           <el-progress color="rgb(24 174 187)" :show-text="false" :percentage="getPercentage(item['cites'], maxCites)"></el-progress>
@@ -81,26 +84,31 @@
                                     </div>
                                     </div>
                                   </el-tab-pane>
-                                  <el-tab-pane label="最新文章" name="second">
-                                    <div style="margin-left: -10px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
-                                      <div v-for="(item, index) in this.engine_latest" :key="index"
-                                         style="display: flex; justify-content: space-between; margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-                                      <div style="width:580px; display: flex; ">
-                                        <div style="
+                                  <el-tab-pane label="最热文章" name="second">
+                                    <div style="margin-left: -20px; margin-top:15px; display:flex; flex-direction:column;  align-items: center ">
+                                      <div v-for="(item, index) in this.engine_latest.sort(function(a,b){return b.cnt-a.cnt})" :key="index"
+                                         style="display: flex; margin-left: 20px;margin-bottom: 25px; padding: 10px;box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+                                      <div style="
                                         width: 20px;
                                         display: flex;
                                         justify-content: center;margin-right: 10px">
                                           <div class="normal_index" :class="(index=== 0 || index===1 || index===2) ? ('index_'+index):''">{{index+1}}</div>
-                                        </div>
-                                        <div style="width: 500px">
-                                          <el-link @click="toOtherPaper(item['id'])" :underline="false">
-                                            {{item['title']}}
-                                          </el-link>
-                                        </div>
                                       </div>
-                                      <div style="display: flex; flex-direction: column; justify-content: center">
-                                        <div style="font-size: 10px; color: white; background-color: #BDBDBD;margin-left: 10px;width: 60px;text-align: center; border-radius: 5px">
-                                          {{item['year']}}年
+                                      <div style="flex-direction: column; width:620px">
+                                        <div style="display: flex; justify-content: space-between">
+                                          <div>
+                                            <el-link @click="toOtherPaper(item['id'])" style="font-family: Georgia; font-size: 16px" :underline="false">
+                                              {{item['title']}}
+                                            </el-link>
+                                          </div>
+                                          <div style="display: flex; justify-content: end">
+                                            <div style="font-size: 10px">
+                                              <a style="font-family: Gabriola; font-size: 20px; color:rgb(65, 105, 225)">{{item['cnt']}}</a> 次访问
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; justify-content: center">
+                                          <el-progress color="rgb(24 174 187)" :show-text="false" :percentage="getPercentage(item['cnt'], maxCnt)"></el-progress>
                                         </div>
                                       </div>
                                     </div>
@@ -197,6 +205,7 @@
                 pic:[],
                 rowPic: 5,
                 maxCites:0,
+                maxCnt:0,
                 maxAuthorCites:0,
                 maxLen:70,
                 maxNameLen:10,
@@ -382,9 +391,45 @@
             getPercentage(nub, max){
               return  Math.floor(nub/max * 10000) / 100
             },
+            fill(id, cnt) {
+              // console.log('id is', id)
+              ESApi.getPaperInfo(id).then(
+                res=>{
+                  let temp = {}
+                  // console.log('id is', id)
+                  // console.log('paper is', res)
+                  const item = res.data.hits.hits[0]._source
+                  // console.log(item)
+                  if (item.title.length>this.maxLen)
+                      temp['title'] = item.title.slice(0, this.maxLen) + '...'
+                  else
+                      temp['title'] = item.title
+                  temp['cnt'] = cnt
+                  temp['id'] = item.id
+                  this.engine_latest.push(temp)
+                }
+              )
+            },
             t(){
                 let that = this
-                ESApi.getRecentPaper().then(
+                Api.getTopPaper().then(
+                  res => {
+                    // console.log('top 15 is',res.data.list)
+                    const list = res.data.list
+                    // console.log('list', list)
+                    // list.sort(function(a,b){return b.cnt-a.cnt})
+                    // console.log('sorted', list)
+                    for(let i=0; i<list.length; i++){
+                      const paper = list[i]
+                      if(paper.cnt>this.maxCnt)
+                        this.maxCnt = paper.cnt
+                      this.fill(paper.id, paper.cnt)
+                    }
+                    // console.log('paper', this.engine_latest)
+                    // this.engine_latest.sort(function(a,b){return a.cnt-b.cnt})
+                  }
+                )
+                /*ESApi.getRecentPaper().then(
                   res =>{
                     // console.log(res.data.hits.hits)
                     let papers = res.data.hits.hits
@@ -396,12 +441,12 @@
                         temp['title'] = item.title.slice(0, this.maxLen) + '...'
                       else
                         temp['title'] = item.title
-                      temp['year'] = item.year
+                      // temp['year'] = item.year
                       temp['id'] = item.id
                       that.engine_latest.push(temp)
                     }
                   }
-                )
+                )*/
                 ESApi.getPopularPaper().then(
                   res =>{
                     // console.log(res.data.hits.hits)
