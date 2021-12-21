@@ -16,6 +16,9 @@
         <div class="btn-box">
           <el-button type="primary" @click="login" style="font-size: large">登陆</el-button>
         </div>
+        <div class="user-box">
+          <el-button type="success" plain @click="gotoUserLogin">用户入口</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -59,6 +62,9 @@ export default {
         }
       })
     },
+    gotoUserLogin() {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
@@ -109,5 +115,10 @@ export default {
   float: left;
   margin-bottom: 1%;
   margin-left: 1%;
+}
+
+.user-box {
+  margin-top: 5%;
+  float: right;
 }
 </style>
