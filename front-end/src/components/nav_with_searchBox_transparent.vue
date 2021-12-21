@@ -2,18 +2,7 @@
   <div id="navBar">
     <div id="jumpRouterPlace">
       <div class="myBox">
-        <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
-          <i to="/" style="color:#585858;margin-left: 35px; font-size: 16px" class="el-icon-s-home">首页</i>
-        </router-link>
-      </div>
-      <!--<div class="jumpRouterDetail">
-        论坛
-      </div>
-      <div class="jumpRouterDetail">
-        广场
-      </div>-->
-    </div>
-    <div id="otherWrapper">
+        <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
 
         <div class="infoBox">
@@ -33,7 +22,7 @@
           </el-dropdown>
         </div>
       </div>
-      <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
+      <div v-else id="LoginPane" style="margin-left: 40px; margin-top: 20px">
         <div style="display: flex; ">
           <div style="color:#FAFAFA;font-weight: bold;font-size: 10px;margin-right: 20px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
           <div style="cursor:pointer;" @click="toLogin">
@@ -64,6 +53,65 @@
         </div>
       </el-dialog>
     </div>
+      </div>
+      <!--<div class="jumpRouterDetail">
+        论坛
+      </div>
+      <div class="jumpRouterDetail">
+        广场
+      </div>-->
+    </div>
+    <!--<div id="otherWrapper">
+      <div v-if="this.ifLogin == 1" id="alreadyLogin">
+
+        <div class="infoBox">
+          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
+        </div>
+        <div class="infoBox">
+          <i class="el-icon-user-solid" @click="toUsrHome"></i>
+          <el-dropdown @command="handleDropDown">
+          <span class="el-dropdown-link">
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item class="myDropdown" command="toHome">个人信息</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
+      <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
+        <div style="display: flex; ">
+          <div style="color:#FAFAFA;font-weight: bold;font-size: 10px;margin-right: 20px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
+          <div style="cursor:pointer;" @click="toLogin">
+            <el-avatar :size="'large'" :src="circleUrl"></el-avatar>
+          </div>
+        </div>
+        <button id="Login" @click="toLogin">登录</button>
+        <button id="register" @click="toRegister">注册</button>
+      </div>
+      <el-dialog
+        title="修改密码"
+        :visible.sync="changePWVisible"
+        width="30%" :show-close="false">
+        <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                 class="demo-ruleForm" id="myForm">
+          <el-form-item label="密码:" prop="pass" class="info">
+            <el-input type="password" v-model="ruleForm.pass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码:" prop="checkPass" class="info">
+            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <div id="twoButton">
+            <el-button @click="changePWVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changePassword">确 定</el-button>
+          </div>
+        </div>
+      </el-dialog>
+    </div>-->
   </div>
 
 </template>
@@ -259,7 +307,7 @@ export default {
   font-size: 20px;
   margin-top: 18px;
   display: inline-flex;
-  justify-content: center;
+
 }
 
 #infoBar {
@@ -372,7 +420,7 @@ export default {
     color: #FFF;
 }
 #alreadyLogin {
-  margin-left: 70px;
+  margin-left: 15px;
   display: inline-flex;
 }
 </style>
