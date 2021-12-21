@@ -100,7 +100,7 @@ export default {
 }
 
 .id {
-  box-shadow: 0 0 20px 10px lightgrey;
+  box-shadow: 0 0 10px 10px #f6f3f3;
   background-color: white;
   margin: 10%;
   padding-top: 5%;
@@ -125,7 +125,7 @@ export default {
 
 .list-item {
   background-color: white;
-  box-shadow: 10px 10px 10px 5px lightgrey;
+  box-shadow: 0 0 10px 10px #f6f3f3;
   margin: 10%;
 }
 </style>
