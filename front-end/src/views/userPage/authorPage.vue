@@ -936,10 +936,12 @@ export default {
   font-family: "Roboto", Arial, sans-serif;
   padding-bottom: 2px;
   font-size: 18px;
-  padding-bottom: 20 hpx;
+  padding-bottom: 20 px;
   margin-left: 15px;
 }
-
+.usrTabsChosen:hover{
+  cursor: pointer;
+}
 #editusrInfoPane {
   width: 600px;
   /*margin-top: 30px;*/

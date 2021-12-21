@@ -770,7 +770,9 @@ export default {
   padding-bottom: 20px;
   margin-left: 15px;
 }
-
+.usrTabsChosen:hover{
+  cursor: pointer;
+}
 #editUsrInfoPane {
   width: 625px;
   /*margin-top: 20px;*/
