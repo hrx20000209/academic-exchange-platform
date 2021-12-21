@@ -38,7 +38,7 @@
     <el-dialog title="更新你的介绍" :visible.sync="IntroDialog" class="infoDialog">
       <div class="dialogMainPane">
         <div class="dialogInfo">使您的介绍保持最新是帮助他人快速了解您的工作的好方法。</div>
-        <div class="dialogInfo">以下是其他研究人员补充的内容：</div>
+        <div class="dialogInfo">你可以从以下三个方面介绍自己</div>
         <div id="otherChoose">
           <div class="oneOther">
             <i class="el-icon-success"></i>
@@ -46,11 +46,11 @@
           </div>
           <div class="oneOther">
             <i class="el-icon-success"></i>
-            <div class="otherDetail">他们使用的方法和技术</div>
+            <div class="otherDetail">你使用的方法和技术</div>
           </div>
           <div class="oneOther">
             <i class="el-icon-success"></i>
-            <div class="otherDetail">他们现在在做什么</div>
+            <div class="otherDetail">你现在在做什么</div>
           </div>
         </div>
         <div class="introInfo">介绍</div>
