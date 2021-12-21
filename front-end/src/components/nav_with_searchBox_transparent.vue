@@ -4,10 +4,6 @@
       <div class="myBox">
         <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
-
-        <div class="infoBox">
-          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
-        </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
           <el-dropdown @command="handleDropDown">
@@ -20,6 +16,9 @@
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+        </div>
+        <div class="infoBox">
+          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
         </div>
       </div>
       <div v-else id="LoginPane" style="margin-left: 40px; margin-top: 20px">
