@@ -19,9 +19,9 @@
         <div class="register-box">
           没有账号？点击此处<el-button type="text" class="register-text" @click="register">注册</el-button>
         </div>
-<!--        <div class="manager-box">-->
-<!--          <el-button type="success" plain @click="gotoManagerLogin">管理员入口</el-button>-->
-<!--        </div>-->
+        <div class="manager-box">
+          <el-button type="success" plain @click="gotoManagerLogin">管理员入口</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -78,6 +78,9 @@ export default {
     register() {
       this.$router.push('/register')
     },
+    gotoManagerLogin() {
+      this.$router.push('/loginAdmin')
+    }
   }
 }
 </script>
