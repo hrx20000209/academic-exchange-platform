@@ -24,7 +24,8 @@
       </div>
     </div>
     <div id="mainPane">
-      <div style="width:1000px;height:500px" ref="chart"></div>
+      <div style="width:1000px;height:500px" ref="chart" v-if="isEmpty == false"></div>
+      <el-empty v-else description="该学者暂时没有专家网络"></el-empty>
     </div>
 
   </div>
@@ -32,11 +33,13 @@
 
 <script>
 import {getdata} from "../../request/api";
+import ESApi from "../../api/elastic search";
 
 export default {
   name: "authorRelationship",
   data() {
     return {
+      isEmpty:false,
       datas: [{
         name: "jitendra malik",
         draggable: true,
@@ -169,7 +172,13 @@ export default {
         console.log(res)
         this.datas = res.datas
         this.linkmes = res.linkmes
-        this.initCharts();
+        if (this.datas.length>0){
+          this.isEmpty = false
+          this.initCharts();
+        }else {
+          this.isEmpty = true
+        }
+
       })
     },
     initCharts() {

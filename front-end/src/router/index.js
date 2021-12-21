@@ -67,7 +67,7 @@ const routes = [
   {
     path: '/article/:paper_id',
     name: 'Article',
-    redirect:'/article/:paper_id/overviews',
+    redirect: '/article/:paper_id/overviews',
     component: () => import('../views/article/Article.vue'),
     children: [
       // {
@@ -102,24 +102,24 @@ const routes = [
     ]
   },
   {
-    path:'/userHome',
+    path: '/userHome',
     name: 'userHome',
     component: () => import('../views/userPage/userHome')
   },
   {
-    path:'/Institution',
+    path: '/Institution',
     name: 'Institution',
     component: () => import('../views/Institution')
   },
   {
     path: '/test',
     name: 'test',
-    component: ()=> import('../views/Home')
+    component: () => import('../views/Home')
   },
   {
-  path: '/wyhTest',
+    path: '/wyhTest',
     name: 'wyhRelationshipMapClickEventTest',
-    component: ()=> import('../views/wyhRelationshipMapClickEventTest')
+    component: () => import('../views/wyhRelationshipMapClickEventTest')
   },
   {
     path: '/letter',
@@ -146,14 +146,17 @@ const router = new VueRouter({
 
 export default router
 router.beforeEach((to, from, next) => {
-  if(to.path == '/authorPage'){
-    changeViewTime({
-      author_id: to.query.id
-    }).then(res=>{
-      console.log(res)
-    })
+  if (to.path == '/authorPage') {
+    if (from.path != '/authorPage'||(from.path == '/authorPage' && from.query.id != to.query.id)) {
+      changeViewTime({
+        author_id: to.query.id
+      }).then(res => {
+        console.log(res)
+      })
+    }
+
     next()
-  }else {
+  } else {
     next()
   }
 
