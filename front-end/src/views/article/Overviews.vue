@@ -55,14 +55,27 @@
           </div>
         </div>
       </div>
-      <div class="tree" style="height: 600px;width: 70%">
+      <div class="tree" style="height: 600px;width: 90%">
         <div class="upFrame">
           <div class="upFrameContent">引用文献</div>
         </div>
         <div class="downFrame">
           <div class="statsFrameContent">
             <!-- 这里放表格 -->
-            <div id="chart4" style="height: 500px"></div>
+            <div v-if="this.f === 1">
+              <div id="chart4" style="height: 500px"></div>
+            </div>
+            <div v-else>
+              <div class="notAb">
+                <div style="height:200px"></div>
+                <div style="text-align:center">
+                  <img src="@/assets/无参考文献.png">
+                </div>
+                <div style="text-align:center">
+                  无引用文献
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -95,39 +108,22 @@ export default {
       Ydata:[],
       oneData: {
         "children": [
-          {
-            "children": [
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "name": "低压车间表计82"
-                  }
-                ],
-                "name": "低压关口表计1"
-              }
-            ],
-            "name": "高压子表计122"
-          },
-          {
-            "children": [
-              {
-                "children": [],
-                "name": "低压关口表计101"
-              }
-            ],
-            "name": "高压子表计141"
-          }
+
         ],
-        "name": "高压总表计102"
-      }
+        "name": "高压总表计102",
+        "id":'1'
+      },
+      da:{},
+      f:1
     }
   },
   mounted() {
     console.log('333')
+    this.getRe(this.id)
     this.search(this.id)
     console.log(this.title)
-    this.buildPie2()
+    // this.buildPie2()
+    // this.a()
   },
   methods: {
     search(paper_id) {
@@ -142,53 +138,53 @@ export default {
         this.citation_by_year = []
         for (var i = 0; i < this.length; i++) {
           // if (response.data.hits.hits[i]._source.id === paper_id) {
-            let article = response.data.hits.hits[0]
-            this.title = article._source.title
-            console.log(this.title)
-            // this.abstracts = article._source.abstract
-            this.$store.commit('setTitle', article._source.title)
-            console.log(this.$store.state.title)
+          let article = response.data.hits.hits[0]
+          this.title = article._source.title
+          console.log(this.title)
+          // this.abstracts = article._source.abstract
+          this.$store.commit('setTitle', article._source.title)
+          console.log(this.$store.state.title)
 
-            this.year = article._source.year
-            if (article._source.url === undefined) {
-              this.flagLoad = false
-              console.log('aaaa')
-            } else {
-              this.urlArticle = article._source.url
-              console.log(this.urlArticle)
-            }
-            if (article._source.abstract === undefined) {
-              this.flag = 0
-              console.log('flag')
-            } else {
-              this.$store.commit('setAbstract', article._source.abstract)
-              console.log(this.$store.state.abstract)
-            }
-            for (var k = 0; k < article._source.citation_by_year.length; k++) {
-              // console.log(article._source.citation_by_year[k])
-              // this.$store.commit('setCitation', article._source.citation_by_year[k])
-              this.citation_by_year.push(article._source.citation_by_year[k])
-              // console.log(this.$store.state.citation_by_year[k])
-            }
-            console.log('333333333333333333333333333333333333333333333333333333333')
-            console.log(this.citation_by_year)
-            console.log(this.$store.state.citation_by_year)
-            for (var l = 0; l < article._source.reference.length; l++) {
-              console.log(article._source.reference[l])
-              this.reference.push(article._source.reference[l])
-              this.$store.commit('setReferences', article._source.reference[l])
-              console.log(this.$store.state.references[l])
-            }
-            for (var j = 0; j < article._source.authors.length; j++) {
-              // this.authors[j] = article._source.authors[j]
-              this.authors.push(article._source.authors[j])
-            }
-            console.log(this.authors)
-            this.searchRelated();
-            // this.buildPie();
-            this.searchRe();
-            this.citation();
-            // this.letRe()
+          this.year = article._source.year
+          if (article._source.url === undefined) {
+            this.flagLoad = false
+            console.log('aaaa')
+          } else {
+            this.urlArticle = article._source.url
+            console.log(this.urlArticle)
+          }
+          if (article._source.abstract === undefined) {
+            this.flag = 0
+            console.log('flag')
+          } else {
+            this.$store.commit('setAbstract', article._source.abstract)
+            console.log(this.$store.state.abstract)
+          }
+          for (var k = 0; k < article._source.citation_by_year.length; k++) {
+            // console.log(article._source.citation_by_year[k])
+            // this.$store.commit('setCitation', article._source.citation_by_year[k])
+            this.citation_by_year.push(article._source.citation_by_year[k])
+            // console.log(this.$store.state.citation_by_year[k])
+          }
+          console.log('333333333333333333333333333333333333333333333333333333333')
+          console.log(this.citation_by_year)
+          console.log(this.$store.state.citation_by_year)
+          for (var l = 0; l < article._source.reference.length; l++) {
+            console.log(article._source.reference[l])
+            this.reference.push(article._source.reference[l])
+            this.$store.commit('setReferences', article._source.reference[l])
+            console.log(this.$store.state.references[l])
+          }
+          for (var j = 0; j < article._source.authors.length; j++) {
+            // this.authors[j] = article._source.authors[j]
+            this.authors.push(article._source.authors[j])
+          }
+          console.log(this.authors)
+          this.searchRelated();
+          // this.buildPie();
+          this.searchRe();
+          this.citation();
+          // this.letRe()
           // }
         }
         // }
@@ -230,9 +226,40 @@ export default {
       })
       setTimeout(() => {
         this.buildPie()//娃娃消失
-      }, 200);
+      }, 400);
+    },
+    a(){
+      if(this.oneData.children.length === 0){
+        console.log('324324444444442333333333333132')
+      }
+    },
+    getRe(id){
+      this.axios({
+        method:"get",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/getReferences?paper_id=" + id,
+        data:{
+          paper_id: id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+          this.da = response.data.data
+          console.log(this.da)
+          console.log(this.oneData)
+          if(this.da.children.length === 0){
+            this.f = 0
+          }
+        })
+      if(this.f === 1){
+        setTimeout(() => {
+          this.buildPie2()//娃娃消失
+        }, 1500);
+      }
+
     },
     buildPie2(){
+      const that = this;
       let pie = echarts.init(document.getElementById('chart4'))
       let option={
         tooltip: {    //提示框组件
@@ -242,16 +269,12 @@ export default {
         series: [    //系列列表
           {
             type: 'tree',    //树形结构
-
-            data: [this.oneData],    //上面从flare.json中得到的数据
-
+            data: [this.da],    //上面从flare.json中得到的数据
             top: '1%',       //距离上
             left: '7%',      //左
             bottom: '1%',    //下
             right: '20%',    //右的距离
-
             symbolSize: 7,   //标记的大小，就是那个小圆圈，默认7
-
             label: {         //每个节点所对应的标签的样式
               normal: {
                 position: 'left',       //标签的位置
@@ -278,6 +301,10 @@ export default {
         ]
       }
       pie.setOption(option)
+      pie.on('click', function(params) {
+        console.log(params.data.id)
+        that.jumpPaperRe(params.data.id)
+      })
     },
     citation(){
       console.log('111111111')
@@ -306,6 +333,7 @@ export default {
       }
     },
     buildPie() {
+      const that = this
       console.log('build')
       console.log(this.relatedArticle)
       let pie1 = echarts.init(document.getElementById('chart1'))
@@ -317,7 +345,7 @@ export default {
       for (var i = 0; i < this.relatedArticle.length - 1; i++) {
         console.log(this.relatedArticle[i]._source.title)
         console.log(this.relatedArticle[i]._score)
-        pieData.push({value: this.relatedArticle[i]._score, name: this.relatedArticle[i]._source.title})
+        pieData.push({value: this.relatedArticle[i]._score, name: this.relatedArticle[i]._source.title,id: this.relatedArticle[i]._source.id})
       }
       // console.log('jixu')
       // console.log(this.$store.state.citation_by_year.length)
@@ -390,6 +418,16 @@ export default {
       }
       pie1.setOption(option1)
       pie2.setOption(option2)
+
+      pie2.on('click', function(params) {
+        console.log(params.data.id)
+        that.jumpPaperRe(params.data.id)
+      })
+    },
+    jumpPaperRe(id){
+      let router = '/article/'+ id + '/overviews'
+      this.$router.push(router)
+      this.$router.go(0);
     },
     addColor(list) {
       // console.log(list)
@@ -549,6 +587,11 @@ export default {
 .notAbstract {
   width: 100%;
   height: 200px;
+  border: lightgray solid 1px;
+}
+.notAb {
+  width: 100%;
+  height: 500px;
   border: lightgray solid 1px;
 }
 
