@@ -15,8 +15,7 @@
       </el-input>
       <div class="advancedSearch">
         <el-collapse v-model="activeSearchTabs" class="advancedSearchForm">
-          <el-collapse-item title="高级搜索" name="1">
-            <!--          TODO 高级搜索使用说明-->
+          <el-collapse-item title="高级搜索" name="1" class="advancedSearchCollapseItem">
             <el-form class="rules">
               <el-form-item
                 class="rule"
@@ -26,13 +25,15 @@
                   <el-option v-for="bool in BOOLS" :key="bool" :label="bool"
                              :value="bool"></el-option>
                 </el-select>
-                <el-select v-model="rule.field" placeholder="字段">
+                <el-select v-model="rule.field"
+                           placeholder="字段"
+                           @change="handleFieldChange(rule)"
+                >
                   <el-option v-for="field in Object.keys(FIELD_TYPE)"
                              :key="field"
                              :label="field"
                              :value="field"
                   >
-                    <!--                           TODO @change: check if type still fits-->
 
                   </el-option>
                 </el-select>
@@ -55,22 +56,36 @@
                 <el-button @click="addRule">新增规则</el-button>
               </el-form-item>
             </el-form>
+            <div style="width: 250px" class="advancedSearchInfo">
+              <span style="font-size: 16px">高级搜索使用方法<br/></span>
+              1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>
+              2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>
+              - 匹配：关键词搜索。<br/>
+              - 范围：针对引用量和年份，可以限定数字范围。<br/>
+              - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>
+            </div>
           </el-collapse-item>
         </el-collapse>
-        <el-popover
-          placement="right"
-          title="标题"
-          width="300px"
-          trigger="manual"
-          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-          v-model="showAdvancedSearchInfo"
-          v-if="isAdvancedSearch"
-        >
-          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">
-            <i class="el-icon-info" style="margin: auto"
-               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>
-          </div>
-        </el-popover>
+        <!--        <el-popover-->
+        <!--          placement="right"-->
+        <!--          title="高级搜索使用方法"-->
+        <!--          width="300px"-->
+        <!--          trigger="manual"-->
+        <!--          v-model="showAdvancedSearchInfo"-->
+        <!--          v-if="isAdvancedSearch"-->
+        <!--        >-->
+        <!--          <div style="width: 250px">-->
+        <!--            1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>-->
+        <!--            2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>-->
+        <!--            - 匹配：关键词搜索。<br/>-->
+        <!--            - 范围：针对引用量和年份，可以限定数字范围。<br/>-->
+        <!--            - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>-->
+        <!--          </div>-->
+        <!--          <div class="advancedSearchInfo" slot="reference" v-if="isAdvancedSearch">-->
+        <!--            <i class="el-icon-info" style="margin: auto"-->
+        <!--               @click="showAdvancedSearchInfo = !showAdvancedSearchInfo"></i>-->
+        <!--          </div>-->
+        <!--        </el-popover>-->
       </div>
       <!--      <el-switch v-model="searching_paper" class="searchSwitch"-->
       <!--                 active-text="文献"-->
@@ -121,8 +136,10 @@
               <template v-for="result in article_results_to_show">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
-                    <div @click="goToArticlePage(result.id)">
-                      <el-link class="resultTitle">{{ result.title }}</el-link>
+                    <div>
+                      <el-link class="resultTitle" @click="goToArticlePage(result.id)" :underline="false">
+                        {{ result.title }}
+                      </el-link>
                     </div>
 
                     <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
@@ -132,7 +149,8 @@
                     </div>
                     <div style="margin-bottom: 10px">
                 <span v-for="author in result.authors" :key="author.id">
-                  {{ author.name }}
+                  <el-link @click="goToAuthorPage(author.id)" style="font: unset">{{ author.name }}</el-link>
+                  <!--                  <span>{{author.name}}</span>-->
                   <span v-if="result.authors.indexOf(author) !== result.authors.length-1"> · </span>
                 </span>
                       <!--                      TODO citation_by_year map-->
@@ -141,14 +159,16 @@
                       {{ result.abstract }}
                     </div>
                     <div class="articleCitationCnt" style="color: darkgray;font-size: 15px;margin-bottom: 10px">
-                      {{ result.n_citation }} citations
+                      {{ result.n_citation }} 引用 · {{ result.n_recommendation }} 推荐
                     </div>
+                    <!--                      TODO 阅读量-->
                     <div style="height: 30px">
                       <div style="float: left" v-if="result.url !== undefined">
-                        <el-button plain @click="goToUrl(result.url)">访问全文</el-button>
+                        <el-button @click="goToUrl(result.url)">访问全文</el-button>
                       </div>
                       <div style="float: right;text-align: right">
-                        <el-button>推荐</el-button>
+                        <el-button v-if="!result.isRecommended" @click="recommend(result)">推荐文献</el-button>
+                        <el-button v-else @click="cancelRecommend(result)">取消推荐</el-button>
                         <el-popover
                           popper-class="qrcodePopover"
                           placement="top-start"
@@ -220,7 +240,10 @@
               <template v-for="result in author_results_to_show">
                 <div class="downFrame" :key="result.id">
                   <div class="downFrameContent">
-                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>
+                    <!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
+                    <el-link class="resultTitle" @click="goToAuthorPage(result.id)" :underline="false">
+                      {{ result.name }}
+                    </el-link>
                     <!--                    TODO 跳转 学者主页和论文主页-->
                     <div style="margin-bottom: 10px">
                       <span v-for="org in result.orgs" :key="org.id">
@@ -229,15 +252,16 @@
                       </span>
                     </div>
                     <div class="articleCitationCnt" style="color: darkgray;font-size: 15px;margin-bottom: 10px">
-                      {{ result.n_citation }} citations · {{ result.n_pubs }} publications
+                      {{ result.n_citation }} 引用 · {{ result.n_pubs }} 发表
                     </div>
                     <div class="articleCitationCnt" style="color: darkgray;font-size: 15px;margin-bottom: 10px">
 
                     </div>
                     <div style="height: 30px">
                       <div style="float: left">
-                        <el-button plain>关注</el-button>
-                        <el-button plain>私信</el-button>
+                        <el-button>关注</el-button>
+                        <el-button>私信</el-button>
+                        <!--                       TODO 关注、私信按钮？-->
                         <!--                        TODO author 其他字段-->
                       </div>
                     </div>
@@ -305,7 +329,7 @@ export default {
         [FIELDS.AUTHORS]: [TYPES.MATCH, TYPES.EXISTS], // FIXME ARRAY
         [FIELDS.ABSTRACT]: [TYPES.MATCH, TYPES.EXISTS],
         [FIELDS.VENUE]: [TYPES.MATCH, TYPES.EXISTS],
-        [FIELDS.URL]: [TYPES.EXISTS], // FIXME TERM query?
+        [FIELDS.URL]: [TYPES.EXISTS],
         [FIELDS.N_CITATION]: [TYPES.RANGE, TYPES.EXISTS],
         [FIELDS.YEAR]: [TYPES.RANGE, TYPES.EXISTS],
       },
@@ -326,15 +350,16 @@ export default {
       searchInputHasFocus: false,
       articleHits: [],
       authorHits: [],
+      recommendationInfo: {},
       // years and venues are watching articleHits
       // their value may be changed by checkboxes so they are not declared as computed
-      years: [],
+      years: [], // TODO 改成范围
       venues: [],
       orgs: [],
       advancedSearchInput: [{
         bool: BOOLS.MUST, // MUST MUST_NOT SHOULD
         type: TYPES.MATCH, // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
-        field: FIELDS.VENUE, // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
+        field: FIELDS.TITLE, // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
         match: 'AAAI', // string
         range: {
           op: null, // >= <=
@@ -378,58 +403,73 @@ export default {
     };
   },
   computed: {
+    userID: function () {
+      return localStorage.getItem("user_id");
+    },
     isAdvancedSearch: function () {
       return this.activeSearchTabs.indexOf("1") > -1;
     },
-    article_results_to_show: function () {
-      let hits = this.articleHits;
-      let ret = [];
-      if (this.activeTab !== "article")
+    article_results_to_show: { // TODO 可能慢，转换为watch提速
+      get: function () {
+        console.log(`article_results_to_show COMPUTING`);
+        let hits = this.articleHits;
+        let ret = [];
+        if (this.activeTab !== "article")
+          return ret;
+
+        // filter
+        for (const hit of hits) {
+          let y = hit._source.year;
+          let v = hit._source.venue.raw;
+          let match_year = false;
+          let match_venue = false;
+          for (const year of this.years) {
+            if (year.isSelected && (year.value === y)) {
+              match_year = true;
+            }
+          }
+          for (const venue of this.venues) {
+            if (venue.isSelected && (venue.value === v)) {
+              match_venue = true;
+            }
+          }
+          if (match_venue && match_year) {
+            let toPush = hit._source;
+            // add more data here
+            toPush._score = hit._score;
+            toPush.hasLoadedQRCode = false;
+            toPush.articlePageUrl = `http://139.9.132.83/article/${toPush.id}`;
+            console.log(this.recommendationInfo);
+            toPush.isRecommended = this.safeUndefined(this.recommendationInfo, toPush.id, 'isRecommended');
+            toPush.n_recommendation = this.safeUndefined(this.recommendationInfo, toPush.id, 'n_recommendation');
+            console.log(toPush.isRecommended);
+            ret.push(toPush);
+          }
+        }
+
+        // sort
+        switch (this.sort) {
+          case "relevance":
+            ret.sort(this.cmpRelevance);
+            break;
+          case "time":
+            ret.sort(this.cmpTime);
+            break;
+          default:
+            ret.sort(this.cmpCitation);
+        }
+        console.log(`author_results_to_show COMPUTED`);
         return ret;
+      },
+      set: function () {
 
-      // filter
-      for (const hit of hits) {
-        let y = hit._source.year;
-        let v = hit._source.venue.raw;
-        let match_year = false;
-        let match_venue = false;
-        for (const year of this.years) {
-          if (year.isSelected && (year.value === y)) {
-            match_year = true;
-          }
-        }
-        for (const venue of this.venues) {
-          if (venue.isSelected && (venue.value === v)) {
-            match_venue = true;
-          }
-        }
-        if (match_venue && match_year) {
-          hit._source._score = hit._score;
-          hit._source.hasLoadedQRCode = false;
-          hit._source.articlePageUrl = `http://139.9.132.83/article/${hit._source.id}`;
-          ret.push(hit._source);
-        }
       }
-
-      // sort
-      switch (this.sort) {
-        case "relevance":
-          ret.sort(this.cmpRelevance);
-          break;
-        case "time":
-          ret.sort(this.cmpTime);
-          break;
-        default:
-          ret.sort(this.cmpCitation);
-      }
-      return ret;
     },
     author_results_to_show: function () {
       let that = this;
       let hits = this.authorHits;
       let ret = [];
       if (this.activeTab !== "author") {
-        console.log("author_results_to_show NOT COMPUTED");
         return ret;
       }
 
@@ -476,6 +516,9 @@ export default {
     },
   },
   watch: {
+    userID: function () {
+      console.log(`userID changed to ${this.userID}`);
+    },
     articleHits: function () {
       if (this.activeTab !== "article")
         return;
@@ -541,24 +584,140 @@ export default {
     }
   },
   methods: {
-    goToArticlePage(id) {
-      let router = '/article/' + id + '/overviews';
-      this.getVisit(id)
-      this.$router.push(router);
+    handleFieldChange(rule) {
+      rule.type = null;
+      console.log(rule);
     },
-    getVisit(id){
-      console.log('获取')
+    safeUndefined(obj, key, innerKey) {
+      if (typeof obj[key] === 'undefined')
+        this.$set(obj, key, {});
+      else
+        console.log(obj[key][innerKey]);
+      return obj[key][innerKey];
+    },
+    refreshRecommendationInfo(paperID) {
+      console.log(`REFRESHING: ${paperID}`);
+      this.refreshIfRecommended(paperID);
+      this.refreshNRecommendation(paperID);
+    },
+    refreshNRecommendation(paperID) {
       this.axios({
-        method:"post",
+        method: "get",
+        url: "http://139.9.132.83:8000/search/getRecommend?paper_id=" + paperID,
+        data: {
+          paper_id: paperID
+        }
+      }).then(response => {
+        let n_recommendation = response.data.RecNumber;
+        let n_visit = response.data.VisNumber; // FIXME visNumber??
+        // if ( typeof this.recommendationInfo[paperID] === 'undefined')
+        //   this.$set(this.recommendationInfo, paperID, {})
+        this.$set(this.recommendationInfo, paperID, {
+          isRecommended: this.safeUndefined(this.recommendationInfo, paperID, 'isRecommended'),
+          n_recommendation: n_recommendation,
+        }); // 为了让数组变化是响应式的
+      });
+    },
+    refreshIfRecommended(paperID) {
+      // console.log(`REFRESHING: ${paperID}`);
+      if (!this.userID) {
+        console.log('NOT LOGGED IN. EARLY RETURN');
+        return false;
+      }
+      this.axios({
+        method: "get",
+        url: "http://139.9.132.83:8000/search/IsRecommend?paper_id=" + paperID + "&user_id=" + this.userID,
+        data: {
+          user_id: this.userID,
+          paper_id: paperID
+        }
+      }).then(response => {
+        let isRecommended = response.data.isRecommend;
+        // console.log(`${paperID} : ${isRecommended}`);
+        // this.recommendationInfo[paperID] = isRecommended
+        // if ( typeof this.recommendationInfo[paperID] === 'undefined')
+        //   this.$set(this.recommendationInfo, paperID, {})
+        this.$set(this.recommendationInfo, paperID, {
+          isRecommended: isRecommended,
+          n_recommendation: this.safeUndefined(this.recommendationInfo, paperID, 'n_recommendation'),
+        }); // 为了让数组变化是响应式的
+      });
+    },
+    recommend(result) {
+      if (!this.userID) {
+        this.notifyInfo('请先登录');
+        return;
+      }
+      this.axios({
+        method: "post",
+        url: "http://139.9.132.83:8000/search/Recommend",
+        data: {
+          user_id: this.userID,
+          paper_id: result.id,
+        }
+      }).then(response => {
+        if (response.data.Message.indexOf('success') > -1) {
+          this.refreshRecommendationInfo(result.id);
+          this.notifyInfo('推荐成功');
+        } else {
+          this.notifyInfo('推荐失败，请再次尝试');
+        }
+      });
+    },
+    cancelRecommend(result) {
+      if (!this.userID) {
+        this.notifyInfo('请先登录');
+        return;
+      }
+      this.axios({
+        method: "post",
         // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
-        url:"http://139.9.132.83:8000/search/visitpaper",
-        data:{
+        url: "http://139.9.132.83:8000/search/CancelRecommend",
+        data: {
+          user_id: this.userID,
+          paper_id: result.id,
+        }
+      }).then(response => {
+        if (response.data.message.indexOf('success') > -1) {
+          this.refreshRecommendationInfo(result.id);
+          this.notifyInfo('取消推荐成功');
+        } else {
+          this.notifyInfo('取消推荐失败，请再此尝试');
+        }
+      });
+    },
+    forceUpdateData(data) {
+      let temp = data;
+      data = temp === null ? undefined : null;
+      data = temp;
+    },
+    goToArticlePage(id) {
+      let route = '/article/' + id + '/overviews';
+      this.getVisit(id);
+      this.$router.push(route);
+    },
+    goToAuthorPage(id) {
+      this.$router.push({
+          path: '/authorPage',
+          query: {
+            id: id
+          }
+        }
+      );
+    },
+    getVisit(id) {
+      console.log('获取');
+      this.axios({
+        method: "post",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url: "http://139.9.132.83:8000/search/visitpaper",
+        data: {
           paper_id: id
         }
       })
-        .then(response=>{
-          console.log(response.data)
-        })
+        .then(response => {
+          console.log(response.data);
+        });
     },
     copyUrl(url) {
       let that = this;
@@ -605,10 +764,12 @@ export default {
       };
     },
     search() {
+      // TODO save input to store
       if (this.searchInput.length === 0) {
         this.notifyInfo("关键词不能为空");
         return;
       }
+      this.$store.commit('setSearchInput', this.searchInput);
       console.log("searching: \n\t" + this.searchInput);
       if (this.activeTab === "article") {
         console.log("SEARCHING FOR ARTICLES");
@@ -644,6 +805,7 @@ export default {
       });
     },
     searchArticle() {
+      // TODO 用高级搜索函数重构
       // TODO 分页
       // TODO 未搜索到结果页面
       this.$http.post(
@@ -662,6 +824,7 @@ export default {
             author.name = this.formatAuthor(author.name);
           }
           hit._source.title = this.formatTitle(hit._source.title);
+          this.refreshRecommendationInfo(hit._source.id);
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
@@ -671,11 +834,13 @@ export default {
       });
     },
     advancedSearch() {
+      this.activeTab = 'article';
       let bools = {
         must: [],
         must_not: [],
         should: [], // TODO implement OR
       };
+      this.$store.commit('setAdvancedSearchInput', this.advancedSearchInput);
       for (const rule of this.advancedSearchInput) {
         if (this.hasNull([rule.type, rule.bool, rule.field])) continue;
         const bool = rule.bool;
@@ -689,7 +854,7 @@ export default {
         if (type === TYPES.MATCH) {
           if (this.hasNull([rule.match]) || rule.match.length === 0) continue;
           if (rule.field === FIELDS.VENUE) {
-            // TODO rule.field = ....raw?
+            //  0TODO rule.field = ....raw?
           }
           typeObj[fieldKey] = rule.match;
         } else if (type === TYPES.RANGE) {
@@ -720,6 +885,7 @@ export default {
             author.name = this.formatAuthor(author.name);
           }
           hit._source.title = this.formatTitle(hit._source.title);
+          this.refreshRecommendationInfo(hit._source.id);
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
@@ -771,10 +937,17 @@ export default {
   },
   mounted() {
     let storedSearchInput = this.$store.state.searchInput;
+    let storedAdvancedSearchInput = this.$store.state.advancedSearchInput;
     if (storedSearchInput.length !== 0) {
       this.searchInput = storedSearchInput;
     }
-    this.search();
+    if (storedAdvancedSearchInput.length !== 0) {
+      this.advancedSearchInput = storedAdvancedSearchInput;
+      this.activeSearchTabs = ['1'];
+      this.advancedSearch();
+    } else {
+      this.search();
+    }
   },
   created() {
     const component = this;
@@ -797,9 +970,15 @@ export default {
 }
 
 .advancedSearchInfo {
-  display: flex;
-  height: 47px;
-  font-size: 20px;
+  /*display: flex;*/
+  /*height: 47px;*/
+  /*font-size: 20px;*/
+  width: 250px;
+  height: 240px;
+  margin: 10px 20px;
+  padding: 10px;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
+  background-color: white;
 }
 
 .advancedSearch {
@@ -820,6 +999,7 @@ export default {
 .rules {
   display: flex;
   flex-direction: column;
+  width: 740px;
 }
 
 /deep/ .rules .el-select {
@@ -852,12 +1032,13 @@ export default {
 }
 
 .advancedSearchForm {
-  width: 740px;
+  width: 1100px;
   /*box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);*/
   /*margin: 20px 20px 0;*/
 }
 
-/deep/ .advancedSearchForm .el-collapse-item__wrap {
+/deep/ .advancedSearchForm .el-collapse-item__content {
+  display: flex;
 }
 
 /deep/ .el-tabs__item {
@@ -1071,6 +1252,6 @@ export default {
 }
 
 canvas {
-  margin: auto;
+  margin: 10px auto;
 }
 </style>

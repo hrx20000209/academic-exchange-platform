@@ -63,7 +63,7 @@
               </div>
             </el-scrollbar>
             <div class="btn-box">
-              <el-button type="primary" @click="openLetter">回 复</el-button>
+              <el-button type="primary" @click="openLetter(true)">回 复</el-button>
             </div>
           </div>
           <div class="message-details" v-else></div>
@@ -93,7 +93,7 @@
           </el-input>
         </div>
         <div class="letter-btn-box">
-          <el-button type="primary" @click="sendLetter">发 送</el-button>
+          <el-button type="primary" @click="sendLetter(true)">发 送</el-button>
         </div>
       </div>
     </el-dialog>
@@ -106,7 +106,7 @@
       <div class="letter-body">
         <div>
           <div class="letter-send-box">发送给：</div>
-          <el-input v-model="receiver.name"></el-input>
+          <el-input v-model="newReceiverName"></el-input>
           <div class="letter-send-box">私信内容：</div>
           <el-input
             type="textarea"
@@ -120,7 +120,7 @@
           </el-input>
         </div>
         <div class="letter-btn-box">
-          <el-button type="primary" @click="sendLetter">发 送</el-button>
+          <el-button type="primary" @click="sendLetter(false)">发 送</el-button>
         </div>
       </div>
     </el-dialog>
@@ -139,6 +139,7 @@ export default {
     return {
       userId: '',
       userName: '',
+      newReceiverName: '',
       load: false,
       size: 40,
       replyLetterVisible: false,
@@ -213,7 +214,13 @@ export default {
     openLetter() {
       this.replyLetterVisible = true
     },
-    sendLetter() {
+    sendLetter(isReply) {
+      let name;
+      if (isReply) {
+        name = this.receiver.name
+      } else {
+        name = this.newReceiverName
+      }
       if (this.text === '') {
         this.$message({
           type: 'warning',
@@ -222,7 +229,7 @@ export default {
       } else {
         sendMessage({
           sender_id: this.userId,
-          receiver_name: this.receiver.name,
+          receiver_name: name,
           text: this.text
         }).then(response => {
           if (this.userName == this.receiver.name) {
@@ -244,14 +251,14 @@ export default {
             this.newLetterVisible = false
             this.replyLetterVisible = false
             this.LoadMessageList(this.currentPage)
-            this.read(this.receiver.user_id)
+            if(isReply) this.read(this.receiver.user_id)
             this.text = ''
           }
         })
       }
     },
     newMessage() {
-      this.receiver.name = ''
+      this.newReceiverName = ''
       this.newLetterVisible = true
     },
     handleClose(done) {
