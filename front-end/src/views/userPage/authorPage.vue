@@ -375,7 +375,6 @@ export default {
       checkAuthor({
         author_id: this.$route.query.id
       }).then(response => {
-        console.log(response)
         if (response.ifHaveAccount) {
           this.canSendMessage = true
         } else {
@@ -633,6 +632,13 @@ export default {
           receiver_name: this.usrName,
           text: this.text
         }).then(response => {
+          if (this.usrName === localStorage.getItem('user_name')) {
+            this.$message({
+              type: 'warning',
+              message: '不能向自己发送信息'
+            })
+            return
+          }
           this.$message({
             type: 'success',
             message: '发送成功'

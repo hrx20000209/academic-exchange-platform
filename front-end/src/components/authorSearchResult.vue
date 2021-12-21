@@ -225,7 +225,6 @@ export default {
               author_id: this.author._source.id,
               mail: this.email
             }).then(response => {
-              console.log(response)
               if (response.message == 'Identify success') {
                 this.$message({
                   type: 'success',
@@ -240,6 +239,7 @@ export default {
               }
               this.dialogVisible = false
               this.haveSend = false
+              this.code = ''
             })
           } else {
             this.$message({
