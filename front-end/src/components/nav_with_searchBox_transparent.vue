@@ -26,7 +26,7 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item class="myDropdown">个人信息</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="toHome">个人信息</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
@@ -160,6 +160,8 @@ export default {
         this.$router.go(0)
       } else if (command == "changePW") {
         this.changePWVisible = true
+      }else if(command == "toHome"){
+        this.toUsrHome()
       }
     },
     toUsrHome() {
