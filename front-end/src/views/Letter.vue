@@ -251,7 +251,7 @@ export default {
             this.newLetterVisible = false
             this.replyLetterVisible = false
             this.LoadMessageList(this.currentPage)
-            this.read(this.receiver.user_id)
+            if(isReply) this.read(this.receiver.user_id)
             this.text = ''
           }
         })
