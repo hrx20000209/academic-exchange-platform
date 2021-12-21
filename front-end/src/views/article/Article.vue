@@ -23,43 +23,67 @@
               </div>
             </div>
             <div class="rightPart">
-              <div style="float:left;width: 32px">
-                <div style="height: 43px;margin-top: 9px">
-                  <svg t="1639884746131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11300" width="28" height="28"><path d="M743.168 85.333333c-24.618667-24.661333-68.010667-42.666667-102.826667-42.666666H238.933333C176.810667 42.666667 128 95.744 128 159.573333v704.853334C128 928.213333 176.896 981.333333 238.933333 981.333333h546.133334c62.08 0 110.933333-53.162667 110.933333-116.864V298.965333c0-34.986667-17.877333-78.336-42.538667-103.082666l-110.293333-110.506667z m-60.416 60.288l110.293333 110.506667c8.661333 8.746667 17.621333 30.421333 17.621334 42.837333V864.426667c0 18.090667-12.373333 31.530667-25.6 31.530666H238.933333c-13.226667 0-25.6-13.397333-25.6-31.573333V159.573333c0-18.218667 12.288-31.573333 25.6-31.573333h401.365334c12.16 0 33.834667 8.96 42.453333 17.621333z" p-id="11301" fill="#515151"></path><path d="M341.333333 554.666667h170.666667a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 682.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 810.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM853.333333 256h-127.786666A42.794667 42.794667 0 0 1 682.666667 213.12V85.333333a42.666667 42.666667 0 0 0-85.333334 0v127.786667A128.128 128.128 0 0 0 725.546667 341.333333H853.333333a42.666667 42.666667 0 0 0 0-85.333333z" p-id="11302" fill="#515151"></path><path d="M298.666667 256.426667C298.666667 232.576 317.568 213.333333 341.76 213.333333h84.48c23.808 0 43.093333 18.901333 43.093333 43.093334v84.48C469.333333 364.757333 450.432 384 426.24 384H341.76C317.909333 384 298.666667 365.098667 298.666667 340.906667V256.426667z" p-id="11303" fill="#515151"></path></svg>                </div>
-                <div style="height: 43px">
-                  <svg t="1639884282485" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5432" width="28" height="28"><path d="M800.384 240c-125.568 0-221.76 97.664-221.76 223.168v299.904c0 11.136 9.728 20.928 20.928 20.928h237.12a21.44 21.44 0 0 0 20.928-20.928V525.952a21.44 21.44 0 0 0-20.928-20.928h-174.4v-41.856c0-69.76 68.352-139.52 138.112-139.52h36.288a21.44 21.44 0 0 0 20.928-20.864v-41.856a21.44 21.44 0 0 0-20.928-20.928h-36.288z m-412.16 0C262.656 240 166.4 337.664 166.4 463.168v299.904c0 11.136 9.792 20.928 20.928 20.928h237.12a21.44 21.44 0 0 0 20.928-20.928V525.952a21.44 21.44 0 0 0-20.928-20.928H250.112v-41.856c0-69.76 68.352-139.52 138.112-139.52h36.224a21.44 21.44 0 0 0 20.928-20.864v-41.856a21.44 21.44 0 0 0-20.928-20.928h-36.224z" fill="#515151" p-id="5433"></path></svg>
+              <div style="height: 43px;width: 100%;display: flex">
+                <div style="float:left;">
+                  <div style="margin-bottom: 6px;margin-top: 9px">
+                    <svg t="1639884746131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11300" width="28" height="28"><path d="M743.168 85.333333c-24.618667-24.661333-68.010667-42.666667-102.826667-42.666666H238.933333C176.810667 42.666667 128 95.744 128 159.573333v704.853334C128 928.213333 176.896 981.333333 238.933333 981.333333h546.133334c62.08 0 110.933333-53.162667 110.933333-116.864V298.965333c0-34.986667-17.877333-78.336-42.538667-103.082666l-110.293333-110.506667z m-60.416 60.288l110.293333 110.506667c8.661333 8.746667 17.621333 30.421333 17.621334 42.837333V864.426667c0 18.090667-12.373333 31.530667-25.6 31.530666H238.933333c-13.226667 0-25.6-13.397333-25.6-31.573333V159.573333c0-18.218667 12.288-31.573333 25.6-31.573333h401.365334c12.16 0 33.834667 8.96 42.453333 17.621333z" p-id="11301" fill="#515151"></path><path d="M341.333333 554.666667h170.666667a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 682.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 810.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM853.333333 256h-127.786666A42.794667 42.794667 0 0 1 682.666667 213.12V85.333333a42.666667 42.666667 0 0 0-85.333334 0v127.786667A128.128 128.128 0 0 0 725.546667 341.333333H853.333333a42.666667 42.666667 0 0 0 0-85.333333z" p-id="11302" fill="#515151"></path><path d="M298.666667 256.426667C298.666667 232.576 317.568 213.333333 341.76 213.333333h84.48c23.808 0 43.093333 18.901333 43.093333 43.093334v84.48C469.333333 364.757333 450.432 384 426.24 384H341.76C317.909333 384 298.666667 365.098667 298.666667 340.906667V256.426667z" p-id="11303" fill="#515151"></path></svg>
+                  </div>
                 </div>
-                <div style="height: 30px">
-                  <svg t="1639884184785" class="icon" viewBox="0 0 1536 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4562" width="28" height="28"><path d="M768 0C345.6 0 0 383.99999999 0 512c0 170.6625 345.6 512 768 512s768-384.00000001 768-512S1190.4 0 768 0z m0 938.6625C392.49999998 938.6625 85.3375 597.3375 85.3375 512S392.49999998 85.3375 768 85.3375s682.6625 341.325 682.6625 426.6625S1143.4625 938.6625 768 938.6625z" fill="#515151" p-id="4563"></path><path d="M768 789.3375A277.3375 277.3375 0 1 1 1045.3375 512 276.7875 276.7875 0 0 1 768 789.3375z m0-469.3375A192 192 0 1 0 960 512 191.25 191.25 0 0 0 768 320z" fill="#515151" p-id="4564"></path></svg>
-                </div>
-
-
-              </div>
-              <div style="float: left;">
-                <div>
+                <div style="float: left;margin-left: 3px">
                   <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.recommends }} </span><span style="font-size: 1em">推荐</span>
                 </div>
-                <div>
+              </div>
+              <div style="height: 43px;width: 100%;display: flex">
+                <div style="float: left;">
+                  <div style="margin-bottom: 7.5px;margin-top: 7.5px">
+                    <svg t="1639884282485" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5432" width="28" height="28"><path d="M800.384 240c-125.568 0-221.76 97.664-221.76 223.168v299.904c0 11.136 9.728 20.928 20.928 20.928h237.12a21.44 21.44 0 0 0 20.928-20.928V525.952a21.44 21.44 0 0 0-20.928-20.928h-174.4v-41.856c0-69.76 68.352-139.52 138.112-139.52h36.288a21.44 21.44 0 0 0 20.928-20.864v-41.856a21.44 21.44 0 0 0-20.928-20.928h-36.288z m-412.16 0C262.656 240 166.4 337.664 166.4 463.168v299.904c0 11.136 9.792 20.928 20.928 20.928h237.12a21.44 21.44 0 0 0 20.928-20.928V525.952a21.44 21.44 0 0 0-20.928-20.928H250.112v-41.856c0-69.76 68.352-139.52 138.112-139.52h36.224a21.44 21.44 0 0 0 20.928-20.864v-41.856a21.44 21.44 0 0 0-20.928-20.928h-36.224z" fill="#515151" p-id="5433"></path></svg>
+                  </div>
+                </div>
+                <div style="float: left;margin-left: 3px">
                   <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.n_citation }}</span> <span style="font-size: 1em">引用</span>
                   <svg t="1639828192687" class="icon" style="margin-bottom: 8px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8378" width="12" height="12"><path d="M876.8 659.2 620.8 512l256-147.2c25.6-12.8 38.4-51.2 19.2-76.8-12.8-25.6-51.2-38.4-76.8-19.2l-256 147.2L563.2 121.6C569.6 89.6 544 64 512 64S454.4 89.6 454.4 121.6l0 294.4-256-147.2C179.2 249.6 140.8 262.4 128 288c-12.8 25.6-6.4 64 19.2 76.8l256 147.2-256 147.2c-25.6 12.8-38.4 51.2-19.2 76.8 12.8 19.2 32 25.6 51.2 25.6 6.4 0 19.2 0 25.6-6.4l256-147.2 0 294.4C454.4 934.4 480 960 512 960s57.6-25.6 57.6-57.6L569.6 608l256 147.2c6.4 6.4 19.2 6.4 25.6 6.4 19.2 0 38.4-12.8 51.2-25.6C908.8 710.4 902.4 672 876.8 659.2z" p-id="8379"></path></svg>
                 </div>
-                <div>
+              </div>
+              <div style="height: 35px;width: 100%;display: flex">
+                <div style="float: left">
+                  <div style="margin-top: 9px">
+                    <svg t="1639884184785" class="icon" viewBox="0 0 1536 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4562" width="28" height="28"><path d="M768 0C345.6 0 0 383.99999999 0 512c0 170.6625 345.6 512 768 512s768-384.00000001 768-512S1190.4 0 768 0z m0 938.6625C392.49999998 938.6625 85.3375 597.3375 85.3375 512S392.49999998 85.3375 768 85.3375s682.6625 341.325 682.6625 426.6625S1143.4625 938.6625 768 938.6625z" fill="#515151" p-id="4563"></path><path d="M768 789.3375A277.3375 277.3375 0 1 1 1045.3375 512 276.7875 276.7875 0 0 1 768 789.3375z m0-469.3375A192 192 0 1 0 960 512 191.25 191.25 0 0 0 768 320z" fill="#515151" p-id="4564"></path></svg>
+                  </div>
+                </div>
+                <div style="float: left;margin-left: 3px">
                   <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.visNumber }}</span> <span style="font-size: 1em">访问</span>
                 </div>
+                <!--              <div style="float:left;width: 32px">-->
+                <!--                <div style="height: 43px;">-->
+                <!--                  <div style="margin-top: 9px">-->
+                <!--                    <svg t="1639884746131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11300" width="28" height="28"><path d="M743.168 85.333333c-24.618667-24.661333-68.010667-42.666667-102.826667-42.666666H238.933333C176.810667 42.666667 128 95.744 128 159.573333v704.853334C128 928.213333 176.896 981.333333 238.933333 981.333333h546.133334c62.08 0 110.933333-53.162667 110.933333-116.864V298.965333c0-34.986667-17.877333-78.336-42.538667-103.082666l-110.293333-110.506667z m-60.416 60.288l110.293333 110.506667c8.661333 8.746667 17.621333 30.421333 17.621334 42.837333V864.426667c0 18.090667-12.373333 31.530667-25.6 31.530666H238.933333c-13.226667 0-25.6-13.397333-25.6-31.573333V159.573333c0-18.218667 12.288-31.573333 25.6-31.573333h401.365334c12.16 0 33.834667 8.96 42.453333 17.621333z" p-id="11301" fill="#515151"></path><path d="M341.333333 554.666667h170.666667a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 682.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 810.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM853.333333 256h-127.786666A42.794667 42.794667 0 0 1 682.666667 213.12V85.333333a42.666667 42.666667 0 0 0-85.333334 0v127.786667A128.128 128.128 0 0 0 725.546667 341.333333H853.333333a42.666667 42.666667 0 0 0 0-85.333333z" p-id="11302" fill="#515151"></path><path d="M298.666667 256.426667C298.666667 232.576 317.568 213.333333 341.76 213.333333h84.48c23.808 0 43.093333 18.901333 43.093333 43.093334v84.48C469.333333 364.757333 450.432 384 426.24 384H341.76C317.909333 384 298.666667 365.098667 298.666667 340.906667V256.426667z" p-id="11303" fill="#515151"></path></svg>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+                <!--                <div style="height: 43px">-->
+                <!--                  <div style="margin-top: 5px">-->
+                <!--                  <svg t="1639884282485" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5432" width="28" height="28"><path d="M800.384 240c-125.568 0-221.76 97.664-221.76 223.168v299.904c0 11.136 9.728 20.928 20.928 20.928h237.12a21.44 21.44 0 0 0 20.928-20.928V525.952a21.44 21.44 0 0 0-20.928-20.928h-174.4v-41.856c0-69.76 68.352-139.52 138.112-139.52h36.288a21.44 21.44 0 0 0 20.928-20.864v-41.856a21.44 21.44 0 0 0-20.928-20.928h-36.288z m-412.16 0C262.656 240 166.4 337.664 166.4 463.168v299.904c0 11.136 9.792 20.928 20.928 20.928h237.12a21.44 21.44 0 0 0 20.928-20.928V525.952a21.44 21.44 0 0 0-20.928-20.928H250.112v-41.856c0-69.76 68.352-139.52 138.112-139.52h36.224a21.44 21.44 0 0 0 20.928-20.864v-41.856a21.44 21.44 0 0 0-20.928-20.928h-36.224z" fill="#515151" p-id="5433"></path></svg>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+                <!--                <div style="height: 30px">-->
+                <!--                  <div style="margin-top: 5px">-->
+                <!--                  <svg t="1639884184785" class="icon" viewBox="0 0 1536 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4562" width="28" height="28"><path d="M768 0C345.6 0 0 383.99999999 0 512c0 170.6625 345.6 512 768 512s768-384.00000001 768-512S1190.4 0 768 0z m0 938.6625C392.49999998 938.6625 85.3375 597.3375 85.3375 512S392.49999998 85.3375 768 85.3375s682.6625 341.325 682.6625 426.6625S1143.4625 938.6625 768 938.6625z" fill="#515151" p-id="4563"></path><path d="M768 789.3375A277.3375 277.3375 0 1 1 1045.3375 512 276.7875 276.7875 0 0 1 768 789.3375z m0-469.3375A192 192 0 1 0 960 512 191.25 191.25 0 0 0 768 320z" fill="#515151" p-id="4564"></path></svg>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+                <!--              </div>-->
+                <!--              -->
+                <!--              <div style="float: left;">-->
+                <!--                <div>-->
+                <!--                  <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.recommends }} </span><span style="font-size: 1em">推荐</span>-->
+                <!--                </div>-->
+                <!--                <div>-->
+                <!--                  <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.n_citation }}</span> <span style="font-size: 1em">引用</span>-->
+                <!--                  <svg t="1639828192687" class="icon" style="margin-bottom: 8px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8378" width="12" height="12"><path d="M876.8 659.2 620.8 512l256-147.2c25.6-12.8 38.4-51.2 19.2-76.8-12.8-25.6-51.2-38.4-76.8-19.2l-256 147.2L563.2 121.6C569.6 89.6 544 64 512 64S454.4 89.6 454.4 121.6l0 294.4-256-147.2C179.2 249.6 140.8 262.4 128 288c-12.8 25.6-6.4 64 19.2 76.8l256 147.2-256 147.2c-25.6 12.8-38.4 51.2-19.2 76.8 12.8 19.2 32 25.6 51.2 25.6 6.4 0 19.2 0 25.6-6.4l256-147.2 0 294.4C454.4 934.4 480 960 512 960s57.6-25.6 57.6-57.6L569.6 608l256 147.2c6.4 6.4 19.2 6.4 25.6 6.4 19.2 0 38.4-12.8 51.2-25.6C908.8 710.4 902.4 672 876.8 659.2z" p-id="8379"></path></svg>-->
+                <!--                </div>-->
+                <!--                <div>-->
+                <!--                  <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.visNumber }}</span> <span style="font-size: 1em">访问</span>-->
+                <!--                </div>-->
+                <!--              </div>-->
               </div>
-                  <!--              <div>-->
-<!--&lt;!&ndash;                <svg t="1639829116359" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10869" width="20" height="20"><path d="M963.584 0q24.576 0 42.496 17.408t17.92 43.008l0 692.224q0 8.192-17.92 31.232t-45.056 53.248-60.416 63.488-63.488 60.416-53.248 45.056-31.232 17.92l-692.224 0q-24.576 0-42.496-17.92t-17.92-42.496l0-903.168q0-25.6 17.92-43.008t42.496-17.408l903.168 0zM649.216 812.032q13.312 0 22.528-9.728t9.216-23.04-9.216-22.528-22.528-9.216l-486.4 0q-13.312 0-23.04 9.216t-9.728 22.528 9.728 23.04 23.04 9.728l486.4 0zM909.312 551.936q14.336 0 23.552-9.728t9.216-24.064q0-12.288-9.216-21.504t-23.552-9.216l-746.496 0q-13.312 0-23.04 9.216t-9.728 21.504q0 14.336 9.728 24.064t23.04 9.728l746.496 0zM909.312 325.632q14.336 0 23.552-9.728t9.216-24.064q0-13.312-9.216-22.528t-23.552-9.216l-746.496 0q-13.312 0-23.04 9.216t-9.728 22.528q0 14.336 9.728 24.064t23.04 9.728l746.496 0z" p-id="10870"></path></svg>&ndash;&gt;-->
-<!--                <svg t="1639828462785" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9208" width="28" height="28"><path d="M743.168 85.333333c-24.618667-24.661333-68.010667-42.666667-102.826667-42.666666H238.933333C176.810667 42.666667 128 95.744 128 159.573333v704.853334C128 928.213333 176.896 981.333333 238.933333 981.333333h546.133334c62.08 0 110.933333-53.162667 110.933333-116.864V298.965333c0-34.986667-17.877333-78.336-42.538667-103.082666l-110.293333-110.506667z m-60.416 60.288l110.293333 110.506667c8.661333 8.746667 17.621333 30.421333 17.621334 42.837333V864.426667c0 18.090667-12.373333 31.530667-25.6 31.530666H238.933333c-13.226667 0-25.6-13.397333-25.6-31.573333V159.573333c0-18.218667 12.288-31.573333 25.6-31.573333h401.365334c12.16 0 33.834667 8.96 42.453333 17.621333z" p-id="9209"></path><path d="M341.333333 554.666667h170.666667a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 682.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM341.333333 810.666667h341.333334a42.666667 42.666667 0 0 0 0-85.333334H341.333333a42.666667 42.666667 0 0 0 0 85.333334zM853.333333 256h-127.786666A42.794667 42.794667 0 0 1 682.666667 213.12V85.333333a42.666667 42.666667 0 0 0-85.333334 0v127.786667A128.128 128.128 0 0 0 725.546667 341.333333H853.333333a42.666667 42.666667 0 0 0 0-85.333333z" p-id="9210"></path><path d="M298.666667 256.426667C298.666667 232.576 317.568 213.333333 341.76 213.333333h84.48c23.808 0 43.093333 18.901333 43.093333 43.093334v84.48C469.333333 364.757333 450.432 384 426.24 384H341.76C317.909333 384 298.666667 365.098667 298.666667 340.906667V256.426667z" p-id="9211"></path></svg>-->
-<!--                <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">1111 </span><span style="font-size: 1em">推荐</span>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <svg t="1639828081217" class="icon" style="margin-top: 8px" viewBox="0 0 1211 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7360" width="28" height="28"><path d="M1206.243142 309.434182c0.279273 268.567273-142.429091 517.585455-376.180364 656.011636a87.412364 87.412364 0 0 1-92.625454 8.936727 84.712727 84.712727 0 0 1-47.010909-79.127272 84.992 84.992 0 0 1 53.34109-75.124364c102.4-60.229818 184.32-148.945455 235.52-254.882909h-28.392727c-142.987636 0-258.885818-114.129455-258.885818-254.976 0-140.753455 115.898182-254.882909 258.792727-254.882909 143.080727 0 258.978909 114.129455 258.978909 254.882909l-3.444363-0.837818z m-690.362182 0c0 268.288-142.801455 516.840727-376.180364 655.173818a87.412364 87.412364 0 0 1-92.718545 8.936727 84.712727 84.712727 0 0 1-46.917818-79.127272 84.992 84.992 0 0 1 53.341091-75.124364c102.4-60.229818 184.32-148.945455 235.52-254.882909H260.439505C117.451869 564.410182 1.646778 450.280727 1.646778 309.434182 1.646778 168.680727 117.358778 54.551273 260.439505 54.551273c142.987636 0 258.978909 114.129455 258.97891 254.882909h-3.537455z" fill="#333333" p-id="7361"></path></svg>-->
-<!--                <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.n_citation }}</span> <span style="font-size: 1em">引用</span>-->
-<!--                <svg t="1639828192687" class="icon" style="margin-bottom: 8px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8378" width="12" height="12"><path d="M876.8 659.2 620.8 512l256-147.2c25.6-12.8 38.4-51.2 19.2-76.8-12.8-25.6-51.2-38.4-76.8-19.2l-256 147.2L563.2 121.6C569.6 89.6 544 64 512 64S454.4 89.6 454.4 121.6l0 294.4-256-147.2C179.2 249.6 140.8 262.4 128 288c-12.8 25.6-6.4 64 19.2 76.8l256 147.2-256 147.2c-25.6 12.8-38.4 51.2-19.2 76.8 12.8 19.2 32 25.6 51.2 25.6 6.4 0 19.2 0 25.6-6.4l256-147.2 0 294.4C454.4 934.4 480 960 512 960s57.6-25.6 57.6-57.6L569.6 608l256 147.2c6.4 6.4 19.2 6.4 25.6 6.4 19.2 0 38.4-12.8 51.2-25.6C908.8 710.4 902.4 672 876.8 659.2z" p-id="8379"></path></svg>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <span style="font-size: 2em;font-family: Segoe UI;margin-bottom: 3px">{{ this.n_citation }}</span> <span style="font-size: 1em">访问</span>-->
-<!--              </div>-->
             </div>
           </div>
           <!--      分界线-->
@@ -67,7 +91,7 @@
           <!--      导航栏-->
           <div>
             <el-menu class="el-menu-demo" mode="horizontal" router >
-<!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
+              <!--              <el-menu-item index="/article/overviews">Overviews</el-menu-item>-->
               <el-menu-item :index="overviewIndex">概述</el-menu-item>
               <!--              <el-menu-item index="/article/stats">Stats</el-menu-item>-->
               <!--              <el-menu-item index="/article/comments">Comments</el-menu-item>-->
@@ -80,9 +104,9 @@
                 <el-button type="primary"  disabled v-else>查看全文</el-button>
               </el-menu-item>
               <el-menu-item>
-<!--                {{localStorage.getItem('user_id')}}-->
+                <!--                {{localStorage.getItem('user_id')}}-->
                 <div v-if="isLogin === null || isLogin === -1 || isLogin === (-1+'')">
-<!--                  <el-button type="warning" v-if="!this.isFavorite" @click="getFavoriteBag">收藏文献</el-button>-->
+                  <!--                  <el-button type="warning" v-if="!this.isFavorite" @click="getFavoriteBag">收藏文献</el-button>-->
                   <el-popover
                     placement="bottom"
                     width="200"
@@ -99,10 +123,10 @@
               <el-menu-item>
                 <div v-if="isLogin === null || isLogin === -1 || isLogin === (-1+'')">
                   <el-popover
-                  placement="bottom"
-                  width="200"
-                  trigger="click"
-                  content="请先登录">
+                    placement="bottom"
+                    width="200"
+                    trigger="click"
+                    content="请先登录">
                     <el-button type="warning" slot="reference">推荐文献</el-button>
                   </el-popover>
                 </div>
@@ -605,52 +629,52 @@ export default {
         this.$store.state.abstract = ''
         for(var i = 0; i < this.length; i++){
           // if(response.data.hits.hits[i]._source.id === paper_id){
-            let article = response.data.hits.hits[0]
-            this.title = article._source.title
-            this.n_citation = article._source.n_citation
-            console.log(this.title)
-            this.venue = article._source.venue.raw
-            // this.abstracts = article._source.abstract
-            this.$store.commit('setTitle',article._source.title)
-            console.log(this.$store.state.title)
+          let article = response.data.hits.hits[0]
+          this.title = article._source.title
+          this.n_citation = article._source.n_citation
+          console.log(this.title)
+          this.venue = article._source.venue.raw
+          // this.abstracts = article._source.abstract
+          this.$store.commit('setTitle',article._source.title)
+          console.log(this.$store.state.title)
 
-            this.year = article._source.year
-            if(article._source.url === undefined){
-              this.flagLoad = false
-              console.log('aaaa')
-            }else{
-              this.urlArticle = article._source.url
-              console.log(this.urlArticle)
-            }
-            if(article._source.abstract === undefined){
-              this.flag = 0
-              console.log('flag')
-            }else{
-              this.$store.commit('setAbstract',article._source.abstract)
-              console.log(this.$store.state.abstract)
-            }
-            for(var k = 0; k < article._source.citation_by_year.length;k++){
-              // console.log(article._source.citation_by_year[k])
-              this.$store.commit('setCitation',article._source.citation_by_year[k])
-              console.log(this.$store.state.citation_by_year[k])
-            }
-            // for(var l = 0; l <article._source.reference.length; l++){
-            //   console.log(article._source.reference[l])
-            //   this.$store.commit('setReferences',article._source.reference[l])
-            //   console.log(this.$store.state.references[l])
-            // }
-            for(var j = 0; j < article._source.authors.length;j++){
-              // this.authors[j] = article._source.authors[j]
-              this.authors.push(article._source.authors[j])
-              // console.log(this.authors[j])
-              // this.author += this.authors[j].name
-              // this.author += ' 、'
-            }
+          this.year = article._source.year
+          if(article._source.url === undefined){
+            this.flagLoad = false
+            console.log('aaaa')
+          }else{
+            this.urlArticle = article._source.url
+            console.log(this.urlArticle)
+          }
+          if(article._source.abstract === undefined){
+            this.flag = 0
+            console.log('flag')
+          }else{
+            this.$store.commit('setAbstract',article._source.abstract)
+            console.log(this.$store.state.abstract)
+          }
+          for(var k = 0; k < article._source.citation_by_year.length;k++){
+            // console.log(article._source.citation_by_year[k])
+            this.$store.commit('setCitation',article._source.citation_by_year[k])
+            console.log(this.$store.state.citation_by_year[k])
+          }
+          // for(var l = 0; l <article._source.reference.length; l++){
+          //   console.log(article._source.reference[l])
+          //   this.$store.commit('setReferences',article._source.reference[l])
+          //   console.log(this.$store.state.references[l])
+          // }
+          for(var j = 0; j < article._source.authors.length;j++){
             // this.authors[j] = article._source.authors[j]
+            this.authors.push(article._source.authors[j])
             // console.log(this.authors[j])
             // this.author += this.authors[j].name
-            console.log(this.authors)
+            // this.author += ' 、'
           }
+          // this.authors[j] = article._source.authors[j]
+          // console.log(this.authors[j])
+          // this.author += this.authors[j].name
+          console.log(this.authors)
+        }
         // }
         // }
 
@@ -733,6 +757,7 @@ export default {
   right: 0;
   margin-bottom: 20px;
   margin-top: 60px;
+  /*display: flex;*/
 }
 .dividingLine{
   width: 100%;

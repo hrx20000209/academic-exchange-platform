@@ -3,16 +3,16 @@
     <div id="jumpRouterPlace">
       <div class="myBox">
         <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
-          <i to="/" class="el-icon-s-home">首页</i>
+          <i to="/" style="margin-left: 10px" class="el-icon-s-home">首页</i>
         </router-link>
       </div>
 
-      <div class="jumpRouterDetail">
+      <!--<div class="jumpRouterDetail">
         论坛
       </div>
       <div class="jumpRouterDetail">
         广场
-      </div>
+      </div>-->
     </div>
     <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
