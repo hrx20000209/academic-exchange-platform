@@ -16,7 +16,6 @@
       <div class="advancedSearch">
         <el-collapse v-model="activeSearchTabs" class="advancedSearchForm">
           <el-collapse-item title="高级搜索" name="1">
-            <!--          TODO 高级搜索使用说明-->
             <el-form class="rules">
               <el-form-item
                 class="rule"
@@ -35,7 +34,6 @@
                              :label="field"
                              :value="field"
                   >
-                    <!--                           TODO @change: check if type still fits-->
 
                   </el-option>
                 </el-select>
@@ -252,6 +250,7 @@
                       <div style="float: left">
                         <el-button>关注</el-button>
                         <el-button>私信</el-button>
+<!--                       TODO 关注、私信按钮？-->
                         <!--                        TODO author 其他字段-->
                       </div>
                     </div>
@@ -319,7 +318,7 @@ export default {
         [FIELDS.AUTHORS]: [TYPES.MATCH, TYPES.EXISTS], // FIXME ARRAY
         [FIELDS.ABSTRACT]: [TYPES.MATCH, TYPES.EXISTS],
         [FIELDS.VENUE]: [TYPES.MATCH, TYPES.EXISTS],
-        [FIELDS.URL]: [TYPES.EXISTS], // FIXME TERM query?
+        [FIELDS.URL]: [TYPES.EXISTS],
         [FIELDS.N_CITATION]: [TYPES.RANGE, TYPES.EXISTS],
         [FIELDS.YEAR]: [TYPES.RANGE, TYPES.EXISTS],
       },
@@ -343,7 +342,7 @@ export default {
       recommendationInfo: {},
       // years and venues are watching articleHits
       // their value may be changed by checkboxes so they are not declared as computed
-      years: [],
+      years: [], // TODO 改成范围
       venues: [],
       orgs: [],
       advancedSearchInput: [{
@@ -754,6 +753,7 @@ export default {
       };
     },
     search() {
+      // TODO save input to store
       if (this.searchInput.length === 0) {
         this.notifyInfo("关键词不能为空");
         return;
@@ -841,7 +841,7 @@ export default {
         if (type === TYPES.MATCH) {
           if (this.hasNull([rule.match]) || rule.match.length === 0) continue;
           if (rule.field === FIELDS.VENUE) {
-            // TODO rule.field = ....raw?
+            //  0TODO rule.field = ....raw?
           }
           typeObj[fieldKey] = rule.match;
         } else if (type === TYPES.RANGE) {
