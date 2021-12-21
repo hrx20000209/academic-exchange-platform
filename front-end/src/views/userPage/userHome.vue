@@ -99,7 +99,7 @@
         <my-like-author :user="user" :follow-list="followList" :state-list="stateList" :if-visitor="ifVisitor"></my-like-author>
       </div>
       <div v-else-if="activeMode ===  7">
-        <my-collection :user="user" :collection-list="collectionList" :if-visitor = "ifVisitor"></my-collection>
+        <my-collection :user="user" :collection-list="collectionList" :if-visitor = "ifVisitor" :get-favo="getFavo"></my-collection>
         <div style="display: block">
           <div style="height: 300px;width: 800px;display: block"></div>
         </div>

@@ -11,7 +11,7 @@
           </div>
           <div id="middleDetail">
             <div id="usrName">{{ titleCase2(this.user.name) }}</div>
-            <div id="editInfoRow">
+            <div id="editInfoRow" v-if="this.user.orgs.length>0">
               <div id="usrDegree">{{ titleCase2(this.user.orgs[0].name) }}</div>
             </div>
             <div id="acountInfo" v-if="ifHaveAccount == true">该门户已被用户

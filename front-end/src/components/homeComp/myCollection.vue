@@ -3,7 +3,8 @@
     <div id="topHead">
       <div id="leftCharacter" style="display: flex">
         <div style="margin-top: 1px">
-          <svg style="margin-right: 5px" t="1639836412388" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          <svg style="margin-right: 5px" t="1639836412388" class="icon" viewBox="0 0 1024 1024" version="1.1"
+               xmlns="http://www.w3.org/2000/svg"
                p-id="10752" width="18" height="18">
             <path
               d="M757.248 974.848c-13.312 0-28.672-4.096-43.008-10.752l-200.704-100.352-202.24 100.352c-12.8 6.656-27.648 10.24-42.496 10.24-19.456 0-38.912-6.144-53.76-17.408-28.16-20.992-43.008-57.856-36.352-91.648l41.472-215.04-158.72-147.456c-24.576-24.576-33.792-61.44-24.576-94.208l0.512-1.024c11.264-34.304 39.936-58.88 74.752-63.488l220.16-39.936 98.816-200.704C446.976 71.68 479.232 51.2 513.536 51.2c35.84 0 68.608 20.992 82.432 52.736l98.304 200.192 220.16 38.4c34.816 5.12 64 30.72 73.216 64 10.752 33.28 2.048 69.632-23.04 94.72l-0.512 0.512-157.184 148.48 39.936 215.04c6.656 34.304-7.168 69.12-35.84 90.624-14.848 12.288-33.792 18.944-53.76 18.944z m-243.712-169.984l224.256 112.128c6.656 3.072 14.336 5.632 19.456 5.632 8.192 0 15.36-2.56 20.992-7.168l1.024-1.024c12.8-9.728 18.944-24.576 16.384-39.424l-45.056-243.2 178.688-167.936c10.752-11.264 14.848-27.136 9.728-41.472l-0.512-1.536c-3.584-13.824-15.872-24.576-30.72-26.624h-1.024l-246.784-43.008-111.104-225.792c-5.632-12.8-19.968-21.504-34.816-21.504-14.336 0-28.672 9.216-35.328 23.04L367.616 350.72l-248.32 45.056c-14.848 2.048-26.624 11.776-32.256 27.648-4.096 14.336 0.512 31.232 11.264 41.984l178.688 166.4-46.592 243.2c-3.072 14.336 4.096 30.208 16.384 39.424 6.144 4.608 14.336 7.168 22.528 7.168 6.656 0 12.8-1.536 17.92-4.608l1.024-0.512 225.28-111.616z"
@@ -24,11 +25,39 @@
                           id="collectionTitle">
           <template slot="title">
 
-            <svg style="margin-right: 5px;margin-top: 1px" t="1640087674252" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4472" width="16" height="16"><path d="M523.636364 344.669091V279.272727a368.64 368.64 0 0 0-267.636364-3.258182h181.061818zM244.363636 279.272727a372.363636 372.363636 0 1 0 484.770909 485.469091H244.363636zM570.181818 302.545455v66.094545h83.781818A372.363636 372.363636 0 0 0 570.181818 302.545455z" fill="#FFEFDB" p-id="4473"></path><path d="M691.898182 415.650909h-153.134546l-118.458181-93.090909H290.909091v395.636364H744.727273a368.872727 368.872727 0 0 0-52.363637-302.545455z" fill="#FFEFDB" p-id="4474"></path><path d="M640 159.418182h232.727273v46.545454h-232.727273zM640 252.741818h232.727273v46.545455h-232.727273z" fill="#FF9E1F" p-id="4475"></path><path d="M523.636364 19.549091v325.818182l-87.272728-68.654546H244.363636v488.727273h605.090909v-209.454545h139.636364V19.549091z m279.272727 488.727273v209.454545h-512v-395.636364h129.396364l118.458181 93.09091H802.909091z m139.636364 0h-93.09091v-139.636364h-279.272727v-302.545455h372.363637z" fill="#040405" p-id="4476"></path></svg>
+            <svg style="margin-right: 5px;margin-top: 1px" t="1640087674252" class="icon" viewBox="0 0 1024 1024"
+                 version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4472" width="16" height="16">
+              <path
+                d="M523.636364 344.669091V279.272727a368.64 368.64 0 0 0-267.636364-3.258182h181.061818zM244.363636 279.272727a372.363636 372.363636 0 1 0 484.770909 485.469091H244.363636zM570.181818 302.545455v66.094545h83.781818A372.363636 372.363636 0 0 0 570.181818 302.545455z"
+                fill="#FFEFDB" p-id="4473"></path>
+              <path
+                d="M691.898182 415.650909h-153.134546l-118.458181-93.090909H290.909091v395.636364H744.727273a368.872727 368.872727 0 0 0-52.363637-302.545455z"
+                fill="#FFEFDB" p-id="4474"></path>
+              <path
+                d="M640 159.418182h232.727273v46.545454h-232.727273zM640 252.741818h232.727273v46.545455h-232.727273z"
+                fill="#FF9E1F" p-id="4475"></path>
+              <path
+                d="M523.636364 19.549091v325.818182l-87.272728-68.654546H244.363636v488.727273h605.090909v-209.454545h139.636364V19.549091z m279.272727 488.727273v209.454545h-512v-395.636364h129.396364l118.458181 93.09091H802.909091z m139.636364 0h-93.09091v-139.636364h-279.272727v-302.545455h372.363637z"
+                fill="#040405" p-id="4476"></path>
+            </svg>
             <div>{{ item.name }}</div>
           </template>
           <div v-for="(paper,i) in item.detail" :key=i class="eachPaper">
-            <svg t="1640091619097" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3625" width="17" height="17"><path d="M630.272 701.952c0 20.992-16.896 37.888-37.888 37.888h-497.152c-20.992 0-37.888-16.896-37.888-37.888v-442.368l193.024-178.688h342.528c20.992 0 37.888 16.896 37.888 37.888V701.952z" fill="#1C767E" p-id="3626"></path><path d="M245.76 75.776v178.176h-192.512z" fill="#55C1CB" p-id="3627"></path><path d="M539.136 660.992H194.56c-4.608 0-8.192-3.584-8.192-8.192V358.4c0-4.608 3.584-8.192 8.192-8.192h344.576c4.608 0 8.192 3.584 8.192 8.192v294.4c0 4.608-3.584 8.192-8.192 8.192z m-336.384-16.384h328.192v-278.016h-328.192v278.016z" fill="#15595F" p-id="3628"></path><path d="M277.504 660.992c-4.608 0-8.192-3.584-8.192-8.192V358.4c0-4.608 3.584-8.192 8.192-8.192 4.608 0 8.192 3.584 8.192 8.192v294.4c0 4.608-3.584 8.192-8.192 8.192z" fill="#15595F" p-id="3629"></path><path d="M539.136 441.344H194.56c-4.608 0-8.192-3.584-8.192-8.192 0-4.608 3.584-8.192 8.192-8.192h344.576c4.608 0 8.192 3.584 8.192 8.192 0 4.608-3.584 8.192-8.192 8.192zM539.136 513.536H194.56c-4.608 0-8.192-3.584-8.192-8.192 0-4.608 3.584-8.192 8.192-8.192h344.576c4.608 0 8.192 3.584 8.192 8.192 0 4.608-3.584 8.192-8.192 8.192zM539.136 583.68H194.56c-4.608 0-8.192-3.584-8.192-8.192 0-4.608 3.584-8.192 8.192-8.192h344.576c4.608 0 8.192 3.584 8.192 8.192 0 4.608-3.584 8.192-8.192 8.192z" fill="#15595F" p-id="3630"></path><path d="M970.752 908.288c0 22.016-17.92 39.936-39.936 39.936H413.184c-22.016 0-39.936-17.92-39.936-39.936v-460.8L574.464 261.12h356.864c22.016 0 39.936 17.92 39.936 39.936V908.288z" fill="#F2F2F2" p-id="3631"></path><path d="M573.952 261.12v185.856h-200.704z" fill="#CCCCCC" p-id="3632"></path><path d="M842.752 647.68h-303.104c-5.12 0-9.216-5.12-9.216-11.264 0-6.144 4.096-11.264 9.216-11.264h303.104c5.12 0 9.216 5.12 9.216 11.264 0 6.144-4.096 11.264-9.216 11.264zM842.752 737.28h-303.104c-5.12 0-9.216-5.12-9.216-11.264s4.096-11.264 9.216-11.264h303.104c5.12 0 9.216 5.12 9.216 11.264s-4.096 11.264-9.216 11.264zM691.2 826.88h-151.552c-5.12 0-9.216-5.12-9.216-11.264s4.096-11.264 9.216-11.264H691.2c5.12 0 9.216 5.12 9.216 11.264s-4.096 11.264-9.216 11.264z" fill="#B3B3B3" p-id="3633"></path><path d="M845.312 554.496h-303.104c-5.12 0-9.216-5.12-9.216-11.264 0-6.144 4.096-11.264 9.216-11.264h303.104c5.12 0 9.216 5.12 9.216 11.264 0 6.144-4.096 11.264-9.216 11.264z" fill="#B3B3B3" p-id="3634"></path></svg>
+            <svg style="margin-top: 4px;margin-left: 4px" t="1640092415642" class="icon" viewBox="0 0 1024 1024"
+                 version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7151" width="18" height="18">
+              <path
+                d="M229.8 191.8h556c12.8 0 23.2 10.4 23.2 23.2v590.8c0 12.8-10.4 23.2-23.2 23.2h-556c-12.8 0-23.2-10.4-23.2-23.2V215c0-12.8 10.4-23.2 23.2-23.2z"
+                fill="#FFFFFF" p-id="7152"></path>
+              <path
+                d="M784.6 828.9H231c-13.4 0-24.4-10.9-24.4-24.4V216.1c0-13.4 10.9-24.4 24.4-24.4h553.6c13.4 0 24.4 10.9 24.4 24.4v588.4c-0.1 13.5-11 24.4-24.4 24.4z m-507.3-46.4h461c13.4 0 24.4-10.9 24.4-24.4V262.5c0-13.4-10.9-24.4-24.4-24.4h-461c-13.4 0-24.4 10.9-24.4 24.4v495.7c0 13.4 10.9 24.3 24.4 24.3z"
+                fill="#333333" p-id="7153"></path>
+              <path
+                d="M369.2 296h287.9c25.9 0 46.8 21 46.8 46.8V459c0 25.9-21 46.8-46.8 46.8H369.2c-25.9 0-46.8-21-46.8-46.8V342.9c0-25.9 21-46.9 46.8-46.9z"
+                fill="#F4CE26" p-id="7154"></path>
+              <path
+                d="M657.7 505.9H368.8c-25.6 0-46.3-20.8-46.3-46.3V342.4c0-25.5 20.8-46.3 46.3-46.3h288.9c25.6 0 46.3 20.8 46.3 46.3v117.2c0 25.5-20.8 46.3-46.3 46.3zM368.8 342.4v117.2h288.9V342.4H368.8zM345.6 666.7h335.2c12.8 0 23.2 10.4 23.2 23.2 0 12.8-10.4 23.2-23.2 23.2H345.6c-12.8 0-23.2-10.4-23.2-23.2 0-12.8 10.4-23.2 23.2-23.2zM438.3 562.5h144.5c12.8 0 23.2 10.4 23.2 23.2 0 12.8-10.4 23.2-23.2 23.2H438.3c-12.8 0-23.2-10.4-23.2-23.2 0-12.9 10.4-23.2 23.2-23.2z"
+                fill="#333333" p-id="7155"></path>
+            </svg>
             <div class="paperName" @click="toPaper(paper.paper_id)">{{ paper.paper_name }}</div>
             <div class="threeButton" v-if="editMode == true">
               <button class="delete" @click="deletePaperInFavo(index,i)">移出收藏夹</button>
@@ -112,13 +141,14 @@ import {deleFavo, delePaperInFavo, moveFavo, uploadNewFavo} from "../../request/
 
 export default {
   name: "myCollection",
-  props: ['user', 'CollectionList', 'ifVisitor', 'imgSrcList'],
+  props: ['user', 'CollectionList', 'ifVisitor', 'imgSrcList','getFavo'],
   data() {
     return {
       activeName: '1',
       create: false,
       deleteCollection: false,
       checkList: [],
+      saveList:[],
       move: false,
       radio: '',
       newName: '',
@@ -141,17 +171,17 @@ export default {
         path: '/article/' + id + '/overviews'
       })
     },
-    getVisit(id){
+    getVisit(id) {
       console.log('获取')
       this.axios({
-        method:"post",
+        method: "post",
         // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
-        url:"http://139.9.132.83:8000/search/visitpaper",
-        data:{
+        url: "http://139.9.132.83:8000/search/visitpaper",
+        data: {
           paper_id: id
         }
       })
-        .then(response=>{
+        .then(response => {
           console.log(response.data)
         })
     },
@@ -167,7 +197,7 @@ export default {
           favorite_name: this.$props.CollectionList[favo].name,
           paper_id: this.$props.CollectionList[favo].detail[idx].paper_id,
         }).then(res => {
-          this.$props.CollectionList[favo].detail.splice(idx, 1)
+          this.$props.getFavo()
           this.$message({
             message: '删除成功',
             type: 'success'
@@ -204,15 +234,21 @@ export default {
       }).then(res => {
         console.log(res)
         // this.$router.go(0)
-        var obj = {name: this.newName, detail: []}
-        var tmp = Object.create(obj)
-        this.$props.CollectionList.push(tmp)
-        console.log(this.CollectionList)
-        this.create = false;
-        this.$message({
-          message: '添加成功',
-          type: 'success'
-        });
+        if (res.message == 'favorite exist') {
+          this.$message.error('收藏夹已存在');
+        } else {
+          var obj = {name: this.newName, detail: []}
+          var tmp = Object.create(obj)
+          this.$props.CollectionList.push(tmp)
+          console.log(this.CollectionList)
+          this.create = false;
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          });
+          this.newName = ''
+        }
+
       })
     },
     deleteColCancel() {
@@ -226,6 +262,7 @@ export default {
       }).then(() => {
         console.log(this.checkList)
         console.log(this.$props.CollectionList)
+        this.saveList = this.checkList
         for (var i = 0; i < this.checkList.length; i++) {
           console.log(this.$props.CollectionList[this.checkList[i]])
           deleFavo({
@@ -234,9 +271,10 @@ export default {
           }).then(res => {
             console.log(res)
             this.deleteCollection = false;
+            this.$props.getFavo()
           })
-          this.$props.CollectionList.splice(this.checkList[i], 1);
         }
+
         this.$message({
           message: '删除成功',
           type: 'success'
@@ -263,8 +301,7 @@ export default {
         favoName: this.$props.CollectionList[this.radio].name,
         preName: this.$props.CollectionList[this.curpreFavoIdx].name,
       }).then(res => {
-        this.$props.CollectionList[this.radio].detail.push(this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx])
-        this.$props.CollectionList[this.curpreFavoIdx].detail.splice(this.curpreInFavoIdx, 1)
+        this.$props.getFavo()
         this.$message({
           message: '移动成功',
           type: 'success'
