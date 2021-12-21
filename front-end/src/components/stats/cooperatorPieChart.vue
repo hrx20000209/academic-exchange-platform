@@ -77,14 +77,19 @@ export default {
       });
       myChart.on('click', (param) => {
         console.log(param)
-        this.$router.push({
-            path: '/authorPage',
-            query: {
-              id: param.data.id
+         ESApi.getAuthorInfo(param.data.id).then(response => {
+            console.log(response);
+            if (response.data.hits.hits.length > 0) {
+              this.$router.push({
+                path: '/authorPage',
+                query: {
+                  id: param.data.id
+                }
+              })
+              this.$router.go(0)
             }
-          }
-        )
-        this.$router.go(0)
+
+          })
       })
     }
   },

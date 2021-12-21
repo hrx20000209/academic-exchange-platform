@@ -355,13 +355,18 @@ export default {
   },
   methods: {
     toAuthor(id){
-      this.$router.push({
-          path: '/authorPage',
-          query: {
-            id: id
-          }
+      ESApi.getAuthorInfo(id).then(response => {
+        console.log(response);
+        if (response.data.hits.hits.length > 0) {
+          this.$router.push({
+            path: '/authorPage',
+            query: {
+              id: id
+            }
+          })
+          // this.$router.go(0)
         }
-      )
+      })
     },
     // isLog(){
     //   console.log('是否登录')

@@ -178,13 +178,18 @@ export default {
       }
     },
     toAuthor(id){
-      this.$router.push({
-          path: '/authorPage',
-          query: {
-            id: id
-          }
+      ESApi.getAuthorInfo(id).then(response => {
+        console.log(response);
+        if (response.data.hits.hits.length > 0) {
+          this.$router.push({
+            path: '/authorPage',
+            query: {
+              id: id
+            }
+          })
+          // this.$router.go(0)
         }
-      )
+      })
     },
     copyUrl(id){
       let url1 = 'http://139.9.132.83//article/'+ id + '/overviews';
