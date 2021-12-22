@@ -93,7 +93,6 @@
       <!--      </el-switch>-->
     </div>
     <div class="below-searchbar">
-      <!--      TODO 改用做好的tab -->
       <el-tabs v-model="activeTab" @tab-click="search">
         <el-tab-pane label="文 献" name="article">
           <div class="tab">
@@ -180,7 +179,6 @@
                             @click="copyUrl(result.articlePageUrl)"
                             :underline="false">点击此处复制链接
                           </el-link>
-                          <!-- TODO 保存图片按钮-->
                           <h4 class="textInQRCodePopover">或分享二维码</h4>
                           <canvas :id="result.articlePageUrl"></canvas>
                           <el-button
@@ -330,6 +328,8 @@ const getKeyNameByKeyValue = (obj, keyValue) => {
   return null;
 };
 
+const HIT_SIZE = 1000;
+
 export default {
   name: "search",
   components: {Nav_without_searchBox},
@@ -437,7 +437,7 @@ export default {
 
         // filter
         for (const hit of hits) {
-          let y = hit._source.year;
+          let y = hit._source.year.toString();
           let v = hit._source.venue.raw;
           let match_year = false;
           let match_venue = false;
@@ -462,6 +462,12 @@ export default {
             toPush.n_recommendation = this.safeUndefined(this.recommendationInfo, toPush.id, 'n_recommendation');
             // console.log(toPush.isRecommended);
             ret.push(toPush);
+          } else {
+            console.log(`hit is not pushed:`);
+            console.log(hit);
+            console.log('by filters:');
+            console.log(this.years)
+            console.log(this.venues);
           }
         }
 
@@ -817,13 +823,14 @@ export default {
               "name": this.searchInput
             }
           },
-          'size': 100
+          'size': HIT_SIZE
         }
       ).then(response => {
         this.authorHits = [];
-        this.totalCount = response.data.hits.total.value;
+        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
         for (const hit of response.data.hits.hits) {
           for (const org of hit._source.orgs) {
+            if (!org.name) continue;
             org.name = this.formatAuthor(org.name);
           }
           hit._source.name = this.formatTitle(hit._source.name);
@@ -848,15 +855,17 @@ export default {
               "title": this.searchInput
             }
           },
-          'size': 100
+          'size': HIT_SIZE
         }
       ).then(response => {
         this.articleHits = [];
-        this.totalCount = response.data.hits.total.value;
+        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
+            if (!author.name) continue;
             author.name = this.formatAuthor(author.name);
           }
+          if (!hit._source.title) continue;
           hit._source.title = this.formatTitle(hit._source.title);
           this.refreshRecommendationInfo(hit._source.id);
           this.articleHits.push(hit);
@@ -914,13 +923,14 @@ export default {
           "query": {
             'bool': bools
           },
-          'size': 100
+          'size': HIT_SIZE
         }
       ).then(response => {
         this.articleHits = [];
-        this.totalCount = response.data.hits.total.value;
+        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
+            if (!author.name) continue;
             author.name = this.formatAuthor(author.name);
           }
           hit._source.title = this.formatTitle(hit._source.title);
