@@ -73,7 +73,7 @@
               </el-form-item>
               <el-form-item class="rule">
                 <el-button @click="advancedSearch">提交</el-button>
-<!--                 TODO 回车搜索-->
+                <!--                 TODO 回车搜索 美化按钮-->
                 <el-button @click="addRule">新增规则</el-button>
               </el-form-item>
             </el-form>
@@ -139,7 +139,7 @@
                 </el-collapse-item>
                 <el-collapse-item name="filterByYears"
                                   title="按年份筛选">
-<!--                  TODO 全选/全不选 各种筛选都加这个功能-->
+                  <!--                  TODO 全选/全不选 各种筛选都加这个功能-->
                   <div>
                     <!--                    <span class="filterAndSortTitle">按年份筛选</span>-->
                     <div class="filter">
@@ -208,10 +208,10 @@
                       </div>
                       <div style="float: right;text-align: right">
                         <el-button v-if="!result.isRecommended"
-                                   @click="recommend(result)">推荐文献
+                                   @click="recommend(result.id)">推荐文献
                         </el-button>
                         <el-button v-else
-                                   @click="cancelRecommend(result)">取消推荐
+                                   @click="cancelRecommend(result.id)">取消推荐
                         </el-button>
                         <el-popover
                           :key="result.articlePageUrl+result.hasLoadedQRCode"
@@ -232,7 +232,7 @@
                             分享
                           </el-button>
                         </el-popover>
-                        <!--TODO 按钮：推荐、关注、分享-->
+                        <!--TODO 按钮：关注-->
                       </div>
                     </div>
                   </div>
@@ -256,7 +256,7 @@
                                @current-change="handleCurrentChange">
                 </el-pagination>
               </div>
-<!--          TODO 回到顶部按钮-->
+              <!--          TODO 回到顶部按钮-->
             </div>
           </div>
         </el-tab-pane>
@@ -318,7 +318,12 @@
                     </div>
                     <div style="height: 30px">
                       <div style="float: left">
-                        <el-button>关注</el-button>
+                        <el-button v-if="!result.isFollowed"
+                                   @click="follow(result.id)">关注
+                        </el-button>
+                        <el-button v-else
+                                   @click="unfollow(result.id)">取关
+                        </el-button>
                         <el-button>私信</el-button>
                         <!--                       TODO 关注、私信按钮？-->
                         <!--                        TODO author 其他字段-->
@@ -346,7 +351,7 @@
 import QRCode from 'qrcode';
 import _ from 'lodash';
 import Nav_without_searchBox from "./nav_without_searchBox";
-import {changeViewTime} from "../request/api";
+import {changeViewTime, checkIfFollow, followAuthor, undoFollow} from "../request/api";
 
 let Clipboard = window.navigator.clipboard;
 const TYPES = {
@@ -420,6 +425,7 @@ export default {
       articleHits: [],
       authorHits: [],
       recommendationInfo: {},
+      followInfo: {},
       currentPage: 1,
       totalCount: 0,
       // years and venues are watching articleHits
@@ -567,7 +573,7 @@ export default {
 
       // filter
       let orgsMustHave = [];
-      console.log(this.orgs);
+      // console.log(this.orgs);
       for (const org of this.orgs) {
         orgsMustHave.push(org.value);
       }
@@ -577,18 +583,20 @@ export default {
           authorOrgs.push(authorOrgObj.name);
         }
         let intersection = authorOrgs.filter(function (o) {
-          console.log("INDEX OF: " + orgsMustHave.indexOf(o));
+          // console.log("INDEX OF: " + orgsMustHave.indexOf(o));
           return orgsMustHave.indexOf(o) > -1;
         });
         // TODO some has no org
-        console.log(authorOrgs);
-        console.log(orgsMustHave);
-        console.log(intersection);
+        // console.log(authorOrgs);
+        // console.log(orgsMustHave);
+        // console.log(intersection);
         if (intersection.length > 0) {
-          hit._source._score = hit._score;
-          ret.push(hit._source);
-          console.log("RET:");
-          console.log(ret);
+          let toPush = hit._source;
+          toPush._score = hit._score;
+          toPush.isFollowed = this.followInfo[toPush.id];
+          ret.push(toPush);
+          // console.log("RET:");
+          // console.log(ret);
         }
       }
 
@@ -701,6 +709,56 @@ export default {
     }
   },
   methods: {
+    checkMsgSuccess(msg) {
+      msg = msg.toString();
+      return Math.max(msg.toLowerCase().indexOf('success'), msg.indexOf('成功')) > -1;
+    },
+    follow(authorID) {
+      if (this.userID) {
+        followAuthor({
+          follow_id: authorID,
+          follower_id: this.userID
+        }).then(res => {
+          console.log(res);
+          if (this.checkMsgSuccess(res.message)) {
+            this.notifyInfo('关注成功');
+            this.updateIfFollowed(authorID);
+          } else {
+            this.notifyInfo('关注失败，请再次尝试')
+          }
+        });
+      } else {
+        this.notifyInfo('请先登录');
+      }
+    },
+    updateIfFollowed(authorID) {
+      if (this.userID) {
+        checkIfFollow({
+          follow_id: authorID,
+          follower_id: this.userID
+        }).then(res => {
+          console.log(res);
+          let isFollowed = eval(res.message)
+          this.$set(this.followInfo, authorID, isFollowed)
+        });
+      }
+    },
+    unfollow(authorID) {
+      if (this.userID) {
+        undoFollow({
+          follow_id: authorID,
+          follower_id: this.userID
+        }).then(res => {
+          console.log(res);
+          if (this.checkMsgSuccess(res.message)) {
+            this.notifyInfo('取关成功');
+            this.updateIfFollowed(authorID);
+          } else {
+            this.notifyInfo('取关失败，请再次尝试');
+          }
+        });
+      }
+    },
     handleCurrentChange(val) {
       this.currentPage = val;
     },
@@ -715,12 +773,12 @@ export default {
         // console.log(obj[key][innerKey]);
         return obj[key][innerKey];
     },
-    refreshRecommendationInfo(paperID) {
+    updateRecommendationInfo(paperID) {
       // console.log(`REFRESHING: ${paperID}`);
-      this.refreshIfRecommended(paperID);
-      this.refreshNRecommendation(paperID);
+      this.updateIfRecommended(paperID);
+      this.updateNumOfRecommendation(paperID);
     },
-    refreshNRecommendation(paperID) {
+    updateNumOfRecommendation(paperID) {
       this.axios({
         method: "get",
         url: "http://139.9.132.83:8000/search/getRecommend?paper_id=" + paperID,
@@ -738,7 +796,7 @@ export default {
         }); // 为了让数组变化是响应式的
       });
     },
-    refreshIfRecommended(paperID) {
+    updateIfRecommended(paperID) {
       // console.log(`REFRESHING: ${paperID}`);
       if (!this.userID) {
         console.log('NOT LOGGED IN. EARLY RETURN');
@@ -763,7 +821,7 @@ export default {
         }); // 为了让数组变化是响应式的
       });
     },
-    recommend(result) {
+    recommend(paperID) {
       if (!this.userID) {
         this.notifyInfo('请先登录');
         return;
@@ -773,43 +831,35 @@ export default {
         url: "http://139.9.132.83:8000/search/Recommend",
         data: {
           user_id: this.userID,
-          paper_id: result.id,
+          paper_id: paperID,
         }
       }).then(response => {
-        if (response.data.Message.indexOf('success') > -1) {
-          this.refreshRecommendationInfo(result.id);
+        if (this.checkMsgSuccess(response.data.Message)) {
           this.notifyInfo('推荐成功');
+          this.updateRecommendationInfo(paperID); // TODO update request needed?
         } else {
           this.notifyInfo('推荐失败，请再次尝试');
+          // TODO 其他功能的失败提示
         }
       });
     },
-    cancelRecommend(result) {
-      if (!this.userID) {
-        this.notifyInfo('请先登录');
-        return;
-      }
+    cancelRecommend(paperID) {
       this.axios({
         method: "post",
         // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
         url: "http://139.9.132.83:8000/search/CancelRecommend",
         data: {
           user_id: this.userID,
-          paper_id: result.id,
+          paper_id: paperID,
         }
       }).then(response => {
-        if (response.data.message.indexOf('success') > -1) {
-          this.refreshRecommendationInfo(result.id);
+        if (this.checkMsgSuccess(response.data.message)) {
           this.notifyInfo('取消推荐成功');
+          this.updateRecommendationInfo(paperID);
         } else {
-          this.notifyInfo('取消推荐失败，请再此尝试');
+          this.notifyInfo('取消推荐失败，请再次尝试');
         }
       });
-    },
-    forceUpdateData(data) {
-      let temp = data;
-      data = temp === null ? undefined : null;
-      data = temp;
     },
     goToArticlePage(id) {
       let route = '/article/' + id + '/overviews';
@@ -929,6 +979,7 @@ export default {
             org.name = this.formatAuthor(org.name);
           }
           hit._source.name = this.formatTitle(hit._source.name);
+          this.updateIfFollowed(hit._source.id)
           this.authorHits.push(hit);
         }
         this.search_response_data = response.data;
@@ -962,7 +1013,7 @@ export default {
           }
           if (!hit._source.title) continue;
           hit._source.title = this.formatTitle(hit._source.title);
-          this.refreshRecommendationInfo(hit._source.id);
+          this.updateRecommendationInfo(hit._source.id);
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
@@ -1020,7 +1071,7 @@ export default {
                 }
               }
 
-            }
+            };
           } else {
             typeObj[fieldKey] = rule.match;
           }
@@ -1056,7 +1107,7 @@ export default {
             author.name = this.formatAuthor(author.name);
           }
           hit._source.title = this.formatTitle(hit._source.title);
-          this.refreshRecommendationInfo(hit._source.id);
+          this.updateRecommendationInfo(hit._source.id);
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
