@@ -488,11 +488,24 @@
           },
           jump2authors(id){
             // console.log('author id is', id)
-            this.$router.push({
+            /*this.$router.push({
               path: '/authorPage',
               query: {
                 id: id
               }
+            })*/
+            ESApi.getAuthorInfo(id).then(response => {
+              console.log(response);
+              if (response.data.hits.hits.length > 0) {
+                this.$router.push({
+                  path: '/authorPage',
+                  query: {
+                    id: id
+                  }
+                })
+                // this.$router.go(0)
+              }
+
             })
           },
           jump2papers(id) {
