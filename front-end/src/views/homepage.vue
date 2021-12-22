@@ -32,7 +32,7 @@
                                      <div class="search-box">
                                        <div style="width: 650px">
                                         <!--<input type="text" class="search-left" placeholder="请输入要搜索的内容"><input type="button" class="search-right" value="搜 索" icon="el-icon-search">-->
-                                         <el-input placeholder="搜索你想了解的论文" v-model="keywords" class="SearchInput">
+                                         <el-input @keydown.enter.native="addByEnterKey" placeholder="搜索你想了解的论文" v-model="keywords" class="SearchInput">
                                            <el-button @click="SearchInfo" slot="append" class="searchButton">搜索</el-button>
                                          </el-input>
                                        </div>
@@ -224,7 +224,16 @@
                 authors:[],
             }
         },
-        mounted() {
+      created() {
+          /*let lett = this;
+          document.onkeydown = function(e) {
+            let key = window.event.keyCode;
+            if (key == 13) {
+              lett.SearchInfo();
+            }
+          }*/
+      },
+      mounted() {
             this.t()
             this.load3D()
             // this.testImage('1')
@@ -235,6 +244,13 @@
         methods:{
             handleClick(tab, event) {
               console.log(this.activeName);
+            },
+            addByEnterKey(e) {
+              //Enter键的代码就是13
+              console.log('e is',e)
+                if (e.keyCode === 13) {
+                  this.SearchInfo();
+                }
             },
             load3D(){
               const that = this
