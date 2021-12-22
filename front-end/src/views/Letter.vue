@@ -3,8 +3,7 @@
     <nav_with_search-box></nav_with_search-box>
     <div class="body">
       <div class="middle-box">
-        <h2>私信</h2>
-        <el-divider></el-divider>
+        <h2 class="title-box">私信</h2>
         <div class="main">
           <div class="message-list">
             <div style="height: 95%">
@@ -299,7 +298,7 @@ export default {
 <style scoped>
 .background {
   position: fixed;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background-image: url(../assets/background2.png);
 }
@@ -312,24 +311,30 @@ export default {
   align-content: center;
 }
 
+.title-box {
+  margin-bottom: 2%;
+  padding-bottom: 2%;
+  border-bottom: solid 2px lightgrey;
+}
+
 .middle-box {
   box-shadow: 0 0 30px 10px lightgrey;
   background-color: white;
   width: 60%;
-  height: 650px;
+  height: 81vh;
   padding: 2%;
 }
 
 .message-list {
   width: 30%;
-  height: 550px;
+  height: 70vh;
 }
 
 .message-details {
   padding: 0 2% 3% 2%;
   box-shadow: 0 0 10px 10px #f6f3f3;
   width: 65%;
-  height: 560px;
+  height: 69vh;
   margin-left: 5%;
 }
 

@@ -2,33 +2,8 @@
   <div id="navBar">
     <div id="jumpRouterPlace">
       <div class="myBox">
-        <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
-<<<<<<< Updated upstream
-          <i to="/" style="margin-left: 10px" class="el-icon-s-home">首页</i>
-=======
-          <i to="/" style="color:#585858;margin-left: 35px; font-size: 16px" class="el-icon-s-home">首页</i>
->>>>>>> Stashed changes
-        </router-link>
-      </div>
-
-      <!--<div class="jumpRouterDetail">
-        论坛
-      </div>
-      <div class="jumpRouterDetail">
-        广场
-      </div>-->
-    </div>
-    <div id="otherWrapper">
+        <div id="otherWrapper">
       <div v-if="this.ifLogin == 1" id="alreadyLogin">
-        <!--        <div class="infoBox">-->
-        <!--          <i class="el-icon-message-solid"></i>-->
-        <!--        </div>-->
-        <!--        <div class="infoBox">-->
-        <!--          <i class="el-icon-s-promotion"></i>-->
-        <!--        </div>-->
-        <div class="infoBox">
-          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
-        </div>
         <div class="infoBox">
           <i class="el-icon-user-solid" @click="toUsrHome"></i>
           <el-dropdown @command="handleDropDown">
@@ -36,33 +11,19 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
             <el-dropdown-menu slot="dropdown">
-<<<<<<< Updated upstream
               <el-dropdown-item class="myDropdown" command="toHome">个人信息</el-dropdown-item>
-              <!--              <el-dropdown-item class="myDropdown">系统设置</el-dropdown-item>-->
-=======
-              <el-dropdown-item class="myDropdown">个人信息</el-dropdown-item>
               <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
->>>>>>> Stashed changes
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-<<<<<<< Updated upstream
-        <!--        <div id="createNewBox">-->
-        <!--          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>-->
-        <!--        </div>-->
-=======
-        <div id="createNewBox">
-          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>
+        <div class="infoBox">
+          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
         </div>
->>>>>>> Stashed changes
       </div>
-      <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
+      <div v-else id="LoginPane" style="margin-left: 40px; margin-top: 20px">
         <div style="display: flex; ">
-          <div
-            style="color:#FAFAFA;font-weight: bold;font-size: 10px;margin-right: 20px;letter-spacing: 1px; margin-top: 10px">
-            点击头像登录
-          </div>
+          <div style="color:#FAFAFA;font-weight: bold;font-size: 10px;margin-right: 20px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
           <div style="cursor:pointer;" @click="toLogin">
             <el-avatar :size="'large'" :src="circleUrl"></el-avatar>
           </div>
@@ -91,6 +52,65 @@
         </div>
       </el-dialog>
     </div>
+      </div>
+      <!--<div class="jumpRouterDetail">
+        论坛
+      </div>
+      <div class="jumpRouterDetail">
+        广场
+      </div>-->
+    </div>
+    <!--<div id="otherWrapper">
+      <div v-if="this.ifLogin == 1" id="alreadyLogin">
+
+        <div class="infoBox">
+          <i class="el-icon-chat-round" @click="jumpToMessage"></i>
+        </div>
+        <div class="infoBox">
+          <i class="el-icon-user-solid" @click="toUsrHome"></i>
+          <el-dropdown @command="handleDropDown">
+          <span class="el-dropdown-link">
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item class="myDropdown" command="toHome">个人信息</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
+      <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
+        <div style="display: flex; ">
+          <div style="color:#FAFAFA;font-weight: bold;font-size: 10px;margin-right: 20px;letter-spacing: 1px; margin-top: 10px">点击头像登录</div>
+          <div style="cursor:pointer;" @click="toLogin">
+            <el-avatar :size="'large'" :src="circleUrl"></el-avatar>
+          </div>
+        </div>
+        <button id="Login" @click="toLogin">登录</button>
+        <button id="register" @click="toRegister">注册</button>
+      </div>
+      <el-dialog
+        title="修改密码"
+        :visible.sync="changePWVisible"
+        width="30%" :show-close="false">
+        <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                 class="demo-ruleForm" id="myForm">
+          <el-form-item label="密码:" prop="pass" class="info">
+            <el-input type="password" v-model="ruleForm.pass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码:" prop="checkPass" class="info">
+            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" class="inPut"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <div id="twoButton">
+            <el-button @click="changePWVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changePassword">确 定</el-button>
+          </div>
+        </div>
+      </el-dialog>
+    </div>-->
   </div>
 
 </template>
@@ -142,8 +162,8 @@ export default {
     }
   },
   methods: {
-    toSearch() {
-      this.$store.commit('setSearchInput', this.input2)
+    toSearch(){
+      this.$store.commit('setSearchInput',this.input2)
       this.$router.push('/search')
     },
     changePassword() {
@@ -153,10 +173,10 @@ export default {
             user_id: localStorage.getItem('user_id'),
             password: this.ruleForm.pass
           }).then(res => {
-            if (res.message == 'success') {
+            if(res.message == 'success'){
               this.changePWVisible = false
               this.$message('修改成功')
-            } else {
+            }else{
               this.$message('修改失败')
             }
           })
@@ -187,17 +207,14 @@ export default {
         this.$router.go(0)
       } else if (command == "changePW") {
         this.changePWVisible = true
-<<<<<<< Updated upstream
-      } else if (command == "toHome") {
+      }else if(command == "toHome"){
         this.toUsrHome()
-=======
->>>>>>> Stashed changes
       }
     },
     toUsrHome() {
       this.$router.push({
-        path: '/userHome',
-        query: {
+        path:'/userHome',
+        query:{
           id: localStorage.getItem('user_id')
         }
       })
@@ -285,11 +302,11 @@ export default {
 }
 
 #otherWrapper {
-  margin-right: 50px;
+  width: 400px;
   font-size: 20px;
   margin-top: 18px;
   display: inline-flex;
-  justify-content: center;
+
 }
 
 #infoBar {
@@ -303,7 +320,7 @@ export default {
   margin-left: 20px;
   height: auto;
   width: auto;
-  color: #A4A4A4;
+  color: #FFF;
 }
 
 .infoBox:hover {
@@ -319,12 +336,18 @@ export default {
   background-color: whitesmoke;
   color: black;
 }
-
+.name{
+  margin-left: 20px;
+  margin-right: 20px;
+  font-family: Georgia;
+  color: #34898f;
+  font-size: 25px;
+}
 #createNew {
   font-family: "Microsoft YaHei UI";
   display: inline;
   background-color: transparent;
-  background-color: #BDBDBD;
+  background-color: #34898f;
   font-family: "Roboto", Arial, sans-serif;
   color: #ffffff;
   font-size: 14px;
@@ -391,8 +414,12 @@ export default {
 #register:hover {
   cursor: pointer;
 }
-
+/deep/ .el-icon-arrow-down:before {
+    content: "\E6DF";
+    color: #FFF;
+}
 #alreadyLogin {
+  margin-left: 15px;
   display: inline-flex;
 }
 </style>
