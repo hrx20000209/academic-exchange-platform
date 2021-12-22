@@ -544,7 +544,7 @@ export default {
       // update this.years
       let ys = new Set();
       for (const hit of this.articleHits) {
-        ys.add(hit._source.year);
+        ys.add(`${hit._source.year}`);
       }
       let years = [];
       for (const y of ys) {
@@ -721,8 +721,8 @@ export default {
       changeViewTime({
         author_id: id
       }).then(res => {
-        console.log(res)
-      })
+        console.log(res);
+      });
       this.$router.push({
           path: '/authorPage',
           query: {
@@ -758,7 +758,7 @@ export default {
       window.open(url, "_blank");
     },
     notifySlashWithThrottle: _.throttle(function () {
-      console.log("NOTIFYING SLASH SHORTCUT");
+      // console.log("NOTIFYING SLASH SHORTCUT");
       this.notifyInfo("按”/“即可跳到搜索框");
     }, 30000, {
       trailing: false
@@ -790,7 +790,7 @@ export default {
       };
     },
     search() {
-      this.currentPage = 1
+      this.currentPage = 1;
       if (this.searchInput.length === 0) {
         this.notifyInfo("关键词不能为空");
         return;
@@ -830,6 +830,7 @@ export default {
           this.authorHits.push(hit);
         }
         this.search_response_data = response.data;
+        this.$forceUpdate();
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("AUTHORS FETCHED");
@@ -861,6 +862,7 @@ export default {
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
+        this.$forceUpdate();
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("ARTICLES FETCHED");
@@ -926,6 +928,7 @@ export default {
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
+        this.$forceUpdate();
         console.log("ARTICLES FETCHED");
       });
     },
