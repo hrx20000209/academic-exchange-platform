@@ -429,7 +429,7 @@ export default {
     },
     article_results_to_show: { // TODO 可能慢，转换为watch提速
       get: function () {
-        // console.log(`article_results_to_show COMPUTING`);
+        console.log(`article_results_to_show COMPUTING`);
         let hits = this.articleHits;
         let ret = [];
         if (this.activeTab !== "article")
@@ -442,14 +442,30 @@ export default {
           let match_year = false;
           let match_venue = false;
           for (const year of this.years) {
-            if (year.isSelected && (year.value === y)) {
+            if (year.isSelected &&
+              (
+                (year.value === y) ||
+                (year.value === '其他' && (parseInt(y) > 2015 || parseInt(y) < 2005))
+              )
+            ) {
               match_year = true;
             }
           }
+          let isAmong10 = false;
+          let othersSelected;
           for (const venue of this.venues) {
-            if (venue.isSelected && (venue.value === v)) {
-              match_venue = true;
+            if (venue.value === v) {
+              isAmong10 = true;
+              if (venue.isSelected) {
+                match_venue = true;
+              }
             }
+            if (venue.value === '其他') {
+              othersSelected = venue.isSelected;
+            }
+          }
+          if (match_venue === false && !isAmong10 && othersSelected) {
+            match_venue = true;
           }
           if (match_venue && match_year) {
             let toPush = hit._source;
@@ -463,11 +479,11 @@ export default {
             // console.log(toPush.isRecommended);
             ret.push(toPush);
           } else {
-            console.log(`hit is not pushed:`);
-            console.log(hit);
-            console.log('by filters:');
-            console.log(this.years)
-            console.log(this.venues);
+            // console.log(`hit is not pushed:`);
+            // console.log(hit);
+            // console.log('by filters:');
+            // console.log(this.years)
+            // console.log(this.venues);
           }
         }
 
@@ -482,7 +498,7 @@ export default {
           default:
             ret.sort(this.cmpCitation);
         }
-        // console.log(`author_results_to_show COMPUTED`);
+        console.log(`author_results_to_show COMPUTED`);
         return ret;
       },
       set: function () {
@@ -553,31 +569,55 @@ export default {
         ys.add(`${hit._source.year}`);
       }
       let years = [];
+      let otherExists = false;
       for (const y of ys) {
-        years.push({
-          value: y,
-          isSelected: true,
-        });
+        if (parseInt(y) > 2015 || parseInt(y) < 2005) {
+          otherExists = true;
+        } else {
+          years.push({
+            value: y,
+            isSelected: true,
+          });
+        }
       }
       this.years = years.sort((a, b) => {
         return b.value - a.value;
       });
+      if (otherExists) {
+        this.years.push({
+          value: '其他',
+          isSelected: true,
+        });
+      }
 
       // update this.venues
-      let vs = new Set();
+      let venueCount = {};
       for (const hit of this.articleHits) {
-        vs.add(hit._source.venue.raw);
+        const v = hit._source.venue.raw;
+        if (venueCount[v]) {
+          venueCount[v]++;
+        } else {
+          venueCount[v] = 1;
+        }
       }
       let venues = [];
-      for (const v of vs) {
+      for (const v of Object.keys(venueCount)) {
         venues.push({
           value: v,
+          count: venueCount[v],
           isSelected: true,
         });
       }
       this.venues = venues.sort((a, b) => {
-        return b.value < a.value ? 1 : -1;
+        return a.count < b.count ? 1 : -1;
       });
+      this.venues = this.venues.slice(0, 10);
+      if (this.venues.length > 10) {
+        this.venues.push({
+          value: '其他',
+          isSelected: true
+        });
+      }
     },
     authorHits: function () {
       if (this.activeTab !== "author")
@@ -827,7 +867,8 @@ export default {
         }
       ).then(response => {
         this.authorHits = [];
-        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
+        // this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
+        this.totalCount = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const org of hit._source.orgs) {
             if (!org.name) continue;
@@ -859,7 +900,8 @@ export default {
         }
       ).then(response => {
         this.articleHits = [];
-        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
+        // this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
+        this.totalCount = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
             if (!author.name) continue;
@@ -927,7 +969,8 @@ export default {
         }
       ).then(response => {
         this.articleHits = [];
-        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
+        // this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
+        this.totalCount = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
             if (!author.name) continue;
