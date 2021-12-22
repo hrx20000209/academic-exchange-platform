@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {getPieData} from "../../request/api";
+import {changeViewTime, getPieData} from "../../request/api";
 import ESApi from "../../api/elastic search";
 
 export default {
@@ -80,6 +80,11 @@ export default {
          ESApi.getAuthorInfo(param.data.id).then(response => {
             console.log(response);
             if (response.data.hits.hits.length > 0) {
+                    changeViewTime({
+        author_id: param.data.id
+      }).then(res => {
+        console.log(res)
+      })
               this.$router.push({
                 path: '/authorPage',
                 query: {

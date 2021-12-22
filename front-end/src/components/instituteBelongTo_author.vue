@@ -11,12 +11,15 @@
 <!--      </div>-->
     </div>
     <div id="mainPane">
-       <div id="someIns" v-for="(item,index) in user.orgs" :key='index'>
+      <div v-if="user.orgs.length>0">
+        <div id="someIns" v-for="(item,index) in user.orgs" :key='index'>
           <div id="insName" >{{ titleCase2(item.name) }}</div>
           <div id="intoButton">
             <el-button size="mini" plain @click="toAffli(item.id)">查看</el-button>
           </div>
         </div>
+      </div>
+      <el-empty description="暂无机构信息" :image-size="55" style="padding: 10px" v-else></el-empty>
 <!--      <div id="leftDescription">-->
 <!--       -->
 <!--&lt;!&ndash;        <div class="desInfo">地点</div>&ndash;&gt;-->

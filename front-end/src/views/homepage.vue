@@ -193,6 +193,7 @@
   import Api from '../api/mysql'
   const echarts = require('echarts/lib/echarts')
   import 'echarts-gl'
+  import {changeViewTime} from "../request/api";
 
     export default {
         name: "homepage",
@@ -507,6 +508,11 @@
             },
             jump2authors(id){
               console.log('author id is', id)
+              changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res)
+      })
               this.$router.push({
                 path: '/authorPage',
                 query: {

@@ -20,8 +20,8 @@
     </div>
     <div id="searchWrapper">
       <div id="searchBar">
-        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput">
-          <el-button slot="append" icon="el-icon-search" @click="toSearch" @keyup.enter="toSearch"></el-button>
+        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput" @keyup.enter.native="toSearch">
+          <el-button slot="append" icon="el-icon-search" @click="toSearch" ></el-button>
         </el-input>
       </div>
     </div>
@@ -228,6 +228,9 @@ export default {
   display: flex;
   font-family: system-ui;
   font-size: 18px;
+}
+.myBox:hover{
+  cursor: default;
 }
 #boldTitle{
 

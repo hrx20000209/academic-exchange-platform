@@ -177,6 +177,7 @@
   const echarts = require('echarts/lib/echarts')
   import Nav_with_searchBox from "../components/nav_with_searchBox";
   import ESApi from '../api/elastic search'
+  import {changeViewTime} from "../request/api";
     export default {
         name: "Institution",
       components: {Nav_with_searchBox},
@@ -497,6 +498,11 @@
             ESApi.getAuthorInfo(id).then(response => {
               console.log(response);
               if (response.data.hits.hits.length > 0) {
+                changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res)
+      })
                 this.$router.push({
                   path: '/authorPage',
                   query: {

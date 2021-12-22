@@ -214,7 +214,7 @@ import StatsDigitTotal from "../../components/statsDigitTotal";
 import CiteAndPublish from "../../components/stats/citeAndPublish";
 import AuthorRelationship from "../../components/stats/authorRelaitionship";
 import CooperatorPieChart from "../../components/stats/cooperatorPieChart";
-import {getFavo, getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
+import {changeViewTime, getFavo, getFollow, getUsrInfo, updateInfo, uploadImage} from "../../request/api";
 import MyLikeAuthor from "../../components/homeComp/myLikeAuthor";
 import MyCollection from "../../components/homeComp/myCollection";
 import AboutMe_author from "../../components/stats/aboutMe_author";
@@ -497,6 +497,11 @@ export default {
     },
     toAuthorPage() {
       console.log(this.scolarId)
+      changeViewTime({
+        author_id: this.scolarId
+      }).then(res => {
+        console.log(res)
+      })
       this.$router.push({
         path: '/authorPage',
         query: {

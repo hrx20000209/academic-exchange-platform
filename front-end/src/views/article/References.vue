@@ -85,6 +85,7 @@ import AC from '../article/Article.vue'
 // import QRCode from "qrcode";
 let Clipboard = window.navigator.clipboard;
 import QRCode from 'qrcodejs2'
+import {changeViewTime} from "../../request/api";
 export default {
   name: "References",
   data(){
@@ -208,6 +209,11 @@ export default {
       ESApi.getAuthorInfo(id).then(response => {
         console.log(response);
         if (response.data.hits.hits.length > 0) {
+          changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res)
+      })
           this.$router.push({
             path: '/authorPage',
             query: {

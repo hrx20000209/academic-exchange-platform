@@ -295,6 +295,7 @@
 import QRCode from 'qrcode';
 import _ from 'lodash';
 import Nav_without_searchBox from "./nav_without_searchBox";
+import {changeViewTime} from "../request/api";
 
 let Clipboard = window.navigator.clipboard;
 const TYPES = {
@@ -717,6 +718,11 @@ export default {
       this.$router.push(route);
     },
     goToAuthorPage(id) {
+      changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res)
+      })
       this.$router.push({
           path: '/authorPage',
           query: {

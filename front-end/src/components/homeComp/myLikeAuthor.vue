@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {cancelFollow, followAuthor} from "../../request/api";
+import {cancelFollow, changeViewTime, followAuthor} from "../../request/api";
 
 export default {
   name: "myLikeAuthor",
@@ -58,6 +58,11 @@ export default {
       });
     },
     toPage(index) {
+      changeViewTime({
+        author_id: this.followList[index].scholar_id
+      }).then(res => {
+        console.log(res)
+      })
       this.$router.push({
         path: '/authorPage',
         query: {

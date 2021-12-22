@@ -1,13 +1,14 @@
 <template>
   <div id="navBar">
-    <div id="navLogoPlace">
-          <img style="width: 60px" src="../assets/logo.png">
+    <div id="navLogoPlace" @click="toHome">
+
+    <img style="width: 60px" src="../assets/logo.png">
+
     </div>
     <div id="jumpRouterPlace">
       <div class="myBox">
-        <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
-          <i to="/" class="el-icon-s-home">首页</i>
-        </router-link>
+        <div id="boldTitle">Academic</div>
+        <div id="smallTitle">Scholar</div>
       </div>
 
 <!--      <div class="jumpRouterDetail">-->
@@ -85,7 +86,7 @@ import {changeUserPassword} from "../request/api";
 
 export default {
   name: "nav_without_searchBox",
-  data() {
+    data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'));
@@ -126,6 +127,13 @@ export default {
     };
   },
   methods: {
+    toHome(){
+      this.$router.push('/')
+    },
+    toSearch(){
+      this.$store.commit('setSearchInput',this.input2)
+      this.$router.push('/search')
+    },
     changePassword() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -216,7 +224,20 @@ export default {
   width: 60px;
   height: 60px;
 }
+.myBox{
+  display: flex;
+  font-family: system-ui;
+  font-size: 18px;
+}
+.myBox:hover{
+  cursor: default;
+}
+#boldTitle{
 
+  font-weight: bolder;
+}
+#smallTitle{
+}
 #jumpRouterPlace {
   display: inline-flex;
   margin-top: auto;
