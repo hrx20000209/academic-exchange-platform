@@ -1,7 +1,7 @@
 <template>
   <div class="grey">
     <div style="height: 20px"></div>
-    <div style="height: 100%;width: 100%;overflow: hidden;margin-bottom: 5px">
+    <div style="height: 100%;width: 80%;overflow: hidden;margin-bottom: 5px;margin-left: 10%">
       <div style="float: left;margin-bottom: 10px" class="bigFrame">
         <div class="upFrame">
           <div class="upFrameContent">摘要</div>
@@ -29,9 +29,9 @@
     <div style="height: 20px">
     </div>
     <div class="textFrame">
-      <div style="height: 20px"></div>
-      <div class="stats">
-        <div class="statsFrame">
+      <!--      <div style="height: 20px"></div>-->
+      <div class="stats" style="margin-top: 10px;margin-bottom: 10px">
+        <div class="statsFrame" style="margin-bottom: 10px">
           <div class="upFrame">
             <div class="upFrameContent">引 用 量</div>
           </div>
@@ -55,11 +55,13 @@
           </div>
         </div>
       </div>
-      <div class="tree" style="height: 600px;width: 90%">
+    </div>
+    <div style="width: 80%; margin-left: 10%">
+      <div class="tree" style="height: 600px;width: 97%;margin-left: 10px;margin-bottom: 10px">
         <div class="upFrame">
           <div class="upFrameContent">引用文献</div>
         </div>
-        <div class="downFrame">
+        <div class="downFrame" style="margin-bottom: 20px">
           <div class="statsFrameContent">
             <!-- 这里放表格 -->
             <div v-if="this.f === 1">
@@ -127,11 +129,11 @@ export default {
   },
   methods: {
     search(paper_id) {
-      console.log('111')
+      // console.log('111')
       ESApi.getMsg(paper_id).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         this.length = response.data.hits.total.value
-        console.log(this.length)
+        // console.log(this.length)
         this.$store.state.abstract = ''
         this.$store.state.references = []
         this.reference = []
@@ -140,25 +142,25 @@ export default {
           // if (response.data.hits.hits[i]._source.id === paper_id) {
           let article = response.data.hits.hits[0]
           this.title = article._source.title
-          console.log(this.title)
+          // console.log(this.title)
           // this.abstracts = article._source.abstract
           this.$store.commit('setTitle', article._source.title)
-          console.log(this.$store.state.title)
+          // console.log(this.$store.state.title)
 
           this.year = article._source.year
           if (article._source.url === undefined) {
             this.flagLoad = false
-            console.log('aaaa')
+            // console.log('aaaa')
           } else {
             this.urlArticle = article._source.url
-            console.log(this.urlArticle)
+            // console.log(this.urlArticle)
           }
           if (article._source.abstract === undefined) {
             this.flag = 0
-            console.log('flag')
+            // console.log('flag')
           } else {
             this.$store.commit('setAbstract', article._source.abstract)
-            console.log(this.$store.state.abstract)
+            // console.log(this.$store.state.abstract)
           }
           for (var k = 0; k < article._source.citation_by_year.length; k++) {
             // console.log(article._source.citation_by_year[k])
@@ -166,20 +168,20 @@ export default {
             this.citation_by_year.push(article._source.citation_by_year[k])
             // console.log(this.$store.state.citation_by_year[k])
           }
-          console.log('333333333333333333333333333333333333333333333333333333333')
-          console.log(this.citation_by_year)
-          console.log(this.$store.state.citation_by_year)
+          // console.log('333333333333333333333333333333333333333333333333333333333')
+          // console.log(this.citation_by_year)
+          // console.log(this.$store.state.citation_by_year)
           for (var l = 0; l < article._source.reference.length; l++) {
-            console.log(article._source.reference[l])
+            // console.log(article._source.reference[l])
             this.reference.push(article._source.reference[l])
             this.$store.commit('setReferences', article._source.reference[l])
-            console.log(this.$store.state.references[l])
+            // console.log(this.$store.state.references[l])
           }
           for (var j = 0; j < article._source.authors.length; j++) {
             // this.authors[j] = article._source.authors[j]
             this.authors.push(article._source.authors[j])
           }
-          console.log(this.authors)
+          // console.log(this.authors)
           this.searchRelated();
           // this.buildPie();
           this.searchRe();
@@ -197,10 +199,10 @@ export default {
         console.log('1.1')
         console.log(this.reference[j])
         ESApi.getRe(this.reference[j]).then(response =>{
-          console.log('进入es搜索')
-          console.log(response.data.hits.hits[0])
-          console.log(response.data.hits.total.value)
-          console.log('1.2')
+          // console.log('进入es搜索')
+          // console.log(response.data.hits.hits[0])
+          // console.log(response.data.hits.total.value)
+          // console.log('1.2')
           let article = response.data.hits.hits[0]
           this.references.push(article._source)
           this.$store.commit('setRefer',article._source)
@@ -229,10 +231,19 @@ export default {
         this.buildPie()//娃娃消失
       }, 400);
     },
-    a(){
-      if(this.oneData.children.length === 0){
-        console.log('324324444444442333333333333132')
-      }
+    getVisit(id){
+      console.log('获取')
+      this.axios({
+        method:"post",
+        // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
+        url:"http://139.9.132.83:8000/search/visitpaper",
+        data:{
+          paper_id: id
+        }
+      })
+        .then(response=>{
+          console.log(response.data)
+        })
     },
     getRe(id){
       this.axios({
@@ -306,6 +317,7 @@ export default {
       pie.setOption(option)
       pie.on('click', function(params) {
         console.log(params.data.id)
+        that.getVisit(params.data.id)
         that.jumpPaperRe(params.data.id)
       })
     },
@@ -424,6 +436,7 @@ export default {
 
       pie2.on('click', function(params) {
         console.log(params.data.id)
+        that.getVisit(params.data.id)
         that.jumpPaperRe(params.data.id)
       })
     },
@@ -488,11 +501,13 @@ export default {
 
 .bigFrame {
   /*height: 300px;*/
-  width: 66%;
+  width: 80%;
   background: white;
   border-radius: 2px;
+  margin-left: 10px;
   /*margin: auto;*/
-  margin-left: 10%;
+  /*margin-left: 10%;*/
+  /*margin-left: 10px;*/
   /*margin-bottom: 30px;*/
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2)
 }
@@ -528,64 +543,11 @@ export default {
 
 }
 
-.textFrameContentButton {
-  margin: auto;
-  text-align: center;
-}
-
-.textFrameContentMain {
-  text-align: right;
-  color: darkgray;
-  margin-bottom: 20px;
-}
-
-.textBigFrame {
-  width: 100%;
-  background: white;
-  border-radius: 2px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
-}
-
-.textUpFrameContent {
-  /*padding: 15px;*/
-  /*margin-left: 15px;*/
-  background: rgba(221, 221, 221, 0.3);
-  border-bottom: rgba(0, 0, 0, .12) solid 1px;
-  height: 50px;
-}
-
-/*.statsFrame{*/
-/*  width: 80%;*/
-/*  margin: auto;*/
-/*  background: white;*/
-/*  !*box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);*!*/
-/*  margin-bottom: 10px;*/
-/*}*/
-.statsContent {
-  float: left;
-  width: 21.5%;
-  /*border: lightgrey solid 1px;*/
-  height: 80px;
-  padding: 10px;
-}
 
 .statsFrameContent {
   padding: 25px;
 }
 
-.rightFrame {
-  width: 25%;
-  float: right;
-  margin-right: 10%;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
-}
-
-.rightPartContent {
-  font-size: 13px;
-  margin-bottom: 2px;
-}
 
 .notAbstract {
   width: 100%;
@@ -604,13 +566,6 @@ export default {
   overflow: hidden;
 }
 
-.statsContent {
-  float: left;
-  width: 21.5%;
-  /*border: lightgrey solid 1px;*/
-  height: 80px;
-  padding: 10px;
-}
 
 .statsFrameContent {
   padding: 25px;
@@ -618,7 +573,7 @@ export default {
 
 .statsFrame {
   width: 46%;
-  margin: 10px auto;
+  /*margin: 10px auto;*/
   margin-left: 10px;
   float: left;
   background: white;
