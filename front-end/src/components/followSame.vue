@@ -51,7 +51,7 @@ export default {
       changeViewTime({
         author_id: this.$props.followList[index].scholar_id
       }).then(res => {
-        console.log(res)
+        // console.log(res)
       })
       this.$router.push({
         path: '/authorPage',

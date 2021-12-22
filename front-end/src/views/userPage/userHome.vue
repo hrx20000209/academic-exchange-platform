@@ -319,7 +319,7 @@ export default {
     this.getUserInformation(this.$route.query.id)
     this.getFollowList()
     this.getFavo()
-    console.log(this.ifVisitor == false)
+    // console.log(this.ifVisitor == false)
   },
   methods: {
     checkVisitorMode(){
@@ -331,29 +331,29 @@ export default {
       getFollow({
         user_id: this.$route.query.id
       }).then(res => {
-        console.log("getfollow:")
-        console.log(res)
+        // console.log("getfollow:")
+        // console.log(res)
         this.followList = res
         this.someFollows = this.followList.slice(0,5)
         this.stateList = new Array(this.followList.length).fill(1)
         for(let i=0;i<this.followList.length;i++){
           this.IMGSrc.push(this.oriSrc+this.followList[i].id)
         }
-        console.log(this.stateList)
+        // console.log(this.stateList)
       })
     },
     getFavo() {
       getFavo({
         user_id: this.$route.query.id
       }).then(res => {
-        console.log(1)
-        console.log(res)
+        // console.log(1)
+        // console.log(res)
         this.collectionList = res.favorites
       })
     },
     updateInfor() {
-      console.log(1)
-      console.log(this.user)
+      // console.log(1)
+      // console.log(this.user)
       updateInfo({
         user_id: this.user.user_id,
         field: this.user.field,
@@ -361,7 +361,7 @@ export default {
         degree: this.user.degree,
         summary: this.user.summary
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.getUserInformation()
       })
     },
@@ -373,22 +373,22 @@ export default {
       this.updateInfor()
     },
     handleSuccess(response, file, fileList) {
-      console.log(response);
-      console.log(this.add_pic_url);
+      // console.log(response);
+      // console.log(this.add_pic_url);
       // this.success = response.data.message;
       // this.dialogVisible = true;
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      // console.log(file, fileList);
     },
     handlePreview(file) {
-      console.log(file);
+      // console.log(file);
     },
     test(file) {
-      console.log(file)
+      // console.log(file)
       this.ifNUll = true
-      console.log(this.ifNUll);
-      console.log(this.previewsrc)
+      // console.log(this.ifNUll);
+      // console.log(this.previewsrc)
       this.imgRaw = file.raw
     },
     errorHandler() {
@@ -459,15 +459,15 @@ export default {
     },
     submitUpload() {
       this.loading = true
-      console.log(this.user.user_id)
-      console.log(this.add_pic_url);
+      // console.log(this.user.user_id)
+      // console.log(this.add_pic_url);
       let formDatas = new FormData()
       formDatas.append('user_id', this.user.user_id)
       formDatas.append('pic', this.imgRaw)
-      console.log(this.imgRaw)
+      // console.log(this.imgRaw)
       // axios.post('http://139.9.132.83:8000/user/postImage',formDatas).then(res=>(console.log(res)))
       uploadImage(formDatas).then(res => {
-        console.log(res)
+        // console.log(res)
         this.needUpdate++
         this.loading = false
         this.$message({
@@ -481,26 +481,26 @@ export default {
       getUsrInfo({
         user_id: id
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.user = res.data
-        console.log(this.user)
+        // console.log(this.user)
         this.ifAuthor = res.ifAuthor
         this.scolarId = res.scolarId
         // this.add_pic_url = this.add_pic_url + this.user.user_id
         // this.get_pic_url = this.get_pic_url + this.user.user_id
         this.str = this.user.degree.split(' ')
-        console.log(this.str)
+        // console.log(this.str)
         this.subNum = this.subject.indexOf(this.str[0])
         this.rankNum = this.rank.indexOf(this.str[1])
         this.form.field = this.user.field
       })
     },
     toAuthorPage() {
-      console.log(this.scolarId)
+      // console.log(this.scolarId)
       changeViewTime({
         author_id: this.scolarId
       }).then(res => {
-        console.log(res)
+        // console.log(res)
       })
       this.$router.push({
         path: '/authorPage',

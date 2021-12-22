@@ -152,20 +152,20 @@
         >
           <i class="el-icon-zoom-in"></i>
         </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleDownload(file)"
-        >
-          <i class="el-icon-download"></i>
-        </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="previewRemove(file)"
-        >
-          <i class="el-icon-delete"></i>
-        </span>
+<!--        <span-->
+<!--          v-if="!disabled"-->
+<!--          class="el-upload-list__item-delete"-->
+<!--          @click="handleDownload(file)"-->
+<!--        >-->
+<!--          <i class="el-icon-download"></i>-->
+<!--        </span>-->
+<!--        <span-->
+<!--          v-if="!disabled"-->
+<!--          class="el-upload-list__item-delete"-->
+<!--          @click="previewRemove(file)"-->
+<!--        >-->
+<!--          <i class="el-icon-delete"></i>-->
+<!--        </span>-->
       </span>
         </div>
       </el-upload>
@@ -377,7 +377,6 @@ export default {
       getViewTime({
         author_id:this.$route.query.id
       }).then(res=>{
-        console.log(res)
         this.vietime = res.num
       })
     },
@@ -393,13 +392,13 @@ export default {
       })
     },
     appealChange(file,fileList){
-      console.log(file)
-      console.log(fileList)
+      // console.log(file)
+      // console.log(fileList)
       this.AppealfileList = fileList
     },
     handleRemove(file, fileList) {
-      console.log(file);
-      console.log(fileList)
+      // console.log(file);
+      // console.log(fileList)
       this.AppealfileList = fileList
     },
     previewRemove(file) {
@@ -410,7 +409,7 @@ export default {
       this.dialogVisible = true;
     },
     handleDownload(file) {
-      console.log(file);
+      // console.log(file);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -439,9 +438,9 @@ export default {
           formDatas.append('pic1', 'kong')
         }
         formDatas.append('describe', this.appealDetail)
-        console.log(formDatas)
+        // console.log(formDatas)
         uploadAppealImage(formDatas).then(res => {
-          console.log(res)
+          // console.log(res)
           this.$message({
             message: '上传成功',
             type: 'success'
@@ -452,15 +451,15 @@ export default {
 
     },
     handlePreview(file) {
-      console.log(file);
+      // console.log(file);
     },
     test(file) {
-      console.log(file)
+      // console.log(file)
       this.imgRaw = file.raw
     },
     handleSuccess(response, file, fileList) {
-      console.log(response);
-      console.log(this.add_pic_url);
+      // console.log(response);
+      // console.log(this.add_pic_url);
       // this.success = response.data.message;
       // this.dialogVisible = true;
     },
@@ -493,8 +492,8 @@ export default {
       getScolarUserInfo({
         author_id: this.$route.query.id,
       }).then(res => {
-        console.log('scolar')
-        console.log(res)
+        // console.log('scolar')
+        // console.log(res)
         this.ifHaveAccount = res.ifHaveAccount
         this.userInfo = res.user
         this.usrName = this.userInfo.name
@@ -507,7 +506,7 @@ export default {
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
-          console.log(res)
+          // console.log(res)
           this.checkFollow()
           if (res.message == 'Follow success') {
             this.$message({
@@ -528,8 +527,8 @@ export default {
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
-          console.log('check')
-          console.log(res)
+          // console.log('check')
+          // console.log(res)
           if (res.message == 'false') {
             this.ifFollow = false
           } else if (res.message == 'true') {
@@ -546,7 +545,7 @@ export default {
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
-          console.log(res)
+          // console.log(res)
           this.$message({
             message: '取消关注成功',
             type: 'success'
@@ -562,44 +561,44 @@ export default {
       });
     },
     getAuthorInfo(id) {
-      console.log('this.id')
+      // console.log('this.id')
       ESApi.getAuthorInfo(id).then(response => {
-        console.log(response);
+        // console.log(response);
         this.ELres = response.data.hits.hits[0]._source;
         this.user = this.ELres;
         if (this.user.orgs.length > 3) {
           this.user.orgs = this.user.orgs.slice(0, 3)
         }
-        console.log('this.user')
+        // console.log('this.user')
 
       })
     },
     getAuthorsPaper(id) {
       ESApi.getAuthorPaper(id).then(res => {
-        console.log('ssss')
-        console.log(res)
+        // console.log('ssss')
+        // console.log(res)
         this.oriResearch = res.data.hits.hits
         for (var i = 0; i < this.oriResearch.length; i++) {
           // console.log(this.research[i]._source.authors)
           if (this.oriResearch[i]._source.authors.length > 4) {
-            console.log('22323')
+            // console.log('22323')
             this.oriResearch[i]._source.authors = this.oriResearch[i]._source.authors.slice(0, 4)
           }
         }
         this.research = this.oriResearch.slice(0, 10);
-        console.log(this.research.length)
+        // console.log(this.research.length)
         this.cutTotal = this.oriResearch.length
-        console.log(this.research)
+        // console.log(this.research)
       })
     },
     editSympleInfo() {
       this.dialogFormVisible = true
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.research = this.oriResearch.slice((val - 1) * 10, val * 10)
     },
     selectActiveMode(flag) {
@@ -623,7 +622,7 @@ export default {
       getdata({
         author_id: id
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.datas = res.datas
         this.linkmes = res.linkmes
       })

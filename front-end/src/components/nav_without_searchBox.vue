@@ -102,8 +102,8 @@ export default {
         callback(new Error('请再次输入密码'));
       } else if (value !== this.ruleForm.pass) {
         callback(new Error('两次输入密码不一致!'));
-        console.log(value)
-        console.log(this.ruleForm.pass)
+        // console.log(value)
+        // console.log(this.ruleForm.pass)
       } else {
         callback();
       }
@@ -150,7 +150,7 @@ export default {
           })
 
         } else {
-          console.log('error submit!!');
+          // console.log('error submit!!');
           return false;
         }
       });
@@ -170,8 +170,8 @@ export default {
         localStorage.setItem('user_id', '-1')
         localStorage.setItem('ifLogin', 0)
         this.ifLogin = localStorage.getItem('ifLogin')
-        console.log(localStorage.getItem('ifLogin'))
-        console.log(this.ifLogin)
+        // console.log(localStorage.getItem('ifLogin'))
+        // console.log(this.ifLogin)
         this.$router.go(0)
       } else if (command == "changePW") {
         this.changePWVisible = true
@@ -193,7 +193,7 @@ export default {
   },
   mounted() {
     this.ifLogin = localStorage.getItem('ifLogin')
-    console.log(this.ifLogin)
+    // console.log(this.ifLogin)
   }
 }
 </script>

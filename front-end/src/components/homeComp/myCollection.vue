@@ -165,14 +165,14 @@ export default {
     //   });
     // },
     toPaper(id) {
-      console.log(id)
+      // console.log(id)
       this.getVisit(id)
       this.$router.push({
         path: '/article/' + id + '/overviews'
       })
     },
     getVisit(id) {
-      console.log('获取')
+      // console.log('获取')
       this.axios({
         method: "post",
         // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
@@ -182,11 +182,11 @@ export default {
         }
       })
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
         })
     },
     deletePaperInFavo(favo, idx) {
-      console.log(this.$props.CollectionList[favo].name)
+      // console.log(this.$props.CollectionList[favo].name)
       this.$confirm('此操作将永久删除该收藏项, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -202,7 +202,7 @@ export default {
             message: '删除成功',
             type: 'success'
           });
-          console.log(res)
+          // console.log(res)
         })
       }).catch(() => {
         this.$message({
@@ -227,12 +227,12 @@ export default {
       this.create = false;
     },
     createConfirm() {
-      console.log(this.newName)
+      // console.log(this.newName)
       uploadNewFavo({
         user_id: localStorage.getItem('user_id'),
         favorite_name: this.newName
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         // this.$router.go(0)
         if (res.message == 'favorite exist') {
           this.$message.error('收藏夹已存在');
@@ -240,7 +240,7 @@ export default {
           var obj = {name: this.newName, detail: []}
           var tmp = Object.create(obj)
           this.$props.CollectionList.push(tmp)
-          console.log(this.CollectionList)
+          // console.log(this.CollectionList)
           this.create = false;
           this.$message({
             message: '添加成功',
@@ -260,16 +260,16 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(this.checkList)
-        console.log(this.$props.CollectionList)
+        // console.log(this.checkList)
+        // console.log(this.$props.CollectionList)
         this.saveList = this.checkList
         for (var i = 0; i < this.checkList.length; i++) {
-          console.log(this.$props.CollectionList[this.checkList[i]])
+          // console.log(this.$props.CollectionList[this.checkList[i]])
           deleFavo({
             user_id: localStorage.getItem('user_id'),
             favorite_name: this.$props.CollectionList[this.checkList[i]].name
           }).then(res => {
-            console.log(res)
+            // console.log(res)
             this.deleteCollection = false;
             this.$props.getFavo()
           })
@@ -291,9 +291,9 @@ export default {
       this.move = false;
     },
     moveConfirm() {
-      console.log(this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx].paper_name)
-      console.log(this.$props.CollectionList[this.radio].name)
-      console.log(this.$props.CollectionList[this.curpreFavoIdx].name)
+      // console.log(this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx].paper_name)
+      // console.log(this.$props.CollectionList[this.radio].name)
+      // console.log(this.$props.CollectionList[this.curpreFavoIdx].name)
       moveFavo({
         user_id: localStorage.getItem('user_id'),
         paper_id: this.$props.CollectionList[this.curpreFavoIdx].detail[this.curpreInFavoIdx].paper_id,

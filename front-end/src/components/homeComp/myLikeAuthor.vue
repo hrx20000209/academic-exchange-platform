@@ -61,7 +61,7 @@ export default {
       changeViewTime({
         author_id: this.followList[index].scholar_id
       }).then(res => {
-        console.log(res)
+        // console.log(res)
       })
       this.$router.push({
         path: '/authorPage',
@@ -73,13 +73,13 @@ export default {
     cancelFollow(index) {
       this.$props.stateList[index]=0;
             this.update++;
-      console.log(this.$props.stateList[index] == 1)
+      // console.log(this.$props.stateList[index] == 1)
       cancelFollow({
         follow_id: this.followList[index].scholar_id,
         follower_id: localStorage.getItem('user_id')
       }).then(res => {
-        console.log(this.$props.stateList)
-        console.log(res)
+        // console.log(this.$props.stateList)
+        // console.log(res)
         this.$message({
               message: '取消关注成功',
               type: 'success'
@@ -93,7 +93,7 @@ export default {
           follow_id: this.followList[index].scholar_id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.message == 'Follow success') {
             this.$message({
               message: '关注成功',

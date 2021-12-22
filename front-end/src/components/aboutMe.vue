@@ -147,7 +147,7 @@ export default {
     },
     introDialogConfirm() {
       this.IntroDialog = false;
-      console.log(this.$props.user)
+      // console.log(this.$props.user)
 
       this.user.summary = this.intro;
       this.updateInfor()
@@ -172,12 +172,12 @@ export default {
     TechDialogConfirm() {
       this.TechDialog = false;
       this.user.field = this.fieldContent
-      console.log(this.user.field)
+      // console.log(this.user.field)
       this.updateInfor()
     },
     updateInfor() {
       // console.log(1)
-      console.log(this.user)
+      // console.log(this.user)
       updateInfo({
         user_id: this.user.user_id,
         field: this.user.field,
@@ -185,8 +185,8 @@ export default {
         degree: this.user.degree,
         summary: this.user.summary
       }).then(res => {
-        console.log(this.user.field)
-        console.log(res)
+        // console.log(this.user.field)
+        // console.log(res)
         this.$message({
           type: 'success',
           message: '修改成功'

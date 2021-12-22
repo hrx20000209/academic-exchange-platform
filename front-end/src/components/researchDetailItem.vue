@@ -56,7 +56,7 @@ export default {
       })
     },
     getVisit(id){
-      console.log('获取')
+      // console.log('获取')
       this.axios({
         method:"post",
         // url:"http://139.9.132.83:8000/user/IsFavoritePaper",
@@ -66,7 +66,7 @@ export default {
         }
       })
         .then(response=>{
-          console.log(response.data)
+          // console.log(response.data)
         })
     },
     titleCase2(s) {
