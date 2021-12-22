@@ -119,7 +119,7 @@ export default {
     prepareDate(id){
       ESApi.getInstituteInfo(id).then(response=>
       {
-        console.log(response)
+        // console.log(response)
         this.institute = response.data.hits.hits[0]._source
       })
     },
@@ -134,7 +134,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.user)
+    // console.log(this.user)
     // this.prepareDate(this.user.orgs[0].id)
   }
 }
