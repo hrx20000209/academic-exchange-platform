@@ -770,6 +770,12 @@ export default {
         return;
       }
       this.$store.commit('setSearchInput', this.searchInput);
+<<<<<<< Updated upstream
+=======
+      localStorage.removeItem('advancedSearchInput')
+      localStorage.searchInput = this.searchInput;
+      console.log(`saving searchInput: ${this.searchInput}`);
+>>>>>>> Stashed changes
       console.log("searching: \n\t" + this.searchInput);
       if (this.activeTab === "article") {
         console.log("SEARCHING FOR ARTICLES");
@@ -936,6 +942,7 @@ export default {
     }
   },
   mounted() {
+<<<<<<< Updated upstream
     let storedSearchInput = this.$store.state.searchInput;
     let storedAdvancedSearchInput = this.$store.state.advancedSearchInput;
     if (storedSearchInput.length !== 0) {
@@ -943,6 +950,29 @@ export default {
     }
     if (storedAdvancedSearchInput.length !== 0) {
       this.advancedSearchInput = storedAdvancedSearchInput;
+=======
+    let storedSearchInput = this.$store.state.searchInput.length > 0
+      ? this.$store.state.searchInput
+      : (localStorage.searchInput ? localStorage.searchInput : '');
+    let defaultRule = {
+      bool: null, // MUST MUST_NOT SHOULD
+      type: null, // MATCH(field, match), RANGE(field, range{op, value}), EXISTS(field)
+      field: null, // MATCH: title, author, abstract, venue; RANGE: n_citation, year??; EXIST: ALL
+      match: null, // string
+      range: {
+        op: null, // >= <=
+        value: null, // number
+      }
+    }
+    let storedAdvancedSearchInput = (localStorage.advancedSearchInput && this.isArray(JSON.parse(localStorage.advancedSearchInput)))
+      ? JSON.parse(localStorage.advancedSearchInput)
+      : [defaultRule];
+    console.log(`STORED: ${storedSearchInput}`);
+    console.log(storedAdvancedSearchInput);
+    this.searchInput = storedSearchInput;
+    this.advancedSearchInput = storedAdvancedSearchInput;
+    if (storedAdvancedSearchInput.length !== 0 && JSON.stringify(storedAdvancedSearchInput) !== JSON.stringify([defaultRule])) {
+>>>>>>> Stashed changes
       this.activeSearchTabs = ['1'];
       this.advancedSearch();
     } else {

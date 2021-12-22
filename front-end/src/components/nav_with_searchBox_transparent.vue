@@ -3,7 +3,11 @@
     <div id="jumpRouterPlace">
       <div class="myBox">
         <router-link tag="div" to="/" class="jumpRouterDetail" replace active-class="myActiveClass">
+<<<<<<< Updated upstream
           <i to="/" style="margin-left: 10px" class="el-icon-s-home">首页</i>
+=======
+          <i to="/" style="color:#585858;margin-left: 35px; font-size: 16px" class="el-icon-s-home">首页</i>
+>>>>>>> Stashed changes
         </router-link>
       </div>
 
@@ -32,15 +36,26 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
             <el-dropdown-menu slot="dropdown">
+<<<<<<< Updated upstream
               <el-dropdown-item class="myDropdown" command="toHome">个人信息</el-dropdown-item>
               <!--              <el-dropdown-item class="myDropdown">系统设置</el-dropdown-item>-->
+=======
+              <el-dropdown-item class="myDropdown">个人信息</el-dropdown-item>
+              <el-dropdown-item class="myDropdown" command="changePW">修改密码</el-dropdown-item>
+>>>>>>> Stashed changes
               <el-dropdown-item class="myDropdown" command="exit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+<<<<<<< Updated upstream
         <!--        <div id="createNewBox">-->
         <!--          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>-->
         <!--        </div>-->
+=======
+        <div id="createNewBox">
+          <el-button id="createNew" @click="createNew" icon="el-icon-plus">发布</el-button>
+        </div>
+>>>>>>> Stashed changes
       </div>
       <div v-else id="LoginPane" style="margin-left: 80px; margin-top: -5px">
         <div style="display: flex; ">
@@ -172,8 +187,11 @@ export default {
         this.$router.go(0)
       } else if (command == "changePW") {
         this.changePWVisible = true
+<<<<<<< Updated upstream
       } else if (command == "toHome") {
         this.toUsrHome()
+=======
+>>>>>>> Stashed changes
       }
     },
     toUsrHome() {
