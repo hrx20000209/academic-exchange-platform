@@ -297,6 +297,7 @@
 import axios from "axios"
 import ESApi from '../../api/elastic search'
 import Nav_with_searchBox from "../../components/nav_with_searchBox";
+import {changeViewTime} from "../../request/api";
 
 export default {
   name: "Article",
@@ -369,6 +370,11 @@ export default {
       ESApi.getAuthorInfo(id).then(response => {
         console.log(response);
         if (response.data.hits.hits.length > 0) {
+          changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res)
+      })
           this.$router.push({
             path: '/authorPage',
             query: {

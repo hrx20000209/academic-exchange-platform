@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {getdata} from "../../request/api";
+import {changeViewTime, getdata} from "../../request/api";
 import ESApi from "../../api/elastic search";
 
 export default {
@@ -225,7 +225,7 @@ export default {
               borderWidth: 1,
               shadowBlur: 10,
               shadowColor: 'rgba(1,1,1,0.5)',
-              color: 'rgb(37,86,165)'
+              color: 'rgb(82,82,82)'
               //               borderColor: "#fff",
               // borderWidth: 1,
               // shadowBlur: 10,
@@ -248,6 +248,11 @@ export default {
           ESApi.getAuthorInfo(id).then(response => {
             console.log(response);
             if (response.data.hits.hits.length > 0) {
+                    changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res)
+      })
               this.$router.push({
                 path: '/authorPage',
                 query: {

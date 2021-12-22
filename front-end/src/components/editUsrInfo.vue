@@ -97,7 +97,7 @@ export default {
     }
   },
   mounted() {
-        console.log(this.subNum)
+        // console.log(this.subNum)
   },
   methods: {
     toEditMode() {
@@ -127,7 +127,7 @@ export default {
         degree: this.subject[this.subNum]+' '+this.rank[this.rankNum],
         summary: this.user.summary
       }).then(res => {
-        console.log(res.Message)
+        // console.log(res.Message)
         if(res.Message == 'change user information success'){
           this.$message({
           message: '修改成功！',

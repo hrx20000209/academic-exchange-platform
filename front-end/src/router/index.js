@@ -3,6 +3,12 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import {changeViewTime} from "../request/api";
 
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -146,18 +152,6 @@ const router = new VueRouter({
 
 export default router
 router.beforeEach((to, from, next) => {
-  if (to.path == '/authorPage') {
-    if (from.path != '/authorPage'||(from.path == '/authorPage' && from.query.id != to.query.id)) {
-      changeViewTime({
-        author_id: to.query.id
-      }).then(res => {
-        console.log(res)
-      })
-    }
-
     next()
-  } else {
-    next()
-  }
 
 })

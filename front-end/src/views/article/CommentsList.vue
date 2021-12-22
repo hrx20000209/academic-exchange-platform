@@ -229,9 +229,14 @@ export default {
     },
     getCommentsList(){
       this.user_id = localStorage.getItem('user_id')
-      console.log(this.user_id)
-      console.log('进入获取评论');
-      console.log(this.$route.params.paper_id)
+      // console.log(this.user_id)
+      // console.log('进入获取评论');
+      // console.log(this.$route.params.paper_id)
+      if(this.user_id === null){
+        this.user_id = -1
+      }else{
+        this.user_id = localStorage.getItem('user_id')
+      }
       this.axios({
         method: "get",
         // url:'http://139.9.132.83:8000/communicate/comment_get?commented_id=' + this.$store.state.paper_id,

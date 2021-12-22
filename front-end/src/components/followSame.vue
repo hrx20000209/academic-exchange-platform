@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import {changeViewTime} from "../request/api";
+
 export default {
   name: "followSame",
   props: ['followList'],
@@ -46,6 +48,11 @@ export default {
       });
     },
     toPaper(index){
+      changeViewTime({
+        author_id: this.$props.followList[index].scholar_id
+      }).then(res => {
+        // console.log(res)
+      })
       this.$router.push({
         path: '/authorPage',
         query: {

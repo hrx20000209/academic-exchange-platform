@@ -20,8 +20,8 @@
     </div>
     <div id="searchWrapper">
       <div id="searchBar">
-        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput">
-          <el-button slot="append" icon="el-icon-search" @click="toSearch" @keyup.enter="toSearch"></el-button>
+        <el-input placeholder="请输入内容" v-model="input2" id="mySearchInput" @keyup.enter.native="toSearch">
+          <el-button slot="append" icon="el-icon-search" @click="toSearch" ></el-button>
         </el-input>
       </div>
     </div>
@@ -102,8 +102,8 @@ export default {
         callback(new Error('请再次输入密码'));
       } else if (value !== this.ruleForm.pass) {
         callback(new Error('两次输入密码不一致!'));
-        console.log(value)
-        console.log(this.ruleForm.pass)
+        // console.log(value)
+        // console.log(this.ruleForm.pass)
       } else {
         callback();
       }
@@ -228,6 +228,9 @@ export default {
   display: flex;
   font-family: system-ui;
   font-size: 18px;
+}
+.myBox:hover{
+  cursor: default;
 }
 #boldTitle{
 

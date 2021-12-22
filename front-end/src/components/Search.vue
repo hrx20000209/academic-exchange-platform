@@ -93,7 +93,6 @@
       <!--      </el-switch>-->
     </div>
     <div class="below-searchbar">
-      <!--      TODO 改用做好的tab -->
       <el-tabs v-model="activeTab" @tab-click="search">
         <el-tab-pane label="文 献" name="article">
           <div class="tab">
@@ -180,7 +179,6 @@
                             @click="copyUrl(result.articlePageUrl)"
                             :underline="false">点击此处复制链接
                           </el-link>
-                          <!-- TODO 保存图片按钮-->
                           <h4 class="textInQRCodePopover">或分享二维码</h4>
                           <canvas :id="result.articlePageUrl"></canvas>
                           <el-button
@@ -295,6 +293,7 @@
 import QRCode from 'qrcode';
 import _ from 'lodash';
 import Nav_without_searchBox from "./nav_without_searchBox";
+import {changeViewTime} from "../request/api";
 
 let Clipboard = window.navigator.clipboard;
 const TYPES = {
@@ -328,6 +327,8 @@ const getKeyNameByKeyValue = (obj, keyValue) => {
   }
   return null;
 };
+
+const HIT_SIZE = 1000;
 
 export default {
   name: "search",
@@ -436,7 +437,7 @@ export default {
 
         // filter
         for (const hit of hits) {
-          let y = hit._source.year;
+          let y = hit._source.year.toString();
           let v = hit._source.venue.raw;
           let match_year = false;
           let match_venue = false;
@@ -461,6 +462,12 @@ export default {
             toPush.n_recommendation = this.safeUndefined(this.recommendationInfo, toPush.id, 'n_recommendation');
             // console.log(toPush.isRecommended);
             ret.push(toPush);
+          } else {
+            console.log(`hit is not pushed:`);
+            console.log(hit);
+            console.log('by filters:');
+            console.log(this.years)
+            console.log(this.venues);
           }
         }
 
@@ -543,7 +550,7 @@ export default {
       // update this.years
       let ys = new Set();
       for (const hit of this.articleHits) {
-        ys.add(hit._source.year);
+        ys.add(`${hit._source.year}`);
       }
       let years = [];
       for (const y of ys) {
@@ -717,6 +724,11 @@ export default {
       this.$router.push(route);
     },
     goToAuthorPage(id) {
+      changeViewTime({
+        author_id: id
+      }).then(res => {
+        console.log(res);
+      });
       this.$router.push({
           path: '/authorPage',
           query: {
@@ -752,7 +764,7 @@ export default {
       window.open(url, "_blank");
     },
     notifySlashWithThrottle: _.throttle(function () {
-      console.log("NOTIFYING SLASH SHORTCUT");
+      // console.log("NOTIFYING SLASH SHORTCUT");
       this.notifyInfo("按”/“即可跳到搜索框");
     }, 30000, {
       trailing: false
@@ -784,7 +796,7 @@ export default {
       };
     },
     search() {
-      this.currentPage = 1
+      this.currentPage = 1;
       if (this.searchInput.length === 0) {
         this.notifyInfo("关键词不能为空");
         return;
@@ -811,19 +823,21 @@ export default {
               "name": this.searchInput
             }
           },
-          'size': 100
+          'size': HIT_SIZE
         }
       ).then(response => {
         this.authorHits = [];
-        this.totalCount = response.data.hits.total.value;
+        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
         for (const hit of response.data.hits.hits) {
           for (const org of hit._source.orgs) {
+            if (!org.name) continue;
             org.name = this.formatAuthor(org.name);
           }
           hit._source.name = this.formatTitle(hit._source.name);
           this.authorHits.push(hit);
         }
         this.search_response_data = response.data;
+        this.$forceUpdate();
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("AUTHORS FETCHED");
@@ -841,20 +855,23 @@ export default {
               "title": this.searchInput
             }
           },
-          'size': 100
+          'size': HIT_SIZE
         }
       ).then(response => {
         this.articleHits = [];
-        this.totalCount = response.data.hits.total.value;
+        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
+            if (!author.name) continue;
             author.name = this.formatAuthor(author.name);
           }
+          if (!hit._source.title) continue;
           hit._source.title = this.formatTitle(hit._source.title);
           this.refreshRecommendationInfo(hit._source.id);
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
+        this.$forceUpdate();
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("ARTICLES FETCHED");
@@ -906,13 +923,14 @@ export default {
           "query": {
             'bool': bools
           },
-          'size': 100
+          'size': HIT_SIZE
         }
       ).then(response => {
         this.articleHits = [];
-        this.totalCount = response.data.hits.total.value;
+        this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
+            if (!author.name) continue;
             author.name = this.formatAuthor(author.name);
           }
           hit._source.title = this.formatTitle(hit._source.title);
@@ -920,6 +938,7 @@ export default {
           this.articleHits.push(hit);
         }
         this.search_response_data = response.data;
+        this.$forceUpdate();
         console.log("ARTICLES FETCHED");
       });
     },
