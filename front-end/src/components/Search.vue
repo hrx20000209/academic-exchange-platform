@@ -1,5 +1,7 @@
 <template>
-  <div id="search" @keyup="keyboardEvent" tabindex="-1">
+  <div id="search"
+       tabindex="-1"
+       @keyup="keyboardEvent">
     <nav_without_search-box></nav_without_search-box>
     <!--    <div class="searchbar">-->
     <!--      <el-autocomplete class="searchInput" v-model="searchInput" placeholder="请输入搜索关键词"-->
@@ -7,22 +9,32 @@
     <!--      <el-button class="searchBtn" type="primary" @click="search">搜索</el-button>-->
     <!--    </div>-->
     <div class="searchBar">
-      <el-input placeholder="请输入关键词，按回车搜索" v-model="searchInput" ref="searchInput" class="searchInput"
-                @keyup.enter.native="search"
+      <el-input ref="searchInput"
+                v-model="searchInput"
+                class="searchInput"
+                placeholder="请输入关键词，按回车搜索"
+                @blur="searchInputHasFocus = false"
                 @focus="searchInputHasFocus = true"
-                @blur="searchInputHasFocus = false">
-        <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+                @keyup.enter.native="search">
+        <el-button slot="append"
+                   icon="el-icon-search"
+                   @click="search"></el-button>
       </el-input>
       <div class="advancedSearch">
-        <el-collapse v-model="activeSearchTabs" class="advancedSearchForm">
-          <el-collapse-item title="高级搜索" name="1">
+        <el-collapse v-model="activeSearchTabs"
+                     class="advancedSearchForm">
+          <el-collapse-item name="1"
+                            title="高级搜索">
             <el-form class="rules">
               <el-form-item
-                class="rule"
                 v-for="(rule, index) in advancedSearchInput"
-                :key="`规则${index}`">
-                <el-select v-model="rule.bool" placeholder="布尔">
-                  <el-option v-for="bool in BOOLS" :key="bool" :label="bool"
+                :key="`规则${index}`"
+                class="rule">
+                <el-select v-model="rule.bool"
+                           placeholder="布尔">
+                  <el-option v-for="bool in BOOLS"
+                             :key="bool"
+                             :label="bool"
                              :value="bool"></el-option>
                 </el-select>
                 <el-select v-model="rule.field"
@@ -37,14 +49,22 @@
 
                   </el-option>
                 </el-select>
-                <el-select v-model="rule.type" placeholder="规则种类" no-data-text="请先选字段">
-                  <el-option v-for="type in FIELD_TYPE[rule.field]" :key="type" :label="type"
+                <el-select v-model="rule.type"
+                           no-data-text="请先选字段"
+                           placeholder="规则种类">
+                  <el-option v-for="type in FIELD_TYPE[rule.field]"
+                             :key="type"
+                             :label="type"
                              :value="type"></el-option>
                 </el-select>
-                <el-input v-model="rule.match" v-if="rule.type === TYPES.MATCH" placeholder="匹配文字"></el-input>
+                <el-input v-if="rule.type === TYPES.MATCH"
+                          v-model="rule.match"
+                          placeholder="匹配文字"></el-input>
                 <div v-if="rule.type === TYPES.RANGE">
                   <el-select v-model="rule.range.op">
-                    <el-option v-for="op in OPS" :key="op" :label="op"
+                    <el-option v-for="op in OPS"
+                               :key="op"
+                               :label="op"
                                :value="op"></el-option>
                   </el-select>
                   <el-input-number v-model="rule.range.value"></el-input-number>
@@ -53,13 +73,15 @@
               </el-form-item>
               <el-form-item class="rule">
                 <el-button @click="advancedSearch">提交</el-button>
+<!--                 TODO 回车搜索-->
                 <el-button @click="addRule">新增规则</el-button>
               </el-form-item>
             </el-form>
-            <div style="width: 250px" class="advancedSearchInfo">
+            <div class="advancedSearchInfo"
+                 style="width: 250px">
               <span style="font-size: 16px">高级搜索使用方法<br/></span>
               1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>
-              2. 然后选择字段和规则类型，规则类型包括：匹配、范围、存在。<br/>
+              2. 然后选择字段和规则类型，规则类型包括：<br/>
               - 匹配：关键词搜索。<br/>
               - 范围：针对引用量和年份，可以限定数字范围。<br/>
               - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>
@@ -93,15 +115,19 @@
       <!--      </el-switch>-->
     </div>
     <div class="below-searchbar">
-      <el-tabs v-model="activeTab" @tab-click="search">
-        <el-tab-pane label="文 献" name="article">
+      <el-tabs v-model="activeTab"
+               @tab-click="search">
+        <el-tab-pane label="文 献"
+                     name="article">
           <div class="tab">
             <div class="filterAndSort">
               <el-collapse v-model="activeFilterAndSortTabsInArticle">
-                <el-collapse-item title="排序方式" name="sort">
+                <el-collapse-item name="sort"
+                                  title="排序方式">
                   <div>
                     <!--                    <span class="filterAndSortTitle">排序方式</span>-->
-                    <el-radio-group class="sort" v-model="sort">
+                    <el-radio-group v-model="sort"
+                                    class="sort">
                       <el-radio label="relevance">相关性</el-radio>
                       <el-radio label="time">年份</el-radio>
                       <el-radio label="citation">引用量</el-radio>
@@ -111,20 +137,27 @@
                     </el-radio-group>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="按年份筛选" name="filterByYears">
+                <el-collapse-item name="filterByYears"
+                                  title="按年份筛选">
+<!--                  TODO 全选/全不选 各种筛选都加这个功能-->
                   <div>
                     <!--                    <span class="filterAndSortTitle">按年份筛选</span>-->
                     <div class="filter">
-                      <el-checkbox v-for="year in years" :key="year.value" v-model="year.isSelected"
+                      <el-checkbox v-for="year in years"
+                                   :key="year.value"
+                                   v-model="year.isSelected"
                                    :label="year.value"></el-checkbox>
                     </div>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="按期刊筛选" name="filterByVenues">
+                <el-collapse-item name="filterByVenues"
+                                  title="按期刊筛选">
                   <div>
                     <!--                    <span class="filterAndSortTitle">按期刊筛选</span>-->
                     <div class="filter">
-                      <el-checkbox v-for="venue in venues" :key="venue.value" v-model="venue.isSelected"
+                      <el-checkbox v-for="venue in venues"
+                                   :key="venue.value"
+                                   v-model="venue.isSelected"
                                    :label="venue.value"></el-checkbox>
                     </div>
                   </div>
@@ -133,10 +166,13 @@
             </div>
             <div class="results">
               <template v-for="result in article_results_to_show.slice((currentPage-1)*10,currentPage*10)">
-                <div class="downFrame" :key="result.id">
+                <div :key="result.id"
+                     class="downFrame">
                   <div class="downFrameContent">
                     <div>
-                      <el-link class="resultTitle" @click="goToArticlePage(result.id)" :underline="false">
+                      <el-link :underline="false"
+                               class="resultTitle"
+                               @click="goToArticlePage(result.id)">
                         {{ result.title }}
                       </el-link>
                     </div>
@@ -147,37 +183,46 @@
                       <span class="articleVenue">{{ result.venue.raw }}</span>
                     </div>
                     <div style="margin-bottom: 10px">
-                <span v-for="author in result.authors" :key="author.id">
-                  <el-link @click="goToAuthorPage(author.id)" style="font: unset">{{ author.name }}</el-link>
-                  <!--                  <span>{{author.name}}</span>-->
+                <span v-for="author in result.authors"
+                      :key="author.id">
+<!--                  <el-link style="font: unset"-->
+<!--                           @click="goToAuthorPage(author.id)">{{ author.name }}</el-link>-->
+                                    <span>{{ author.name }}</span>
                   <span v-if="result.authors.indexOf(author) !== result.authors.length-1"> · </span>
                 </span>
                       <!--                      TODO citation_by_year map-->
                     </div>
-                    <div class="abstract" style="margin-bottom: 10px;font-size: 16px">
+                    <div class="abstract"
+                         style="margin-bottom: 10px;font-size: 16px">
                       {{ result.abstract }}
                     </div>
-                    <div class="articleCitationCnt" style="color: darkgray;font-size: 15px;margin-bottom: 10px">
+                    <div class="articleCitationCnt"
+                         style="color: darkgray;font-size: 15px;margin-bottom: 10px">
                       {{ result.n_citation }} 引用 · {{ result.n_recommendation }} 推荐
                     </div>
                     <!--                      TODO 阅读量-->
                     <div style="height: 30px">
-                      <div style="float: left" v-if="result.url !== undefined">
+                      <div v-if="result.url !== undefined"
+                           style="float: left">
                         <el-button @click="goToUrl(result.url)">访问全文</el-button>
                       </div>
                       <div style="float: right;text-align: right">
-                        <el-button v-if="!result.isRecommended" @click="recommend(result)">推荐文献</el-button>
-                        <el-button v-else @click="cancelRecommend(result)">取消推荐</el-button>
+                        <el-button v-if="!result.isRecommended"
+                                   @click="recommend(result)">推荐文献
+                        </el-button>
+                        <el-button v-else
+                                   @click="cancelRecommend(result)">取消推荐
+                        </el-button>
                         <el-popover
-                          popper-class="qrcodePopover"
-                          placement="top-start"
-                          trigger="click"
                           :key="result.articlePageUrl+result.hasLoadedQRCode"
+                          placement="top-start"
+                          popper-class="qrcodePopover"
+                          trigger="click"
                           @show="loadQRCode(result)">
                           <el-link
+                            :underline="false"
                             class="textInQRCodePopover"
-                            @click="copyUrl(result.articlePageUrl)"
-                            :underline="false">点击此处复制链接
+                            @click="copyUrl(result.articlePageUrl)">点击此处复制链接
                           </el-link>
                           <h4 class="textInQRCodePopover">或分享二维码</h4>
                           <canvas :id="result.articlePageUrl"></canvas>
@@ -205,22 +250,25 @@
                 <!--          </el-card>-->
               </template>
               <div class="pagination">
-                <el-pagination @current-change="handleCurrentChange"
-                               :current-page="currentPage"
+                <el-pagination :current-page="currentPage"
+                               :total="totalCount"
                                layout="total, prev, pager, next, jumper"
-                               :total="totalCount">
+                               @current-change="handleCurrentChange">
                 </el-pagination>
               </div>
+<!--          TODO 回到顶部按钮-->
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="作 者" name="author">
+        <el-tab-pane label="作 者"
+                     name="author">
           <div class="tab">
             <div class="filterAndSort">
               <div>
                 <span class="filterAndSortTitle">排序方式</span>
                 <!--                TODO change style to article's-->
-                <el-radio-group class="sort" v-model="sort">
+                <el-radio-group v-model="sort"
+                                class="sort">
                   <el-radio label="relevance">相关性</el-radio>
                   <el-radio label="pub">发表量</el-radio>
                   <el-radio label="citation">引用量</el-radio>
@@ -244,23 +292,28 @@
             </div>
             <div class="results">
               <template v-for="result in author_results_to_show.slice((currentPage-1)*10,currentPage*10)">
-                <div class="downFrame" :key="result.id">
+                <div :key="result.id"
+                     class="downFrame">
                   <div class="downFrameContent">
                     <!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
-                    <el-link class="resultTitle" @click="goToAuthorPage(result.id)" :underline="false">
+                    <el-link :underline="false"
+                             class="resultTitle"
+                             @click="goToAuthorPage(result.id)">
                       {{ result.name }}
                     </el-link>
-                    <!--                    TODO 跳转 学者主页和论文主页-->
                     <div style="margin-bottom: 10px">
-                      <span v-for="org in result.orgs" :key="org.id">
+                      <span v-for="org in result.orgs"
+                            :key="org.id">
                         {{ org.name }}
                       <span v-if="result.orgs.indexOf(org) !== result.orgs.length-1"> · </span>
                       </span>
                     </div>
-                    <div class="articleCitationCnt" style="color: darkgray;font-size: 15px;margin-bottom: 10px">
+                    <div class="articleCitationCnt"
+                         style="color: darkgray;font-size: 15px;margin-bottom: 10px">
                       {{ result.n_citation }} 引用 · {{ result.n_pubs }} 发表
                     </div>
-                    <div class="articleCitationCnt" style="color: darkgray;font-size: 15px;margin-bottom: 10px">
+                    <div class="articleCitationCnt"
+                         style="color: darkgray;font-size: 15px;margin-bottom: 10px">
 
                     </div>
                     <div style="height: 30px">
@@ -275,10 +328,10 @@
                 </div>
               </template>
               <div class="pagination">
-                <el-pagination @current-change="handleCurrentChange"
-                               :current-page="currentPage"
+                <el-pagination :current-page="currentPage"
+                               :total="totalCount"
                                layout="total, prev, pager, next, jumper"
-                               :total="totalCount">
+                               @current-change="handleCurrentChange">
                 </el-pagination>
               </div>
             </div>
@@ -371,7 +424,7 @@ export default {
       totalCount: 0,
       // years and venues are watching articleHits
       // their value may be changed by checkboxes so they are not declared as computed
-      years: [], // TODO 改成范围
+      years: [],
       venues: [],
       orgs: [],
       advancedSearchInput: [{
@@ -429,7 +482,7 @@ export default {
     },
     article_results_to_show: { // TODO 可能慢，转换为watch提速
       get: function () {
-        console.log(`article_results_to_show COMPUTING`);
+        // console.log(`article_results_to_show COMPUTING`);
         let hits = this.articleHits;
         let ret = [];
         if (this.activeTab !== "article")
@@ -498,7 +551,7 @@ export default {
           default:
             ret.sort(this.cmpCitation);
         }
-        console.log(`author_results_to_show COMPUTED`);
+        // console.log(`author_results_to_show COMPUTED`);
         return ret;
       },
       set: function () {
@@ -506,7 +559,6 @@ export default {
       }
     },
     author_results_to_show: function () {
-      let that = this;
       let hits = this.authorHits;
       let ret = [];
       if (this.activeTab !== "author") {
@@ -611,8 +663,9 @@ export default {
       this.venues = venues.sort((a, b) => {
         return a.count < b.count ? 1 : -1;
       });
+      let len = this.venues.length;
       this.venues = this.venues.slice(0, 10);
-      if (this.venues.length > 10) {
+      if (len > 10) {
         this.venues.push({
           value: '其他',
           isSelected: true
@@ -813,6 +866,7 @@ export default {
       if (e.location !== 0 || e.ctrlKey || e.altKey) return; // 屏蔽非 DOM_KEY_LOCATION_STANDARD 键盘事件
       if (e.code === "Slash") {
         this.$refs.searchInput.focus();
+        window.scrollTo(0, 0);
         console.log('FOCUS');
       } else if (!this.searchInputHasFocus) {
         this.notifySlashWithThrottle();
@@ -886,8 +940,7 @@ export default {
     },
     searchArticle() {
       // TODO 用高级搜索函数重构
-      // TODO 分页
-      // TODO 未搜索到结果页面
+      // TODO 未搜索到结果页面、加载等待
       this.$http.post(
         'http://119.3.223.135:9200/cspaper/_search',
         {
@@ -942,9 +995,35 @@ export default {
         if (type === TYPES.MATCH) {
           if (this.hasNull([rule.match]) || rule.match.length === 0) continue;
           if (rule.field === FIELDS.VENUE) {
-            //  0TODO rule.field = ....raw?
+            toPush = {
+              "nested": {
+                "path": "venue",
+                "query": {
+                  "bool": {
+                    "must": [{
+                      "match": {"venue.raw": rule.match}
+                    }]
+                  }
+                }
+              }
+            };
+          } else if (rule.field === FIELDS.AUTHORS) {
+            toPush = {
+              "nested": {
+                "path": "authors",
+                "query": {
+                  "bool": {
+                    "must": [{
+                      "match": {"authors.name": rule.match}
+                    }]
+                  }
+                }
+              }
+
+            }
+          } else {
+            typeObj[fieldKey] = rule.match;
           }
-          typeObj[fieldKey] = rule.match;
         } else if (type === TYPES.RANGE) {
           if (this.hasNull([rule.range, rule.range.op, rule.range.value]) || rule.range.value === undefined) continue;
           const opKey = getKeyNameByKeyValue(OPS, rule.range.op);
@@ -1079,8 +1158,8 @@ export default {
 }
 
 .resultTitle {
-  margin-bottom: 10px;
   font-size: 18px;
+  margin-bottom: 10px;
   color: black;
 }
 
@@ -1088,11 +1167,12 @@ export default {
   /*display: flex;*/
   /*height: 47px;*/
   /*font-size: 20px;*/
-  width: 250px;
+  /*width: 250px;*/
+  flex: 1;
   margin: 10px 20px;
   padding: 10px;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
   background-color: white;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
 }
 
 .advancedSearch {
@@ -1106,8 +1186,8 @@ export default {
 .rule {
   margin: 10px 20px;
   padding: 10px;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
   background-color: white;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .10), 0 0 6px rgba(0, 0, 0, .05);
 }
 
 .rules {
@@ -1129,9 +1209,9 @@ export default {
 }
 
 /deep/ .advancedSearchForm .el-collapse-item__header {
-  border: none;
-  margin: 0 20px;
   justify-content: left;
+  margin: 0 20px;
+  border: none;
   background-color: #f4f4f4;
 }
 
@@ -1146,7 +1226,8 @@ export default {
 }
 
 .advancedSearchForm {
-  width: 1100px;
+  flex: 1;
+  /*width: 1100px;*/
   /*box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);*/
   /*margin: 20px 20px 0;*/
 }
@@ -1173,33 +1254,33 @@ export default {
 }
 
 /deep/ .el-checkbox__label {
-  max-width: 100%;
   overflow: hidden;
+  max-width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 /deep/ .el-radio {
-  color: rgba(0, 0, 0, 0.5);
   width: 40%;
   margin-right: 5px;
   padding: 5px 0;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 /deep/ .el-checkbox {
-  color: rgba(0, 0, 0, 0.5);
   display: inline-flex;
   align-items: center;
-  padding: 5px 0;
   margin-right: 5px;
+  padding: 5px 0;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .abstract {
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .shareBtn {
@@ -1218,16 +1299,16 @@ export default {
 
 .searchBar {
   display: flex;
-  padding: 50px 10% 30px;
   flex-direction: column;
   justify-content: space-between;
+  padding: 50px 10% 10px;
   /*border-bottom: 1px solid #ddd;*/
 }
 
 .searchInput {
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
   width: 700px;
   margin: 10px 20px;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
 }
 
 /deep/ .advancedSearchForm .el-collapse-item__content {
@@ -1235,10 +1316,10 @@ export default {
 }
 
 .searchSwitch {
-  width: 200px;
   justify-content: center;
-  transform: scale(1.5);
+  width: 200px;
   margin-left: 30px;
+  transform: scale(1.5);
 }
 
 .below-searchbar {
@@ -1258,8 +1339,8 @@ export default {
   width: 300px;
   margin: 20px;
   padding: 30px;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
   background-color: white;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10);
 }
 
 .filterAndSortTitle {
@@ -1297,8 +1378,8 @@ export default {
 
 .result-card {
   width: 900px;
-  text-align: left;
   margin: auto;
+  text-align: left;
 }
 
 .card-title {
@@ -1316,34 +1397,34 @@ export default {
 .results {
   /*height: 300px;*/
   width: 65%;
-  background: white;
-  border-radius: 2px;
   margin: 20px;
+  border-radius: 2px;
+  background: white;
   box-shadow: 4px 6px 10px rgba(0, 0, 0, .20), 0 0 6px rgba(0, 0, 0, .10)
 }
 
 .articleType {
-  padding: 5px;
   width: 60px;
-  background: #C5E8E5;
+  padding: 5px;
+  text-align: center;
   color: #007478;
   border-radius: 2px;
-  text-align: center;
+  background: #C5E8E5;
 }
 
 /deep/ .searchInput .el-input__inner {
-  height: 50px;
   font-size: 16px;
+  height: 50px;
 }
 
 /deep/ .el-switch__core {
-  --switch_bg_color: rgba(0, 0, 0, 0.4);
   background-color: var(--switch_bg_color);
+  --switch_bg_color: rgba(0, 0, 0, 0.4);
 }
 
 /deep/ .el-switch.is-checked .el-switch__core {
-  background-color: var(--switch_bg_color);
   border-color: transparent;
+  background-color: var(--switch_bg_color);
 }
 
 /deep/ .el-switch__label.is-active {
