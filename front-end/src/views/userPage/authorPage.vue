@@ -506,12 +506,17 @@ export default {
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
-          // console.log(res)
+          console.log(res)
           this.checkFollow()
           if (res.message == 'Follow success') {
             this.$message({
               message: '关注成功',
               type: 'success'
+            });
+          }else{
+            this.$message({
+              message: res.message,
+              type: 'warning'
             });
           }
         })
