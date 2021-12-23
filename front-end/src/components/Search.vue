@@ -257,7 +257,7 @@
                 </div>
               </div>
               <div class="pagination">
-                <span class="n-result">搜索结果共 {{ n_result }} 条，过滤后 {{ totalCount }}条</span>
+                <span class="n-result">搜索结果共 {{ n_result }} 条 </span>
                 <el-pagination :current-page="currentPage"
                                :total="totalCount"
                                layout="prev, pager, next, jumper"
@@ -351,7 +351,7 @@
                 </div>
               </div>
               <div class="pagination">
-                <span class="n-result">搜索结果共 {{ n_result }} 条，过滤后 {{ totalCount }}条</span>
+                <span class="n-result">搜索结果共 {{ n_result }} 条 </span>
                 <el-pagination :current-page="currentPage"
                                :total="totalCount"
                                layout="prev, pager, next, jumper"
@@ -479,12 +479,12 @@ export default {
       msgDialogHasFocus: false,
       articleHits: [],
       authorHits: [],
-      n_result: 0,
       recommendationInfo: {},
       followInfo: {},
       authorInfo: {},
       currentPage: 1,
-      totalCount: 0,
+      totalCount: 0, // bound with page selector
+      n_result: 0, // number from es response.total
       // years and venues are watching articleHits
       // their value may be changed by checkboxes so they are not declared as computed
       years: [],
@@ -784,7 +784,6 @@ export default {
         });
       }
 
-      this.n_result = this.articleHits.length;
     },
     authorHits: function () {
       if (this.activeTab !== "author")
@@ -823,7 +822,6 @@ export default {
         });
       }
 
-      this.n_result = this.articleHits.length;
     },
     isAdvancedSearch: function () {
       if (!this.isAdvancedSearch) {
@@ -1000,6 +998,7 @@ export default {
         }); // 为了让数组变化是响应式的
       });
     },
+    // TODO throttle 推荐/取消
     recommend(paperID) {
       if (!this.userID) {
         this.notifyInfo('请先登录');
@@ -1121,6 +1120,7 @@ export default {
     },
     search() {
       this.totalCount = 0;
+      this.n_result = 0;
       this.articleHits = [];
       this.authorHits = [];
       this.years = [];
@@ -1162,7 +1162,7 @@ export default {
       ).then(response => {
         this.authorHits = [];
         // this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
-        this.totalCount = response.data.hits.total.value;
+        this.n_result = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const org of hit._source.orgs) {
             if (!org.name) continue;
@@ -1197,7 +1197,7 @@ export default {
       ).then(response => {
         this.articleHits = [];
         // this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
-        this.totalCount = response.data.hits.total.value;
+        this.n_result = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
             if (!author.name) continue;
@@ -1218,6 +1218,7 @@ export default {
     },
     advancedSearch() {
       this.totalCount = 0;
+      this.n_result = 0;
       this.hasLoaded = false;
       this.years = [];
       this.venues = [];
@@ -1301,7 +1302,7 @@ export default {
       ).then(response => {
         this.articleHits = [];
         // this.totalCount = Math.min(response.data.hits.total.value, HIT_SIZE);
-        this.totalCount = response.data.hits.total.value;
+        this.n_result = response.data.hits.total.value;
         for (const hit of response.data.hits.hits) {
           for (const author of hit._source.authors) {
             if (!author.name) continue;
@@ -1408,12 +1409,10 @@ export default {
 .n-result {
   font-size: 13px;
   font-weight: 400;
-  flex: 1 2;
   margin: auto 5px;
 }
 
 /deep/ .pagination .el-pagination {
-  flex: 2;
 }
 
 /deep/ .el-button--primary {
