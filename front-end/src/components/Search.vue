@@ -110,8 +110,8 @@
         <!--        </el-popover>-->
       </div>
       <!--      <el-switch v-model="searching_paper" class="searchSwitch"-->
-      <!--                 active-text="文献"-->
-      <!--                 inactive-text="作者">-->
+      <!--                 active-msgText="文献"-->
+      <!--                 inactive-msgText="作者">-->
       <!--      </el-switch>-->
     </div>
     <div class="below-searchbar">
@@ -232,7 +232,6 @@
                             分享
                           </el-button>
                         </el-popover>
-                        <!--TODO 按钮：关注-->
                       </div>
                     </div>
                   </div>
@@ -324,8 +323,10 @@
                         <el-button v-else
                                    @click="unfollow(result.id)">取关
                         </el-button>
-                        <el-button>私信</el-button>
-                        <!--                       TODO 关注、私信按钮？-->
+                        <el-button v-if="result.authorInfo.canSendMessage"
+                                   @click="openLetter(result)">私信
+                        </el-button>
+                        <!--                        TODO result.x 改为 data的变量，省去更新？-->
                         <!--                        TODO author 其他字段-->
                       </div>
                     </div>
@@ -344,6 +345,37 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog
+      :before-close="handleClose"
+      :visible.sync="dialogLetterVisible"
+      title="私信"
+      width="35%">
+      <div class="letter-body">
+        <div>
+          <div class="letter-send-box">发送给：</div>
+          <el-input v-model="usrNameToMsgTo"
+                    disabled></el-input>
+          <div class="letter-send-box">私信内容：</div>
+          <el-input
+            v-model="msgText"
+            maxlength="250"
+            placeholder="请输入内容"
+            resize="none"
+            rows="10"
+            show-word-limit
+            type="textarea"
+            @blur="msgDialogHasFocus = false"
+            @focus="msgDialogHasFocus = true"
+          >
+          </el-input>
+        </div>
+        <div class="letter-btn-box">
+          <el-button type="primary"
+                     @click="sendLetter">发 送
+          </el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -351,7 +383,7 @@
 import QRCode from 'qrcode';
 import _ from 'lodash';
 import Nav_without_searchBox from "./nav_without_searchBox";
-import {changeViewTime, checkIfFollow, followAuthor, undoFollow} from "../request/api";
+import {changeViewTime, getScolarUserInfo, checkIfFollow, followAuthor, sendMessage, undoFollow} from "../request/api";
 
 let Clipboard = window.navigator.clipboard;
 const TYPES = {
@@ -393,6 +425,9 @@ export default {
   components: {Nav_without_searchBox},
   data() {
     return {
+      usrNameToMsgTo: '',
+      msgText: '',
+      dialogLetterVisible: false,
       showAdvancedSearchInfo: false,
       TYPES: TYPES,
       // BOOLS: BOOLS,
@@ -400,7 +435,7 @@ export default {
       BOOLS: BOOLS,
       FIELD_TYPE: {
         [FIELDS.TITLE]: [TYPES.MATCH, TYPES.EXISTS],
-        [FIELDS.AUTHORS]: [TYPES.MATCH, TYPES.EXISTS], // FIXME ARRAY
+        [FIELDS.AUTHORS]: [TYPES.MATCH, TYPES.EXISTS],
         [FIELDS.ABSTRACT]: [TYPES.MATCH, TYPES.EXISTS],
         [FIELDS.VENUE]: [TYPES.MATCH, TYPES.EXISTS],
         [FIELDS.URL]: [TYPES.EXISTS],
@@ -422,10 +457,12 @@ export default {
       ],
       search_response_data: null,
       searchInputHasFocus: false,
+      msgDialogHasFocus: false,
       articleHits: [],
       authorHits: [],
       recommendationInfo: {},
       followInfo: {},
+      authorInfo: {},
       currentPage: 1,
       totalCount: 0,
       // years and venues are watching articleHits
@@ -594,6 +631,7 @@ export default {
           let toPush = hit._source;
           toPush._score = hit._score;
           toPush.isFollowed = this.followInfo[toPush.id];
+          toPush.authorInfo = this.authorInfo[toPush.id];
           ret.push(toPush);
           // console.log("RET:");
           // console.log(ret);
@@ -709,6 +747,63 @@ export default {
     }
   },
   methods: {
+    openLetter(result) {
+      this.dialogLetterVisible = true;
+      this.usrNameToMsgTo = result.authorInfo.userName;
+    },
+    sendLetter() {
+      if (this.msgText === '') {
+        this.$message({
+          type: 'warning',
+          message: '私信内容不能为空'
+        });
+      } else {
+        sendMessage({
+          sender_id: this.userID,
+          receiver_name: this.usrNameToMsgTo,
+          text: this.msgText
+        }).then(response => {
+          if (this.usrNameToMsgTo === localStorage.getItem('user_name')) {
+            this.$message({
+              type: 'warning',
+              message: '不能向自己发送信息'
+            });
+            return;
+          }
+          this.$message({
+            type: 'success',
+            message: '发送成功'
+          });
+          this.dialogLetterVisible = false;
+          this.msgText = '';
+        });
+      }
+    },
+    handleClose(done) {
+      if (this.msgText !== '') {
+        this.$confirm('确认关闭？正在编辑的私信不会保存哦！')
+          .then(_ => {
+            done();
+            this.msgText = '';
+          })
+          .catch(_ => {
+          });
+      } else {
+        done();
+      }
+    },
+    checkIfCanSendMessage(authorID) {
+      getScolarUserInfo({
+        author_id: authorID
+      }).then(response => {
+        // console.log('authorInfo response:');
+        // console.log(response);
+        this.authorInfo[authorID] = {
+          canSendMessage: response.ifHaveAccount,
+          userName: response.user ? response.user.name : '',
+        };
+      });
+    },
     checkMsgSuccess(msg) {
       msg = msg.toString();
       return Math.max(msg.toLowerCase().indexOf('success'), msg.indexOf('成功')) > -1;
@@ -724,7 +819,7 @@ export default {
             this.notifyInfo('关注成功');
             this.updateIfFollowed(authorID);
           } else {
-            this.notifyInfo('关注失败，请再次尝试')
+            this.notifyInfo('关注失败，请再次尝试');
           }
         });
       } else {
@@ -738,8 +833,8 @@ export default {
           follower_id: this.userID
         }).then(res => {
           console.log(res);
-          let isFollowed = eval(res.message)
-          this.$set(this.followInfo, authorID, isFollowed)
+          let isFollowed = eval(res.message);
+          this.$set(this.followInfo, authorID, isFollowed);
         });
       }
     },
@@ -913,12 +1008,13 @@ export default {
       trailing: false
     }),
     keyboardEvent(e) {
-      if (e.location !== 0 || e.ctrlKey || e.altKey) return; // 屏蔽非 DOM_KEY_LOCATION_STANDARD 键盘事件
+      if (document.activeElement.tagName.toLowerCase().indexOf('input') > -1) return; // 屏蔽输入框
+      if (e.location !== 0 || e.ctrlKey || e.altKey || this.dialogLetterVisible) return; // 屏蔽非 DOM_KEY_LOCATION_STANDARD 键盘事件 和 对话框
       if (e.code === "Slash") {
         this.$refs.searchInput.focus();
         window.scrollTo(0, 0);
         console.log('FOCUS');
-      } else if (!this.searchInputHasFocus) {
+      } else {
         this.notifySlashWithThrottle();
       }
     },
@@ -979,7 +1075,8 @@ export default {
             org.name = this.formatAuthor(org.name);
           }
           hit._source.name = this.formatTitle(hit._source.name);
-          this.updateIfFollowed(hit._source.id)
+          this.updateIfFollowed(hit._source.id);
+          this.checkIfCanSendMessage(hit._source.id);
           this.authorHits.push(hit);
         }
         this.search_response_data = response.data;
@@ -1203,6 +1300,64 @@ export default {
 </script>
 
 <style scoped>
+/deep/ .el-button--primary {
+  color: #FFF;
+  background-color: #409EFF;
+  border-color: #409EFF;
+  padding: 12px 30px;
+  margin-top: 5px;
+}
+
+/deep/ .el-dialog__header {
+  padding: 20px 20px 10px;
+  background-color: #00a39e;
+  height: 30px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+/deep/ .el-dialog__title {
+  line-height: 24px;
+  font-size: 18px;
+  color: white !important;
+}
+
+/deep/ .el-dialog__footer {
+  padding: 20px 0px 0px 0px;
+  text-align: right;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/deep/ .el-dialog__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+.letter-body {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+}
+
+.letter-send-box {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+.letter-btn-box {
+  text-align: right;
+  margin-top: 5%;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
