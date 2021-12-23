@@ -72,8 +72,8 @@
                 <el-button @click="delRule(rule)">删除</el-button>
               </el-form-item>
               <el-form-item class="rule">
-                <el-button @click="advancedSearch">提交</el-button>
-                <!--                 TODO 回车搜索 美化按钮-->
+                <el-button @click="advancedSearch">搜索</el-button>
+                <!--                 TODO 回车搜索 美化按钮和布局-->
                 <el-button @click="addRule">新增规则</el-button>
               </el-form-item>
             </el-form>
@@ -82,7 +82,7 @@
               <span style="font-size: 16px">高级搜索使用方法<br/></span>
               1. 首先选择布尔运算符，相同运算符将会被归并到一组中。<br/>
               2. 然后选择字段和规则类型，规则类型包括：<br/>
-              - 匹配：关键词搜索。<br/>
+              - 匹配：关键词匹配。<br/>
               - 范围：针对引用量和年份，可以限定数字范围。<br/>
               - 存在：要求搜索到的文章一定存在该字段，或该字段非空。<br/>
             </div>
@@ -131,7 +131,6 @@
                       <el-radio label="relevance">相关性</el-radio>
                       <el-radio label="time">年份</el-radio>
                       <el-radio label="citation">引用量</el-radio>
-                      <el-radio label="citation">浏览量</el-radio>
                       <!--            TODO 新增排序属性-->
                       <!--            TODO 改蓝色字体样式-->
                     </el-radio-group>
@@ -165,24 +164,28 @@
               </el-collapse>
             </div>
             <div class="results">
-              <template v-for="result in article_results_to_show.slice((currentPage-1)*10,currentPage*10)">
-                <div :key="result.id"
-                     class="downFrame">
-                  <div class="downFrameContent">
-                    <div>
-                      <el-link :underline="false"
-                               class="resultTitle"
-                               @click="goToArticlePage(result.id)">
-                        {{ result.title }}
-                      </el-link>
-                    </div>
+              <div v-loading="!hasLoaded"
+                   style="min-height: 300px;">
+                <div v-if="hasLoaded">
+                  <div v-if="totalCount > 0">
+                    <template v-for="result in article_results_to_show.slice((currentPage-1)*10,currentPage*10)">
+                      <div :key="result.id"
+                           class="downFrame">
+                        <div class="downFrameContent">
+                          <div>
+                            <el-link :underline="false"
+                                     class="resultTitle"
+                                     @click="goToArticlePage(result.id)">
+                              {{ result.title }}
+                            </el-link>
+                          </div>
 
-                    <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
-                      <span class="articleType">Article</span>
-                      <span class="articleYear">{{ result.year }}</span>
-                      <span class="articleVenue">{{ result.venue.raw }}</span>
-                    </div>
-                    <div style="margin-bottom: 10px">
+                          <div style="margin-bottom: 10px;font-size: 15px;color:darkgrey;">
+                            <span class="articleType">Article</span>
+                            <span class="articleYear">{{ result.year }}</span>
+                            <span class="articleVenue">{{ result.venue.raw }}</span>
+                          </div>
+                          <div style="margin-bottom: 10px">
                 <span v-for="author in result.authors"
                       :key="author.id">
 <!--                  <el-link style="font: unset"-->
@@ -190,68 +193,74 @@
                                     <span>{{ author.name }}</span>
                   <span v-if="result.authors.indexOf(author) !== result.authors.length-1"> · </span>
                 </span>
-                      <!--                      TODO citation_by_year map-->
-                    </div>
-                    <div class="abstract"
-                         style="margin-bottom: 10px;font-size: 16px">
-                      {{ result.abstract }}
-                    </div>
-                    <div class="articleCitationCnt"
-                         style="color: darkgray;font-size: 15px;margin-bottom: 10px">
-                      {{ result.n_citation }} 引用 · {{ result.n_recommendation }} 推荐
-                    </div>
-                    <!--                      TODO 阅读量-->
-                    <div style="height: 30px">
-                      <div v-if="result.url !== undefined"
-                           style="float: left">
-                        <el-button @click="goToUrl(result.url)">访问全文</el-button>
+                            <!--                      TODO citation_by_year map-->
+                          </div>
+                          <div class="abstract"
+                               style="margin-bottom: 10px;font-size: 16px">
+                            {{ result.abstract }}
+                          </div>
+                          <div class="articleCitationCnt"
+                               style="color: darkgray;font-size: 15px;margin-bottom: 10px">
+                            {{ result.n_citation }} 引用 · {{ result.n_recommendation }} 推荐
+                          </div>
+                          <div style="height: 30px">
+                            <div v-if="result.url !== undefined"
+                                 style="float: left">
+                              <el-button @click="goToUrl(result.url)">访问全文</el-button>
+                            </div>
+                            <div style="float: right;text-align: right">
+                              <el-button v-if="!result.isRecommended"
+                                         @click="recommend(result.id)">推荐文献
+                              </el-button>
+                              <el-button v-else
+                                         @click="cancelRecommend(result.id)">取消推荐
+                              </el-button>
+                              <el-popover
+                                :key="result.articlePageUrl+result.hasLoadedQRCode"
+                                placement="top-start"
+                                popper-class="qrcodePopover"
+                                trigger="click"
+                                @show="loadQRCode(result)">
+                                <el-link
+                                  :underline="false"
+                                  class="textInQRCodePopover"
+                                  @click="copyUrl(result.articlePageUrl)">点击此处复制链接
+                                </el-link>
+                                <h4 class="textInQRCodePopover">或分享二维码</h4>
+                                <canvas :id="result.articlePageUrl"></canvas>
+                                <el-button
+                                  slot="reference"
+                                  class="shareBtn">
+                                  分享
+                                </el-button>
+                              </el-popover>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div style="float: right;text-align: right">
-                        <el-button v-if="!result.isRecommended"
-                                   @click="recommend(result.id)">推荐文献
-                        </el-button>
-                        <el-button v-else
-                                   @click="cancelRecommend(result.id)">取消推荐
-                        </el-button>
-                        <el-popover
-                          :key="result.articlePageUrl+result.hasLoadedQRCode"
-                          placement="top-start"
-                          popper-class="qrcodePopover"
-                          trigger="click"
-                          @show="loadQRCode(result)">
-                          <el-link
-                            :underline="false"
-                            class="textInQRCodePopover"
-                            @click="copyUrl(result.articlePageUrl)">点击此处复制链接
-                          </el-link>
-                          <h4 class="textInQRCodePopover">或分享二维码</h4>
-                          <canvas :id="result.articlePageUrl"></canvas>
-                          <el-button
-                            slot="reference"
-                            class="shareBtn">
-                            分享
-                          </el-button>
-                        </el-popover>
-                      </div>
-                    </div>
+                      <!--          <el-card-->
+                      <!--            :body-style="{ padding: '20px' }"-->
+                      <!--            :key="result.value"-->
+                      <!--            class="result-card"-->
+                      <!--          >-->
+                      <!--            <div slot="header" class="clearfix">-->
+                      <!--              <span class="card-title"> {{ result.value }} </span>-->
+                      <!--            </div>-->
+                      <!--            <div>-->
+                      <!--              {{ result.abstract }}</div>-->
+                      <!--          </el-card>-->
+                    </template>
+                  </div>
+                  <div v-else>
+                    <el-empty description="暂无数据"></el-empty>
                   </div>
                 </div>
-                <!--          <el-card-->
-                <!--            :body-style="{ padding: '20px' }"-->
-                <!--            :key="result.value"-->
-                <!--            class="result-card"-->
-                <!--          >-->
-                <!--            <div slot="header" class="clearfix">-->
-                <!--              <span class="card-title"> {{ result.value }} </span>-->
-                <!--            </div>-->
-                <!--            <div>-->
-                <!--              {{ result.abstract }}</div>-->
-                <!--          </el-card>-->
-              </template>
+              </div>
               <div class="pagination">
+                <span class="n-result">搜索结果共 {{ n_result }} 条，过滤后 {{ totalCount }}条</span>
                 <el-pagination :current-page="currentPage"
                                :total="totalCount"
-                               layout="total, prev, pager, next, jumper"
+                               layout="prev, pager, next, jumper"
                                @current-change="handleCurrentChange">
                 </el-pagination>
               </div>
@@ -271,7 +280,6 @@
                   <el-radio label="relevance">相关性</el-radio>
                   <el-radio label="pub">发表量</el-radio>
                   <el-radio label="citation">引用量</el-radio>
-                  <el-radio label="citation">浏览量</el-radio>
                   <!--            TODO 新增排序属性-->
                   <!--            TODO 改蓝色字体样式-->
                 </el-radio-group>
@@ -285,58 +293,68 @@
                     v-model="orgs.isSelected"
                     :label="orgs.value">
                   </el-checkbox>
-                  <!--                  TODO 作者机构筛选-->
                 </div>
               </div>
             </div>
             <div class="results">
-              <template v-for="result in author_results_to_show.slice((currentPage-1)*10,currentPage*10)">
-                <div :key="result.id"
-                     class="downFrame">
-                  <div class="downFrameContent">
-                    <!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
-                    <el-link :underline="false"
-                             class="resultTitle"
-                             @click="goToAuthorPage(result.id)">
-                      {{ result.name }}
-                    </el-link>
-                    <div style="margin-bottom: 10px">
+              <div v-loading="!hasLoaded"
+                   style="min-height: 300px;">
+                <div v-if="hasLoaded">
+                  <div v-if="totalCount > 0">
+                    <template v-for="result in author_results_to_show.slice((currentPage-1)*10,currentPage*10)">
+                      <div :key="result.id"
+                           class="downFrame">
+                        <div class="downFrameContent">
+                          <!--                    <div style="margin-bottom: 10px;font-size: 18px">{{ result.name }}</div>-->
+                          <el-link :underline="false"
+                                   class="resultTitle"
+                                   @click="goToAuthorPage(result.id)">
+                            {{ result.name }}
+                          </el-link>
+                          <div style="margin-bottom: 10px">
                       <span v-for="org in result.orgs"
                             :key="org.id">
                         {{ org.name }}
                       <span v-if="result.orgs.indexOf(org) !== result.orgs.length-1"> · </span>
                       </span>
-                    </div>
-                    <div class="articleCitationCnt"
-                         style="color: darkgray;font-size: 15px;margin-bottom: 10px">
-                      {{ result.n_citation }} 引用 · {{ result.n_pubs }} 发表
-                    </div>
-                    <div class="articleCitationCnt"
-                         style="color: darkgray;font-size: 15px;margin-bottom: 10px">
+                          </div>
+                          <div class="articleCitationCnt"
+                               style="color: darkgray;font-size: 15px;margin-bottom: 10px">
+                            {{ result.n_citation }} 引用 · {{ result.n_pubs }} 发表
+                          </div>
+                          <div class="articleCitationCnt"
+                               style="color: darkgray;font-size: 15px;margin-bottom: 10px">
 
-                    </div>
-                    <div style="height: 30px">
-                      <div style="float: left">
-                        <el-button v-if="!result.isFollowed"
-                                   @click="follow(result.id)">关注
-                        </el-button>
-                        <el-button v-else
-                                   @click="unfollow(result.id)">取关
-                        </el-button>
-                        <el-button v-if="result.authorInfo.canSendMessage"
-                                   @click="openLetter(result)">私信
-                        </el-button>
-                        <!--                        TODO result.x 改为 data的变量，省去更新？-->
-                        <!--                        TODO author 其他字段-->
+                          </div>
+                          <div style="height: 30px">
+                            <div style="float: left">
+                              <el-button v-if="!result.isFollowed"
+                                         @click="follow(result.id)">关注
+                              </el-button>
+                              <el-button v-else
+                                         @click="unfollow(result.id)">取关
+                              </el-button>
+                              <el-button v-if="result.authorInfo.canSendMessage"
+                                         @click="openLetter(result)">私信
+                              </el-button>
+                              <!--                        TODO result.x 改为 data的变量，省去更新？-->
+                              <!--                        TODO author 其他字段-->
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </template>
+                  </div>
+                  <div v-else>
+                    <el-empty description="暂无数据"></el-empty>
                   </div>
                 </div>
-              </template>
+              </div>
               <div class="pagination">
+                <span class="n-result">搜索结果共 {{ n_result }} 条，过滤后 {{ totalCount }}条</span>
                 <el-pagination :current-page="currentPage"
                                :total="totalCount"
-                               layout="total, prev, pager, next, jumper"
+                               layout="prev, pager, next, jumper"
                                @current-change="handleCurrentChange">
                 </el-pagination>
               </div>
@@ -425,6 +443,7 @@ export default {
   components: {Nav_without_searchBox},
   data() {
     return {
+      hasLoaded: false,
       usrNameToMsgTo: '',
       msgText: '',
       dialogLetterVisible: false,
@@ -460,6 +479,7 @@ export default {
       msgDialogHasFocus: false,
       articleHits: [],
       authorHits: [],
+      n_result: 0,
       recommendationInfo: {},
       followInfo: {},
       authorInfo: {},
@@ -526,7 +546,7 @@ export default {
     article_results_to_show: { // TODO 可能慢，转换为watch提速
       get: function () {
         // console.log(`article_results_to_show COMPUTING`);
-        let hits = this.articleHits;
+        let hits = [].concat(this.articleHits);
         let ret = [];
         if (this.activeTab !== "article")
           return ret;
@@ -570,8 +590,9 @@ export default {
             toPush.hasLoadedQRCode = false;
             toPush.articlePageUrl = `http://139.9.132.83/article/${toPush.id}`;
             // console.log(this.recommendationInfo);
+            // let recommendationInfo = JSON.parse(JSON.stringify(this.recommendationInfo)); // TODO make data read only
             toPush.isRecommended = this.safeUndefined(this.recommendationInfo, toPush.id, 'isRecommended');
-            toPush.n_recommendation = this.safeUndefined(this.recommendationInfo, toPush.id, 'n_recommendation');
+            toPush.n_recommendation = this.safeUndefined(this.recommendationInfo, toPush.id, 'n_recommendation'); // infinite loop computing
             // console.log(toPush.isRecommended);
             ret.push(toPush);
           } else {
@@ -602,36 +623,75 @@ export default {
       }
     },
     author_results_to_show: function () {
-      let hits = this.authorHits;
+      let hits = [].concat(this.authorHits);
       let ret = [];
       if (this.activeTab !== "author") {
         return ret;
       }
 
-      // filter
-      let orgsMustHave = [];
-      // console.log(this.orgs);
+      // filter by orgs. 1.先找出每种org（包括其他）能对应的hit集合，即orgs_hits；2.然后把选中的org对应的hit集合取并集
+      let othersSelected = false;
+      let orgs = []; // this.orgs' names except '其他'
       for (const org of this.orgs) {
-        orgsMustHave.push(org.value);
-      }
-      for (const hit of hits) {
-        let authorOrgs = [];
-        for (const authorOrgObj of hit._source.orgs) {
-          authorOrgs.push(authorOrgObj.name);
+        if (org.value === '其他' && org.isSelected) {
+          othersSelected = true;
+          continue;
         }
-        let intersection = authorOrgs.filter(function (o) {
-          // console.log("INDEX OF: " + orgsMustHave.indexOf(o));
-          return orgsMustHave.indexOf(o) > -1;
-        });
-        // TODO some has no org
-        // console.log(authorOrgs);
-        // console.log(orgsMustHave);
-        // console.log(intersection);
-        if (intersection.length > 0) {
+        orgs.push(org.value);
+      }
+      let orgs_hits = {}; // hit._source.ids matched for every org name whether selected or not
+      for (const org1 of orgs) { // compute orgs_hits (partial) content, and mark those others
+        orgs_hits[org1] = new Set();
+        for (let i = 0; i < hits.length; i++) {
+          const hit = hits[i];
+          console.log(hit._source);
+          hit._source.isNotOthers = false;
+          const authorOrgs = [];
+          for (const authorOrgObj of hit._source.orgs) {
+            authorOrgs.push(authorOrgObj.name);
+          }
+          if (authorOrgs.indexOf(org1) > -1) {
+            orgs_hits[org1].add(hit._source.id);
+            hit._source.isNotOthers = true;
+            hits.splice(i, 1);
+          }
+        }
+      }
+      if (othersSelected) { // compute orgs_hits['其他'] if needed
+        orgs_hits['其他'] = new Set();
+        for (const hit of this.authorHits) {
+          if (!hit._source.isNotOthers) {
+            orgs_hits['其他'].add(hit._source.id);
+          }
+        }
+      }
+      // orgs_hits 计算好了
+      let selectedAuthorIDs = othersSelected ? new Set(JSON.parse(JSON.stringify(orgs_hits['其他']))) : new Set();
+      for (const o of orgs) { // compute selectedAuthorIDs
+        let isSelected = false;
+        for (const orgObj of this.orgs) {
+          if (orgObj.value === o && orgObj.isSelected) {
+            isSelected = true;
+          }
+        }
+        // now i know whether this o is selected
+        if (isSelected) {
+          orgs_hits[o].forEach(id => {
+            selectedAuthorIDs.add(id);
+          });
+        }
+      }
+      // selectedAuthorIDs 计算好了
+
+      for (const hit of this.authorHits) {
+        const id = hit._source.id;
+        if (selectedAuthorIDs.has(id)) {
           let toPush = hit._source;
           toPush._score = hit._score;
           toPush.isFollowed = this.followInfo[toPush.id];
-          toPush.authorInfo = this.authorInfo[toPush.id];
+          toPush.authorInfo = this.authorInfo[toPush.id] ? this.authorInfo[toPush.id] : {
+            canSendMessage: false,
+          };
           ret.push(toPush);
           // console.log("RET:");
           // console.log(ret);
@@ -649,11 +709,17 @@ export default {
         default:
           ret.sort(this.cmpCitation);
       }
-      console.log(ret);
+      // console.log(ret);
       return ret;
     },
   },
   watch: {
+    author_results_to_show: function () {
+      this.totalCount = this.author_results_to_show.length;
+    },
+    article_results_to_show: function () {
+      this.totalCount = this.article_results_to_show.length;
+    },
     userID: function () {
       console.log(`userID changed to ${this.userID}`);
     },
@@ -717,28 +783,47 @@ export default {
           isSelected: true
         });
       }
+
+      this.n_result = this.articleHits.length;
     },
     authorHits: function () {
       if (this.activeTab !== "author")
         return;
 
       // update this.orgs
-      let os = new Set();
+      let orgCount = {};
       for (const hit of this.authorHits) {
-        for (const org of hit._source.orgs) {
-          os.add(org.name);
+        const os = hit._source.orgs;
+        for (const o of os) {
+          const name = o.name;
+          if (orgCount[name]) {
+            orgCount[name]++;
+          } else {
+            orgCount[name] = 1;
+          }
         }
       }
       let orgs = [];
-      for (const o of os) {
+      for (const orgName of Object.keys(orgCount)) {
         orgs.push({
-          value: o,
+          value: orgName,
+          count: orgCount[orgName],
           isSelected: true,
         });
       }
       this.orgs = orgs.sort((a, b) => {
-        return b.value - a.value;
+        return a.count < b.count ? 1 : -1;
       });
+      let len = this.orgs.length;
+      this.orgs = this.orgs.slice(0, 10);
+      if (len > 10) {
+        this.orgs.push({
+          value: '其他',
+          isSelected: true,
+        });
+      }
+
+      this.n_result = this.articleHits.length;
     },
     isAdvancedSearch: function () {
       if (!this.isAdvancedSearch) {
@@ -832,7 +917,7 @@ export default {
           follow_id: authorID,
           follower_id: this.userID
         }).then(res => {
-          console.log(res);
+          // console.log(res);
           let isFollowed = eval(res.message);
           this.$set(this.followInfo, authorID, isFollowed);
         });
@@ -882,7 +967,6 @@ export default {
         }
       }).then(response => {
         let n_recommendation = response.data.RecNumber;
-        let n_visit = response.data.VisNumber; // FIXME visNumber??
         // if ( typeof this.recommendationInfo[paperID] === 'undefined')
         //   this.$set(this.recommendationInfo, paperID, {})
         this.$set(this.recommendationInfo, paperID, {
@@ -929,9 +1013,9 @@ export default {
           paper_id: paperID,
         }
       }).then(response => {
+        this.updateRecommendationInfo(paperID); // TODO update request needed?
         if (this.checkMsgSuccess(response.data.Message)) {
           this.notifyInfo('推荐成功');
-          this.updateRecommendationInfo(paperID); // TODO update request needed?
         } else {
           this.notifyInfo('推荐失败，请再次尝试');
           // TODO 其他功能的失败提示
@@ -948,9 +1032,9 @@ export default {
           paper_id: paperID,
         }
       }).then(response => {
+        this.updateRecommendationInfo(paperID);
         if (this.checkMsgSuccess(response.data.message)) {
           this.notifyInfo('取消推荐成功');
-          this.updateRecommendationInfo(paperID);
         } else {
           this.notifyInfo('取消推荐失败，请再次尝试');
         }
@@ -1036,13 +1120,23 @@ export default {
       };
     },
     search() {
+      this.totalCount = 0;
+      this.articleHits = [];
+      this.authorHits = [];
+      this.years = [];
+      this.venues = [];
+      this.orgs = [];
+      this.hasLoaded = false;
       this.currentPage = 1;
       if (this.searchInput.length === 0) {
         this.notifyInfo("关键词不能为空");
+        this.hasLoaded = true;
         return;
       }
-      this.$store.commit('setSearchInput', this.searchInput);
+      this.activeSearchTabs = [];
+      this.$store.commit('setAdvancedSearchInput', []);
       localStorage.removeItem('advancedSearchInput');
+      this.$store.commit('setSearchInput', this.searchInput);
       localStorage.searchInput = this.searchInput;
       console.log(`saving searchInput: ${this.searchInput}`);
       console.log("searching: \n\t" + this.searchInput);
@@ -1081,6 +1175,7 @@ export default {
         }
         this.search_response_data = response.data;
         this.$forceUpdate();
+        this.hasLoaded = true;
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("AUTHORS FETCHED");
@@ -1115,18 +1210,27 @@ export default {
         }
         this.search_response_data = response.data;
         this.$forceUpdate();
+        this.hasLoaded = true;
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("ARTICLES FETCHED");
       });
     },
     advancedSearch() {
+      this.totalCount = 0;
+      this.hasLoaded = false;
+      this.years = [];
+      this.venues = [];
+      this.orgs = [];
       this.activeTab = 'article';
       let bools = {
         must: [],
         must_not: [],
         should: [], // TODO implement OR
       };
+      this.searchInput = '';
+      this.$store.commit('setSearchInput', '');
+      localStorage.removeItem('searchInput');
       this.$store.commit('setAdvancedSearchInput', this.advancedSearchInput);
       localStorage.advancedSearchInput = JSON.stringify(this.advancedSearchInput);
       console.log(`saving advancedSearchInput: ${this.advancedSearchInput}`);
@@ -1209,6 +1313,7 @@ export default {
         }
         this.search_response_data = response.data;
         this.$forceUpdate();
+        this.hasLoaded = true;
         console.log("ARTICLES FETCHED");
       });
     },
@@ -1300,34 +1405,45 @@ export default {
 </script>
 
 <style scoped>
+.n-result {
+  font-size: 13px;
+  font-weight: 400;
+  flex: 1 2;
+  margin: auto 5px;
+}
+
+/deep/ .pagination .el-pagination {
+  flex: 2;
+}
+
 /deep/ .el-button--primary {
-  color: #FFF;
-  background-color: #409EFF;
-  border-color: #409EFF;
-  padding: 12px 30px;
   margin-top: 5px;
+  padding: 12px 30px;
+  color: #FFF;
+  border-color: #409EFF;
+  background-color: #409EFF;
 }
 
 /deep/ .el-dialog__header {
-  padding: 20px 20px 10px;
-  background-color: #00a39e;
-  height: 30px;
   font-family: "Roboto", Arial, sans-serif;
   font-weight: bold;
+  height: 30px;
+  padding: 20px 20px 10px;
   color: white;
+  background-color: #00a39e;
 }
 
 /deep/ .el-dialog__title {
-  line-height: 24px;
   font-size: 18px;
+  line-height: 24px;
   color: white !important;
 }
 
 /deep/ .el-dialog__footer {
-  padding: 20px 0px 0px 0px;
-  text-align: right;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  padding: 20px 0px 0px 0px;
+  text-align: right;
 }
 
 /deep/ .el-dialog__wrapper {
@@ -1341,25 +1457,26 @@ export default {
 }
 
 .letter-body {
-  margin-left: 5%;
-  margin-right: 5%;
   margin-top: 2%;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 
 .letter-send-box {
+  font-size: larger;
+  font-weight: bolder;
   margin-top: 3%;
   margin-bottom: 3%;
-  font-weight: bolder;
-  font-size: larger;
 }
 
 .letter-btn-box {
-  text-align: right;
   margin-top: 5%;
+  text-align: right;
 }
 
 .pagination {
   display: flex;
+  float: bottom;
   justify-content: center;
 }
 
@@ -1602,6 +1719,9 @@ export default {
 
 .results {
   /*height: 300px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
   width: 65%;
   margin: 20px;
   border-radius: 2px;
