@@ -501,17 +501,22 @@ export default {
       })
     },
     follow() {
-      if (localStorage.getItem('user_id')) {
+      if (localStorage.getItem('user_id')&&localStorage.getItem('user_id')!='-1') {
         followAuthor({
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
         }).then(res => {
-          // console.log(res)
+          console.log(res)
           this.checkFollow()
           if (res.message == 'Follow success') {
             this.$message({
               message: '关注成功',
               type: 'success'
+            });
+          }else{
+            this.$message({
+              message: res.message,
+              type: 'warning'
             });
           }
         })
@@ -540,7 +545,7 @@ export default {
       }
     },
     unfollow() {
-      if (localStorage.getItem('user_id')) {
+      if (localStorage.getItem('user_id')&&localStorage.getItem('user_id')!='-1') {
         undoFollow({
           follow_id: this.$route.query.id,
           follower_id: localStorage.getItem('user_id')
@@ -628,7 +633,15 @@ export default {
       })
     },
     openLetter() {
-      this.dialogLetterVisible = true
+      if (localStorage.getItem('user_id') && localStorage.getItem('user_id')!= '-1'){
+        this.dialogLetterVisible = true
+      }else{
+        this.$message({
+          message: '请先登录！',
+          type: 'warning'
+        });
+      }
+
     },
     sendLetter() {
       if (this.text === '') {
