@@ -10,7 +10,7 @@ export default {
   name: 'App',
   watch: {
    '$route':function(to,from){
-     if (to.path === '/search' && this.$store.state.searchInput.length === 0 && localStorage.searchInput.length === 0) {
+     if (to.path === '/search' && this.$store.state.searchInput.length === 0 && localStorage.searchInput && localStorage.searchInput.length === 0) {
        this.$store.commit('setAdvancedSearchInput', [])
        localStorage.removeItem('advancedSearchInput')
      }

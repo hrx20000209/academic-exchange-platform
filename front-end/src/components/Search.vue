@@ -59,8 +59,11 @@
                 </el-select>
                 <el-input v-if="rule.type === TYPES.MATCH"
                           v-model="rule.match"
-                          placeholder="匹配文字"></el-input>
-                <div v-if="rule.type === TYPES.RANGE">
+                          placeholder="匹配文字，按回车搜索"
+                          style="margin: 5px 0"
+                          @keyup.enter.native="advancedSearch"></el-input>
+                <div v-if="rule.type === TYPES.RANGE"
+                     style="margin: 5px 0">
                   <el-select v-model="rule.range.op">
                     <el-option v-for="op in OPS"
                                :key="op"
@@ -72,9 +75,11 @@
                 <el-button @click="delRule(rule)">删除</el-button>
               </el-form-item>
               <el-form-item class="rule">
-                <el-button @click="advancedSearch">搜索</el-button>
+                <el-button @click="advancedSearch">高级搜索</el-button>
                 <!--                 TODO 回车搜索 美化按钮和布局-->
-                <el-button @click="addRule">新增规则</el-button>
+                <el-button style="margin-left: 0"
+                           @click="addRule">新增规则
+                </el-button>
               </el-form-item>
             </el-form>
             <div class="advancedSearchInfo"
@@ -131,7 +136,6 @@
                       <el-radio label="relevance">相关性</el-radio>
                       <el-radio label="time">年份</el-radio>
                       <el-radio label="citation">引用量</el-radio>
-                      <!--            TODO 新增排序属性-->
                       <!--            TODO 改蓝色字体样式-->
                     </el-radio-group>
                   </div>
@@ -193,7 +197,6 @@
                                     <span>{{ author.name }}</span>
                   <span v-if="result.authors.indexOf(author) !== result.authors.length-1"> · </span>
                 </span>
-                            <!--                      TODO citation_by_year map-->
                           </div>
                           <div class="abstract"
                                style="margin-bottom: 10px;font-size: 16px">
@@ -217,7 +220,7 @@
                               </el-button>
                               <el-popover
                                 :key="result.articlePageUrl+result.hasLoadedQRCode"
-                                placement="top-start"
+                                placement="top"
                                 popper-class="qrcodePopover"
                                 trigger="click"
                                 @show="loadQRCode(result)">
@@ -272,29 +275,28 @@
                      name="author">
           <div class="tab">
             <div class="filterAndSort">
-              <div>
-                <span class="filterAndSortTitle">排序方式</span>
-                <!--                TODO change style to article's-->
-                <el-radio-group v-model="sort"
-                                class="sort">
-                  <el-radio label="relevance">相关性</el-radio>
-                  <el-radio label="pub">发表量</el-radio>
-                  <el-radio label="citation">引用量</el-radio>
-                  <!--            TODO 新增排序属性-->
-                  <!--            TODO 改蓝色字体样式-->
-                </el-radio-group>
-              </div>
-              <div>
-                <span class="filterAndSortTitle">按机构筛选</span>
-                <div class="filter">
-                  <el-checkbox
-                    v-for="orgs in orgs"
-                    :key="orgs.value"
-                    v-model="orgs.isSelected"
-                    :label="orgs.value">
-                  </el-checkbox>
-                </div>
-              </div>
+              <el-collapse v-model="activeFilterAndSortTabsInAuthor">
+                <el-collapse-item name="sort"
+                                  title="排序方式">
+                  <el-radio-group v-model="sort"
+                                  class="sort">
+                    <el-radio label="relevance">相关性</el-radio>
+                    <el-radio label="pub">发表量</el-radio>
+                    <el-radio label="citation">引用量</el-radio>
+                    <!--            TODO 改蓝色字体样式-->
+                  </el-radio-group>
+                </el-collapse-item>
+                <el-collapse-item name="filterByOrgs"
+                                  title="按机构筛选">
+                  <div class="filter">
+                    <el-checkbox v-for="orgs in orgs"
+                                 :key="orgs.value"
+                                 v-model="orgs.isSelected"
+                                 :label="orgs.value">
+                    </el-checkbox>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
             </div>
             <div class="results">
               <div v-loading="!hasLoaded"
@@ -338,7 +340,6 @@
                                          @click="openLetter(result)">私信
                               </el-button>
                               <!--                        TODO result.x 改为 data的变量，省去更新？-->
-                              <!--                        TODO author 其他字段-->
                             </div>
                           </div>
                         </div>
@@ -465,6 +466,7 @@ export default {
       searchInput: "",
       activeTab: "article",
       activeFilterAndSortTabsInArticle: ['sort', 'filterByYears', 'filterByVenues'],
+      activeFilterAndSortTabsInAuthor: ['sort', 'filterByOrgs'],
       articles: [],
       hotArticles: [
         {
@@ -714,6 +716,10 @@ export default {
     },
   },
   watch: {
+    advancedSearchInput: function () {
+      this.$store.commit('setAdvancedSearchInput', this.advancedSearchInput);
+      localStorage.advancedSearchInput = JSON.stringify(this.advancedSearchInput);
+    },
     author_results_to_show: function () {
       this.totalCount = this.author_results_to_show.length;
     },
@@ -1179,11 +1185,12 @@ export default {
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("AUTHORS FETCHED");
+      }).catch(() => {
+        this.notifyInfo('网络错误，请再次搜索');
       });
     },
     searchArticle() {
       // TODO 用高级搜索函数重构
-      // TODO 未搜索到结果页面、加载等待
       this.$http.post(
         'http://119.3.223.135:9200/cspaper/_search',
         {
@@ -1214,6 +1221,8 @@ export default {
         // console.log("response: \n\t")
         // console.log(this.search_response_data)
         console.log("ARTICLES FETCHED");
+      }).catch(() => {
+        this.notifyInfo('网络错误，请再次搜索');
       });
     },
     advancedSearch() {
@@ -1227,7 +1236,7 @@ export default {
       let bools = {
         must: [],
         must_not: [],
-        should: [], // TODO implement OR
+        should: [],
       };
       this.searchInput = '';
       this.$store.commit('setSearchInput', '');
@@ -1291,6 +1300,17 @@ export default {
         bools[boolKey].push(toPush);
       }
       console.log(bools);
+      let validRuleCount = 0;
+      for (const boolsKey in bools) {
+        validRuleCount += bools[boolsKey].length;
+      }
+      if (validRuleCount === 0) {
+        this.notifyInfo('高级搜索需要至少一条有效规则');
+        return;
+      }
+      if (bools.should.length > 0) {
+        bools['minimum_should_match'] = 1;
+      }
       this.$http.post(
         'http://119.3.223.135:9200/cspaper/_search',
         {
@@ -1316,6 +1336,8 @@ export default {
         this.$forceUpdate();
         this.hasLoaded = true;
         console.log("ARTICLES FETCHED");
+      }).catch(() => {
+        this.notifyInfo('网络错误，请再次搜索');
       });
     },
     addRule() {
